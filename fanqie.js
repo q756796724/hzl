@@ -6,7 +6,7 @@ var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum = "v1.0.10";
+var versionNum = "v1.0.11";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -494,7 +494,7 @@ if (!requestScreenCapture()) {
 } else {
     toastLog("请求截图成功");
 }
-
+toastLog(device.brand);
 toastLog("版本号:" + versionNum);
 //保持屏幕常亮
 device.keepScreenDim();
