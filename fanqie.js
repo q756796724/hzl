@@ -6,7 +6,7 @@ var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum = "v1.0.8";
+var versionNum = "v1.0.9";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -31,7 +31,6 @@ var 悬浮窗 = floaty.window(
         toast("脚本已暂停");
         ui.run(function () {
             悬浮窗.console.setText("开始");  //设置按钮文本
-            kz();
         });
     } else {
         toast("脚本已继续");
@@ -57,7 +56,12 @@ function onMainPage() {
     log("进入v成功");
     //id("cns").className("android.widget.TextView").text("我").waitFor();
     //id("cns").className("android.widget.TextView").text("我").findOne().parent().parent().click();
-    let wBtn=className("android.widget.TextView").text("我").findOne(1000);
+    let wBtn=id("cns").className("android.widget.TextView").text("我").findOne(1000);
+    if(wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null){
+        wBtn.parent().parent().click();
+    }
+    sleep(1000);
+    wBtn=id("dub").className("android.widget.TextView").text("我").findOne(1000);
     if(wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null){
         wBtn.parent().parent().click();
     }
@@ -107,6 +111,7 @@ function onMainPage() {
     className("android.view.View").textContains("ZhaoLin").waitFor();
     log("渠道匹配");
     sleep(1000);
+    kz();
     click("开始阅读");
     for (var i = 0; i < 3; i++) {
         sleep(3000);
@@ -139,6 +144,7 @@ function yuedu() {
     var count = backCount;//次数
 
     for (; ;) {
+        kz();
         sleep(8000);
         /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(1000)!=null){
             click("确定");
@@ -163,6 +169,7 @@ function yuedu() {
         //判断阅读提前结束
         if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null) {
             for (var i = 0; i < 4; i++) {
+                kz();
                 sleep(3000);
                 if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null || textMatches(/(.*开始阅读.*)/).findOne(1000) != null) {
                     if (i < 3) {
@@ -203,6 +210,7 @@ function yuedu() {
         swapeToRead()
         sleep(random(3000, 5000));
         for (; ;) {
+            kz();
             var img = captureScreen();
             var imgH = img.height;
             var clip = images.clip(img, 0, img.height - 200, 200, 20);
@@ -231,6 +239,7 @@ function yuedu() {
 //长时间睡眠保持唤醒，单位毫秒
 function sleepLongTime(sleepTime) {
     for (let i = 0; i < sleepTime / 1000 / 60; i++) {
+        kz();
         if (device.brand != "Xiaomi" && device.brand != "Meizu") {
             device.wakeUp();
         }
@@ -281,6 +290,7 @@ function 返回v首页() {
         if (结束未响应()) {
             return;
         }
+        kz();
         refreshStateInfo();
         if (topPackage != PKG_NAME) {
             break;
@@ -486,6 +496,7 @@ device.keepScreenDim();
 var backCount = 1;//备份当轮阅读次数
 var lunCount = 1;//每天最大轮回次数
 for (; ;) {
+    kz();
     var nowHour = new Date().getHours();
     log("当前时间:" + nowHour + "时");
     if (nowHour < 2 || nowHour > 23) {
