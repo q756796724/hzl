@@ -6,7 +6,7 @@ var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum = "v1.0.12";
+var versionNum = "v1.0.13";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -67,11 +67,13 @@ function onMainPage() {
     }
     
     log("进入我成功");
-    sleep(1000);
+    sleep(5000);
     if (结束未响应()) {
         return;
     }
-    className("android.widget.TextView").text("收藏").waitFor();
+    if(className("android.widget.TextView").text("收藏").findOne(5000)==null){
+        return;
+    };
     click("收藏");
     /*className("android.widget.TextView").text("链接").waitFor();
     click("链接");
@@ -80,7 +82,9 @@ function onMainPage() {
     if (结束未响应()) {
         return;
     }
-    text("我的收藏").waitFor();
+    if(text("我的收藏").findOne(5000)==null){
+        return;
+    }
     log("进入收藏成功");
     sleep(3000);
     if (className("android.widget.TextView").textContains("RHtWWJm").findOne(5000) == null) {
@@ -108,28 +112,30 @@ function onMainPage() {
     if (结束未响应()) {
         return;
     }
-    className("android.view.View").textContains("ZhaoLin").waitFor();
-    log("渠道匹配");
-    sleep(1000);
-    kz();
-    click("开始阅读");
-    for (var i = 0; i < 3; i++) {
-        sleep(3000);
-        if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null) {
-            log("重试点击开始阅读成功");
-            let sBtn = textMatches(/(.*开始阅读.*)/).findOne(1000);
-            if (sBtn != null) {
-                sBtn.click();
+    if(className("android.view.View").textContains("ZhaoLin").findOne(5000)!=null){
+        log("渠道匹配");
+        sleep(1000);
+        kz();
+        click("开始阅读");
+        for (var i = 0; i < 3; i++) {
+            sleep(3000);
+            if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null) {
+                log("重试点击开始阅读成功");
+                let sBtn = textMatches(/(.*开始阅读.*)/).findOne(1000);
+                if (sBtn != null) {
+                    sBtn.click();
+                }
+            } else {
+                log("点击开始阅读成功");
+                if (yuedu()) {
+                    lunCount++;
+                }
+    
+                return;
             }
-        } else {
-            log("点击开始阅读成功");
-            if (yuedu()) {
-                lunCount++;
-            }
-
-            return;
         }
     }
+    
 
     返回v首页();
     home();
@@ -210,7 +216,7 @@ function yuedu() {
         swapeToRead()
         sleep(random(3000, 5000));
         if (device.brand == "samsung") {
-            for (let i=0; i<15;i++) {
+            for (let i=0; i<20;i++) {
                 kz();
                 swapeToRead();
                 sleep(random(3000, 5000));
@@ -220,7 +226,7 @@ function yuedu() {
                 }
             }
         }else{
-            for (; ;) {
+            for (let i=0; i<20;i++) {
                 kz();
                 var img = captureScreen();
                 var imgH = img.height;
