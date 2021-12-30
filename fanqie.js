@@ -6,7 +6,7 @@ var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum="v1.04";
+var versionNum="v1.05";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -20,7 +20,7 @@ var 悬浮窗 = floaty.window(
         <button id="console" text="暂停" />
     </frame>
 );
-悬浮窗.setPosition(500, 1000);   //设置位置（x，y）
+悬浮窗.setPosition(0, 1000);   //设置位置（x，y）
 悬浮窗.setAdjustEnabled(true);   //显示调节位置控件
 悬浮窗.exitOnClose();   //关闭悬浮窗时自动结束脚本运行
 
@@ -64,7 +64,6 @@ function onMainPage() {
     }
     className("android.widget.TextView").text("收藏").waitFor();
     click("收藏");
-    log("进入收藏成功");
     /*className("android.widget.TextView").text("链接").waitFor();
     click("链接");
     sleep(1000);*/
@@ -72,8 +71,16 @@ function onMainPage() {
     if(结束未响应()){
         return;
     }
-    id("bwa").className("android.widget.TextView").text("阅读").waitFor();
+    text("我的收藏").waitFor();
+    log("进入收藏成功");
+    sleep(3000);
+    if(iclassName("android.widget.TextView").text("阅读").findOne(1000)==null){
+        toastLog("未添加到收藏夹");
+        exit();
+    }
     className("android.widget.FrameLayout").depth(11).row(3).click();
+    sleep(1000);
+    className("android.widget.FrameLayout").depth(13).row(3).click();
     log("点击链接成功");
     /*var 阅读 = id("bwa").className("android.widget.TextView").text("阅读").findOne().parent().bounds();
     log("阅读x"+阅读.centerX()+"阅读y"+阅读.centerY());
@@ -281,7 +288,7 @@ function 返回v首页() {
             continue;
         }
         refreshStateInfo();
-        if (topActivity != MAIN_PAGE || id("cns").className("android.widget.TextView").text("我").findOne(1000) == null) {
+        if (topActivity != MAIN_PAGE || (id("cns").className("android.widget.TextView").text("我").findOne(1000) == null&&id("dub").className("android.widget.TextView").text("我").findOne(1000) == null)) {
             back();
             sleep(5000);
         } else {
@@ -495,7 +502,7 @@ for (; ;) {
     /*if(topPackage != PKG_NAME){
         continue;
     }*/
-    if (topActivity == MAIN_PAGE && id("cns").className("android.widget.TextView").text("我").findOne(5000) != null) {
+    if (topActivity == MAIN_PAGE && (id("cns").className("android.widget.TextView").text("我").findOne(5000) != null||id("dub").className("android.widget.TextView").text("我").findOne(5000) != null)) {
         log("第" + lunCount + "轮");
         onMainPage();
         continue;
