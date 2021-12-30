@@ -6,7 +6,7 @@ var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum="v1.06";
+var versionNum="v1.0.7";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -277,12 +277,20 @@ function 返回v首页() {
             continue;
         }
         //点击左上角的x
-        let xbtn=id("dm").className("android.widget.LinearLayout").findOne(1000);
+        /*let xbtn=id("dm").className("android.widget.LinearLayout").findOne(1000);
         if (xbtn != null) {
             xbtn.click();
             sleep(3000);
             continue;
         }
+        let xbtn=id("eh").className("android.widget.LinearLayout").findOne(1000);
+        if (xbtn != null) {
+            xbtn.click();
+            sleep(3000);
+            continue;
+        }*/
+        className("android.widget.ImageView").desc("返回").findOne(1000).parent().click();
+
         refreshStateInfo();
         if (topActivity != MAIN_PAGE || (id("cns").className("android.widget.TextView").text("我").findOne(1000) == null&&id("dub").className("android.widget.TextView").text("我").findOne(1000) == null)) {
             back();
