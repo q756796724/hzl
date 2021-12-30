@@ -6,7 +6,7 @@ var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum = "v1.0.11";
+var versionNum = "v1.0.12";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -209,7 +209,7 @@ function yuedu() {
         sleep(random(3000, 5000));
         swapeToRead()
         sleep(random(3000, 5000));
-        if (device.brand == "Samsung") {
+        if (device.brand == "samsung") {
             for (let i=0; i<15;i++) {
                 kz();
                 swapeToRead();
@@ -387,11 +387,8 @@ function swapeToRead() {
     let y1 = device.height * random(700, 900) / 1000;
     let x2 = device.width * random(300, 800) / 1000;
     let y2 = device.height * random(200, 500) / 1000;
-    if (device.brand == "Samsung") {
-        swipe(x1, y1, x2, y2, random(1200, 1500));
-    } else {
-        sml_move(x1, y1, x2, y2, random(1200, 1500));
-    }
+    //swipe(x1, y1, x2, y2, random(1200, 1500));
+    sml_move(x1, y1, x2, y2, random(1200, 1500));
 
 }
 //曲线滑动---贝塞尔曲线
