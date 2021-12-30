@@ -6,7 +6,7 @@ var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum = "v1.0.14";
+var versionNum = "v1.1.0";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -160,8 +160,8 @@ function yuedu() {
                click("开始阅读");
             }
         }*/
-        if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*)/).findOne(1000) != null) {
-            log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*)/).findOne(1000));
+        if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(1000) != null) {
+            log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(1000));
             click("确定");
             sleep(3000);
             if (textContains("ZhaoLin").findOne(1000) != null || textMatches(/(.*开始阅读.*)/).findOne(1000) != null) {
@@ -320,8 +320,8 @@ function 返回v首页() {
             sleep(8000);
             continue;
         }*/
-        if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常访问.*)/).findOne(1000) != null) {
-            log("异常确定：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*)/).findOne(1000));
+        if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(1000) != null) {
+            log("异常确定：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(1000));
             click("确定");
             sleep(8000);
             continue;
@@ -521,7 +521,7 @@ for (; ;) {
     kz();
     var nowHour = new Date().getHours();
     log("当前时间:" + nowHour + "时");
-    if (nowHour < 5 || nowHour > 23) {
+    if (nowHour < 6 || nowHour > 22) {
         console.clear();
         lunCount = 1;//重置每天轮回次数
         log("当前时间:" + nowHour + "时,休息中");
