@@ -244,10 +244,10 @@ function moreCommentVisible() {
 
 //到底判断
 function checkWatchFull() {
-    var btn = textStartsWith("分享").boundsInside(0, 0, device.width, device.height-1).findOne(500);
+    var btn = textStartsWith("分享").boundsInside(0, 0, device.width, device.height - 1).findOne(500);
     if (btn) {
         toastLog("看到");
-    }else{
+    } else {
         toastLog("未看到");
     }
 }
@@ -270,10 +270,10 @@ function swapeToRead() {
     let y2 = device.height * random(200, 500) / 1000;
     if (device.brand == "Samsung") {
         swipe(x1, y1, x2, y2, random(1200, 1500));
-    }else{
+    } else {
         sml_move(x1, y1, x2, y2, random(1200, 1500));
     }
-    
+
 }
 //曲线滑动---贝塞尔曲线
 function bezier_curves(cp, t) {
@@ -348,7 +348,7 @@ if (!requestScreenCapture()) {
 device.keepScreenDim();
 var thread = threads.start(function () {
     function 结束未响应() {
-        if (textMatches(/(.*未响应.*)/).findOne(1000) != null && textMatches(/(.*等待.*)/).findOne(1000) != null) {
+        if (textMatches(/(.*未响应.*|.*没有响应.*)/).findOne(1000) != null && textMatches(/(.*等待.*)/).findOne(1000) != null) {
             log(new Date().toLocaleString() + "-" + "检测到应用未响应");
             textMatches(/(.*等待.*)/).findOne(1000).click();
             log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
@@ -396,7 +396,7 @@ for (; ;) {
         continue;
     }
 
-   
+
 
     refreshStateInfo();
     /*if(topPackage != PKG_NAME){
