@@ -6,7 +6,7 @@ var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum = "v1.0.9";
+var versionNum = "v1.0.10";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -209,23 +209,36 @@ function yuedu() {
         sleep(random(3000, 5000));
         swapeToRead()
         sleep(random(3000, 5000));
-        for (; ;) {
-            kz();
-            var img = captureScreen();
-            var imgH = img.height;
-            var clip = images.clip(img, 0, img.height - 200, 200, 20);
-            swapeToRead();
-            sleep(random(3000, 5000));
-            var p = findImage(captureScreen(), clip, {
-                region: [0, imgH - 300, 220, 150],
-                threshold: 1
-            });
-            img.recycle();//不再使用需要手动回收
-            if (p) {
-                log("到底了");
-                break;
+        if (device.brand == "Samsung") {
+            for (let i=0; i<15;i++) {
+                kz();
+                swapeToRead();
+                sleep(random(3000, 5000));
+                if (checkWatchFull()) {
+                    log("到底了");
+                    break;
+                }
+            }
+        }else{
+            for (; ;) {
+                kz();
+                var img = captureScreen();
+                var imgH = img.height;
+                var clip = images.clip(img, 0, img.height - 200, 200, 20);
+                swapeToRead();
+                sleep(random(3000, 5000));
+                var p = findImage(captureScreen(), clip, {
+                    region: [0, imgH - 300, 220, 150],
+                    threshold: 1
+                });
+                img.recycle();//不再使用需要手动回收
+                if (p) {
+                    log("到底了");
+                    break;
+                }
             }
         }
+        
         if (结束未响应()) {
             backCount = count;
             return;
@@ -350,11 +363,11 @@ function moreCommentVisible() {
 
 //到底判断
 function checkWatchFull() {
-    var btn = textStartsWith("分享").boundsInside(0, 0, device.width, device.height - 1).findOne(500);
+    var btn = textStartsWith("分享").boundsInside(0, 0, device.width, device.height - 1).findOne(1000);
     if (btn) {
-        toastLog("看到");
+        return true;
     } else {
-        toastLog("未看到");
+        return false;
     }
 }
 
@@ -448,6 +461,12 @@ function 结束未响应() {
         let cBtn=textMatches(/(.*确定.*|.*关闭.*)/).findOne(1000);
         if(cBtn!=null){
             cBtn.click();
+            sleep(1000);
+            cBtn=textMatches(/(.*确定.*|.*关闭.*)/).findOne(1000);
+            if(cBtn!=null){
+                let cBounds = cBtn.bounds();
+                click(cBounds.right - 1, cBounds.bottom - 1);
+            }
             log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
             return true;
         }
