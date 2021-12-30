@@ -1,12 +1,12 @@
-
 var topPackage = "";
 var topActivity = "";
 
+var MAIN_PKG="com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-
+var versionNum="v1.02";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -60,7 +60,8 @@ function onMainPage() {
     for (var i = 0; i < 3; i++) {
         sleep(3000);
         if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null) {
-            click("开始阅读");
+            log("重试点击开始阅读成功");
+            textMatches(/(.*开始阅读.*)/).findOne(1000).click();
         } else {
             log("点击开始阅读成功");
             if(yuedu()){
@@ -98,7 +99,7 @@ function yuedu() {
             click("确定");
             sleep(3000);
             if (textContains("ZhaoLin").findOne(1000) != null||textMatches(/(.*开始阅读.*)/).findOne(1000) != null) {
-                click("开始阅读");
+                textMatches(/(.*开始阅读.*)/).findOne(1000).click();
             }
         }
 
@@ -106,9 +107,10 @@ function yuedu() {
         if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null) {
             for (var i = 0; i < 4; i++) {
                 sleep(3000);
-                if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null) {
+                if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null||textMatches(/(.*开始阅读.*)/).findOne(1000) != null) {
                     if (i < 3) {
-                        click("开始阅读");
+                        log("重试点击开始阅读成功");
+                        textMatches(/(.*开始阅读.*)/).findOne(1000).click();
                     } else {
                         log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
                         count = 31;
@@ -377,7 +379,7 @@ if (!requestScreenCapture()) {
 } else {
     toastLog("请求截图成功");
 }
-var versionNum="v1.01";
+
 toastLog("版本号:"+versionNum);
 //保持屏幕常亮
 device.keepScreenDim();
@@ -430,7 +432,9 @@ for (; ;) {
         sleep(15000);
     }
     refreshStateInfo();
-    if (topPackage != PKG_NAME) {
+    if (topPackage == MAIN_PKG||topPackage != PKG_NAME) {
+        home();
+        sleep(1000);
         log("打开" + PKG_NAME);
         app.launch(PKG_NAME);
         sleep(3000);
