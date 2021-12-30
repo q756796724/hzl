@@ -359,6 +359,11 @@ function sml_move(qx, qy, zx, zy, time) {
 };
 
 
+
+
+
+///////////////////////////////////////////////////////////////////
+
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 console.show();
 if (!requestScreenCapture()) {
@@ -367,6 +372,9 @@ if (!requestScreenCapture()) {
 } else {
     toastLog("请求截图成功");
 }
+var versionNum="v1.00";
+log("版本号:"+versionNum);
+toastLog("版本号:"+versionNum);
 //保持屏幕常亮
 device.keepScreenDim();
 
