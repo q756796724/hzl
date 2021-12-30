@@ -6,7 +6,7 @@ var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum="v1.05";
+var versionNum="v1.06";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -78,14 +78,10 @@ function onMainPage() {
         toastLog("未添加到收藏夹");
         exit();
     }
-    className("android.widget.FrameLayout").depth(11).row(3).click();
-    sleep(1000);
-    className("android.widget.FrameLayout").depth(13).row(3).click();
-    log("点击链接成功");
-    /*var 阅读 = id("bwa").className("android.widget.TextView").text("阅读").findOne().parent().bounds();
-    log("阅读x"+阅读.centerX()+"阅读y"+阅读.centerY());
+ 
+    var 阅读 =className("android.widget.TextView").text("阅读").findOne(1000).bounds();
     click(阅读.centerX(), 阅读.centerY());
-    click(阅读.centerX(), 阅读.centerY());*/
+    log("点击链接成功");
 
     if (textMatches(/(.*登陆超时.*|.*重试.*)/).findOne(2000) != null) {
         textMatches(/(.*确定.*)/).findOne(1000).click();
@@ -425,6 +421,9 @@ function 结束未响应() {
 
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 console.show();
+sleep(1000);
+console.setSize(device.width -100, device.height / 4);
+sleep(2000);
 if (!requestScreenCapture()) {
     toastLog("请求截图失败");
     exit();
