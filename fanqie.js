@@ -6,7 +6,7 @@ var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum = "v1.0.13";
+var versionNum = "v1.0.14";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -20,7 +20,7 @@ var 悬浮窗 = floaty.window(
         <button id="console" text="暂停" />
     </frame>
 );
-悬浮窗.setPosition(0, 1000);   //设置位置（x，y）
+悬浮窗.setPosition(10, device.height/2);   //设置位置（x，y）
 悬浮窗.setAdjustEnabled(true);   //显示调节位置控件
 悬浮窗.exitOnClose();   //关闭悬浮窗时自动结束脚本运行
 
@@ -521,7 +521,7 @@ for (; ;) {
     kz();
     var nowHour = new Date().getHours();
     log("当前时间:" + nowHour + "时");
-    if (nowHour < 2 || nowHour > 23) {
+    if (nowHour < 5 || nowHour > 23) {
         console.clear();
         lunCount = 1;//重置每天轮回次数
         log("当前时间:" + nowHour + "时,休息中");
