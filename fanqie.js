@@ -74,7 +74,7 @@ function onMainPage() {
     text("我的收藏").waitFor();
     log("进入收藏成功");
     sleep(3000);
-    if(iclassName("android.widget.TextView").text("阅读").findOne(1000)==null){
+    if(className("android.widget.TextView").text("阅读").findOne(1000)==null){
         toastLog("未添加到收藏夹");
         exit();
     }
