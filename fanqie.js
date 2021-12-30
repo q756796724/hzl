@@ -1,12 +1,12 @@
 var topPackage = "";
 var topActivity = "";
 
-var MAIN_PKG="com.fanqie.cloud";
+var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum="v1.0.7";
+var versionNum = "v1.0.8";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -31,8 +31,9 @@ var 悬浮窗 = floaty.window(
         toast("脚本已暂停");
         ui.run(function () {
             悬浮窗.console.setText("开始");  //设置按钮文本
+            kz();
         });
-    }else {
+    } else {
         toast("脚本已继续");
         ui.run(function () {
             悬浮窗.console.setText("暂停");
@@ -41,12 +42,12 @@ var 悬浮窗 = floaty.window(
 });
 function kz() {
     while (1) {
-        反状态 = 悬浮窗.console.getText();   
+        反状态 = 悬浮窗.console.getText();
         //log(反状态)
         if (反状态 == "开始") {//反状态为开始时，脚本要暂停，即被阻塞
             toastLog("脚本暂停中");
             sleep(2000) //这个只影响主程序，就是你可以在这期间点开始运行，在sleep结束后，主程序会继续运行
-        }else{//反状态为暂停时，脚本要运行，即跳出死循环
+        } else {//反状态为暂停时，脚本要运行，即跳出死循环
             break
         }
     }
@@ -56,10 +57,14 @@ function onMainPage() {
     log("进入v成功");
     //id("cns").className("android.widget.TextView").text("我").waitFor();
     //id("cns").className("android.widget.TextView").text("我").findOne().parent().parent().click();
-    className("android.widget.TextView").text("我").findOne(1000).parent().parent().click();
+    let wBtn=className("android.widget.TextView").text("我").findOne(1000);
+    if(wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null){
+        wBtn.parent().parent().click();
+    }
+    
     log("进入我成功");
     sleep(1000);
-    if(结束未响应()){
+    if (结束未响应()) {
         return;
     }
     className("android.widget.TextView").text("收藏").waitFor();
@@ -68,28 +73,35 @@ function onMainPage() {
     click("链接");
     sleep(1000);*/
     sleep(1000);
-    if(结束未响应()){
+    if (结束未响应()) {
         return;
     }
     text("我的收藏").waitFor();
     log("进入收藏成功");
     sleep(3000);
-    if(className("android.widget.TextView").text("阅读").findOne(1000)==null){
+    if (className("android.widget.TextView").textContains("RHtWWJm").findOne(5000) == null) {
         toastLog("未添加到收藏夹");
         exit();
     }
- 
-    var 阅读 =className("android.widget.TextView").text("阅读").findOne(1000).bounds();
-    click(阅读.centerX(), 阅读.centerY());
+
+    let 阅读 = className("android.widget.TextView").textContains("RHtWWJm").findOne(5000).bounds();
+    click(阅读.right - 1, 阅读.bottom - 1);
+    sleep(3000);
+    阅读 = className("android.widget.TextView").textContains("RHtWWJm").findOne(5000).bounds();
+    sleep(3000);
+    click(阅读.right - 1, 阅读.bottom - 1);
     log("点击链接成功");
 
     if (textMatches(/(.*登陆超时.*|.*重试.*)/).findOne(2000) != null) {
-        textMatches(/(.*确定.*)/).findOne(1000).click();
+        let qBtn=textMatches(/(.*确定.*)/).findOne(1000);
+        if(qBtn!=null){
+            qBtn.click();
+        }
         sleep(1000);
         返回v首页();
         return;
     }
-    if(结束未响应()){
+    if (结束未响应()) {
         return;
     }
     className("android.view.View").textContains("ZhaoLin").waitFor();
@@ -100,13 +112,16 @@ function onMainPage() {
         sleep(3000);
         if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null) {
             log("重试点击开始阅读成功");
-            textMatches(/(.*开始阅读.*)/).findOne(1000).click();
+            let sBtn = textMatches(/(.*开始阅读.*)/).findOne(1000);
+            if (sBtn != null) {
+                sBtn.click();
+            }
         } else {
             log("点击开始阅读成功");
-            if(yuedu()){
+            if (yuedu()) {
                 lunCount++;
             }
-            
+
             return;
         }
     }
@@ -122,7 +137,7 @@ function onMainPage() {
 
 function yuedu() {
     var count = backCount;//次数
-    
+
     for (; ;) {
         sleep(8000);
         /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(1000)!=null){
@@ -137,8 +152,11 @@ function yuedu() {
             log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*)/).findOne(1000));
             click("确定");
             sleep(3000);
-            if (textContains("ZhaoLin").findOne(1000) != null||textMatches(/(.*开始阅读.*)/).findOne(1000) != null) {
-                textMatches(/(.*开始阅读.*)/).findOne(1000).click();
+            if (textContains("ZhaoLin").findOne(1000) != null || textMatches(/(.*开始阅读.*)/).findOne(1000) != null) {
+                let sBtn = textMatches(/(.*开始阅读.*)/).findOne(1000);
+                if (sBtn != null) {
+                    sBtn.click();
+                }
             }
         }
 
@@ -146,10 +164,13 @@ function yuedu() {
         if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null) {
             for (var i = 0; i < 4; i++) {
                 sleep(3000);
-                if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null||textMatches(/(.*开始阅读.*)/).findOne(1000) != null) {
+                if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null || textMatches(/(.*开始阅读.*)/).findOne(1000) != null) {
                     if (i < 3) {
                         log("重试点击开始阅读成功");
-                        textMatches(/(.*开始阅读.*)/).findOne(1000).click();
+                        let sBtn = textMatches(/(.*开始阅读.*)/).findOne(1000);
+                        if (sBtn != null) {
+                            sBtn.click();
+                        }
                     } else {
                         log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
                         count = 31;
@@ -160,7 +181,7 @@ function yuedu() {
         }
 
         if (count > 28) {
-            backCount=1;
+            backCount = 1;
             返回v首页();
             home();
             var sleepTime = random(3600000, 7200000);
@@ -197,11 +218,11 @@ function yuedu() {
                 break;
             }
         }
-        if(结束未响应()){
-            backCount=count;
+        if (结束未响应()) {
+            backCount = count;
             return;
-        }else{
-            backCount=1;
+        } else {
+            backCount = 1;
         }
         back();
         count++;
@@ -234,13 +255,13 @@ function 关闭应用(packageName) {
         if (is_sure != null) {
             if (is_sure.enabled()) {
                 is_sure.click();
-                sleep(1000);
-                let closeBtn=textMatches(/(.*确.*|.*定.*)/).findOne(1000);
-                if(closeBtn!=null){
+                sleep(2000);
+                let closeBtn = textMatches(/(.*确定|.*停止)/).findOne(1000);
+                if (closeBtn != null) {
                     closeBtn.click();
                 }
                 log(app.getAppName(name) + "应用已被关闭");
-                sleep(1000);
+                sleep(2000);
                 back();
             } else {
                 log(app.getAppName(name) + "应用不能被正常关闭或不在后台运行");
@@ -257,7 +278,7 @@ function 关闭应用(packageName) {
 
 function 返回v首页() {
     for (; ;) {
-        if(结束未响应()){
+        if (结束未响应()) {
             return;
         }
         refreshStateInfo();
@@ -271,7 +292,7 @@ function 返回v首页() {
             continue;
         }*/
         if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常访问.*)/).findOne(1000) != null) {
-            log("异常确定：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常访问.*)/).findOne(1000));
+            log("异常确定：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*)/).findOne(1000));
             click("确定");
             sleep(8000);
             continue;
@@ -289,10 +310,13 @@ function 返回v首页() {
             sleep(3000);
             continue;
         }*/
-        className("android.widget.ImageView").desc("返回").findOne(1000).parent().click();
+        let rBtn=className("android.widget.ImageView").desc("返回").findOne(1000);
+        if(rBtn!=null&&rBtn.parent()!=null){
+            rBtn.parent().click();
+        }
 
         refreshStateInfo();
-        if (topActivity != MAIN_PAGE || (id("cns").className("android.widget.TextView").text("我").findOne(1000) == null&&id("dub").className("android.widget.TextView").text("我").findOne(1000) == null)) {
+        if (topActivity != MAIN_PAGE || (id("cns").className("android.widget.TextView").text("我").findOne(1000) == null && id("dub").className("android.widget.TextView").text("我").findOne(1000) == null)) {
             back();
             sleep(5000);
         } else {
@@ -409,11 +433,14 @@ function sml_move(qx, qy, zx, zy, time) {
 
 
 function 结束未响应() {
-    if (textMatches(/(.*未响应.*|.*没有响应.*)/).findOne(1000) != null && textMatches(/(.*等待.*)/).findOne(1000) != null) {
+    if (textMatches(/(.*未响应.*|.*没有响应.*|.*无响应.*)/).findOne(1000) != null && textMatches(/(.*等待.*)/).findOne(1000) != null) {
         log(new Date().toLocaleString() + "-" + "检测到应用未响应");
-        textMatches(/(.*确定.*|.*关闭.*)/).findOne(1000).click();
-        log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
-        return true;
+        let cBtn=textMatches(/(.*确定.*|.*关闭.*)/).findOne(1000);
+        if(cBtn!=null){
+            cBtn.click();
+            log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
+            return true;
+        }
     }
     return false;
 }
@@ -429,9 +456,9 @@ function 结束未响应() {
 
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 console.show();
-sleep(1000);
+/*sleep(1000);
 console.setSize(device.width -100, device.height / 4);
-sleep(2000);
+sleep(2000);*/
 if (!requestScreenCapture()) {
     toastLog("请求截图失败");
     exit();
@@ -439,7 +466,7 @@ if (!requestScreenCapture()) {
     toastLog("请求截图成功");
 }
 
-toastLog("版本号:"+versionNum);
+toastLog("版本号:" + versionNum);
 //保持屏幕常亮
 device.keepScreenDim();
 
@@ -456,13 +483,12 @@ device.keepScreenDim();
 });*/
 
 
-kz();
-var backCount=1;//备份当轮阅读次数
+var backCount = 1;//备份当轮阅读次数
 var lunCount = 1;//每天最大轮回次数
 for (; ;) {
     var nowHour = new Date().getHours();
     log("当前时间:" + nowHour + "时");
-    if (nowHour < 6 || nowHour > 23) {
+    if (nowHour < 2 || nowHour > 23) {
         console.clear();
         lunCount = 1;//重置每天轮回次数
         log("当前时间:" + nowHour + "时,休息中");
@@ -477,7 +503,7 @@ for (; ;) {
     }
 
     refreshStateInfo();
-    if (topPackage == MAIN_PKG||topPackage != PKG_NAME) {
+    if (topPackage == MAIN_PKG || topPackage != PKG_NAME) {
         home();
         sleep(2000);
         log("打开" + PKG_NAME);
@@ -485,7 +511,7 @@ for (; ;) {
         sleep(10000);
     }
     refreshStateInfo();
-    if (topPackage == MAIN_PKG||topPackage != PKG_NAME) {
+    if (topPackage == MAIN_PKG || topPackage != PKG_NAME) {
         home();
         sleep(2000);
         log("打开" + PKG_NAME);
@@ -509,7 +535,7 @@ for (; ;) {
     /*if(topPackage != PKG_NAME){
         continue;
     }*/
-    if (topActivity == MAIN_PAGE && (id("cns").className("android.widget.TextView").text("我").findOne(5000) != null||id("dub").className("android.widget.TextView").text("我").findOne(5000) != null)) {
+    if (topActivity == MAIN_PAGE && (id("cns").className("android.widget.TextView").text("我").findOne(5000) != null || id("dub").className("android.widget.TextView").text("我").findOne(5000) != null)) {
         log("第" + lunCount + "轮");
         onMainPage();
         continue;
