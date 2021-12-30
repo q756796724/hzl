@@ -6,7 +6,7 @@ var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum="v1.02";
+var versionNum="v1.03";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -426,24 +426,29 @@ for (; ;) {
     }
 
     refreshStateInfo();
-    if (topPackage != PKG_NAME) {
+    if (topPackage == MAIN_PKG||topPackage != PKG_NAME) {
+        home();
+        sleep(2000);
         log("打开" + PKG_NAME);
         app.launch(PKG_NAME);
-        sleep(15000);
+        sleep(10000);
     }
     refreshStateInfo();
     if (topPackage == MAIN_PKG||topPackage != PKG_NAME) {
         home();
-        sleep(1000);
+        sleep(2000);
         log("打开" + PKG_NAME);
         app.launch(PKG_NAME);
-        sleep(3000);
+        sleep(10000);
     }
 
     refreshStateInfo();
     if (topPackage != PKG_NAME) {
         关闭应用(PKG_NAME);
         sleep(3000);
+        log("打开" + PKG_NAME);
+        app.launch(PKG_NAME);
+        sleep(30000);
         continue;
     }
 
