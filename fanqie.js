@@ -4,9 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
-var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum = "v1.1.2";
+var versionNum = "v1.1.3";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -117,7 +115,7 @@ function onMainPage() {
         sleep(1000);
         kz();
         click("开始阅读");
-        for (var i = 0; i < 3; i++) {
+        for (var i = 0; i < 5; i++) {
             sleep(3000);
             if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null) {
                 log("重试点击开始阅读成功");
@@ -134,6 +132,9 @@ function onMainPage() {
                 return;
             }
         }
+    }else{
+        返回v首页();
+        return;
     }
     
 
@@ -174,7 +175,7 @@ function yuedu() {
 
         //判断阅读提前结束
         if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null) {
-            for (var i = 0; i < 4; i++) {
+            for (var i = 0; i < 5; i++) {
                 kz();
                 sleep(3000);
                 if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null || textMatches(/(.*开始阅读.*)/).findOne(1000) != null) {
@@ -193,7 +194,7 @@ function yuedu() {
             }
         }
 
-        if (count > 28) {
+        if (count > 26) {
             backCount = 0;
             返回v首页();
             home();
