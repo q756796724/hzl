@@ -6,7 +6,7 @@ var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum = "v1.1.1";
+var versionNum = "v1.1.2";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -147,7 +147,7 @@ function onMainPage() {
 
 
 function yuedu() {
-    var count = backCount;//次数
+    var count = backCount+1;//次数
 
     for (; ;) {
         kz();
@@ -194,7 +194,7 @@ function yuedu() {
         }
 
         if (count > 28) {
-            backCount = 1;
+            backCount = 0;
             返回v首页();
             home();
             var sleepTime = random(3600000, 7200000);
@@ -249,7 +249,7 @@ function yuedu() {
             backCount = count;
             return;
         } else {
-            backCount = 1;
+            backCount = 0;
         }
         back();
         count++;
@@ -525,7 +525,7 @@ device.keepScreenDim();
 });*/
 
 
-var backCount = 1;//备份当轮阅读次数
+var backCount = 0;//备份当轮阅读次数
 var lunCount = 1;//每天最大轮回次数
 for (; ;) {
     kz();
