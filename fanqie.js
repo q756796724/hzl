@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.3";
+var versionNum = "v1.1.4";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -462,11 +462,11 @@ function sml_move(qx, qy, zx, zy, time) {
 function 结束未响应() {
     if (textMatches(/(.*未响应.*|.*没有响应.*|.*无响应.*)/).findOne(1000) != null) {
         log(new Date().toLocaleString() + "-" + "检测到应用未响应");
-        let cBtn=textMatches(/(确定|关闭)/).findOne(1000);
+        let cBtn=textMatches(/(确定|关闭|关闭应用)/).findOne(1000);
         if(cBtn!=null){
             cBtn.click();
             sleep(1000);
-             cBtn=textMatches(/(确定|关闭)/).findOne(1000);
+            cBtn=textMatches(/(确定|关闭|关闭应用)/).findOne(1000);
             if(cBtn!=null){
                 log("控件关闭失败，参数坐标点击关闭");
                 let cBounds = cBtn.bounds();
@@ -475,7 +475,7 @@ function 结束未响应() {
                 log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
                 return true;
             }
-            cBtn=textMatches(/(确定|关闭)/).findOne(1000);
+            cBtn=textMatches(/(确定|关闭|关闭应用)/).findOne(1000);
             if(cBtn!=null){
                 log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应失败");
                 return false;
