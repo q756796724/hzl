@@ -6,7 +6,7 @@ var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
 var NEWS_PAGE = "com.xiangzi.jukandian.activity.WebViewActivity";
 var EGG_PAGE = "com.xiangzi.jukandian.activity.NativeArticalDetailActivity";
-var versionNum = "v1.1.0";
+var versionNum = "v1.1.1";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -459,19 +459,26 @@ function sml_move(qx, qy, zx, zy, time) {
 
 
 function 结束未响应() {
-    if (textMatches(/(.*未响应.*|.*没有响应.*|.*无响应.*)/).findOne(1000) != null && textMatches(/(.*等待.*)/).findOne(1000) != null) {
+    if (textMatches(/(.*未响应.*|.*没有响应.*|.*无响应.*)/).findOne(1000) != null ) {
         log(new Date().toLocaleString() + "-" + "检测到应用未响应");
-        let cBtn=textMatches(/(.*确定.*|.*关闭.*)/).findOne(1000);
+        let cBtn=textMatches(/(确定|关闭)/).findOne(1000);
         if(cBtn!=null){
             cBtn.click();
             sleep(1000);
-            cBtn=textMatches(/(.*确定.*|.*关闭.*)/).findOne(1000);
+             cBtn=textMatches(/(确定|关闭)/).findOne(1000);
             if(cBtn!=null){
+                log("控件关闭失败，参数坐标点击关闭");
                 let cBounds = cBtn.bounds();
                 click(cBounds.right - 1, cBounds.bottom - 1);
             }
-            log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
-            return true;
+            cBtn=textMatches(/(确定|关闭)/).findOne(1000);
+            if(cBtn!=null){
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应失败");
+                return false;
+            }else{
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
+                return true;
+            }
         }
     }
     return false;
