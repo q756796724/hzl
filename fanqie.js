@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.10";
+var versionNum = "v1.1.11";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -72,10 +72,17 @@ function onMainPage() {
     for(let i=0;i<wBtn.length;i++){
         if(wBtn[i]!=null&&wBtn[i].parent()!=null&&wBtn[i].parent().parent()!=null&&wBtn[i].parent().parent().clickable()){
             wBtn[i].parent().parent().click();
+            log("点击成功wBtn[i]:"+wBtn[i]);
+            log("点击成功wBtn[i].parent():"+wBtn[i].parent());
+            log("点击成功wBtn[i].parent().parent():"+wBtn[i].parent().parent());
             sleep(3000);
             if(className("android.widget.TextView").text("收藏").findOne(5000)!=null){
                 break;
             };
+        }else{
+            log("点击失败wBtn[i]:"+wBtn[i]);
+            log("点击失败wBtn[i].parent():"+wBtn[i].parent());
+            log("点击失败wBtn[i].parent().parent():"+wBtn[i].parent().parent());
         }
     }
 
