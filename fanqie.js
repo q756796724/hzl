@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.7";
+var versionNum = "v1.1.8";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -55,7 +55,7 @@ function onMainPage() {
     //id("cns").className("android.widget.TextView").text("我").waitFor();
     //id("cns").className("android.widget.TextView").text("我").findOne().parent().parent().click();
     let wBtn=className("android.widget.TextView").text("我").findOne(3000);
-    if(wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null&&wBtn.parent().parent().clickable()){
+    if(wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null){
         wBtn.parent().parent().click();
     }
 
@@ -211,16 +211,16 @@ function yuedu() {
         //sml_move(400, 1000, 800, 600, 2000);
         log("滑动");
         swapeToRead();
-        sleep(random(3000, 5000));
+        sleep(random(4000, 7000));
         swapeToRead();
-        sleep(random(3000, 5000));
+        sleep(random(4000, 7000));
         swapeToRead()
-        sleep(random(3000, 5000));
+        sleep(random(4000, 7000));
         if (device.brand == "samsung") {
             for (let i=0; i<20;i++) {
                 kz();
                 swapeToRead();
-                sleep(random(3000, 5000));
+                sleep(random(4000, 7000));
                 if (checkWatchFull()) {
                     log("到底了");
                     break;
@@ -233,7 +233,7 @@ function yuedu() {
                 var imgH = img.height;
                 var clip = images.clip(img, 0, img.height - 200, 200, 20);
                 swapeToRead();
-                sleep(random(3000, 5000));
+                sleep(random(4000, 7000));
                 var p = findImage(captureScreen(), clip, {
                     region: [0, imgH - 300, 220, 150],
                     threshold: 1
@@ -314,7 +314,9 @@ function 返回v首页() {
         refreshStateInfo();
         if (topPackage != PKG_NAME) {
             关闭应用(PKG_NAME);
-            sleep(3000);
+            sleep(2000);
+            home();
+            sleep(1000);
             break;
         }
         /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(1000)!=null){
@@ -349,7 +351,7 @@ function 返回v首页() {
 
         refreshStateInfo();
         let wBtn=className("android.widget.TextView").text("我").findOne(3000);
-        if (topActivity != MAIN_PAGE || !(wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null&&wBtn.parent().parent().clickable())) {
+        if (topActivity != MAIN_PAGE || !(wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null)) {
             back();
             sleep(5000);
         } else {
@@ -583,13 +585,12 @@ for (; ;) {
         continue;
     }*/
     let wBtn=className("android.widget.TextView").text("我").findOne(3000);
-    if (topActivity == MAIN_PAGE && wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null&&wBtn.parent().parent().clickable()) {
+    if (topActivity == MAIN_PAGE && wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null) {
         log("第" + lunCount + "轮");
         onMainPage();
         continue;
     } else {
-        log(className("android.widget.TextView").text("我").findOne(3000));
-        log("2"+className("android.widget.TextView").text("我").find());
+        log(wBtn);
         返回v首页();
     }
 
