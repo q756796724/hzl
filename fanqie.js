@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.8";
+var versionNum = "v1.1.9";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -50,23 +50,43 @@ function kz() {
     }
 }
 
+function 页面异常处理(){
+    if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOne(1000) != null) {
+        log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOne(1000));
+        let qBtn=textMatches(/(.*确定.*)/).findOne(1000);
+        if(qBtn!=null){
+            qBtn.click();
+        }
+        sleep(3000);
+        return true;
+    }else{
+        return false;
+    }
+}
+
 function onMainPage() {
     log("进入v成功");
     //id("cns").className("android.widget.TextView").text("我").waitFor();
     //id("cns").className("android.widget.TextView").text("我").findOne().parent().parent().click();
-    let wBtn=className("android.widget.TextView").text("我").findOne(3000);
-    if(wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null){
-        wBtn.parent().parent().click();
+    let wBtn=className("android.widget.TextView").text("我").find();
+    for(let i=0;i<wBtn.length;i++){
+        if(wBtn[i]!=null&&wBtn[i].parent()!=null&&wBtn[i].parent().parent()!=null&&wBtn[i].parent().parent().clickable()){
+            wBtn[i].parent().parent().click();
+            sleep(3000);
+            if(className("android.widget.TextView").text("收藏").findOne(5000)!=null){
+                break;
+            };
+        }
     }
 
-    log("进入我成功");
-    sleep(5000);
     if (结束未响应()) {
         return;
     }
     if(className("android.widget.TextView").text("收藏").findOne(5000)==null){
         return;
     };
+    log("进入我成功");
+    sleep(5000);
     click("收藏");
     /*className("android.widget.TextView").text("链接").waitFor();
     click("链接");
@@ -93,12 +113,15 @@ function onMainPage() {
     click(阅读.right - 1, 阅读.bottom - 1);
     log("点击链接成功");
 
-    if (textMatches(/(.*登陆超时.*|.*重试.*)/).findOne(2000) != null) {
+    /*if (textMatches(/(.*登陆超时.*|.*重试.*)/).findOne(2000) != null) {
         let qBtn=textMatches(/(.*确定.*)/).findOne(1000);
         if(qBtn!=null){
             qBtn.click();
         }
         sleep(1000);
+        
+    }*/
+    if(页面异常处理()){
         返回v首页();
         return;
     }
@@ -165,10 +188,19 @@ function yuedu() {
                click("开始阅读");
             }
         }*/
-        if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(1000) != null) {
+
+        /*if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(1000) != null) {
             log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(1000));
             click("确定");
             sleep(3000);
+            if (textContains("ZhaoLin").findOne(1000) != null || textMatches(/(.*开始阅读.*)/).findOne(1000) != null) {
+                let sBtn = textMatches(/(.*开始阅读.*)/).findOne(1000);
+                if (sBtn != null) {
+                    sBtn.click();
+                }
+            }
+        }*/
+        if(页面异常处理()){
             if (textContains("ZhaoLin").findOne(1000) != null || textMatches(/(.*开始阅读.*)/).findOne(1000) != null) {
                 let sBtn = textMatches(/(.*开始阅读.*)/).findOne(1000);
                 if (sBtn != null) {
