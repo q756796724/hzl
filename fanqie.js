@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.11";
+var versionNum = "v1.2.0";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -68,21 +68,16 @@ function onMainPage() {
     log("进入v成功");
     //id("cns").className("android.widget.TextView").text("我").waitFor();
     //id("cns").className("android.widget.TextView").text("我").findOne().parent().parent().click();
-    let wBtn=className("android.widget.TextView").text("我").find();
-    for(let i=0;i<wBtn.length;i++){
-        if(wBtn[i]!=null&&wBtn[i].parent()!=null&&wBtn[i].parent().parent()!=null&&wBtn[i].parent().parent().clickable()){
-            wBtn[i].parent().parent().click();
-            log("点击成功wBtn[i]:"+wBtn[i]);
-            log("点击成功wBtn[i].parent():"+wBtn[i].parent());
-            log("点击成功wBtn[i].parent().parent():"+wBtn[i].parent().parent());
+    let wBtn=className("android.widget.TextView").text("我").findOne(3000); 
+    for(let i=0;i<8;i++){
+        if(wBtn!=null&&wBtn.clickable()){
+            wBtn.click();
             sleep(3000);
             if(className("android.widget.TextView").text("收藏").findOne(5000)!=null){
                 break;
             };
         }else{
-            log("点击失败wBtn[i]:"+wBtn[i]);
-            log("点击失败wBtn[i].parent():"+wBtn[i].parent());
-            log("点击失败wBtn[i].parent().parent():"+wBtn[i].parent().parent());
+            wBtn=wBtn.parent();
         }
     }
 
@@ -393,7 +388,7 @@ function 返回v首页() {
 
         refreshStateInfo();
         let wBtn=className("android.widget.TextView").text("我").findOne(3000);
-        if (topActivity != MAIN_PAGE || !(wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null)) {
+        if (topActivity != MAIN_PAGE || wBtn==null) {
             back();
             sleep(5000);
         } else {
@@ -599,7 +594,7 @@ for (; ;) {
         sleep(2000);
         log("打开" + PKG_NAME);
         app.launch(PKG_NAME);
-        sleep(20000);
+        sleep(15000);
     }
     refreshStateInfo();
     if (topPackage == MAIN_PKG || topPackage != PKG_NAME) {
@@ -627,7 +622,7 @@ for (; ;) {
         continue;
     }*/
     let wBtn=className("android.widget.TextView").text("我").findOne(3000);
-    if (topActivity == MAIN_PAGE && wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null) {
+    if (topActivity == MAIN_PAGE && wBtn!=null) {
         log("第" + lunCount + "轮");
         onMainPage();
         continue;
