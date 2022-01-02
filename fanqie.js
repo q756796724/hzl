@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.4";
+var versionNum = "v1.1.5";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -54,16 +54,11 @@ function onMainPage() {
     log("进入v成功");
     //id("cns").className("android.widget.TextView").text("我").waitFor();
     //id("cns").className("android.widget.TextView").text("我").findOne().parent().parent().click();
-    let wBtn=id("cns").className("android.widget.TextView").text("我").findOne(1000);
-    if(wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null){
+    let wBtn=className("android.widget.TextView").text("我").findOne(3000);
+    if(wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null&&wBtn.parent().parent().clickable()){
         wBtn.parent().parent().click();
     }
-    sleep(1000);
-    wBtn=id("dub").className("android.widget.TextView").text("我").findOne(1000);
-    if(wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null){
-        wBtn.parent().parent().click();
-    }
-    
+
     log("进入我成功");
     sleep(5000);
     if (结束未响应()) {
@@ -137,13 +132,24 @@ function onMainPage() {
         return;
     }
     
+    if(textMatches(/(.*暂无任务可做)/).findOne(1000)!=null){
+        lunSleep(random(86400000, 130000000));
+    }else{
+        lunSleep();
+    }
 
+}
+
+function lunSleep(sleepTime) {
     返回v首页();
     home();
-    var sleepTime = random(3600000, 7200000);
+    log(sleepTime);
+    if(sleepTime==undefined){
+        sleepTime = random(3600000, 7200000);
+        log(sleepTime);
+    }
     log(sleepTime / 1000 / 60 + "分钟");
     sleepLongTime(sleepTime);
-
 }
 
 
@@ -194,13 +200,9 @@ function yuedu() {
             }
         }
 
-        if (count > 26) {
+        if (count > 20) {
             backCount = 0;
-            返回v首页();
-            home();
-            var sleepTime = random(3600000, 7200000);
-            log(sleepTime / 1000 / 60 + "分钟");
-            sleepLongTime(sleepTime);
+            lunSleep();
             return true;
         }
         log("第" + lunCount + "轮,第" + count + "次");
@@ -346,7 +348,8 @@ function 返回v首页() {
         }
 
         refreshStateInfo();
-        if (topActivity != MAIN_PAGE || (id("cns").className("android.widget.TextView").text("我").findOne(1000) == null && id("dub").className("android.widget.TextView").text("我").findOne(1000) == null)) {
+        let wBtn=className("android.widget.TextView").text("我").findOne(3000);
+        if (topActivity != MAIN_PAGE || !(wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null&&wBtn.parent().parent().clickable())) {
             back();
             sleep(5000);
         } else {
@@ -579,7 +582,8 @@ for (; ;) {
     /*if(topPackage != PKG_NAME){
         continue;
     }*/
-    if (topActivity == MAIN_PAGE && (id("cns").className("android.widget.TextView").text("我").findOne(5000) != null || id("dub").className("android.widget.TextView").text("我").findOne(5000) != null)) {
+    let wBtn=className("android.widget.TextView").text("我").findOne(3000);
+    if (topActivity == MAIN_PAGE && wBtn!=null&&wBtn.parent()!=null&&wBtn.parent().parent()!=null&&wBtn.parent().parent().clickable()) {
         log("第" + lunCount + "轮");
         onMainPage();
         continue;
