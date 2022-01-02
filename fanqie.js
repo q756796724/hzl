@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.2.4";
+var versionNum = "v1.2.5";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -600,7 +600,7 @@ for (; ;) {
     kz();
     var nowHour = new Date().getHours();
     log("当前时间:" + nowHour + "时");
-    if (nowHour < 0 || nowHour > 23) {
+    if (nowHour < 6 || nowHour > 22) {
         console.clear();
         lunCount = 1;//重置每天轮回次数
         log("当前时间:" + nowHour + "时,休息中");
