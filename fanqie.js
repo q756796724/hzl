@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.2.5";
+var versionNum = "v1.2.6";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -580,6 +580,7 @@ toastLog(device.brand);
 toastLog("版本号:" + versionNum);
 //保持屏幕常亮
 device.keepScreenDim();
+home();
 
 /*var thread = threads.start(function () {
     function 结束未响应() {
