@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.9";
+var versionNum = "v1.1.10";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -357,10 +357,13 @@ function 返回v首页() {
             sleep(8000);
             continue;
         }*/
-        if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(1000) != null) {
+        /*if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(1000) != null) {
             log("异常确定：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(1000));
             click("确定");
             sleep(8000);
+            continue;
+        }*/
+        if(页面异常处理()){
             continue;
         }
         //点击左上角的x
