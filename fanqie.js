@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.2.1";
+var versionNum = "v1.2.2";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -53,9 +53,9 @@ function kz() {
 }
 
 function 页面异常处理(){
-    if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOne(1000) != null) {
-        log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOne(1000));
-        let qBtn=textMatches(/(.*确定.*)/).findOne(1000);
+    if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOne(3000) != null) {
+        log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOne(3000));
+        let qBtn=textMatches(/(.*确定.*)/).findOne(3000);
         if(qBtn!=null){
             qBtn.click();
         }
@@ -104,21 +104,21 @@ function onMainPage() {
     }
     log("进入收藏成功");
     sleep(3000);
-    if (className("android.widget.TextView").textContains("RHtWWJm").findOne(5000) == null) {
+    if (className("android.widget.TextView").textMatches(/(.*RHtWWJm|.*migokkm|.*ckmokkm|.*gPmokkm)/).findOne(5000) == null) {
         toastLog("未添加到收藏夹");
         exit();
     }
 
-    let 阅读 = className("android.widget.TextView").textContains("RHtWWJm").findOne(5000).bounds();
+    let 阅读 = className("android.widget.TextView").textMatches(/(.*RHtWWJm|.*migokkm|.*ckmokkm|.*gPmokkm)/).findOne(5000).bounds();
     click(阅读.right - 1, 阅读.bottom - 1);
     sleep(3000);
-    阅读 = className("android.widget.TextView").textContains("RHtWWJm").findOne(5000).bounds();
+    阅读 = className("android.widget.TextView").textMatches(/(.*RHtWWJm|.*migokkm|.*ckmokkm|.*gPmokkm)/).findOne(5000).bounds();
     sleep(3000);
     click(阅读.right - 1, 阅读.bottom - 1);
     log("点击链接成功");
 
-    /*if (textMatches(/(.*登陆超时.*|.*重试.*)/).findOne(2000) != null) {
-        let qBtn=textMatches(/(.*确定.*)/).findOne(1000);
+    /*if (textMatches(/(.*登陆超时.*|.*重试.*)/).findOne(3000) != null) {
+        let qBtn=textMatches(/(.*确定.*)/).findOne(3000);
         if(qBtn!=null){
             qBtn.click();
         }
@@ -132,16 +132,19 @@ function onMainPage() {
     if (结束未响应()) {
         return;
     }
-    if(className("android.view.View").textContains("ZhaoLin").findOne(5000)!=null){
+    if(className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(5000)!=null){
         log("渠道匹配");
-        sleep(1000);
         kz();
+        if(textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOne(3000)!=null){
+            lunCount=99;
+            return;
+        }
         click("开始阅读");
         for (var i = 0; i < 5; i++) {
             sleep(3000);
-            if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null) {
+            if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(3000) != null) {
                 log("重试点击开始阅读成功");
-                let sBtn = textMatches(/(.*开始阅读.*)/).findOne(1000);
+                let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
                 if (sBtn != null) {
                     sBtn.click();
                 }
@@ -159,7 +162,7 @@ function onMainPage() {
         return;
     }
     
-    if(textMatches(/(.*暂无任务可做)/).findOne(1000)!=null){
+    if(textMatches(/(.*暂无任务可做)/).findOne(3000)!=null){
         lunSleep(random(86400000, 130000000));
     }else{
         lunSleep();
@@ -180,33 +183,34 @@ function lunSleep(sleepTime) {
 
 function yuedu() {
     var count = backCount+1;//次数
+    let maxCount=random(19, 23);
 
     for (; ;) {
         kz();
         sleep(8000);
-        /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(1000)!=null){
+        /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(3000)!=null){
             click("确定");
             log("回退");
             sleep(3000);
-            if(className("android.view.View").textContains("ZhaoLin").findOne(1000)!=null){
+            if(className("android.view.View").textContains("ZhaoLin").findOne(3000)!=null){
                click("开始阅读");
             }
         }*/
 
-        /*if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(1000) != null) {
-            log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(1000));
+        /*if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(3000) != null) {
+            log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(3000));
             click("确定");
             sleep(3000);
-            if (textContains("ZhaoLin").findOne(1000) != null || textMatches(/(.*开始阅读.*)/).findOne(1000) != null) {
-                let sBtn = textMatches(/(.*开始阅读.*)/).findOne(1000);
+            if (textContains("ZhaoLin").findOne(3000) != null || textMatches(/(.*开始阅读.*)/).findOne(3000) != null) {
+                let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
                 if (sBtn != null) {
                     sBtn.click();
                 }
             }
         }*/
         if(页面异常处理()){
-            if (textContains("ZhaoLin").findOne(1000) != null || textMatches(/(.*开始阅读.*)/).findOne(1000) != null) {
-                let sBtn = textMatches(/(.*开始阅读.*)/).findOne(1000);
+            if (textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(3000) != null || textMatches(/(.*开始阅读.*)/).findOne(3000) != null) {
+                let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
                 if (sBtn != null) {
                     sBtn.click();
                 }
@@ -214,14 +218,14 @@ function yuedu() {
         }
 
         //判断阅读提前结束
-        if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null) {
+        if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(3000) != null) {
             for (var i = 0; i < 5; i++) {
                 kz();
                 sleep(3000);
-                if (className("android.view.View").textContains("ZhaoLin").findOne(1000) != null || textMatches(/(.*开始阅读.*)/).findOne(1000) != null) {
+                if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(3000) != null || textMatches(/(.*开始阅读.*)/).findOne(3000) != null) {
                     if (i < 3) {
                         log("重试点击开始阅读成功");
-                        let sBtn = textMatches(/(.*开始阅读.*)/).findOne(1000);
+                        let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
                         if (sBtn != null) {
                             sBtn.click();
                         }
@@ -247,16 +251,16 @@ function yuedu() {
         //sml_move(400, 1000, 800, 600, 2000);
         log("滑动");
         swapeToRead();
-        sleep(random(4000, 7000));
+        sleep(random(3000, 7000));
         swapeToRead();
-        sleep(random(4000, 7000));
+        sleep(random(3000, 7000));
         swapeToRead()
-        sleep(random(4000, 7000));
+        sleep(random(3000, 7000));
         if (device.brand == "samsung") {
             for (let i=0; i<20;i++) {
                 kz();
                 swapeToRead();
-                sleep(random(4000, 7000));
+                sleep(random(3000, 7000));
                 if (checkWatchFull()) {
                     log("到底了");
                     break;
@@ -269,7 +273,7 @@ function yuedu() {
                 var imgH = img.height;
                 var clip = images.clip(img, 0, img.height - 200, 200, 20);
                 swapeToRead();
-                sleep(random(4000, 7000));
+                sleep(random(3000, 7000));
                 var p = findImage(captureScreen(), clip, {
                     region: [0, imgH - 300, 220, 150],
                     threshold: 1
@@ -316,12 +320,12 @@ function 关闭应用(packageName) {
     app.openAppSetting(name);
     sleep(2000);
     if (text(app.getAppName(name)).findOne(5000) != null && text("卸载").findOne(5000) != null) {
-        let is_sure = textMatches(/(.*强.*|.*停.*|.*结.*|.*行.*)/).findOne(2000);
+        let is_sure = textMatches(/(.*强.*|.*停.*|.*结.*|.*行.*)/).findOne(3000);
         if (is_sure != null) {
             if (is_sure.enabled()) {
                 is_sure.click();
                 sleep(2000);
-                let closeBtn = textMatches(/(.*确定|.*停止)/).findOne(1000);
+                let closeBtn = textMatches(/(.*确定|.*停止)/).findOne(3000);
                 if (closeBtn != null) {
                     closeBtn.click();
                 }
@@ -355,14 +359,14 @@ function 返回v首页() {
             sleep(1000);
             break;
         }
-        /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(1000)!=null){
-            log(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(1000));
+        /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(3000)!=null){
+            log(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(3000));
             click("确定");
             sleep(8000);
             continue;
         }*/
-        /*if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(1000) != null) {
-            log("异常确定：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(1000));
+        /*if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(3000) != null) {
+            log("异常确定：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(3000));
             click("确定");
             sleep(8000);
             continue;
@@ -371,19 +375,19 @@ function 返回v首页() {
             continue;
         }
         //点击左上角的x
-        /*let xbtn=id("dm").className("android.widget.LinearLayout").findOne(1000);
+        /*let xbtn=id("dm").className("android.widget.LinearLayout").findOne(3000);
         if (xbtn != null) {
             xbtn.click();
             sleep(3000);
             continue;
         }
-        let xbtn=id("eh").className("android.widget.LinearLayout").findOne(1000);
+        let xbtn=id("eh").className("android.widget.LinearLayout").findOne(3000);
         if (xbtn != null) {
             xbtn.click();
             sleep(3000);
             continue;
         }*/
-        let rBtn=className("android.widget.ImageView").desc("返回").findOne(1000);
+        let rBtn=className("android.widget.ImageView").desc("返回").findOne(3000);
         if(rBtn!=null&&rBtn.parent()!=null){
             rBtn.parent().click();
         }
@@ -414,7 +418,7 @@ function moreCommentVisible() {
 
 //到底判断
 function checkWatchFull() {
-    var btn = textStartsWith("分享").boundsInside(0, 0, device.width, device.height - 1).findOne(1000);
+    var btn = textStartsWith("分享").boundsInside(0, 0, device.width, device.height - 1).findOne(3000);
     if (btn) {
         return true;
     } else {
@@ -504,13 +508,13 @@ function sml_move(qx, qy, zx, zy, time) {
 
 
 function 结束未响应() {
-    if (textMatches(/(.*未响应.*|.*没有响应.*|.*无响应.*)/).findOne(1000) != null) {
+    if (textMatches(/(.*未响应.*|.*没有响应.*|.*无响应.*)/).findOne(3000) != null) {
         log(new Date().toLocaleString() + "-" + "检测到应用未响应");
-        let cBtn=textMatches(/(确定|关闭|关闭应用)/).findOne(1000);
+        let cBtn=textMatches(/(确定|关闭|关闭应用)/).findOne(3000);
         if(cBtn!=null){
             cBtn.click();
             sleep(1000);
-            cBtn=textMatches(/(确定|关闭|关闭应用)/).findOne(1000);
+            cBtn=textMatches(/(确定|关闭|关闭应用)/).findOne(3000);
             if(cBtn!=null){
                 log("控件关闭失败，参数坐标点击关闭");
                 let cBounds = cBtn.bounds();
@@ -519,7 +523,7 @@ function 结束未响应() {
                 log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
                 return true;
             }
-            cBtn=textMatches(/(确定|关闭|关闭应用)/).findOne(1000);
+            cBtn=textMatches(/(确定|关闭|关闭应用)/).findOne(3000);
             if(cBtn!=null){
                 log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应失败");
                 return false;
@@ -559,9 +563,9 @@ device.keepScreenDim();
 
 /*var thread = threads.start(function () {
     function 结束未响应() {
-        if (textMatches(/(.*未响应.*|.*没有响应.*)/).findOne(1000) != null && textMatches(/(.*等待.*)/).findOne(1000) != null) {
+        if (textMatches(/(.*未响应.*|.*没有响应.*)/).findOne(3000) != null && textMatches(/(.*等待.*)/).findOne(3000) != null) {
             log(new Date().toLocaleString() + "-" + "检测到应用未响应");
-            textMatches(/(.*确定.*|.*关闭.*)/).findOne(1000).click();
+            textMatches(/(.*确定.*|.*关闭.*)/).findOne(3000).click();
             log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
         }
         return 结束未响应;
@@ -576,7 +580,7 @@ for (; ;) {
     kz();
     var nowHour = new Date().getHours();
     log("当前时间:" + nowHour + "时");
-    if (nowHour < 6 || nowHour > 22) {
+    if (nowHour < 6 || nowHour > 23) {
         console.clear();
         lunCount = 1;//重置每天轮回次数
         log("当前时间:" + nowHour + "时,休息中");
@@ -584,7 +588,7 @@ for (; ;) {
         continue;
     }
 
-    if (lunCount > 12) {
+    if (lunCount > 8) {
         log("当天已轮回" + (lunCount - 1).toString() + "次,休息中");
         sleepLongTime(3600000);
         continue;
