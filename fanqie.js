@@ -590,6 +590,8 @@ for (; ;) {
         onMainPage();
         continue;
     } else {
+        log(className("android.widget.TextView").text("我").findOne(3000));
+        log("2"+className("android.widget.TextView").text("我").find());
         返回v首页();
     }
 
