@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.6";
+var versionNum = "v1.1.7";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -143,10 +143,8 @@ function onMainPage() {
 function lunSleep(sleepTime) {
     返回v首页();
     home();
-    log(sleepTime);
     if(sleepTime==undefined){
         sleepTime = random(3600000, 7200000);
-        log(sleepTime);
     }
     log(sleepTime / 1000 / 60 + "分钟");
     sleepLongTime(sleepTime);
@@ -557,7 +555,7 @@ for (; ;) {
         sleep(2000);
         log("打开" + PKG_NAME);
         app.launch(PKG_NAME);
-        sleep(10000);
+        sleep(20000);
     }
     refreshStateInfo();
     if (topPackage == MAIN_PKG || topPackage != PKG_NAME) {
@@ -590,6 +588,8 @@ for (; ;) {
         onMainPage();
         continue;
     } else {
+        log(className("android.widget.TextView").text("我").findOne(3000));
+        log("2"+className("android.widget.TextView").text("我").find());
         返回v首页();
     }
 
