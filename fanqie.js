@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.5";
+var versionNum = "v1.1.6";
 
 function refreshStateInfo() {
     topPackage = currentPackage();
@@ -315,6 +315,8 @@ function 返回v首页() {
         kz();
         refreshStateInfo();
         if (topPackage != PKG_NAME) {
+            关闭应用(PKG_NAME);
+            sleep(3000);
             break;
         }
         /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(1000)!=null){
