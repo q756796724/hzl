@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.4.0";
+var versionNum = "v1.4.1";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -695,9 +695,9 @@ for (; ;) {
     kz();
     var nowHour = new Date().getHours();
     log("当前时间:" + nowHour + "时");
-    if (nowHour < 6 || nowHour > 22) {
+    if (nowHour < 1 || nowHour > 22) {
         console.clear();
-        if (nowHour < 6){
+        if (nowHour < 1){
             初始化配置(settingPath);
         }
         
