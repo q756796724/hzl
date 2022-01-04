@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.4.1";
+var versionNum = "v1.4.2";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -175,7 +175,9 @@ function onMainPage() {
                 if (yuedu()) {
                     lunCount++;
                     配置["lunCount"]=lunCount;
+                    配置["count"]=1;
                     保存配置(settingPath,配置);
+                    lunSleep();
                 }
     
                 return;
@@ -272,10 +274,6 @@ function yuedu() {
         }
 
         if (count > 20) {
-            count=1;
-            配置["count"]=count;
-            保存配置(settingPath,配置);
-            lunSleep();
             return true;
         }
         log("第" + lunCount + "轮,第" + count + "次");
@@ -695,9 +693,9 @@ for (; ;) {
     kz();
     var nowHour = new Date().getHours();
     log("当前时间:" + nowHour + "时");
-    if (nowHour < 1 || nowHour > 22) {
+    if (nowHour < 7 || nowHour > 22) {
         console.clear();
-        if (nowHour < 1){
+        if (nowHour < 7){
             初始化配置(settingPath);
         }
         
