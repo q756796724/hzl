@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.3.0";
+var versionNum = "v1.3.1";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -320,9 +320,8 @@ function yuedu() {
 function sleepLongTime(sleepTime) {
     for (let i = 0; i < sleepTime / 1000 / 60; i++) {
         kz();
-        if (device.brand != "Xiaomi" && device.brand != "Meizu") {
-            device.wakeUp();
-        }
+        device.wakeUp();
+        device.keepScreenOn(3600 * 1000)
         sleep(60 * 1000);
     }
 }
@@ -578,8 +577,6 @@ if (!requestScreenCapture()) {
 }
 toastLog(device.brand);
 toastLog("版本号:" + versionNum);
-//保持屏幕常亮
-device.keepScreenDim();
 home();
 
 //定义
