@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.3.4";
+var versionNum = "v1.4.0";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -157,6 +157,8 @@ function onMainPage() {
         kz();
         if(textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOne(3000)!=null){
             lunCount=99;
+            配置["lunCount"]=99;
+            保存配置(settingPath,配置);
             return;
         }
         click("开始阅读");
@@ -172,6 +174,8 @@ function onMainPage() {
                 log("点击开始阅读成功");
                 if (yuedu()) {
                     lunCount++;
+                    配置["lunCount"]=lunCount;
+                    保存配置(settingPath,配置);
                 }
     
                 return;
@@ -202,7 +206,8 @@ function lunSleep(sleepTime) {
 
 
 function yuedu() {
-    var count = backCount+1;//次数
+    配置=读取配置(settingPath);
+    var count = 配置["count"];//次数
     let maxCount=random(19, 23);
 
     for (; ;) {
@@ -229,11 +234,17 @@ function yuedu() {
             }
         }*/
         if(页面异常处理()){
-            if (textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(3000) != null || textMatches(/(.*开始阅读.*)/).findOne(3000) != null) {
+            if (textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(3000) != null) {
                 let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
                 if (sBtn != null) {
                     sBtn.click();
+                }else{
+                    返回v首页();
+                    return false;
                 }
+            }else{
+                返回v首页();
+                return false;
             }
         }
 
@@ -242,7 +253,7 @@ function yuedu() {
             for (var i = 0; i < 5; i++) {
                 kz();
                 sleep(3000);
-                if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(3000) != null || textMatches(/(.*开始阅读.*)/).findOne(3000) != null) {
+                if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(3000) != null) {
                     if (i < 3) {
                         log("重试点击开始阅读成功");
                         let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
@@ -252,6 +263,8 @@ function yuedu() {
                     } else {
                         log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
                         count = 31;
+                        配置["count"]=count;
+                        保存配置(settingPath,配置);
                     }
 
                 }
@@ -259,7 +272,9 @@ function yuedu() {
         }
 
         if (count > 20) {
-            backCount = 0;
+            count=1;
+            配置["count"]=count;
+            保存配置(settingPath,配置);
             lunSleep();
             return true;
         }
@@ -307,13 +322,14 @@ function yuedu() {
         }
         
         if (结束未响应()) {
-            backCount = count;
-            return;
-        } else {
-            backCount = 0;
+            配置["count"]=count;
+            保存配置(settingPath,配置);
+            return false;
         }
         back();
         count++;
+        配置["count"]=count;
+        保存配置(settingPath,配置);
     }
 }
 //长时间睡眠保持唤醒，单位毫秒
@@ -645,21 +661,52 @@ let KeepAliveService = {
     setInterval(结束未响应(), 6000);
 });*/
 
+function 初始化配置(path){
+    files.createWithDirs(path)  //开始创建文件
+    let jsonContent={
+        "date":new Date().toLocaleDateString(),
+        "lunCount":1,
+        "count":1
+    }
+    files.write(path, JSON.stringify(jsonContent));
+}
 
-var backCount = 0;//备份当轮阅读次数
-var lunCount = 1;//每天最大轮回次数
+function 保存配置(path,jsonContent){
+    files.createWithDirs(path)  //开始创建文件
+    files.write(path, JSON.stringify(jsonContent));
+}
+
+function 读取配置(path){
+    return JSON.parse(files.read(path));
+}
+var settingPath = files.join(files.cwd(), "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
+if(!files.exists(settingPath)){
+    初始化配置(settingPath);
+    toastLog("初始化配置");
+}else{
+    配置=读取配置(settingPath);
+    if(配置["date"]!=new Date().toLocaleDateString()){
+        初始化配置(settingPath);
+        toastLog("初始化配置");
+    }
+}
+var lunCount = 1;//轮回次数
 for (; ;) {
     kz();
     var nowHour = new Date().getHours();
     log("当前时间:" + nowHour + "时");
     if (nowHour < 6 || nowHour > 22) {
         console.clear();
-        lunCount = 1;//重置每天轮回次数
+        if (nowHour < 6){
+            初始化配置(settingPath);
+        }
+        
         log("当前时间:" + nowHour + "时,休息中");
         sleepLongTime(3600000);
         continue;
     }
-
+    配置=读取配置(settingPath);
+    lunCount=配置["lunCount"];
     if (lunCount > 8) {
         log("当天已轮回" + (lunCount - 1).toString() + "次,休息中");
         sleepLongTime(3600000);
