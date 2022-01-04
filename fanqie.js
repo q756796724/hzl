@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.2.6";
+var versionNum = "v1.3.0";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -581,6 +581,54 @@ toastLog("版本号:" + versionNum);
 //保持屏幕常亮
 device.keepScreenDim();
 home();
+
+//定义
+/** 前台服务保活 */
+let KeepAliveService = {
+    /** 开启 */
+    start: function (idStr, nameStr) {
+      try {
+        idStr = idStr || "";
+        let channel_id = idStr + ".foreground";
+        let channel_name = nameStr + " 前台服务通知";
+  
+        let content_title = nameStr + " 正在运行中";
+        let content_text = "此为前台保活,请勿手动移除该通知";
+  
+        let ticker = nameStr + "已启动";
+  
+        let manager = context.getSystemService(android.app.Service.NOTIFICATION_SERVICE);
+        let notification;
+        let icon = context.getResources().getIdentifier("ic_3d_rotation_black_48dp", "drawable", context.getPackageName());
+        if (device.sdkInt >= 26) {
+          let channel = new android.app.NotificationChannel(channel_id, channel_name, android.app.NotificationManager.IMPORTANCE_DEFAULT);
+          channel.enableLights(true);
+          channel.setLightColor(0xff0000);
+          channel.setShowBadge(false);
+          manager.createNotificationChannel(channel);
+          notification = new android.app.Notification.Builder(context, channel_id).setContentTitle(content_title).setContentText(content_text).setWhen(new Date().getTime()).setSmallIcon(icon).setTicker(ticker).setOngoing(true).build();
+        } else {
+          notification = new android.app.Notification.Builder(context).setContentTitle(content_title).setContentText(content_text).setWhen(new Date().getTime()).setSmallIcon(icon).setTicker(ticker).build();
+        }
+        manager.notify(1, notification);
+      } catch (error) {
+        log("前台保活服务启动失败:" + error);
+        log("保活服务启动失败,不影响辅助的正常运行,继续挂机即可.");
+      }
+    },
+    /** 停止 */
+    stop: function () {    
+      let manager = context.getSystemService(android.app.Service.NOTIFICATION_SERVICE);
+      manager.cancelAll();
+    },
+  };
+  
+  
+  
+  //真实启动
+  KeepAliveService.start("fanqie", "茄子云");
+  
+  
 
 /*var thread = threads.start(function () {
     function 结束未响应() {
