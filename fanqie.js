@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.3.1";
+var versionNum = "v1.3.2";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -620,8 +620,10 @@ let KeepAliveService = {
     },
   };
   
-  
-  
+  sleep(1000);
+  //先停止
+  KeepAliveService.stop();
+  sleep(5000);
   //真实启动
   KeepAliveService.start("fanqie", "茄子云");
   
