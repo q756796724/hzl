@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.3.3";
+var versionNum = "v1.3.4";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -194,7 +194,7 @@ function lunSleep(sleepTime) {
     返回v首页();
     home();
     if(sleepTime==undefined){
-        sleepTime = random(3600000, 7200000);
+        sleepTime = random(3600000, 9000000);
     }
     log(sleepTime / 1000 / 60 + "分钟");
     sleepLongTime(sleepTime);
@@ -365,7 +365,7 @@ function 关闭应用(packageName) {
 }
 
 function 返回v首页() {
-    for (let i=0;i<10 ;i++) {
+    for (let i=0;i<15 ;i++) {
         if (结束未响应()) {
             return;
         }
