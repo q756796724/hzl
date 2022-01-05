@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.4.8";
+var versionNum = "v1.4.9";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -404,6 +404,7 @@ function 返回v首页() {
             continue;
         }*/
         if(页面异常处理()){
+            log("页面异常处理");
             continue;
         }
         //点击左上角的x
@@ -422,12 +423,14 @@ function 返回v首页() {
         let rBtn=className("android.widget.ImageView").desc("返回").findOne(3000);
         if(rBtn!=null&&rBtn.parent()!=null){
             rBtn.parent().click();
+            log("按左上角返回");
             continue;
         }
 
         refreshStateInfo();
-        if (topActivity != MAIN_PAGE || className("android.widget.TextView").text("我").findOne(3000)==null) {
-            log("按返回键");
+        let wBtn=className("android.widget.TextView").text("我").findOne(3000);
+        if (topActivity != MAIN_PAGE || wBtn==null) {
+            log("按返回键"+wBtn);
             back();
             sleep(5000);
         } else {
