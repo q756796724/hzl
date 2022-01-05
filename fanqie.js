@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.4.2";
+var versionNum = "v1.4.3";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -627,8 +627,8 @@ let KeepAliveService = {
         }
         manager.notify(1, notification);
       } catch (error) {
-        log("前台保活服务启动失败:" + error);
-        log("保活服务启动失败,不影响辅助的正常运行,继续挂机即可.");
+        toastLog("前台保活服务启动失败:" + error);
+        toastLog("保活服务启动失败,不影响辅助的正常运行,继续挂机即可.");
       }
     },
     /** 停止 */
@@ -640,10 +640,14 @@ let KeepAliveService = {
   
   sleep(1000);
   //先停止
+  $settings.setEnabled('foreground_service', false);
   KeepAliveService.stop();
   sleep(5000);
   //真实启动
+  $settings.setEnabled('foreground_service', true);
   KeepAliveService.start("fanqie", "茄子云");
+  toastLog($settings.isEnabled('foreground_service'));
+  
   
   
 
