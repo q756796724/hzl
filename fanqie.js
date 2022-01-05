@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.4.4";
+var versionNum = "v1.4.5";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -211,10 +211,9 @@ function yuedu() {
     配置=读取配置(settingPath);
     var count = 配置["count"];//次数
     let maxCount=random(19, 23);
-
+    sleep(3000);
     for (; ;) {
         kz();
-        sleep(8000);
         /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(3000)!=null){
             click("确定");
             log("回退");
@@ -236,7 +235,7 @@ function yuedu() {
             }
         }*/
         if(页面异常处理()){
-            if (textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(3000) != null) {
+            if (textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(5000) != null) {
                 let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
                 if (sBtn != null) {
                     sBtn.click();
