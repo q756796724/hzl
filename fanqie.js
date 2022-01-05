@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.4.7";
+var versionNum = "v1.4.8";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -426,9 +426,8 @@ function 返回v首页() {
         }
 
         refreshStateInfo();
-        let wBtn=className("android.widget.TextView").text("我").findOne(3000);
-        if (topActivity != MAIN_PAGE || wBtn==null) {
-            log(wBtn);
+        if (topActivity != MAIN_PAGE || className("android.widget.TextView").text("我").findOne(3000)==null) {
+            log("按返回键");
             back();
             sleep(5000);
         } else {
