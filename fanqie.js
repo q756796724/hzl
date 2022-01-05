@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.4.3";
+var versionNum = "v1.4.4";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -640,14 +640,10 @@ let KeepAliveService = {
   
   sleep(1000);
   //先停止
-  $settings.setEnabled('foreground_service', false);
   KeepAliveService.stop();
   sleep(5000);
   //真实启动
-  $settings.setEnabled('foreground_service', true);
   KeepAliveService.start("fanqie", "茄子云");
-  toastLog($settings.isEnabled('foreground_service'));
-  
   
   
 
