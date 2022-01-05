@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.4.5";
+var versionNum = "v1.4.6";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -389,7 +389,7 @@ function 返回v首页() {
             sleep(2000);
             home();
             sleep(1000);
-            break;
+            return;
         }
         /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(3000)!=null){
             log(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(3000));
@@ -422,15 +422,16 @@ function 返回v首页() {
         let rBtn=className("android.widget.ImageView").desc("返回").findOne(3000);
         if(rBtn!=null&&rBtn.parent()!=null){
             rBtn.parent().click();
+            continue;
         }
 
         refreshStateInfo();
         let wBtn=className("android.widget.TextView").text("我").findOne(3000);
-        if (topActivity != MAIN_PAGE && wBtn==null) {
+        if (topActivity != MAIN_PAGE || wBtn==null) {
             back();
             sleep(5000);
         } else {
-            break;
+            return;
         }
     }
     关闭应用(PKG_NAME);
