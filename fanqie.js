@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.5.1";
+var versionNum = "v1.5.2";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -229,24 +229,41 @@ function quGuan(sleepTime) {
     }
     log("进入公众号成功");
     sleep(3000);
+    let faultCount=0;
     for (let i = 0; i < sleepTime / 1000 / 60; i++) {
         kz();
+        if(faultCount>10){
+            home();
+            sleep(60 * 1000);
+            continue;
+        }
         for(let i=0;i<6;i++){
             if(text("公众号").findOne(5000)!=null){
                 let x1 = device.width * random(400, 900) / 1000;
                 let y1 = device.height * random(400, 800) / 1000;
-                press(x1,y1,random(2000, 2500));
-                 sleep(random(1000, 2000));
+                if(random(1, 10)<7){
+                    press(x1,y1,random(2000, 2500));
+                    sleep(random(1000, 2000));
                    if(text("不再关注").findOne(5000)!=null){
+                    faultCount=0;
                    click("不再关注");
                    sleep(random(1000, 2000));
                    if(text("不再关注").findOne(5000)!=null){
                    click("不再关注");
                    }
                   }else{
+                    faultCount++;
                       continue;
                   }
                   sleep(random(4000, 6000));
+                }else{
+                    //进入明细
+                    click(x1,y1);
+                    if(text("公众号").findOne(random(3000, 5000))==null){
+                        back();
+                        sleep(random(4000, 6000));
+                        }
+                }
             }else{
                 back();
                 sleep(5000);
