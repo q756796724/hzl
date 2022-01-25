@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.4.10";
+var versionNum = "v1.5.0";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -196,6 +196,60 @@ function onMainPage() {
 
 }
 
+function quGuan(sleepTime) {
+    log("进入v成功");
+    
+    let wBtn=className("android.widget.TextView").text("通讯录").findOne(3000); 
+    for(let i=0;i<8;i++){
+        if(wBtn!=null&&wBtn.clickable()){
+            wBtn.click();
+            sleep(3000);
+            if(className("android.widget.TextView").text("公众号").findOne(5000)!=null){
+                break;
+            };
+        }else{
+            wBtn=wBtn.parent();
+        }
+    }
+
+    if (结束未响应()) {
+        return;
+    }
+    if(className("android.widget.TextView").text("公众号").findOne(5000)==null){
+        return;
+    };
+    log("进入通讯录成功");
+    click("公众号");
+   
+    if (结束未响应()) {
+        return;
+    }
+    if(text("公众号").findOne(5000)==null){
+        return;
+    }
+    log("进入公众号成功");
+    sleep(3000);
+    for (let i = 0; i < sleepTime / 1000 / 60; i++) {
+        kz();
+        for(let i=0;i<6;i++){
+            let x1 = device.width * random(400, 900) / 1000;
+        let y1 = device.height * random(400, 800) / 1000;
+        press(x1,y1,random(1500, 2500));
+         sleep(random(1000, 2000));
+           if(text("不再关注").findOne(5000)!=null){
+           click("不再关注");
+           sleep(random(1000, 2000));
+           if(text("不再关注").findOne(5000)!=null){
+           click("不再关注");
+           }
+          }else{
+              continue;
+          }
+          sleep(random(4000, 6000));
+        }
+    }
+}
+
 function lunSleep(sleepTime) {
     返回v首页();
     home();
@@ -331,11 +385,25 @@ function yuedu() {
 }
 //长时间睡眠保持唤醒，单位毫秒
 function sleepLongTime(sleepTime) {
-    for (let i = 0; i < sleepTime / 1000 / 60; i++) {
-        kz();
-        device.wakeUp();
-        device.keepScreenOn(3600 * 1000)
-        sleep(60 * 1000);
+    打开v();
+    refreshStateInfo();
+    let wBtn=className("android.widget.TextView").text("通讯录").findOne(3000);
+    if (topActivity == MAIN_PAGE && wBtn!=null) {
+        quGuan(sleepTime);
+    } else {
+        log(wBtn);
+        返回v首页();
+        let wBtn=className("android.widget.TextView").text("通讯录").findOne(3000);
+        if (wBtn!=null) {
+            quGuan(sleepTime);
+        }else{
+            for (let i = 0; i < sleepTime / 1000 / 60; i++) {
+                kz();
+                //device.wakeUp();
+                //device.keepScreenOn(3600 * 1000)
+                sleep(60 * 1000);
+            }
+        }
     }
 }
 function 关闭应用(packageName) {
@@ -426,7 +494,7 @@ function 返回v首页() {
             log("按左上角返回");
         }
         
-        let wBtn=className("android.widget.TextView").text("我").findOne(5000);
+        let wBtn=className("android.widget.TextView").text("通讯录").findOne(5000);
         refreshStateInfo();
         if (topActivity != MAIN_PAGE || wBtn==null) {
             log("按返回键"+wBtn);
@@ -639,13 +707,13 @@ let KeepAliveService = {
       manager.cancelAll();
     },
   };
-  
-  sleep(1000);
-  //先停止
+ if(app.autojs.versionName=='4.1.1 Alpha2'){
+    sleep(1000);
   KeepAliveService.stop();
   sleep(5000);
-  //真实启动
   KeepAliveService.start("fanqie", "茄子云");
+  }
+  
   
   
 
@@ -690,29 +758,8 @@ if(!files.exists(settingPath)){
         toastLog("初始化配置");
     }
 }
-var lunCount = 1;//轮回次数
-for (; ;) {
-    kz();
-    var nowHour = new Date().getHours();
-    log("当前时间:" + nowHour + "时");
-    if (nowHour < 7 || nowHour > 22) {
-        console.clear();
-        if (nowHour < 7){
-            初始化配置(settingPath);
-        }
-        
-        log("当前时间:" + nowHour + "时,休息中");
-        sleepLongTime(3600000);
-        continue;
-    }
-    配置=读取配置(settingPath);
-    lunCount=配置["lunCount"];
-    if (lunCount > 8) {
-        log("当天已轮回" + (lunCount - 1).toString() + "次,休息中");
-        sleepLongTime(3600000);
-        continue;
-    }
 
+function 打开v(){
     refreshStateInfo();
     if (topPackage == MAIN_PKG || topPackage != PKG_NAME) {
         home();
@@ -737,9 +784,33 @@ for (; ;) {
         log("打开" + PKG_NAME);
         app.launch(PKG_NAME);
         sleep(30000);
+    }
+}
+var lunCount = 1;//轮回次数
+for (; ;) {
+    kz();
+    var nowHour = new Date().getHours();
+    log("当前时间:" + nowHour + "时");
+    if (nowHour < 7 || nowHour > 22) {
+        console.clear();
+        if (nowHour < 7){
+            初始化配置(settingPath);
+        }
+        
+        log("当前时间:" + nowHour + "时,休息中");
+        sleepLongTime(3600000);
+        continue;
+    }
+    配置=读取配置(settingPath);
+    lunCount=配置["lunCount"];
+    if (lunCount > 8) {
+        log("当天已轮回" + (lunCount - 1).toString() + "次,休息中");
+        sleepLongTime(3600000);
         continue;
     }
 
+    
+    打开v();
 
 
     refreshStateInfo();
