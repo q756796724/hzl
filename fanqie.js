@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.5.2";
+var versionNum = "v1.5.3";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -259,7 +259,8 @@ function quGuan(sleepTime) {
                 }else{
                     //进入明细
                     click(x1,y1);
-                    if(text("公众号").findOne(random(3000, 5000))==null){
+                    sleep(2000);
+                    if(text("公众号").findOne(random(1000, 5000))==null){
                         back();
                         sleep(random(4000, 6000));
                         }
