@@ -4,7 +4,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.5.0";
+var versionNum = "v1.5.1";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -232,20 +232,26 @@ function quGuan(sleepTime) {
     for (let i = 0; i < sleepTime / 1000 / 60; i++) {
         kz();
         for(let i=0;i<6;i++){
-            let x1 = device.width * random(400, 900) / 1000;
-        let y1 = device.height * random(400, 800) / 1000;
-        press(x1,y1,random(1500, 2500));
-         sleep(random(1000, 2000));
-           if(text("不再关注").findOne(5000)!=null){
-           click("不再关注");
-           sleep(random(1000, 2000));
-           if(text("不再关注").findOne(5000)!=null){
-           click("不再关注");
-           }
-          }else{
-              continue;
-          }
-          sleep(random(4000, 6000));
+            if(text("公众号").findOne(5000)!=null){
+                let x1 = device.width * random(400, 900) / 1000;
+                let y1 = device.height * random(400, 800) / 1000;
+                press(x1,y1,random(2000, 2500));
+                 sleep(random(1000, 2000));
+                   if(text("不再关注").findOne(5000)!=null){
+                   click("不再关注");
+                   sleep(random(1000, 2000));
+                   if(text("不再关注").findOne(5000)!=null){
+                   click("不再关注");
+                   }
+                  }else{
+                      continue;
+                  }
+                  sleep(random(4000, 6000));
+            }else{
+                back();
+                sleep(5000);
+            }
+            
         }
     }
 }
