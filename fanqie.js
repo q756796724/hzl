@@ -5,7 +5,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v2.0.4";
+var versionNum = "v2.0.5";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -65,7 +65,7 @@ function 清空文件夹(path) {
 //长时间睡眠保持唤醒，单位毫秒
 function sleepLongTime(sleepTime) {
     let jindou;
-    let JindouCount=0;//金豆不变次数
+    let findJindouCount=0;//金豆不变次数
     for (let i = 0; i < sleepTime / 1000 / 60; i++) {
         //device.wakeUp();
         //device.keepScreenOn(3600 * 1000);
