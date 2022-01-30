@@ -5,7 +5,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v2.0.1";
+var versionNum = "v2.0.2";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -64,10 +64,24 @@ function 清空文件夹(path) {
 
 //长时间睡眠保持唤醒，单位毫秒
 function sleepLongTime(sleepTime) {
+    let jindou;
+    let JindouCount=0;//金豆不变次数
     for (let i = 0; i < sleepTime / 1000 / 60; i++) {
         //device.wakeUp();
         //device.keepScreenOn(3600 * 1000);
-        toastLog("");
+        if(className("android.view.View").text('今日金豆').findOne(10000)!= null){
+            if(className("android.view.View").indexInParent(6).findOne(1000).text()==jindou){
+                findJindouCount++;
+            }else{
+                findJindouCount=0;
+                jindou=className("android.view.View").indexInParent(6).findOne(1000).text();
+            }
+        toastLog(jindou);
+           if(findJindouCount>=5){
+            findJindouCount=0;
+            返回v首页();
+           }
+        }
         sleep(60 * 1000);
     }
 }
