@@ -5,7 +5,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v2.0.5";
+var versionNum = "v2.0.6";
 
 function refreshStateInfo() {
     sleep(1000);
@@ -247,11 +247,11 @@ toastLog("版本号:" + versionNum);
 setInterval(() => { }, 1000);
 var w = floaty.rawWindow(
     <frame gravity="center">
-        <text id="text">.</text>
+        <text id="text">. . .</text>
     </frame>
 );
 
-w.setPosition(500, 0);
+w.setPosition(500, 3);
 //定义
 /** 前台服务保活 */
 let KeepAliveService = {
