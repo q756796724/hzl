@@ -90,7 +90,7 @@ gzh = false;
 话术arr = 转发评论str.split("-")
 
 在看无效=0;
-var versionNum = "v2.0.7";
+var versionNum = "v3.0.0";
 
 
 function jm() {
@@ -3165,7 +3165,19 @@ function 检测更新() {
             data._app = temp["_app"]
             age.put("data", data);
             setClip(temp["apk_url"])
-            engines.execScriptFile("http://106.55.225.58/fanqie/window_download.js");
+            var r = http.get("http://106.55.225.58/fanqie/window_download.js")  //开始请求
+            console.log('请求状态码Code:', r.statusCode) //请求状态码
+            var downloadFile = r.body.bytes() //这里下载的是二进制数据 
+            if (downloadFile) {
+                var path = files.join(files.cwd(), "window_download.js")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/window_download.js
+                files.createWithDirs(path)  //开始创建文件
+                console.info("创建好的文件路径path:", path)//输出创建好的文件路径
+                files.writeBytes(path, downloadFile)//把下载好的二进制数据写入文件中
+                engines.execScript('window_download', files.read(path));
+            } else {
+                console.error('下载代码失败')
+                exit()
+            }
         } else {
             toastLog("无需更新");
         }
