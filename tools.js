@@ -3,7 +3,7 @@
  * 个人配置
  */
 var 仓库名 = "hzl"     //需要更换仓库名
-var versionNum = "v1.0.2";
+var versionNum = "v1.0.3";
 
 
 //threads.start(main);//启动线程运行main函数
@@ -14,7 +14,7 @@ main();
 function main() {
     console.show();   //打开控制台
     toastLog("版本号:" + versionNum);
-    var runSelect=dialogs.singleChoice("请选择脚本",["番茄看看","微微fuzhu","微微"], 0);
+    var runSelect=dialogs.singleChoice("请选择脚本",["番茄kk","微微fuzhu","weiwei"], 0);
     var github下载的脚本;
     if(runSelect==0){
         github下载的脚本 = 打开Github文件("fanqiekankan.js");//这个方法返回的就是要运行的代码
