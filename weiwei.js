@@ -90,12 +90,13 @@ gzh = false;
 话术arr = 转发评论str.split("-")
 
 在看无效=0;
+var versionNum = "v1.0.1";
 
 
 function jm() {
     ui.statusBarColor("#4FB3FF");
     ui.layout(
-        '<vertical>\
+        '<vertical w="*" h="*">\
             <appbar>\
                 <tabs id="标签" bg="#4FB3FF" />\
             </appbar>\
@@ -105,27 +106,26 @@ function jm() {
                             <vertical margin="0 2" bg="#ffffff" elevation="1dp" padding="0 0 0 0" w="*" h="auto">\
                                 <Switch w="*" checked="{{auto.service != null}}" textColor="#666666" text="无障碍服务" id="wzaqx" h="20" />\
                                 </vertical>\
-                                <text text="🔥🔥🔥赚赚助手Q群:710695914🔥🔥🔥" textSize="15sp" textColor="#FF0000" gravity="center" layout_gravity="center" />\
                                 <vertical margin="0 2" bg="#ffffff" elevation="1dp" padding="0 0 0 0" w="*" h="auto">\
                             <horizontal>\
-                                    <text text="微微任务:" textSize="12sp" w="60" />\
+                                    <text text="wei微任务:" textSize="12sp" w="60" />\
                                     <checkbox text="点赞" id="ww_dz" checked="{{ww_dz}}" layout_weight="1" textSize="12sp" />\
                                     <checkbox text="关注" id="ww_gz" checked="{{ww_gz}}" layout_weight="1" textSize="12sp" />\
                                     <checkbox text="播放" id="ww_bf" checked="{{ww_bf}}" layout_weight="1" textSize="12sp" />\
                                     <checkbox text="收藏" id="ww_sc" checked="{{ww_sc}}" layout_weight="1" textSize="12sp" />\
+                                    <checkbox text="评论" id="ww_pl" checked="{{ww_pl}}" layout_weight="1" textSize="12sp" />\
                                     </horizontal>\
                                     <horizontal>\
-                                <checkbox text="评论" id="ww_pl" checked="{{ww_pl}}" layout_weight="1" textSize="12sp" />\
                                 <checkbox text="转发" id="ww_zf" checked="{{ww_zf}}" layout_weight="1" textSize="12sp" />\
                                 <checkbox text="人气" id="ww_rq" checked="{{ww_rq}}" layout_weight="1" textSize="12sp" />\
                                 <checkbox text="评赞" id="ww_pz" checked="{{ww_pz}}" layout_weight="1" textSize="12sp" />\
                                 <checkbox text="搜一搜" id="ww_sys" checked="{{ww_sys}}" layout_weight="1" textSize="12sp" />\
+                                <checkbox text="自提" id="ww_tx" checked="{{ww_tx}}" textSize="12sp" />\
                                 </horizontal>\
-                                <checkbox text="自动提现" id="ww_tx" checked="{{ww_tx}}" textSize="12sp" />\
                                 </vertical>\
                                 <vertical margin="0 2" bg="#ffffff" elevation="1dp" padding="0 0 0 0" w="*" h="auto">\
                                 <horizontal>\
-                                <text text="微圈任务:" textSize="12sp" w="60" h="auto" layout_gravity="center" />\
+                                <text text="wei圈任务:" textSize="12sp" w="60" h="auto" layout_gravity="center" />\
                                 <checkbox text="点赞" id="vq_dz" checked="{{vq_dz}}" layout_weight="1" textSize="12sp" />\
                                 <checkbox text="关注" id="vq_gz" checked="{{vq_gz}}" layout_weight="1" textSize="12sp" />\
                                 <checkbox text="播放" id="vq_bf" checked="{{vq_bf}}" layout_weight="1" textSize="12sp" />\
@@ -134,7 +134,7 @@ function jm() {
                                 <checkbox text="转发" id="vq_zf" checked="{{vq_zf}}" layout_weight="1" textSize="12sp" />\
                                 </horizontal>\
                                 <horizontal>\
-                                <text text="微圈阅读:" textSize="12sp" w="60" />\
+                                <text text="wei圈阅读:" textSize="12sp" w="60" />\
                             <checkbox text="阅读" id="vq_yd" checked="{{vq_yd}}" layout_weight="1" textSize="12sp" />\
                             <checkbox text="关注" id="vq_ydgz" checked="{{vq_ydgz}}" layout_weight="1" textSize="12sp" />\
                             <checkbox text="在看" id="vq_ydzk" checked="{{vq_ydzk}}" layout_weight="1" textSize="12sp" />\
@@ -177,8 +177,10 @@ function jm() {
                                     <text text="微圈链接:" textSize="12sp" />\
                                     <input id="输入框_微圈链接" text="{{微圈链接}}" textSize="12sp" w="200" />\
                                 </horizontal>\
-                                <checkbox text="搜索进平台" id="ssjpt" checked="{{ssjpt}}" layout_weight="1" textSize="12sp" />\
-                                <checkbox text="返回刷新主页" id="shuaxin" checked="{{shuaxin}}" layout_weight="1" textSize="12sp" />\
+                                <horizontal  >\
+                                    <checkbox text="搜索进平台" id="ssjpt" checked="{{ssjpt}}" layout_weight="1" textSize="12sp" />\
+                                    <checkbox text="返回刷新主页" id="shuaxin" checked="{{shuaxin}}" layout_weight="1" textSize="12sp" />\
+                                </horizontal>\
                                 <checkbox text="导航键(全面屏手机屏幕下面是不是有虚拟按键,没有或者不是全面屏手机无视)" id="dhj" checked="{{dhj}}" layout_weight="1" textSize="12sp" />\
                             </vertical>\
                             <linear margin="0 0 0 0">\
@@ -192,7 +194,7 @@ function jm() {
 }
 var window
 var windows
-var str = "赚赚助手Q群:710695914"
+var str = versionNum;
 console_arr = android.util.SparseArray();
 console_arr.put(android.util.Log.VERBOSE, java.lang.Integer(colors.parseColor("#ffa500")));
 console_arr.put(android.util.Log.DEBUG, java.lang.Integer(colors.parseColor("#ffffff")));
@@ -2662,7 +2664,7 @@ function 截图() {
 
 function ui_log() {
     ui.run(function () {
-        window.wz.setText("威信名称:" + ww_info_data["wxnickname"] + "\n" + "关:" + 关注 + " 赞:" + 点赞 + " 播:" + 播放 + " 藏:" + 收藏 + " 评:" + 评论 + " 转:" + 转发 + " 人:" + 人气 + " 评赞:" + 评赞 + " 搜:" + 搜一搜 + "\n" + "金豆总额:" + ww_info_data["wallet"] + "\n赚赚助手Q群:710695914");
+        window.wz.setText("威信名称:" + ww_info_data["wxnickname"] + "\n" + "关:" + 关注 + " 赞:" + 点赞 + " 播:" + 播放 + " 藏:" + 收藏 + " 评:" + 评论 + " 转:" + 转发 + " 人:" + 人气 + " 评赞:" + 评赞 + " 搜:" + 搜一搜 + "\n" + "金豆总额:" + ww_info_data["wallet"] + "\n版本号:"+versionNum);
     });
     time = new Date();
     time.setTime(time.getTime());
@@ -3150,7 +3152,9 @@ function 检测更新() {
         if (temp['vv_api']) {
             微微api = temp['vv_api']
         }
-        if (temp["ver"] != 版本号) {
+        toastLog("加载完成");
+        //禁用自动更新
+        /*if (temp["ver"] != 版本号) {
             data.ver = temp["ver"]
             data.apk_url = temp["apk_url"]
             data.apk_path = temp["apk_path"]
@@ -3165,7 +3169,7 @@ function 检测更新() {
             engines.execScriptFile("./res/js/window_download.js");
         } else {
             toastLog("无需更新");
-        }
+        }*/
     } else {
         toastLog("检测更新失败");
     }
@@ -4487,7 +4491,7 @@ function 进入微圈() {
 
 function vqui_log() {
     ui.run(function () {
-        window.wz.setText("威信名称:" + vq_info_data["nickname"] + "\n" + "关注:" + 关注 + " 点赞:" + 点赞 + " 播放:" + 播放 + " 收藏:" + 收藏 + " 评论:" + 评论 + " 转发:" + 转发+ "\n"   + "阅读:" + 阅读 + " 文章关注:" + 公众号关注+ " 在看:" + 在看+ " 文章赞:" + 文章赞+ "\n" + "金币总额:" + vq_info_data["jinbi"] + "\n赚赚助手Q群:710695914");
+        window.wz.setText("威信名称:" + vq_info_data["nickname"] + "\n" + "关注:" + 关注 + " 点赞:" + 点赞 + " 播放:" + 播放 + " 收藏:" + 收藏 + " 评论:" + 评论 + " 转发:" + 转发+ "\n"   + "阅读:" + 阅读 + " 文章关注:" + 公众号关注+ " 在看:" + 在看+ " 文章赞:" + 文章赞+ "\n" + "金币总额:" + vq_info_data["jinbi"] + "\n版本号:"+versionNum);
     });
     time = new Date();
     time.setTime(time.getTime());
