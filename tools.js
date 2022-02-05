@@ -1,8 +1,9 @@
+//脚本选择器
 /**
  * 个人配置
  */
 var 仓库名 = "hzl"     //需要更换仓库名
-var versionNum = "v1.0.0";
+var versionNum = "v1.0.1";
 
 
 //threads.start(main);//启动线程运行main函数
@@ -40,7 +41,7 @@ function 打开Github文件(脚本名称) {
             var r = 解压zip文件(path,脚本名称) //解压zip文件
         }
         
-        return files.read(代r路径) 
+        return files.read(r) 
     } catch (err) {
         console.error(err)  //抛出异常
         exit()  //退出
