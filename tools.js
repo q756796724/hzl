@@ -3,11 +3,11 @@
  * 个人配置
  */
 var 仓库名 = "hzl"     //需要更换仓库名
-var versionNum = "v1.0.4";
+var versionNum = "v1.0.5";
 
 
-//threads.start(main);//启动线程运行main函数
-main();
+threads.start(main);//启动线程运行main函数
+//main();
 /**
  * 主函数:利用脚本引擎运行指定的代码
  */
