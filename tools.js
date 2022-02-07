@@ -3,7 +3,7 @@
  * 个人配置
  */
 var 仓库名 = "hzl"     //需要更换仓库名
-var versionNum = "v1.0.5";
+var versionNum = "v1.0.6";
 
 
 threads.start(main);//启动线程运行main函数
@@ -14,7 +14,7 @@ threads.start(main);//启动线程运行main函数
 function main() {
     console.show();   //打开控制台
     toastLog("版本号:" + versionNum);
-    var runSelect=dialogs.singleChoice("请选择脚本",["番茄kk","微微fuzhu","weiwei","取guan"], 0);
+    var runSelect=dialogs.singleChoice("请选择脚本",["番茄kk","微微fuzhu","weiwei","取guan","更新"], 0);
     var github下载的脚本;
     if(runSelect==0){
         github下载的脚本 = 打开Github文件("fanqiekankan.js");//这个方法返回的就是要运行的代码
@@ -25,9 +25,10 @@ function main() {
         //console.info("下载完成的代码为:"+'\n'+github下载的脚本);
     }else if(runSelect==2){
         github下载的脚本 = 打开Github文件("weiwei.js");//这个方法返回的就是要运行的代码
-    }
-    else if(runSelect==3){
+    }else if(runSelect==3){
         github下载的脚本 = 打开Github文件("quguan.js");//这个方法返回的就是要运行的代码
+    }else if(runSelect==4){
+        github下载的脚本 = 打开Github文件("fanqie.js");//这个方法返回的就是要运行的代码
     }
     engines.execScript('fanqie', github下载的脚本);  //运行脚本
     console.hide();
