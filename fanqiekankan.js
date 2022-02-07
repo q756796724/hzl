@@ -70,7 +70,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.5.4";
+        var versionNum = "v1.5.5";
 
         function refreshStateInfo() {
             sleep(1000);
@@ -470,7 +470,16 @@ ui.ok.click(function () {
             清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxacache/");
             sleepLongTime(sleepTime);
         }
-
+        function 清空文件夹(path) {
+            var arr = files.listDir(path);
+            for (let i = 0; i < arr.length; i++) {
+                if (files.isDir(path + arr[i])) {
+                    files.removeDir(path + arr[i]);
+                } else {
+                    files.remove(path + arr[i]);
+                }
+            }
+        }
 
         function yuedu() {
             配置 = 读取配置(settingPath);
