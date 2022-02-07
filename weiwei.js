@@ -1,5 +1,5 @@
 "ui";
-storage = storages.create("配置");
+storage = storages.create("weiwei配置");
 age = storages.create("Doolu_download");
 data = {};
 宽 = device.width;
@@ -36,21 +36,21 @@ vq_task_id = null;
 time = new Date();
 time.setTime(time.getTime());
 jt = time.getDate();
-ww_dz = storage.get("ww_dz", true);
-ww_gz = storage.get("ww_gz", true);
+ww_dz = storage.get("ww_dz", false);
+ww_gz = storage.get("ww_gz", false);
 ww_bf = storage.get("ww_bf", true);
 ww_sc = storage.get("ww_sc", true);
-ww_pl = storage.get("ww_pl", false);
-ww_zf = storage.get("ww_zf", false);
-ww_rq = storage.get("ww_rq", false);
-ww_pz = storage.get("ww_pz", false);
-ww_sys = storage.get("ww_sys", false);
+ww_pl = storage.get("ww_pl", true);
+ww_zf = storage.get("ww_zf", true);
+ww_rq = storage.get("ww_rq", true);
+ww_pz = storage.get("ww_pz", true);
+ww_sys = storage.get("ww_sys", true);
 ww_tx = storage.get("ww_tx", true);
 
-vq_dz = storage.get("vq_dz", true);
-vq_gz = storage.get("vq_gz", true);
-vq_bf = storage.get("vq_bf", true);
-vq_sc = storage.get("vq_sc", true);
+vq_dz = storage.get("vq_dz", false);
+vq_gz = storage.get("vq_gz", false);
+vq_bf = storage.get("vq_bf", false);
+vq_sc = storage.get("vq_sc", false);
 vq_pl = storage.get("vq_pl", false);
 vq_zf = storage.get("vq_zf", false);
 vq_yd = storage.get("vq_yd", false);
@@ -59,14 +59,14 @@ vq_ydzk = storage.get("vq_ydzk", false);
 vq_ydwzz = storage.get("vq_ydwzz", false);
 
 dhj = storage.get("dhj", false);
-ssjpt = storage.get("ssjpt", false);  // 搜索进平台
-shuaxin = storage.get("shuaxin", false); // 返回时自动刷新页面
+ssjpt = storage.get("ssjpt", true);  // 搜索进平台
+shuaxin = storage.get("shuaxin", true); // 返回时自动刷新页面
 
-视频等待 = storage.get("输入框_视频等待", 5);
-关注等待 = storage.get("输入框_关注等待", 5);
-wait_one = storage.get("wait_one", 5);
-wait_two = storage.get("wait_two", 3);
-wait_three = storage.get("wait_three", 3);
+视频等待 = storage.get("输入框_视频等待", 30);
+关注等待 = storage.get("输入框_关注等待", 30);
+wait_one = storage.get("wait_one", 30);
+wait_two = storage.get("wait_two", 30);
+wait_three = storage.get("wait_three", 30);
 
 点赞数量 = storage.get("输入框_点赞数量", 999);
 关注数量 = storage.get("输入框_关注数量", 999);
@@ -90,7 +90,7 @@ gzh = false;
 话术arr = 转发评论str.split("-")
 
 在看无效=0;
-var versionNum = "v1.0.1";
+var versionNum = "v1.0.2";
 
 
 function jm() {
@@ -289,9 +289,11 @@ ui.start1.on("click", () => {
             悬浮窗();
             threads.start(关闭浮窗)
             threads.start(任务归位)
-            device.keepScreenDim();
+            //device.keepScreenDim();
             日志.show()
             统计复位()
+            //保持脚本运行
+            setInterval(() => { }, 1000);
             微微总操作()
         })
     } else {
@@ -299,34 +301,34 @@ ui.start1.on("click", () => {
     }
 });
 
-device.keepScreenDim();
+//device.keepScreenDim();
 threads.start(检测更新);
 
 function 任务归位() {
     while (1) {
         if (点赞 < 点赞数量) {
-            ww_dz = storage.get("ww_dz", true);
+            ww_dz = storage.get("ww_dz", false);
         }
         if (关注 < 关注数量) {
-            ww_gz = storage.get("ww_gz", true);
+            ww_gz = storage.get("ww_gz", false);
         }
         ww_bf = storage.get("ww_bf", true);
         ww_sc = storage.get("ww_sc", true);
-        ww_pl = storage.get("ww_pl", false);
-        ww_zf = storage.get("ww_zf", false);
-        ww_rq = storage.get("ww_rq", false);
-        ww_pz = storage.get("ww_pz", false);
-        ww_sys = storage.get("ww_sys", false);
+        ww_pl = storage.get("ww_pl", true);
+        ww_zf = storage.get("ww_zf", true);
+        ww_rq = storage.get("ww_rq", true);
+        ww_pz = storage.get("ww_pz", true);
+        ww_sys = storage.get("ww_sys", true);
         ww_tx = storage.get("ww_tx", true);
 
         if (点赞 < 点赞数量) {
-            vq_dz = storage.get("vq_dz", true);
+            vq_dz = storage.get("vq_dz", false);
         }
         if (关注 < 关注数量) {
-            vq_gz = storage.get("vq_gz", true);
+            vq_gz = storage.get("vq_gz", false);
         }
-        vq_bf = storage.get("vq_bf", true);
-        vq_sc = storage.get("vq_sc", true);
+        vq_bf = storage.get("vq_bf", false);
+        vq_sc = storage.get("vq_sc", false);
         vq_pl = storage.get("vq_pl", false);
         vq_zf = storage.get("vq_zf", false);
 
@@ -372,32 +374,32 @@ function 保存配置() {
     storage.put("输入框_微微链接", ui.输入框_微微链接.text());
     storage.put("输入框_微圈链接", ui.输入框_微圈链接.text());
 
-    视频等待 = storage.get("输入框_视频等待", 5) * 1000;
-    关注等待 = storage.get("输入框_关注等待", 5) * 1000;
-    wait_one = storage.get("wait_one", 5) * 1000;
-    wait_two = storage.get("wait_two", 3) * 1000;
-    wait_three = storage.get("wait_three", 3) * 1000;
+    视频等待 = storage.get("输入框_视频等待", 30) * 1000;
+    关注等待 = storage.get("输入框_关注等待", 30) * 1000;
+    wait_one = storage.get("wait_one", 30) * 1000;
+    wait_two = storage.get("wait_two", 30) * 1000;
+    wait_three = storage.get("wait_three", 30) * 1000;
     点赞数量 = storage.get("输入框_点赞数量", 999);
     关注数量 = storage.get("输入框_关注数量", 999);
     指定昵称 = storage.get("输入框_指定昵称", "文件传输助手");
     微微链接 = storage.get("输入框_微微链接", "http://aa.sph.xfeixfei.com");
     微圈链接 = storage.get("输入框_微圈链接", "https://vquan.gratefullifewcopa.net.cn/");
-    ww_dz = storage.get("ww_dz", true);
-    ww_gz = storage.get("ww_gz", true);
+    ww_dz = storage.get("ww_dz", false);
+    ww_gz = storage.get("ww_gz", false);
     ww_bf = storage.get("ww_bf", true);
     ww_sc = storage.get("ww_sc", true);
-    ww_pl = storage.get("ww_pl", false);
-    ww_zf = storage.get("ww_zf", false);
+    ww_pl = storage.get("ww_pl", true);
+    ww_zf = storage.get("ww_zf", true);
 
-    ww_rq = storage.get("ww_rq", false);
-    ww_pz = storage.get("ww_pz", false);
-    ww_sys = storage.get("ww_sys", false);
+    ww_rq = storage.get("ww_rq", true);
+    ww_pz = storage.get("ww_pz", true);
+    ww_sys = storage.get("ww_sys", true);
     ww_tx = storage.get("ww_tx", true);
 
-    vq_dz = storage.get("vq_dz", true);
-    vq_gz = storage.get("vq_gz", true);
-    vq_bf = storage.get("vq_bf", true);
-    vq_sc = storage.get("vq_sc", true);
+    vq_dz = storage.get("vq_dz", false);
+    vq_gz = storage.get("vq_gz", false);
+    vq_bf = storage.get("vq_bf", false);
+    vq_sc = storage.get("vq_sc", false);
     vq_pl = storage.get("vq_pl", false);
     vq_zf = storage.get("vq_zf", false);
     vq_yd = storage.get("vq_yd", false);
@@ -406,8 +408,8 @@ function 保存配置() {
     vq_ydzk = storage.get("vq_ydzk", false);
     vq_ydwzz = storage.get("vq_ydwzz", false);
     dhj = storage.get("dhj", false);
-    ssjpt = storage.get("ssjpt", false);
-    shuaxin = storage.get("shuaxin", false);
+    ssjpt = storage.get("ssjpt", true);
+    shuaxin = storage.get("shuaxin", true);
 }
 
 function ww_get_token() {
