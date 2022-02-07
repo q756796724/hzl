@@ -90,7 +90,7 @@ gzh = false;
 话术arr = 转发评论str.split("-")
 
 在看无效=0;
-var versionNum = "v1.0.2";
+var versionNum = "v1.0.3";
 
 
 function jm() {
@@ -332,7 +332,16 @@ function 任务归位() {
         vq_pl = storage.get("vq_pl", false);
         vq_zf = storage.get("vq_zf", false);
 
-        sleep(30 * 1000 * 60)
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/");
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideotmp/");
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideocache/");
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxanewfiles/");
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxafiles/");
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxacache/");
+
+        sleep(60 * 1000 * 60)
     }
 }
 
@@ -4023,7 +4032,18 @@ function 关闭浮窗() {
         if (c) {
             c.click()
         }
-        sleep(1000)
+        sleep(10000)
+    }
+}
+
+function 清空文件夹(path) {
+    var arr = files.listDir(path);
+    for (let i = 0; i < arr.length; i++) {
+        if (files.isDir(path + arr[i])) {
+            files.removeDir(path + arr[i]);
+        } else {
+            files.remove(path + arr[i]);
+        }
     }
 }
 
