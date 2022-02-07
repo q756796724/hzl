@@ -70,7 +70,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.5.5";
+        var versionNum = "v1.5.6";
 
         function refreshStateInfo() {
             sleep(1000);
@@ -216,6 +216,18 @@ ui.ok.click(function () {
             return JSON.parse(files.read(path));
         }
 
+        //多线程demo
+        /*var thread = threads.start(function () {
+       function 结束未响应() {
+           if (textMatches(/(.*未响应.*|.*没有响应.*)/).findOne(3000) != null && textMatches(/(.*等待.*)/).findOne(3000) != null) {
+               log(new Date().toLocaleString() + "-" + "检测到应用未响应");
+               textMatches(/(.*确定.*|.*关闭.*)/).findOne(3000).click();
+               log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
+           }
+           return 结束未响应;
+       }
+       setInterval(结束未响应(), 6000);
+   });*/
         function 打开v() {
             refreshStateInfo();
             if (topPackage == MAIN_PKG || topPackage != PKG_NAME) {
@@ -891,14 +903,14 @@ ui.ok.click(function () {
             }
             totificationlistenersetting()
             sleep(2000);
-            let cBtn = text(wifiName).findOne(3000);
+            let cBtn = text(wifiName).findOne(5000);
             if (cBtn != null) {
                 let cBounds = cBtn.bounds();
                 click(cBounds.right - 1, cBounds.bottom - 1);
             }
             wifi弹窗处理();
             sleep(connectTime);
-            cBtn = text(wifiName).findOne(3000);
+            cBtn = text(wifiName).findOne(5000);
             if (cBtn != null) {
                 cBounds = cBtn.bounds();
                 click(cBounds.right - 1, cBounds.bottom - 1);
@@ -910,7 +922,7 @@ ui.ok.click(function () {
             let qBtn = textMatches(/(完成|连接)/).findOne(1000);
             if (qBtn != null) {
                 qBtn.click();
-            }else{
+            } else {
                 qBtn = textMatches(/(取消)/).findOne(1000);
                 if (qBtn != null) {
                     qBtn.click();
