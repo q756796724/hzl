@@ -1,8 +1,8 @@
 "ui";
 
 storage = storages.create("fanqiekankan配置");
-zwifi=storage.get("zwifi","XiaoMiWifi");
-dlwifi=storage.get("dlwifi","XiaoMiWifi_5G");
+zwifi = storage.get("zwifi", "XiaoMiWifi");
+dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 ui.layout(
     <vertical padding="16">
         <Switch id="autoService" text="无障碍服务" checked="{{auto.service != null}}" padding="8 8 8 8" textSize="15sp" />
@@ -61,7 +61,7 @@ ui.ok.click(function () {
 
 
 
-        
+
 
 
         var topPackage = "";
@@ -70,7 +70,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.5.3";
+        var versionNum = "v1.5.4";
 
         function refreshStateInfo() {
             sleep(1000);
@@ -460,6 +460,14 @@ ui.ok.click(function () {
                 sleepTime = random(4000000, 4200000);
             }
             log(sleepTime / 1000 / 60 + "分钟");
+            清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
+            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
+            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/");
+            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideotmp/");
+            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideocache/");
+            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxanewfiles/");
+            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxafiles/");
+            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxacache/");
             sleepLongTime(sleepTime);
         }
 
@@ -551,8 +559,8 @@ ui.ok.click(function () {
                     连接wifi(dlwifi, 5000);
                     app.launch(PKG_NAME);
                 }
-                
-                if(等待未响应()==0){
+
+                if (等待未响应() == 0) {
                     if (结束未响应()) {
                         配置["count"] = count;
                         保存配置(settingPath, 配置);
@@ -560,7 +568,7 @@ ui.ok.click(function () {
                     }
                 }
 
-                
+
                 back();
                 count++;
                 配置["count"] = count;
@@ -890,9 +898,14 @@ ui.ok.click(function () {
             sleep(2000);
         }
         function wifi弹窗处理() {
-            let qBtn = textMatches(/(完成)/).findOne(1000);
+            let qBtn = textMatches(/(完成|连接)/).findOne(1000);
             if (qBtn != null) {
                 qBtn.click();
+            }else{
+                qBtn = textMatches(/(取消)/).findOne(1000);
+                if (qBtn != null) {
+                    qBtn.click();
+                }
             }
         }
 
@@ -913,8 +926,8 @@ ui.ok.click(function () {
         toast("主Wifi:" + zwifi);
         dlwifi = ui.dlwifi.getText();
         toast("代理Wifi:" + dlwifi);
-        storage.put("zwifi",ui.zwifi.text());
-        storage.put("dlwifi",ui.dlwifi.text());
+        storage.put("zwifi", ui.zwifi.text());
+        storage.put("dlwifi", ui.dlwifi.text());
         home();
         //定义
         /** 前台服务保活 */
