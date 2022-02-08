@@ -70,7 +70,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.5.7";
+        var versionNum = "v1.5.8";
 
         function refreshStateInfo() {
             sleep(1000);
@@ -1015,6 +1015,7 @@ ui.ok.click(function () {
             if (配置["date"] != new Date().toLocaleDateString()) {
                 初始化配置(settingPath);
                 toastLog("初始化配置");
+                console.clear();
             }
             配置 = 读取配置(settingPath);
             lunCount = 配置["lunCount"];
