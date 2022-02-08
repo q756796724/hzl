@@ -92,7 +92,7 @@ gzh = false;
 在看无效 = 0;
 微微连续失败次数=0;
 微圈连续失败次数=0;
-var versionNum = "v1.0.5";
+var versionNum = "v1.0.6";
 
 
 function jm() {
@@ -2812,7 +2812,7 @@ function 返回三() {
         sleep(1000)
     }
 }
-=
+
 
 function 截图() {
     日志.hide()
@@ -2858,6 +2858,7 @@ function ui_log() {
         文章赞 = 0;
         在看无效 = 0;
         files.write("/sdcard/jl.txt", JSON.stringify({ "jlt": jt, "dz": 点赞, "gz": 关注, "sc": 收藏, "bf": 播放, "pl": 评论, "zf": 转发, "rq": 人气, "sys": 搜一搜, "pz": 评赞, "yd": 阅读, "gzhgz": 公众号关注, "zk": 在看, "wzz": 文章赞 }));
+        日志.clearLog();
     }
 
 }
@@ -4744,11 +4745,13 @@ function vqui_log() {
         搜一搜 = 0;
         评赞 = 0;
         阅读 = 0;
+        提现 = true;
         在看 = 0;
         公众号关注 = 0;
         文章赞 = 0;
         在看无效 = 0;
         files.write("/sdcard/jl.txt", JSON.stringify({ "jlt": jt, "dz": 点赞, "gz": 关注, "sc": 收藏, "bf": 播放, "pl": 评论, "zf": 转发, "rq": 人气, "sys": 搜一搜, "pz": 评赞, "yd": 阅读, "gzhgz": 公众号关注, "zk": 在看, "wzz": 文章赞 }));
+        日志.clearLog();
     }
 
 }
