@@ -70,7 +70,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.5.6";
+        var versionNum = "v1.5.7";
 
         function refreshStateInfo() {
             sleep(1000);
@@ -145,7 +145,7 @@ ui.ok.click(function () {
         悬浮窗2.consoleLog.setConsole(runtime.console);
         悬浮窗2.setTouchable(false);
         悬浮窗2.setPosition(0, device.height * 0.1);
-
+        
         setInterval(() => { }, 1000);
 
 
@@ -949,6 +949,7 @@ ui.ok.click(function () {
         toast("代理Wifi:" + dlwifi);
         storage.put("zwifi", ui.zwifi.text());
         storage.put("dlwifi", ui.dlwifi.text());
+        device.keepScreenDim();
         home();
         //定义
         /** 前台服务保活 */
