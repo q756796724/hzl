@@ -92,7 +92,7 @@ gzh = false;
 在看无效 = 0;
 微微连续失败次数=0;
 微圈连续失败次数=0;
-var versionNum = "v1.0.6";
+var versionNum = "v1.0.7";
 
 
 function jm() {
@@ -3063,7 +3063,9 @@ function 微微视频() {
                 } else {
                     ww_giveup_task()
                     if(微微连续失败次数>5){
-                        按名称关闭应用("com.tencent.mm");
+                        if(按名称关闭应用("com.tencent.mm")){
+                          微微连续失败次数=0;
+                        }
                     }
                 }
             } else {
@@ -3192,7 +3194,9 @@ function 微圈视频() {
                 } else {
                     vq_giveup_task()
                     if(微圈连续失败次数>5){
-                        按名称关闭应用("com.tencent.mm");
+                        if(按名称关闭应用("com.tencent.mm")){
+                            微圈连续失败次数=0;
+                          }
                     }
                 }
             } else {
