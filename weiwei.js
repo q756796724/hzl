@@ -92,7 +92,7 @@ gzh = false;
 在看无效 = 0;
 微微连续失败次数=0;
 微圈连续失败次数=0;
-var versionNum = "v1.0.9";
+var versionNum = "v1.1.0";
 
 
 function jm() {
@@ -6175,89 +6175,4 @@ function clickx(x, y) {
     x = x + random(-5, 5)
     y = y + random(-5, 5)
     click(x < 0 ? 1 : x, y < 0 ? 1 : y)
-}}}" layout_weight="1" textSize="12sp" />\
-                                <checkbox text="关注" id="vq_gz" checked="{{vq_gz}}" layout_weight="1" textSize="12sp" />\
-                                <checkbox text="播放" id="vq_bf" checked="{{vq_bf}}" layout_weight="1" textSize="12sp" />\
-                                <checkbox text="收藏" id="vq_sc" checked="{{vq_sc}}" layout_weight="1" textSize="12sp" />\
-                                <checkbox text="评论" id="vq_pl" checked="{{vq_pl}}" layout_weight="1" textSize="12sp" />\
-                                <checkbox text="转发" id="vq_zf" checked="{{vq_zf}}" layout_weight="1" textSize="12sp" />\
-                                </horizontal>\
-                                <horizontal>\
-                                <text text="wei圈阅读:" textSize="12sp" w="60" />\
-                            <checkbox text="阅读" id="vq_yd" checked="{{vq_yd}}" layout_weight="1" textSize="12sp" />\
-                            <checkbox text="关注" id="vq_ydgz" checked="{{vq_ydgz}}" layout_weight="1" textSize="12sp" />\
-                            <checkbox text="在看" id="vq_ydzk" checked="{{vq_ydzk}}" layout_weight="1" textSize="12sp" />\
-                            <checkbox text="文章赞" id="vq_ydwzz" checked="{{vq_ydwzz}}" layout_weight="1" textSize="12sp" />\
-                             </horizontal>\
-                            </vertical>\
-                                <vertical margin="0 2" bg="#ffffff" elevation="1dp" padding="0 0 0 0" w="*" h="auto">\
-                                <horizontal  >\
-                                <text text="点赞数量:" textSize="12sp" />\
-                                    <input id="输入框_点赞数量" text="{{点赞数量}}" textSize="12sp" w="50" inputType="number" />\
-                                    <text text="个        关注数量:" textSize="12sp" />\
-                                    <input id="输入框_关注数量" text="{{关注数量}}" textSize="12sp" w="50" inputType="number" />\
-                                    <text text="个" textSize="12sp" />\
-                                </horizontal>\
-                                <horizontal  >\
-                                    <text text="视频等待:" textSize="12sp" />\
-                                    <input id="输入框_视频等待" text="{{视频等待}}" textSize="12sp" w="50" inputType="number" />\
-                                    <text text="秒        关注等待:" textSize="12sp" />\
-                                    <input id="输入框_关注等待" text="{{关注等待}}" textSize="12sp" w="50" inputType="number" />\
-                                    <text text="秒" textSize="12sp" />\
-                                </horizontal>\
-                                <horizontal  >\
-                                    <text text="小程序1等待:" textSize="12sp" />\
-                                    <input id="wait_one" text="{{wait_one}}" textSize="12sp" w="50" inputType="number" />\
-                                    <text text="秒，2等待:" textSize="12sp" />\
-                                    <input id="wait_two" text="{{wait_two}}" textSize="12sp" w="50" inputType="number" />\
-                                    <text text="秒，3等待:" textSize="12sp" />\
-                                    <input id="wait_three" text="{{wait_three}}" textSize="12sp" w="50" inputType="number" />\
-                                    <text text="秒" textSize="12sp" />\
-                                </horizontal>\
-                                <horizontal  >\
-                                    <text text="指定昵称:" textSize="12sp" />\
-                                    <input id="输入框_指定昵称" text="{{指定昵称}}" textSize="12sp" w="200"  />\
-                                </horizontal>\
-                                <horizontal  >\
-                                    <text text="微微链接:" textSize="12sp" />\
-                                    <input id="输入框_微微链接" text="{{微微链接}}" textSize="12sp" w="200"  />\
-                                </horizontal>\
-                                <horizontal  >\
-                                    <text text="微圈链接:" textSize="12sp" />\
-                                    <input id="输入框_微圈链接" text="{{微圈链接}}" textSize="12sp" w="200" />\
-                                </horizontal>\
-                                <horizontal  >\
-                                    <checkbox text="搜索进平台" id="ssjpt" checked="{{ssjpt}}" layout_weight="1" textSize="12sp" />\
-                                    <checkbox text="返回刷新主页" id="shuaxin" checked="{{shuaxin}}" layout_weight="1" textSize="12sp" />\
-                                </horizontal>\
-                                <checkbox text="导航键(全面屏手机屏幕下面是不是有虚拟按键,没有或者不是全面屏手机无视)" id="dhj" checked="{{dhj}}" layout_weight="1" textSize="12sp" />\
-                            </vertical>\
-                            <linear margin="0 0 0 0">\
-                                <button text="详细日志" id="按钮_日志" w="auto" h="40" style="Widget.AppCompat.Button.Borderless.Colored" layout_weight="1" />\
-                            </linear>\
-                        </vertical>\
-                    <button id="start1" text="加载悬浮窗" color="#ffffff" bg="#FF4FB3FF" layout_gravity="bottom" h="50" />\
-                </frame>\
-            </viewpager>\
-        </vertical>', null);
 }
-var window
-var windows
-var str = versionNum;
-console_arr = android.util.SparseArray();
-console_arr.put(android.util.Log.VERBOSE, java.lang.Integer(colors.parseColor("#ffa500")));
-console_arr.put(android.util.Log.DEBUG, java.lang.Integer(colors.parseColor("#ffffff")));
-console_arr.put(android.util.Log.INFO, java.lang.Integer(colors.parseColor("#64dd17")));
-console_arr.put(android.util.Log.WARN, java.lang.Integer(colors.parseColor("#00ddff")));
-console_arr.put(android.util.Log.ERROR, java.lang.Integer(colors.parseColor("#ff0000")));
-console_arr.put(android.util.Log.ASSERT, java.lang.Integer(colors.parseColor("#ffff534e")));
-function floatyModule() {
-    demo = ('<vertical id="win" visibility="gone" bg="#80000000" h="{{Math.floor(高 *0.5)}}px" >\
-     <View bg="#00ccff" h="1px"  w="{{Math.floor(宽*0.8)}}px"  />\
-        <text  id="wz" textColor="#FFFFFFFF" textSize="12" textStyle="bold" text=""  textIsSelectable="true"  maxliness="1"  />\
-    <View bg="#00ccff" h="1px" textSize="10"  w="{{Math.floor(宽*0.8)}}px" />\
-    <com.stardust.autojs.core.console.ConsoleView    id="console"   />\
-</vertical>');
-    threads.start(function () {
-        window = floaty.rawWindow(demo);
-        ui.run(function () { window.console.findViewById(context.getResources().getI
