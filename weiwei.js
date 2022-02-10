@@ -92,7 +92,7 @@ gzh = false;
 在看无效 = 0;
 微微连续失败次数=0;
 微圈连续失败次数=0;
-var versionNum = "v1.1.1";
+var versionNum = "v1.1.2";
 
 
 function jm() {
@@ -415,6 +415,7 @@ ui.start1.on("click", () => {
             device.keepScreenDim();
             日志.show()
             统计复位()
+            console.info(versionNum);
             微微总操作()
         })
     } else {
@@ -426,7 +427,7 @@ ui.start1.on("click", () => {
 threads.start(检测更新);
 
 /*function 任务归位() {
-    while (true) {
+    for (; ;) {
         if (点赞 < 点赞数量) {
             ww_dz = storage.get("ww_dz", false);
         }
@@ -581,7 +582,7 @@ function ww_get_token() {
     var p = null;
     setClip("");
     console.info("开始获取微微token");
-    while (true) {
+    for (; ;) {
         p = textStartsWith("sph").findOnce();
         if (p) {
             ww_token = p.text()
@@ -2969,7 +2970,7 @@ function 悬浮窗() {
 function 微微视频() {
     //auto.setWindowFilter((info) => { return true })
     var 任务结果;
-    while (true) {
+    for (; ;) {
         var myDate = new Date();
         if (ui.vq_yd.isChecked() && myDate.getHours() + "" + myDate.getMinutes() == "00") {
             console.info("手机到达凌晨12点,开始阅读任务")
@@ -3108,7 +3109,7 @@ function 微微视频() {
 function 微圈视频() {
     //auto.setWindowFilter((info) => { return true })
     var 任务结果;
-    while (true) {
+    for (; ;) {
         var myDate = new Date();
         if (ui.vq_yd.isChecked() && myDate.getHours() + "" + myDate.getMinutes() == "00") {
             console.info("手机到达凌晨12点,开始阅读任务")
@@ -3279,7 +3280,7 @@ function 刷新token() {
     var p = null
     console.info("微微token过期,开始刷新")
     返回();
-    while (true) {
+    for (; ;) {
         p = className("android.widget.ImageView").boundsInside(宽 * 0.7, 30, 宽, 500).packageName("com.tencent.mm").findOnce()
         if (p) {
             sleep(1000);
@@ -4004,7 +4005,7 @@ function 进入微微() {
         return true
     })*/
     console.info("开始进入微微")
-    while (true) {
+    for (; ;) {
         var 发送 = false
         p = text("微信").className("android.widget.TextView").boundsInside(0, 0, 宽, 高).findOne(1000)
         if (p && p.bounds().centerX() > 0 && p.bounds().centerY() > 0) {
@@ -4012,7 +4013,7 @@ function 进入微微() {
             clickx(p.bounds().centerX(), p.bounds().centerY());
             sleep(2000)
         }
-        app.launchPackage("com.tencent.mm")
+        app.launch("com.tencent.mm")
         sleep(5000)
         for (var i = 0; i < 30; i++) {
             p = text("通讯录").className("android.widget.TextView").packageName("com.tencent.mm").findOne(1000)
@@ -4120,13 +4121,13 @@ function 进入微微() {
             if (p) {
                 console.info("进入微微成功")
                 sleep(5000);
-                break
+                return
             }
             p = text("进入微圈专题 >>").packageName("com.tencent.mm").findOne(1000)
             if (p) {
                 console.info("进入微微成功")
                 sleep(5000);
-                break
+                return
             }
             sleep(1000)
         }
@@ -4156,20 +4157,20 @@ function 按名称关闭应用(packageName) {
                 if (closeBtn != null) {
                     closeBtn.click();
                 }
-                log(app.getAppName(name) + "应用已被关闭");
+                log(packageName + "应用已被关闭");
                 sleep(2000);
                 back();
             } else {
-                log(app.getAppName(name) + "应用不能被正常关闭或不在后台运行");
+                log(packageName + "应用不能被正常关闭或不在后台运行");
                 back();
                 return false;
             }
         } else {
-            log("没有找到" + app.getAppName(name) + "应用强行结束");
+            log("没有找到" + packageName + "应用强行结束");
             return false;
         }
     } else {
-        log("不在" + app.getAppName(name) + "应用设置界面");
+        log("不在" + packageName + "应用设置界面");
         return false;
     }
     return true;
@@ -4274,7 +4275,7 @@ function 关闭应用(ms) {
         // }
         return true
     })
-    while (true) {
+    for (; ;) {
         c = packageName("com.tencent.mm").id("cvt").findOnce()
         if (c) {
             c.click()
@@ -4321,7 +4322,7 @@ function 微微总操作() {
         关闭应用(true)
     }
 
-    while (true) {
+    for (; ;) {
         if (vq_yd) {
             vqui_log()
             进入微圈()
@@ -4547,7 +4548,7 @@ function vq_get_token() {
     })*/
     var p = null;
     console.info("开始获取微圈token");
-    while (true) {
+    for (; ;) {
         p = id("user_token").findOnce();
         if (p) {
             vq_token = p.text()
@@ -4606,7 +4607,7 @@ function 刷新vq_token() {
     var p = null
     console.info("微圈token过期,开始刷新")
     返回();
-    while (true) {
+    for (; ;) {
         p = className("android.widget.ImageView").boundsInside(宽 * 0.7, 30, 宽, 500).packageName("com.tencent.mm").findOnce()
         if (p) {
             sleep(1000);
@@ -4643,7 +4644,7 @@ function 进入微圈() {
         return true
     })*/
     console.info("开始进入微圈")
-    while (true) {
+    for (; ;) {
         var 发送 = false
         p = text("微信").className("android.widget.TextView").boundsInside(0, 0, 宽, 高).findOnce()
         if (p && p.bounds().centerX() > 0 && p.bounds().centerY() > 0) {
@@ -4651,8 +4652,8 @@ function 进入微圈() {
             clickx(p.bounds().centerX(), p.bounds().centerY());
             sleep(2000)
         }
-        app.launchPackage("com.tencent.mm")
-        for (var i = 0; i < 30; i++) {
+        app.launch("com.tencent.mm")
+        for (let i = 0; i < 30; i++) {
             p = text("通讯录").className("android.widget.TextView").packageName("com.tencent.mm").findOnce()
             if (p) {
                 sleep(1000)
@@ -4756,7 +4757,7 @@ function 进入微圈() {
                 sleep(5000);
                 return true
             }
-            sleep(1000)
+            sleep(3000)
         }
         关闭应用(true)
     }
@@ -5727,7 +5728,7 @@ function 微圈阅读() {
         if (p) {
             p.click();
         }
-        while (true) {
+        for (; ;) {
             p = text("开始任务").className("android.widget.Button").boundsInside(1, 1, 宽, 高).findOnce();
             if (p) {
                 sleep(1000);
