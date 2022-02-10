@@ -70,7 +70,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.5.8";
+        var versionNum = "v1.5.9";
 
         function refreshStateInfo() {
             sleep(1000);
@@ -920,7 +920,7 @@ ui.ok.click(function () {
         }
         function wifi弹窗处理() {
             let qBtn = textMatches(/(完成|连接)/).findOne(1000);
-            if (qBtn != null) {
+            if (qBtn != null&&qBtn.enabled()) {
                 qBtn.click();
             } else {
                 qBtn = textMatches(/(取消)/).findOne(1000);
@@ -1019,7 +1019,7 @@ ui.ok.click(function () {
             }
             配置 = 读取配置(settingPath);
             lunCount = 配置["lunCount"];
-            if (lunCount > 8) {
+            if (lunCount > 12) {
                 log("当天已轮回" + (lunCount - 1).toString() + "次,休息中");
                 sleepLongTime(3600000);
                 continue;
