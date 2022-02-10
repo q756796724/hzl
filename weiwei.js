@@ -92,7 +92,7 @@ gzh = false;
 在看无效 = 0;
 微微连续失败次数=0;
 微圈连续失败次数=0;
-var versionNum = "v1.0.7";
+var versionNum = "v1.0.8";
 
 
 function jm() {
@@ -296,14 +296,14 @@ ui.start1.on("click", () => {
             home();
             悬浮窗();
             threads.start(function () {
-                auto.setWindowFilter((info) => {
+                /*auto.setWindowFilter((info) => {
                     // try{
                     //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
                     // }catch(e){
                     //    return true
                     // }
                     return true
-                })
+                })*/
                 function 关闭浮窗() {
                     var c = null
                     c = packageName("com.tencent.mm").id("cvt").findOnce()
@@ -570,14 +570,14 @@ function 保存配置() {
 }
 
 function ww_get_token() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     var p = null;
     setClip("");
     console.info("开始获取微微token");
@@ -845,7 +845,7 @@ function ww_get_info() {
 
 
 function 微微关注() {
-    auto.setWindowFilter((info) => { return true })
+    //auto.setWindowFilter((info) => { return true })
     var p = null;
     sleep(5000);
     for (var i = 0; i < 10; i++) {
@@ -1030,7 +1030,7 @@ function 微微关注() {
 }
 
 function 微微点赞() {
-    auto.setWindowFilter((info) => { return true })
+    //auto.setWindowFilter((info) => { return true })
     try {
         var p = null;
         sleep(5000);
@@ -1361,7 +1361,7 @@ function 微微点赞() {
 }
 
 function 微微人气() {
-    auto.setWindowFilter((info) => { return true })
+    //auto.setWindowFilter((info) => { return true })
     try {
         var p = null;
         sleep(5000);
@@ -1571,14 +1571,14 @@ function 微微人气() {
 }
 
 function 微微转发() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     转发check = false
     try {
         var p = null;
@@ -1789,7 +1789,7 @@ function 微微转发() {
 }
 
 function 微微收藏() {
-    auto.setWindowFilter((info) => { return true })
+    //auto.setWindowFilter((info) => { return true })
     try {
         var p = null;
         sleep(5000);
@@ -2071,7 +2071,7 @@ function 微微收藏() {
 }
 
 function 微微播放(sj) {
-    auto.setWindowFilter((info) => { return true })
+    //auto.setWindowFilter((info) => { return true })
     try {
         var p = null;
         sleep(5000);
@@ -2277,7 +2277,7 @@ function 微微播放(sj) {
 }
 
 function 微微评论() {
-    auto.setWindowFilter((info) => { return true })
+    //auto.setWindowFilter((info) => { return true })
     try {
         var p = null;
         sleep(5000);
@@ -2515,7 +2515,7 @@ function 微微评论() {
 }
 
 function 微微评赞() {
-    auto.setWindowFilter((info) => { return true })
+    //auto.setWindowFilter((info) => { return true })
     var js = 0;
     try {
         var p = null;
@@ -2729,7 +2729,7 @@ function 微微评赞() {
 }
 
 function 返回() {
-    auto.setWindowFilter((info) => { return true });
+    //auto.setWindowFilter((info) => { return true });
     var p = null;
     console.info("开始返回接单界面")
     for (var i = 0; i < 20; i++) {
@@ -2775,7 +2775,7 @@ function 返回() {
 }
 
 function 返回二() {
-    auto.setWindowFilter((info) => { return true })
+    //auto.setWindowFilter((info) => { return true })
     var p = null;
     console.info("开始返回文件传输界面")
     for (var i = 0; i < 20; i++) {
@@ -2791,7 +2791,7 @@ function 返回二() {
 }
 
 function 返回三() {
-    auto.setWindowFilter((info) => { return true })
+    //auto.setWindowFilter((info) => { return true })
     var p = null;
     console.info("开始微信界面")
     if (currentPackage() != "com.tencent.mm") {
@@ -2948,7 +2948,7 @@ function 悬浮窗() {
 }
 
 function 微微视频() {
-    auto.setWindowFilter((info) => { return true })
+    //auto.setWindowFilter((info) => { return true })
     var 任务结果;
     while (1) {
         var myDate = new Date();
@@ -3087,7 +3087,7 @@ function 微微视频() {
 }
 
 function 微圈视频() {
-    auto.setWindowFilter((info) => { return true })
+    //auto.setWindowFilter((info) => { return true })
     var 任务结果;
     while (1) {
         var myDate = new Date();
@@ -3256,7 +3256,7 @@ function 微微提现() {
 }
 
 function 刷新token() {
-    auto.setWindowFilter((info) => { return true })
+    //auto.setWindowFilter((info) => { return true })
     var p = null
     console.info("微微token过期,开始刷新")
     返回();
@@ -3363,14 +3363,14 @@ function 检测更新() {
 function 微微点赞二(str) {
     var 发送 = false;
     var p = null;
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     try {
         str = str.replace(/[\.\。 \，\,\#\s\@]+/g, "");
         storage.put("str", str);
@@ -3556,14 +3556,14 @@ function 微微点赞二(str) {
 function 微微点赞三(str) {
     var 发送 = false;
     var p = null;
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     try {
         str = str.replace(/[\.\。 \，\,\#\s\@]+/g, "");
         storage.put("str", str);
@@ -3753,7 +3753,7 @@ function 微微点赞三(str) {
 }
 
 function 微微关注二(str) {
-    auto.setWindowFilter((info) => { return true })
+    //auto.setWindowFilter((info) => { return true })
     var p = null;
     var 发送 = false;
     storage.put("str", str);
@@ -3843,14 +3843,14 @@ function 微微关注二(str) {
 
 
 function 微微搜一搜(str) {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     var p = null;
     storage.put("str", str);
     sleep(5000);
@@ -3962,14 +3962,14 @@ function 微微搜一搜(str) {
 
 
 function 进入微微() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     console.info("开始进入微微")
     while (1) {
         var 发送 = false
@@ -4501,14 +4501,14 @@ function vq_submit_img() {
 
 
 function vq_get_token() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     var p = null;
     console.info("开始获取微圈token");
     while (1) {
@@ -4559,14 +4559,14 @@ function vq_get_info() {
 
 
 function 刷新vq_token() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     var p = null
     console.info("微圈token过期,开始刷新")
     返回();
@@ -4598,14 +4598,14 @@ function 刷新vq_token() {
 
 
 function 进入微圈() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     console.info("开始进入微圈")
     while (1) {
         var 发送 = false
@@ -4762,14 +4762,14 @@ function vqui_log() {
 
 
 function 微圈点赞() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     try {
         var p = null;
         for (var i = 0; i < 10; i++) {
@@ -5001,7 +5001,7 @@ function 微圈点赞() {
 
 
 function 微圈关注() {
-    auto.setWindowFilter((info) => { return true })
+    //auto.setWindowFilter((info) => { return true })
     var p = null;
     for (var i = 0; i < 10; i++) {
         try {
@@ -5125,14 +5125,14 @@ function 微圈关注() {
 
 
 function 微圈评论() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     try {
         var p = null;
         for (var i = 0; i < 10; i++) {
@@ -5319,14 +5319,14 @@ function 微圈评论() {
 
 
 function 微圈收藏() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     try {
         var p = null;
         for (var i = 0; i < 10; i++) {
@@ -5511,14 +5511,14 @@ function 微圈收藏() {
 }
 
 function 微圈播放() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     try {
         var p = null;
         for (var i = 0; i < 10; i++) {
@@ -5649,14 +5649,14 @@ function 微圈播放() {
 
 
 function 微圈阅读() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     var js = 0
     var wxjs = 0
     try {
@@ -5753,14 +5753,14 @@ function 微圈阅读() {
 
 
 function 微圈转发() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     转发check = false
     try {
         var p = null;
@@ -5931,14 +5931,14 @@ function 微圈转发() {
 
 
 function 阅读在看() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     try {
         var p = null;
         for (var i = 0; i < 30; i++) {
@@ -5985,14 +5985,14 @@ function 阅读在看() {
 
 
 function 阅读关注() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     try {
         var p = null;
         for (var i = 0; i < 30; i++) {
@@ -6058,14 +6058,14 @@ function 阅读关注() {
 
 
 function 阅读文章赞() {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     try {
         var p = null;
         for (var i = 0; i < 30; i++) {
@@ -6110,14 +6110,14 @@ function 阅读文章赞() {
 }
 
 function textplus(str) {
-    auto.setWindowFilter((info) => {
+    /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
         // }catch(e){
         //    return true
         // }
         return true
-    })
+    })*/
     var temp = null
     temp = textStartsWith(str).findOnce();
     if (temp) {
