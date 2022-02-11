@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.4";
+var versionNum = "v1.1.5";
 
 
 function jm() {
@@ -4222,7 +4222,7 @@ function 按名称关闭应用(packageName) {//有内存溢出风险，可能是
 function 关闭应用(ms) {
     if (ms) {
         for (var d = 0; d < 10; d++) {
-            if (text("文件传输助手").findOne(1000)) {
+            if ( !ssjpt&&text("文件传输助手").findOne(1000)) {
                 console.info("找到文件传输助手不关闭应用");
                 return
             }
