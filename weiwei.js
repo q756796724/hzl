@@ -90,14 +90,14 @@ gzh = false;
 话术arr = 转发评论str.split("-")
 
 在看无效 = 0;
-微微连续失败次数=0;
-微圈连续失败次数=0;
+微微连续失败次数 = 0;
+微圈连续失败次数 = 0;
 var topPackage = "";
 var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.3";
+var versionNum = "v1.1.4";
 
 
 function jm() {
@@ -224,7 +224,7 @@ function floatyModule() {
         window.setTouchable(false);
         window.setPosition(0, 高 * 0.2);
         //保持悬浮窗不被关闭,从而保持脚本运行（应该要写在悬浮窗线程里）
-        setInterval(()=>{}, 1000);
+        setInterval(() => { }, 1000);
     })
     this.show = function () {
         if (window) ui.run(() => { window.win.visibility = 0 })
@@ -287,8 +287,8 @@ ui.按钮_日志.on("click", () => {
 ui.start1.on("click", () => {
     if (ui.start1.text() == "加载悬浮窗") {
         //engines.execScriptFile("ce.js")
-        
-        ui.run(()=>{
+
+        ui.run(() => {
             //这里写针对UI的操作
             ui.start1.setText("关闭脚本");
         });
@@ -309,7 +309,7 @@ ui.start1.on("click", () => {
                     // }
                     return true
                 })*/
-                function 关闭浮窗() {
+                /*function 关闭浮窗() {
                     var c = null
                     c = packageName("com.tencent.mm").id("cvt").findOnce()
                     if (c) {
@@ -321,7 +321,7 @@ ui.start1.on("click", () => {
                     }
                     return 关闭浮窗;
                 }
-                setInterval(关闭浮窗(), 5000);
+                setInterval(关闭浮窗(), 5000);*/
 
                 function 任务归位() {
                     if (点赞 < 点赞数量) {
@@ -406,7 +406,7 @@ ui.start1.on("click", () => {
                     }
                     return -1;
                 }
-                
+
                 function 定时结束未响应() {
                     if (等待未响应() == 0) {
                         结束未响应()
@@ -794,7 +794,7 @@ function ww_submit_img() {
             try {
                 var 时间戳 = new Date().getTime();
                 var key = ww_img_key["dir"] + "/" + ww_id + 时间戳 + random(1000, 9999) + "." + 图片编码
-                var imgFile=open("/sdcard/任务." + 图片编码);
+                var imgFile = open("/sdcard/任务." + 图片编码);
                 temp = http.postMultipart(ww_img_key["host"], {
                     key: key,
                     policy: ww_img_key["policy"],
@@ -2833,6 +2833,17 @@ function 返回三() {
     return false
 }
 
+function 退出直播() {
+    let c = id('end').findOnce()
+    if (c) {
+        x = c.bounds().right - 1;
+        y = c.bounds().bottom - 1
+        click(x < 0 ? 0 : x, y < 0 ? 0 : y);
+        sleep(2000)
+        click("直接离开");
+    }
+}
+
 
 function 截图() {
     日志.hide()
@@ -3005,12 +3016,15 @@ function 微微视频() {
                     console.info("开始进行视频号点赞")
                     if (ww_task_data["article_url"] || ww_task_data["qrcode"] || ww_task_data["schemeurl"]) {
                         任务结果 = 微微点赞()
+                        退出直播()
                     } else if (ww_task_data["input_vtitle"]) {
                         任务结果 = 微微点赞二(ww_task_data["input_vtitle"])
+                        退出直播()
                         返回二()
                         进入微微()
                     } else if (ww_task_data["input_vuser"]) {
                         任务结果 = 微微点赞三(ww_task_data["input_vuser"])
+                        退出直播()
                         返回二()
                         进入微微()
                     }
@@ -3018,34 +3032,43 @@ function 微微视频() {
                     console.info("开始进行视频号关注")
                     if (ww_task_data["article_url"] || ww_task_data["qrcode"] || ww_task_data["schemeurl"]) {
                         任务结果 = 微微关注()
+                        退出直播()
                     } else {
                         任务结果 = 微微关注二(ww_task_data["input_vuser"])
+                        退出直播()
                         返回二()
                         进入微微()
                     }
                 } else if (ww_type == 32) {
                     console.info("开始进行视频号播放," + ww_task_data["duration"] + "秒")
                     任务结果 = 微微播放(ww_task_data["duration"])
+                    退出直播()
                 } else if (ww_type == 8) {
                     console.info("开始进行视频号收藏")
                     任务结果 = 微微收藏()
+                    退出直播()
                 } else if (ww_type == 4) {
                     console.info("开始进行视频号评论")
                     任务结果 = 微微评论()
+                    退出直播()
                 } else if (ww_type == 16) {
                     console.info("开始进行视频号转发")
                     任务结果 = 微微转发()
+                    退出直播()
                 } else if (ww_type == 64) {
                     console.info("开始进行视频号人气")
                     任务结果 = 微微人气()
+                    退出直播()
                 } else if (ww_type == 256) {
                     console.info("开始进行视频号搜一搜")
                     任务结果 = 微微搜一搜(ww_task_data["input_vuser"])
+                    退出直播()
                     返回三()
                     进入微微()
                 } else if (ww_type == 128) {
                     console.info("开始进行视频号评赞")
                     任务结果 = 微微评赞()
+                    退出直播()
                 }
                 if (!任务结果) {
                     微微连续失败次数++;
@@ -3053,7 +3076,7 @@ function 微微视频() {
                 }
                 返回();
                 if (任务结果) {
-                    微微连续失败次数=0;
+                    微微连续失败次数 = 0;
                     if (ww_submit_img()) {
                         if (ww_submit_task()) {
                             console.info(ww_type == 1 && "点赞任务提交成功" || ww_type == 2 && "关注任务提交成功" || ww_type == 32 && "播放任务提交成功" || ww_type == 8 && "收藏任务提交成功" || ww_type == 4 && "评论任务提交成功" || ww_type == 16 && "转发任务提交成功" || ww_type == 64 && "人气任务提交成功" || ww_type == 256 && "搜一搜任务提交成功" || ww_type == 128 && "评赞任务提交成功")
@@ -3082,12 +3105,12 @@ function 微微视频() {
                     }
                 } else {
                     ww_giveup_task()
-                    if(微微连续失败次数>8){
-                        if(返回三()){
-                            微微连续失败次数=0;
-                        }else{
+                    if (微微连续失败次数 > 8) {
+                        if (返回三()) {
+                            微微连续失败次数 = 0;
+                        } else {
                             关闭应用(true);
-                            微微连续失败次数=0;
+                            微微连续失败次数 = 0;
                             进入微微();
                         }
                     }
@@ -3145,30 +3168,39 @@ function 微圈视频() {
                 if (vq_type == "视频号点赞") {
                     console.info("开始进行视频号点赞")
                     任务结果 = 微圈点赞()
+                    退出直播()
                 } else if (vq_type == "视频号关注") {
                     console.info("开始进行视频号关注")
                     任务结果 = 微圈关注()
+                    退出直播()
                 } else if (vq_type == "视频号播放") {
                     console.info("开始进行视频号播放")
                     任务结果 = 微圈播放()
+                    退出直播()
                 } else if (vq_type == "视频号收藏") {
                     console.info("开始进行视频号收藏")
                     任务结果 = 微圈收藏()
+                    退出直播()
                 } else if (vq_type == "视频号评论") {
                     console.info("开始进行视频号评论")
                     任务结果 = 微圈评论()
+                    退出直播()
                 } else if (vq_type == "视频号转发") {
                     console.info("开始进行视频号转发")
                     任务结果 = 微圈转发()
+                    退出直播()
                 } else if (vq_type == "在看") {
                     console.info("开始进行阅读在看")
                     任务结果 = 阅读在看()
+                    退出直播()
                 } else if (vq_type == "关注") {
                     console.info("开始进行阅读关注")
                     任务结果 = 阅读关注()
+                    退出直播()
                 } else if (vq_type == "文章赞") {
                     console.info("开始进行阅读文章赞")
                     任务结果 = 阅读文章赞()
+                    退出直播()
                 }
                 if (!任务结果) {
                     微圈连续失败次数++;
@@ -3176,7 +3208,7 @@ function 微圈视频() {
                 }
                 返回();
                 if (任务结果) {
-                    微圈连续失败次数=0;
+                    微圈连续失败次数 = 0;
                     if (vq_submit_img()) {
                         if (vq_submit_task()) {
                             console.info(vq_type == "视频号点赞" && "点赞任务提交成功" || vq_type == "视频号关注" && "关注任务提交成功" || vq_type == "视频号播放" && "播放任务提交成功" || vq_type == "视频号收藏" && "收藏任务提交成功" || vq_type == "视频号评论" && "评论任务提交成功" || vq_type == "视频号转发" && "转发任务提交成功" || vq_type == "在看" && "在看任务提交成功" || vq_type == "关注" && "阅读关注任务提交成功" || vq_type == "文章赞" && "文章赞任务提交成功")
@@ -3217,12 +3249,12 @@ function 微圈视频() {
                     }
                 } else {
                     vq_giveup_task()
-                    if(微圈连续失败次数>8){
-                        if(返回三()){
-                            微圈连续失败次数=0;
-                        }else{
+                    if (微圈连续失败次数 > 8) {
+                        if (返回三()) {
+                            微圈连续失败次数 = 0;
+                        } else {
                             关闭应用(true);
-                            微圈连续失败次数=0;
+                            微圈连续失败次数 = 0;
                             进入微圈();
                         }
                     }
@@ -4025,7 +4057,7 @@ function 进入微微() {
         if (currentPackage() != "com.tencent.mm") {
             打开v()
         }
-        
+
         for (var i = 0; i < 30; i++) {
             p = text("通讯录").className("android.widget.TextView").packageName("com.tencent.mm").findOnce()
             if (p) {
@@ -4140,7 +4172,7 @@ function 进入微微() {
                 sleep(5000);
                 return
             }
-            sleep(random(1000,2000))
+            sleep(random(1000, 2000))
         }
         关闭应用(true)
     }
@@ -4316,7 +4348,8 @@ function 清空文件夹(path) {
 }*/
 
 function 微微总操作() {
-    关闭应用(false)
+    打开v()
+    返回三()
     if (vq_yd) {
         vqui_log()
         进入微圈()
@@ -4532,7 +4565,7 @@ function vq_submit_img() {
     vq_img_url = "";
     for (var i = 0; i < 10; i++) {
         try {
-            var imgFile=open("/sdcard/任务." + 图片编码);
+            var imgFile = open("/sdcard/任务." + 图片编码);
             temp = http.postMultipart("http://heimao.ccp3.com/api/app/alioss/upload", {
                 image: imgFile
             });
