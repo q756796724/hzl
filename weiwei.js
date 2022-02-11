@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.5";
+var versionNum = "v1.1.6";
 
 
 function jm() {
@@ -323,6 +323,30 @@ ui.start1.on("click", () => {
                 }
                 setInterval(关闭浮窗(), 5000);*/
 
+                function 清理后台() {
+                    if(device.getAvailMem()/1024/1024<1000){
+                        log(new Date().toLocaleString() + "-" + "清理后台");
+                        home()
+                        sleep(1000)
+                        recents()
+                        let cBtn = packageName("com.android.systemui").id("clearAnimView").findOne(1000)
+                        if (cBtn) {
+                            cBtn.click()
+                        }else{
+                            if(device.brand=='Meizu'){
+                                click(device.width/2,device.height*0.85) 
+                            }else if(device.brand=='Xiaomi'){
+                                click(device.width/2,device.height*0.9) 
+                            }   
+                        }
+                    }
+                    return 清理后台;
+                }
+                if(device.brand=='Meizu'||device.brand=='Xiaomi'){
+                    setInterval(清理后台(), 30 * 1000 * 60);
+                }
+                
+
                 function 任务归位() {
                     if (点赞 < 点赞数量) {
                         ww_dz = storage.get("ww_dz", false);
@@ -421,6 +445,7 @@ ui.start1.on("click", () => {
             日志.show()
             统计复位()
             console.info(versionNum);
+            sleep(5000)
             微微总操作()
         })
     } else {
