@@ -92,7 +92,12 @@ gzh = false;
 在看无效 = 0;
 微微连续失败次数=0;
 微圈连续失败次数=0;
-var versionNum = "v1.1.2";
+var topPackage = "";
+var topActivity = "";
+var MAIN_PKG = "com.fanqie.cloud";
+var PKG_NAME = "com.tencent.mm";
+var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
+var versionNum = "v1.1.3";
 
 
 function jm() {
@@ -2790,7 +2795,7 @@ function 返回() {
         }
         sleep(1000)
     }
-    按名称关闭应用("com.tencent.mm");
+    返回三()
     进入微微();
 }
 
@@ -2814,15 +2819,9 @@ function 返回三() {
     //auto.setWindowFilter((info) => { return true })
     var p = null;
     console.info("开始微信界面")
-    if (currentPackage() != "com.tencent.mm") {
-        按名称关闭应用("com.tencent.mm");
-        sleep(2000);
-        home();
-        sleep(1000);
-        return;
-    }
+    打开v()
     for (var i = 0; i < 20; i++) {
-        if (text("通讯录").findOnce()) {
+        if (text("通讯录").className("android.widget.TextView").packageName("com.tencent.mm").findOnce()) {
             console.info("返回微信界面成功")
             return true
         } else {
@@ -2831,6 +2830,7 @@ function 返回三() {
         }
         sleep(1000)
     }
+    return false
 }
 
 
@@ -3082,9 +3082,13 @@ function 微微视频() {
                     }
                 } else {
                     ww_giveup_task()
-                    if(微微连续失败次数>5){
-                        if(按名称关闭应用("com.tencent.mm")){
-                          微微连续失败次数=0;
+                    if(微微连续失败次数>8){
+                        if(返回三()){
+                            微微连续失败次数=0;
+                        }else{
+                            关闭应用(true);
+                            微微连续失败次数=0;
+                            进入微微();
                         }
                     }
                 }
@@ -3213,10 +3217,14 @@ function 微圈视频() {
                     }
                 } else {
                     vq_giveup_task()
-                    if(微圈连续失败次数>5){
-                        if(按名称关闭应用("com.tencent.mm")){
+                    if(微圈连续失败次数>8){
+                        if(返回三()){
                             微圈连续失败次数=0;
-                          }
+                        }else{
+                            关闭应用(true);
+                            微圈连续失败次数=0;
+                            进入微圈();
+                        }
                     }
                 }
             } else {
@@ -3226,6 +3234,7 @@ function 微圈视频() {
             }
 
         } else {
+            返回三();
             进入微圈();
         }
     }
@@ -4007,28 +4016,30 @@ function 进入微微() {
     console.info("开始进入微微")
     for (; ;) {
         var 发送 = false
-        p = text("微信").className("android.widget.TextView").boundsInside(0, 0, 宽, 高).findOne(1000)
+        /*p = text("微信").className("android.widget.TextView").boundsInside(0, 0, 宽, 高).findOne(1000)
         if (p && p.bounds().centerX() > 0 && p.bounds().centerY() > 0) {
             sleep(1000)
             clickx(p.bounds().centerX(), p.bounds().centerY());
             sleep(2000)
+        }*/
+        if (currentPackage() != "com.tencent.mm") {
+            打开v()
         }
-        app.launch("com.tencent.mm")
-        sleep(5000)
+        
         for (var i = 0; i < 30; i++) {
-            p = text("通讯录").className("android.widget.TextView").packageName("com.tencent.mm").findOne(1000)
+            p = text("通讯录").className("android.widget.TextView").packageName("com.tencent.mm").findOnce()
             if (p) {
                 sleep(1000)
                 clickx(p.bounds().centerX(), p.bounds().centerY());
                 sleep(2000)
             }
-            p = desc("搜索").className("android.widget.RelativeLayout").packageName("com.tencent.mm").findOne(1000)
+            p = desc("搜索").className("android.widget.RelativeLayout").packageName("com.tencent.mm").findOnce()
             if (p) {
                 sleep(1000)
                 clickx(p.bounds().centerX(), p.bounds().centerY());
                 sleep(2000)
             }
-            p = text("搜索").className("android.widget.EditText").packageName("com.tencent.mm").findOne(1000)
+            p = text("搜索").className("android.widget.EditText").packageName("com.tencent.mm").findOnce()
             if (p) {
                 sleep(1000)
                 clickx(p.bounds().centerX(), p.bounds().centerY());
@@ -4044,13 +4055,13 @@ function 进入微微() {
                 sleep(2000)
             }
             if (ssjpt) {
-                p = textStartsWith('搜一搜').className("android.widget.TextView").packageName("com.tencent.mm").findOne(1000)
+                p = textStartsWith('搜一搜').className("android.widget.TextView").packageName("com.tencent.mm").findOnce()
                 if (p) {
                     sleep(1000)
                     clickx(p.bounds().centerX(), p.bounds().centerY());
                     sleep(5000)
                 }
-                p = text('访问网页').packageName("com.tencent.mm").findOne(1000)
+                p = text('访问网页').packageName("com.tencent.mm").findOnce()
                 if (p) {
                     sleep(1000)
                     clickx(p.bounds().centerX(), p.bounds().centerY());
@@ -4058,31 +4069,31 @@ function 进入微微() {
                 }
             } else {
                 // p = text("文件传输助手").className("android.widget.TextView").packageName("com.tencent.mm").findOnce()
-                p = text(指定昵称).className("android.widget.TextView").packageName("com.tencent.mm").findOne(1000)
+                p = text(指定昵称).className("android.widget.TextView").packageName("com.tencent.mm").findOnce()
                 if (p) {
                     sleep(1000)
                     clickx(p.bounds().centerX(), p.bounds().centerY());
                     sleep(2000)
                 }
-                p = text("添加到通讯录").className("android.widget.TextView").packageName("com.tencent.mm").findOne(1000)
+                p = text("添加到通讯录").className("android.widget.TextView").packageName("com.tencent.mm").findOnce()
                 if (p) {
                     sleep(1000)
                     clickx(p.bounds().centerX(), p.bounds().centerY());
                     sleep(2000)
                 }
-                p = text("发消息").className("android.widget.TextView").packageName("com.tencent.mm").findOne(1000)
+                p = text("发消息").className("android.widget.TextView").packageName("com.tencent.mm").findOnce()
                 if (p) {
                     sleep(1000)
                     clickx(p.bounds().centerX(), p.bounds().centerY());
                     sleep(2000)
                 }
-                p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(1000)
+                p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOnce()
                 if (p) {
                     sleep(1000)
                     p.setText(微微链接)
                     sleep(2000)
                 }
-                p = text("发送").className("android.widget.Button").packageName("com.tencent.mm").findOne(1000)
+                p = text("发送").className("android.widget.Button").packageName("com.tencent.mm").findOnce()
                 if (p) {
                     sleep(1000)
                     clickx(p.bounds().centerX(), p.bounds().centerY());
@@ -4099,44 +4110,44 @@ function 进入微微() {
                     }
                 }
             }
-            p = text("继续访问").packageName("com.tencent.mm").findOne(1000)
+            p = text("继续访问").packageName("com.tencent.mm").findOnce()
             if (p) {
                 sleep(1000)
                 clickx(p.bounds().centerX(), p.bounds().centerY());
                 sleep(3000)
             }
-            p = text("允许").className("android.widget.Button").packageName("com.tencent.mm").findOne(1000)
+            p = text("允许").className("android.widget.Button").packageName("com.tencent.mm").findOnce()
             if (p) {
                 sleep(1000)
                 clickx(p.bounds().centerX(), p.bounds().centerY());
                 sleep(2000)
             }
-            p = text("进入视频号专题 >>").packageName("com.tencent.mm").findOne(1000)
+            p = text("进入视频号专题 >>").packageName("com.tencent.mm").findOnce()
             if (p) {
                 sleep(1000)
                 clickx(p.bounds().centerX(), p.bounds().centerY());
                 sleep(2000)
             }
-            p = text("开启活动订单").packageName("com.tencent.mm").findOne(1000)
+            p = text("开启活动订单").packageName("com.tencent.mm").findOnce()
             if (p) {
                 console.info("进入微微成功")
                 sleep(5000);
                 return
             }
-            p = text("进入微圈专题 >>").packageName("com.tencent.mm").findOne(1000)
+            p = text("进入微圈专题 >>").packageName("com.tencent.mm").findOnce()
             if (p) {
                 console.info("进入微微成功")
                 sleep(5000);
                 return
             }
-            sleep(1000)
+            sleep(random(1000,2000))
         }
-        关闭应用(false)
+        关闭应用(true)
     }
 }
-function 按名称关闭应用(packageName) {
+function 按名称关闭应用(packageName) {//有内存溢出风险，可能是应用自启动导致
     log("尝试关闭" + packageName);
-    var name = getPackageName(packageName);
+    /*var name = getPackageName(packageName);
     if (!name) {
         if (getAppName(packageName)) {
             name = packageName;
@@ -4144,10 +4155,10 @@ function 按名称关闭应用(packageName) {
             log("关闭" + packageName + "失败");
             return false;
         }
-    }
-    app.openAppSetting(name);
+    }*/
+    app.openAppSetting(packageName);
     sleep(2000);
-    if (text(app.getAppName(name)).findOne(5000) != null && text("卸载").findOne(5000) != null) {
+    if (text(app.getAppName(packageName)).findOne(5000) != null && text("卸载").findOne(5000) != null) {
         let is_sure = textMatches(/(.*强.*|.*停.*|.*结.*|.*行.*)/).findOne(3000);
         if (is_sure != null) {
             if (is_sure.enabled()) {
@@ -4178,15 +4189,20 @@ function 按名称关闭应用(packageName) {
 }
 function 关闭应用(ms) {
     if (ms) {
-        for (var d = 0; d < 5; d++) {
+        for (var d = 0; d < 10; d++) {
             if (text("文件传输助手").findOne(1000)) {
-                return true
+                console.info("找到文件传输助手不关闭应用");
+                return
+            }
+            if (text("通讯录").className("android.widget.TextView").packageName("com.tencent.mm").findOne(1000)) {
+                console.info("找到通讯录不关闭应用");
+                return
             }
             back();
         }
     }
 
-    console.info("开始退出微信");
+    console.info("开始退出应用");
     /*app.openAppSetting("com.tencent.mm");
     for (var i = 0; i < 10; i++) {
         var is_sure = textMatches(/(.*强.*|.*停.*|.*结.*|.*行.*)/).findOne(1000);
@@ -4262,7 +4278,7 @@ function 关闭应用(ms) {
     }
     return false;*/
 
-    按名称关闭应用("com.tencent.mm");
+    按名称关闭应用(PKG_NAME);
 }
 
 /*function 关闭浮窗() {
@@ -4646,13 +4662,13 @@ function 进入微圈() {
     console.info("开始进入微圈")
     for (; ;) {
         var 发送 = false
-        p = text("微信").className("android.widget.TextView").boundsInside(0, 0, 宽, 高).findOnce()
+        /*p = text("微信").className("android.widget.TextView").boundsInside(0, 0, 宽, 高).findOnce()
         if (p && p.bounds().centerX() > 0 && p.bounds().centerY() > 0) {
             sleep(1000)
             clickx(p.bounds().centerX(), p.bounds().centerY());
             sleep(2000)
-        }
-        app.launch("com.tencent.mm")
+        }*/
+        打开v()
         for (let i = 0; i < 30; i++) {
             p = text("通讯录").className("android.widget.TextView").packageName("com.tencent.mm").findOnce()
             if (p) {
@@ -6177,4 +6193,40 @@ function clickx(x, y) {
     x = x + random(-5, 5)
     y = y + random(-5, 5)
     click(x < 0 ? 1 : x, y < 0 ? 1 : y)
+}
+
+function 打开v() {
+    refreshStateInfo();
+    if (topPackage != PKG_NAME) {
+        home();
+        sleep(2000);
+        log("打开" + PKG_NAME);
+        app.launch(PKG_NAME);
+        sleep(15000);
+    }
+    refreshStateInfo();
+    if (topPackage != PKG_NAME) {
+        home();
+        sleep(2000);
+        log("打开" + PKG_NAME);
+        app.launch(PKG_NAME);
+        sleep(10000);
+    }
+
+    refreshStateInfo();
+    if (topPackage != PKG_NAME) {
+        按名称关闭应用(PKG_NAME);
+        sleep(3000);
+        log("打开" + PKG_NAME);
+        app.launch(PKG_NAME);
+        sleep(30000);
+    }
+}
+function refreshStateInfo() {
+    sleep(1000);
+    topPackage = currentPackage();
+    sleep(1000);
+    topActivity = currentActivity();
+    //log("==> topPackage: " + topPackage);
+    //log("==> topActivity: " + topActivity);
 }
