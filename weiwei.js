@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.6";
+var versionNum = "v1.1.7";
 
 
 function jm() {
@@ -328,16 +328,17 @@ ui.start1.on("click", () => {
                         log(new Date().toLocaleString() + "-" + "清理后台");
                         home()
                         sleep(1000)
-                        recents()
-                        let cBtn = packageName("com.android.systemui").id("clearAnimView").findOne(1000)
-                        if (cBtn) {
-                            cBtn.click()
-                        }else{
-                            if(device.brand=='Meizu'){
-                                click(device.width/2,device.height*0.85) 
-                            }else if(device.brand=='Xiaomi'){
-                                click(device.width/2,device.height*0.9) 
-                            }   
+                        if(recents()){
+                            let cBtn = packageName("com.android.systemui").id("clearAnimView").findOne(1000)
+                            if (cBtn) {
+                                cBtn.click()
+                            }else{
+                                if(device.brand=='Meizu'){
+                                    click(device.width/2,device.height*0.85) 
+                                }else if(device.brand=='Xiaomi'){
+                                    click(device.width/2,device.height*0.9) 
+                                }   
+                            }
                         }
                     }
                     return 清理后台;
