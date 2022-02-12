@@ -329,7 +329,7 @@ ui.start1.on("click", () => {
                         home()
                         sleep(1500)
                         if(device.brand=='Meizu'){
-                            sml_move(device.width*0.1, device.height-10, device.width*0.2, device.height*0.5, 800);
+                            sml_move(device.width*0.1, device.height+1, device.width*0.2, device.height*0.5, 600);
                         }else if(device.brand=='Xiaomi'){
                             recents()
                         }
