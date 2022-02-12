@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.2.3";
+var versionNum = "v1.2.4";
 
 
 function jm() {
@@ -329,7 +329,7 @@ ui.start1.on("click", () => {
                         home()
                         sleep(1500)
                         if(device.brand=='Meizu'){
-                            sml_move(device.width*0.3, device.height, device.width*0.5, device.height*0.6, 1500);
+                            sml_move(device.width*0.3, device.height, device.width*0.4, device.height*0.4, 1500);
                         }else if(device.brand=='Xiaomi'){
                             recents()
                         }
@@ -4115,8 +4115,8 @@ function 进入微微() {
                     setText(指定昵称);
                 }
                 sleep(2000)
-                clickx(p.bounds().centerX(), p.bounds().centerY());
-                sleep(2000)
+                //clickx(p.bounds().centerX(), p.bounds().centerY());
+                sleep(4000)
             }
             if (ssjpt) {
                 p = textStartsWith('搜一搜').className("android.widget.TextView").packageName("com.tencent.mm").findOnce()
