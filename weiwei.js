@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.2.1";
+var versionNum = "v1.2.2";
 
 
 function jm() {
@@ -329,7 +329,7 @@ ui.start1.on("click", () => {
                         home()
                         sleep(1500)
                         if(device.brand=='Meizu'){
-                            sml_move(device.width*0.3, device.height-10, device.width*0.5, device.height*0.6, 3000);
+                            sml_move(device.width*0.3, device.height-1, device.width*0.5, device.height*0.6, 500);
                         }else if(device.brand=='Xiaomi'){
                             recents()
                         }
