@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.3.0";
+var versionNum = "v1.3.1";
 
 
 function jm() {
@@ -326,20 +326,41 @@ ui.start1.on("click", () => {
                 function 清理后台() {
                     if (device.getAvailMem() / 1024 / 1024 < 1000) {
                         log(new Date().toLocaleString() + "-" + "清理后台");
-                        home()
-                        sleep(1500)
+                       
                         if (device.brand == 'Xiaomi') {
+                            home()
+                            sleep(1500)
                             recents()
-                            let cBtn = packageName("com.android.systemui").id("clearAnimView").findOne(2000)
-                            if (cBtn) {
-                                cBtn.click()
+                            let cleanBtn = packageName("com.android.systemui").id("clearAnimView").findOne(2000)
+                            if (cleanBtn) {
+                                cleanBtn.click()
                             } else {
-                                click(device.width / 2, device.height * 0.92)
+                                click(device.width / 2, device.height * 0.9)
                             }
+                        } else if (device.brand == 'Meizu') {
+                            home()
+                            sleep(1500)
+                            quickSettings()
+                            let cleanBtn = packageName("com.android.systemui").text("手机加速").findOne(2000)
+                            if (cleanBtn) {
+                                cleanBtn = cleanBtn.parent()
+                                if (cleanBtn) {
+                                    cleanBtn.click()
+                                    back()
+                                }
+                            } else {
+                                recents()
+                                sleep(2000);
+                                click(device.width / 2, device.height * 0.9)
+                            }
+                        }else{
+                            按名称关闭应用(PKG_NAME);
+                            sleep(1500)
+                            home()
                         }
                     }
                 }
-                
+
 
                 function 任务归位() {
                     if (点赞 < 点赞数量) {
@@ -383,9 +404,7 @@ ui.start1.on("click", () => {
                 }
 
                 function 清理空间() {
-                    if (device.brand == 'Xiaomi') {
-                        清理后台();
-                    }
+                    清理后台();
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/");
