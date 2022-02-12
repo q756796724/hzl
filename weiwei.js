@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.9";
+var versionNum = "v1.2.0";
 
 
 function jm() {
@@ -327,9 +327,9 @@ ui.start1.on("click", () => {
                     if(device.getAvailMem()/1024/1024<1000){
                         log(new Date().toLocaleString() + "-" + "清理后台");
                         home()
-                        sleep(1000)
+                        sleep(1500)
                         if(device.brand=='Meizu'){
-                           swipe(device.width*0.5, device.height-10, device.width*0.51, device.height*0.6, 1500);
+                            sml_move(device.width*0.3, device.height-10, device.width*0.5, device.height*0.6, 1000);
                         }else if(device.brand=='Xiaomi'){
                             recents()
                         }
@@ -6295,3 +6295,63 @@ function refreshStateInfo() {
     //log("==> topPackage: " + topPackage);
     //log("==> topActivity: " + topActivity);
 }
+
+//曲线滑动---贝塞尔曲线
+function bezier_curves(cp, t) {
+    cx = 3.0 * (cp[1].x - cp[0].x);
+    bx = 3.0 * (cp[2].x - cp[1].x) - cx;
+    ax = cp[3].x - cp[0].x - cx - bx;
+    cy = 3.0 * (cp[1].y - cp[0].y);
+    by = 3.0 * (cp[2].y - cp[1].y) - cy;
+    ay = cp[3].y - cp[0].y - cy - by;
+
+    tSquared = t * t;
+    tCubed = tSquared * t;
+    result = {
+        "x": 0,
+        "y": 0
+    };
+    result.x = (ax * tCubed) + (bx * tSquared) + (cx * t) + cp[0].x;
+    result.y = (ay * tCubed) + (by * tSquared) + (cy * t) + cp[0].y;
+    return result;
+};
+
+//仿真随机带曲线滑动  
+//qx, qy, zx, zy, time 代表起点x,起点y,终点x,终点y,过程耗时单位毫秒
+function sml_move(qx, qy, zx, zy, time) {
+    var xxy = [time];
+    var point = [];
+    var dx0 = {
+        "x": qx,
+        "y": qy
+    };
+
+    var dx1 = {
+        "x": random(qx - 100, qx + 100),
+        "y": random(qy, qy + 50)
+    };
+    var dx2 = {
+        "x": random(zx - 100, zx + 100),
+        "y": random(zy, zy + 50),
+    };
+    var dx3 = {
+        "x": zx,
+        "y": zy
+    };
+    for (var i = 0; i < 4; i++) {
+
+        eval("point.push(dx" + i + ")");
+
+    };
+    //log(point[3].x)
+
+    for (let i = 0; i < 1; i += 0.08) {
+        xxyy = [parseInt(bezier_curves(point, i).x), parseInt(bezier_curves(point, i).y)]
+
+        xxy.push(xxyy);
+
+    }
+
+    //log(xxy);
+    gesture.apply(null, xxy);
+};
