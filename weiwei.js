@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.3.1";
+var versionNum = "v1.3.2";
 
 
 function jm() {
@@ -4122,21 +4122,19 @@ function 进入微微() {
                     setText(指定昵称);
                 }
                 sleep(3000)
-                //clickx(p.bounds().centerX(), p.bounds().centerY());
-                //sleep(2000)
+                clickx(p.bounds().centerX(), p.bounds().centerY());
             }
             if (ssjpt) {
-                p = textStartsWith('搜一搜').className("android.widget.TextView").packageName("com.tencent.mm").findOnce()
+                p = textStartsWith('搜一搜').className("android.widget.TextView").packageName("com.tencent.mm").findOne(5000)
                 if (p) {
                     sleep(1000)
                     clickx(p.bounds().centerX(), p.bounds().centerY());
-                    sleep(5000)
                 }
-                p = text('访问网页').packageName("com.tencent.mm").findOnce()
+                p = text('访问网页').packageName("com.tencent.mm").findOne(10000)
                 if (p) {
                     sleep(1000)
                     clickx(p.bounds().centerX(), p.bounds().centerY());
-                    sleep(5000)
+                    sleep(10000)
                 }
             } else {
                 // p = text("文件传输助手").className("android.widget.TextView").packageName("com.tencent.mm").findOnce()
@@ -4177,7 +4175,7 @@ function 进入微微() {
                     if (p.length > 0) {
                         sleep(1000)
                         click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
-                        sleep(3000)
+                        sleep(10000)
                     }
                 }
             }
