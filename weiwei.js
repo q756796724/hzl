@@ -2014,8 +2014,8 @@ function 微微收藏() {
                     return false
                 }
                 日志.hide()
-                let img = captureScreen();
-                let color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
+                img = captureScreen();
+                color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
                 if (colors.red(color) >= 200 && colors.green(color) >= 200 && colors.blue(color) >= 200) {
                     p_sc.click();
                 }
@@ -2060,8 +2060,8 @@ function 微微收藏() {
                     return false
                 }
                 日志.hide()
-                let img = captureScreen();
-                let color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
+                img = captureScreen();
+                color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
                 if (colors.red(color) >= 200 && colors.green(color) >= 200 && colors.blue(color) >= 200) {
                     p_sc.click();
                 }
@@ -5578,8 +5578,8 @@ function 微圈收藏() {
                     return false
                 }
                 日志.hide()
-                let img = captureScreen();
-                let color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
+                img = captureScreen();
+                color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
                 if (colors.red(color) >= 200 && colors.green(color) >= 200 && colors.blue(color) >= 200) {
                     p_sc.click();
                 }
