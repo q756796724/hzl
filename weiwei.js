@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.2.6";
+var versionNum = "v1.3.0";
 
 
 function jm() {
@@ -255,7 +255,7 @@ function floatyModule() {
 }
 events.observeToast();
 events.onToast(function (toast) {
-    var pkg = toast.getPackageName();
+    let pkg = toast.getPackageName();
     if (pkg == "com.tencent.mm" && (toast.getText() == "已分享" || toast.getText() == "微信：已分享")) {
         转发check = true;
     }
@@ -310,7 +310,7 @@ ui.start1.on("click", () => {
                     return true
                 })*/
                 /*function 关闭浮窗() {
-                    var c = null
+                    let c = null
                     c = packageName("com.tencent.mm").id("cvt").findOnce()
                     if (c) {
                         c.click()
@@ -324,33 +324,20 @@ ui.start1.on("click", () => {
                 setInterval(关闭浮窗(), 5000);*/
 
                 function 清理后台() {
-                    if(device.getAvailMem()/1024/1024<1000){
+                    if (device.getAvailMem() / 1024 / 1024 < 1000) {
                         log(new Date().toLocaleString() + "-" + "清理后台");
                         home()
                         sleep(1500)
-                        if(device.brand=='Meizu'){
-                            sml_move(device.width*0.1, device.height+1, device.width*0.2, device.height*0.5, 600);
-                        }else if(device.brand=='Xiaomi'){
+                        if (device.brand == 'Xiaomi') {
                             recents()
-                        }
-
-                        
-                        
-                        let cBtn = packageName("com.android.systemui").id("clearAnimView").findOne(1000)
-                        if (cBtn) {
-                            cBtn.click()
-                        }else{
-                            if(device.brand=='Meizu'){
-                                click(device.width/2,device.height*0.85) 
-                            }else if(device.brand=='Xiaomi'){
-                                click(device.width/2,device.height*0.9) 
-                            }   
+                            let cBtn = packageName("com.android.systemui").id("clearAnimView").findOne(2000)
+                            if (cBtn) {
+                                cBtn.click()
+                            } else {
+                                click(device.width / 2, device.height * 0.92)
+                            }
                         }
                     }
-                    return 清理后台;
-                }
-                if(device.brand=='Meizu'||device.brand=='Xiaomi'){
-                    setInterval(清理后台(), 30 * 1000 * 60);
                 }
                 
 
@@ -385,7 +372,7 @@ ui.start1.on("click", () => {
                 setInterval(任务归位(), 30 * 1000 * 60);
 
                 function 清空文件夹(path) {
-                    var arr = files.listDir(path);
+                    let arr = files.listDir(path);
                     for (let i = 0; i < arr.length; i++) {
                         if (files.isDir(path + arr[i])) {
                             files.removeDir(path + arr[i]);
@@ -396,6 +383,9 @@ ui.start1.on("click", () => {
                 }
 
                 function 清理空间() {
+                    if (device.brand == 'Xiaomi') {
+                        清理后台();
+                    }
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/");
@@ -616,7 +606,7 @@ function ww_get_token() {
         // }
         return true
     })*/
-    var p = null;
+    let p = null;
     setClip("");
     console.info("开始获取微微token");
     for (; ;) {
@@ -639,8 +629,8 @@ function ww_get_token() {
 
 
 function ww_get_task() {
-    var temp = null;
-    var ids = 0;
+    let temp = null;
+    let ids = 0;
     ww_task_id = null;
     if (ww_dz && 点赞 < 点赞数量) {
         ids = ids + 1;
@@ -669,8 +659,8 @@ function ww_get_task() {
     if (ww_sys) {
         ids = ids + 256;
     }
-    for (var i = 0; i < 15; i++) {
-        var myDate = new Date();
+    for (let i = 0; i < 15; i++) {
+        let myDate = new Date();
         if (ui.vq_yd.isChecked() && myDate.getHours() + "" + myDate.getMinutes() == "00") {
             vq_yd = true;
             return false
@@ -716,9 +706,9 @@ function ww_get_task() {
 
 
 function ww_submit_task() {
-    var temp = null;
+    let temp = null;
     if (ww_task_id) {
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             try {
                 temp = http.post(微微api + "sphao/task/submit/one", {
                     "id": ww_task_id,
@@ -756,9 +746,9 @@ function ww_submit_task() {
 
 
 function ww_giveup_task() {
-    var temp = null;
+    let temp = null;
     if (ww_task_id) {
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             try {
                 temp = http.post(微微api + "sphao/task/giveup", {
                     "id": ww_task_id
@@ -790,8 +780,8 @@ function ww_giveup_task() {
 }
 
 function ww_shot_img() {
-    var temp = null;
-    for (var i = 0; i < 10; i++) {
+    let temp = null;
+    for (let i = 0; i < 10; i++) {
         try {
             temp = http.get(微微api + "sphao/oss/shotimg", {
                 headers: {
@@ -819,14 +809,14 @@ function ww_shot_img() {
 
 
 function ww_submit_img() {
-    var temp = null;
+    let temp = null;
     ww_img_url = "";
     if (ww_shot_img()) {
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             try {
-                var 时间戳 = new Date().getTime();
-                var key = ww_img_key["dir"] + "/" + ww_id + 时间戳 + random(1000, 9999) + "." + 图片编码
-                var imgFile = open("/sdcard/任务." + 图片编码);
+                let 时间戳 = new Date().getTime();
+                let key = ww_img_key["dir"] + "/" + ww_id + 时间戳 + random(1000, 9999) + "." + 图片编码
+                let imgFile = open("/sdcard/任务." + 图片编码);
                 temp = http.postMultipart(ww_img_key["host"], {
                     key: key,
                     policy: ww_img_key["policy"],
@@ -857,7 +847,7 @@ function ww_submit_img() {
 }
 
 function ww_get_info() {
-    var temp = null;
+    let temp = null;
     try {
         temp = http.get(微微api + "sphao/account/info", {
             headers: {
@@ -886,9 +876,9 @@ function ww_get_info() {
 
 function 微微关注() {
     //auto.setWindowFilter((info) => { return true })
-    var p = null;
+    let p = null;
     sleep(5000);
-    for (var i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
         try {
             p = text("开启活动订单").findOnce();
             if (p) {
@@ -1072,9 +1062,9 @@ function 微微关注() {
 function 微微点赞() {
     //auto.setWindowFilter((info) => { return true })
     try {
-        var p = null;
+        let p = null;
         sleep(5000);
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             p = text("开启活动订单").findOnce();
             if (p) {
                 sleep(1000);
@@ -1225,8 +1215,8 @@ function 微微点赞() {
             }
             p = id("u1").findOnce()
             if (p) {
-                for (var i = 0; i < 5; i++) {
-                    var t = id("u1").findOnce()
+                for (let i = 0; i < 5; i++) {
+                    let t = id("u1").findOnce()
                     if (t) {
                         if (t.bounds().bottom >= 高 - 100) {
                             swipe(宽 / 2, 高 * 0.3, 宽 / 2, 高 * 0.2, 1000);
@@ -1242,14 +1232,14 @@ function 微微点赞() {
                 日志.hide()
                 sleep(2000);
                 p = id("u1").findOnce()
-                var img = captureScreen();
-                var color = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
+                let img = captureScreen();
+                let color = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
                 日志.show()
                 if (colors.red(color) == 255 && colors.green(color) == 255 && colors.blue(color) == 255) {
                     p.click();
                 } else {
                     console.log(colors.red(color), colors.green(color), colors.blue(color), p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2)
-                    var clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
+                    let clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
                     images.save(clip, "/sdcard/1.png");
                     console.warn("颜色不符合,没有点赞")
                     img.recycle();
@@ -1277,8 +1267,8 @@ function 微微点赞() {
             }
             p = id("xk").findOnce()
             if (p) {
-                for (var i = 0; i < 5; i++) {
-                    var t = id("xk").findOnce()
+                for (let i = 0; i < 5; i++) {
+                    let t = id("xk").findOnce()
                     if (t) {
                         if (t.bounds().bottom >= 高 - 50) {
                             swipe(宽 / 2, 高 * 0.3, 宽 / 2, 高 * 0.2, 1000);
@@ -1294,7 +1284,7 @@ function 微微点赞() {
                 日志.hide()
                 sleep(2000);
                 p = id("xk").findOnce()
-                var img = captureScreen();
+                let img = captureScreen();
                 if (p.childCount() > 1) {
                     if (p.child(0).childCount() > 0) {
                         var color = images.pixel(img, p.child(0).child(0).bounds().left + (p.child(0).child(0).bounds().right - p.child(0).child(0).bounds().left) / 2, p.child(0).child(0).bounds().top + (p.child(0).child(0).bounds().right - p.child(0).child(0).bounds().left) / 2);
@@ -1319,8 +1309,8 @@ function 微微点赞() {
                 } else {
                     console.log(colors.red(color), colors.green(color), colors.blue(color), p.bounds().left + (p.bounds().right - p.bounds().left) / 2, p.bounds().top + (p.bounds().right - p.bounds().left) / 2)
                     console.log(colors.red(color2), colors.green(color2), colors.blue(color2), p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2)
-                    var clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().right - p.bounds().left), (p.bounds().right - p.bounds().left));
-                    var clip2 = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
+                    let clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().right - p.bounds().left), (p.bounds().right - p.bounds().left));
+                    let clip2 = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
                     images.save(clip, "/sdcard/1.png");
                     images.save(clip2, "/sdcard/2.png");
                     console.warn("颜色不符合,没有点赞");
@@ -1350,8 +1340,8 @@ function 微微点赞() {
             }
             p = id("a2s").findOnce()
             if (p) {
-                for (var i = 0; i < 5; i++) {
-                    var t = id("a2s").findOnce()
+                for (let i = 0; i < 5; i++) {
+                    let t = id("a2s").findOnce()
                     if (t) {
                         if (t.bounds().bottom >= 高 - 100) {
                             swipe(宽 / 2, 高 * 0.3, 宽 / 2, 高 * 0.2, 1000);
@@ -1367,14 +1357,14 @@ function 微微点赞() {
                 日志.hide()
                 sleep(2000);
                 p = id("a2s").findOnce()
-                var img = captureScreen();
-                var color = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + ((p.bounds().bottom - p.bounds().top) / 3));
+                let img = captureScreen();
+                let color = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + ((p.bounds().bottom - p.bounds().top) / 3));
                 日志.show()
                 if (colors.red(color) >= 200 && colors.green(color) >= 200 && colors.blue(color) >= 200) {
                     p.click();
                 } else {
                     console.log(colors.red(color), colors.green(color), colors.blue(color), p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + ((p.bounds().bottom - p.bounds().top) / 3))
-                    var clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
+                    let clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
                     images.save(clip, "/sdcard/1.png");
                     console.warn("颜色不符合,没有点赞")
                     img.recycle();
@@ -1413,9 +1403,9 @@ function 微微点赞() {
 function 微微人气() {
     //auto.setWindowFilter((info) => { return true })
     try {
-        var p = null;
+        let p = null;
         sleep(5000);
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             p = text("开启活动订单").findOnce();
             if (p) {
                 sleep(1000);
@@ -1557,13 +1547,13 @@ function 微微人气() {
             }
             p = text("直播中").findOnce()
             if (p) {
-                var p_bounds = p.bounds();
+                let p_bounds = p.bounds();
                 click((p_bounds.centerX() + random(-50, 50)), (p_bounds.centerY() + random(-5, 5)));
                 sleep(6000);
             }
             p = text("直播中").findOnce()
             if (p) {
-                var p_bounds = p.bounds();
+                let p_bounds = p.bounds();
                 click((p_bounds.centerX() + random(-50, 50)), (p_bounds.centerY() + random(-5, 5)));
                 sleep(6000);
             }
@@ -1576,7 +1566,7 @@ function 微微人气() {
             p = textContains("我知道了").findOnce();
             if (p) {
                 sleep(1000);
-                var p_bounds = p.bounds();
+                let p_bounds = p.bounds();
                 click((p_bounds.centerX() + random(-50, 50)), (p_bounds.centerY() + random(-5, 5)));
                 sleep(2000);
             }
@@ -1631,9 +1621,9 @@ function 微微转发() {
     })*/
     转发check = false
     try {
-        var p = null;
+        let p = null;
         sleep(5000);
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             p = text("开启活动订单").findOnce();
             if (p) {
                 sleep(1000);
@@ -1816,7 +1806,7 @@ function 微微转发() {
             if (p) {
                 sleep(1000);
                 clickx(p.bounds().centerX(), p.bounds().centerY());
-                for (var i = 0; i < 10; i++) {
+                for (let i = 0; i < 10; i++) {
                     if (转发check) {
                         if (截图()) {
                             return true;
@@ -1841,9 +1831,9 @@ function 微微转发() {
 function 微微收藏() {
     //auto.setWindowFilter((info) => { return true })
     try {
-        var p = null;
+        let p = null;
         sleep(5000);
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             p = text("开启活动订单").findOnce();
             if (p) {
                 sleep(1000);
@@ -1995,16 +1985,16 @@ function 微微收藏() {
             if (p_sc) {
                 日志.hide()
                 sleep(2000);
-                var img = captureScreen();
-                var p_bounds = p_sc.bounds();
-                var color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
+                let img = captureScreen();
+                let p_bounds = p_sc.bounds();
+                let color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
                 日志.show()
                 if (colors.red(color) >= 200 && colors.green(color) >= 200 && colors.blue(color) >= 200) {
                     sleep(视频等待);
                     click((p_bounds.centerX() + random(-5, 5)), (p_bounds.centerY() + random(-5, 5)));
                 } else {
                     console.log(colors.red(color), colors.green(color), colors.blue(color), p_bounds.left + 28, p_bounds.top + 28)
-                    var clip = images.clip(img, p_bounds.left, p_bounds.top, (p_bounds.bottom - p_bounds.top), (p_bounds.bottom - p_bounds.top));
+                    let clip = images.clip(img, p_bounds.left, p_bounds.top, (p_bounds.bottom - p_bounds.top), (p_bounds.bottom - p_bounds.top));
                     images.save(clip, "/sdcard/1.png");
                     img.recycle();
                     clip.recycle();
@@ -2024,8 +2014,8 @@ function 微微收藏() {
                     return false
                 }
                 日志.hide()
-                var img = captureScreen();
-                var color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
+                let img = captureScreen();
+                let color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
                 if (colors.red(color) >= 200 && colors.green(color) >= 200 && colors.blue(color) >= 200) {
                     p_sc.click();
                 }
@@ -2040,16 +2030,16 @@ function 微微收藏() {
             if (p_sc) {
                 日志.hide()
                 sleep(2000);
-                var img = captureScreen();
-                var p_bounds = p_sc.bounds();
-                var color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
+                let img = captureScreen();
+                let p_bounds = p_sc.bounds();
+                let color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
                 日志.show()
                 if (colors.red(color) >= 200 && colors.green(color) >= 200 && colors.blue(color) >= 200) {
                     sleep(视频等待);
                     click((p_bounds.centerX() + random(-5, 5)), (p_bounds.centerY() + random(-5, 5)));
                 } else {
                     console.log(colors.red(color), colors.green(color), colors.blue(color), p_bounds.left + 28, p_bounds.top + 28)
-                    var clip = images.clip(img, p_bounds.left, p_bounds.top, (p_bounds.bottom - p_bounds.top), (p_bounds.bottom - p_bounds.top));
+                    let clip = images.clip(img, p_bounds.left, p_bounds.top, (p_bounds.bottom - p_bounds.top), (p_bounds.bottom - p_bounds.top));
                     images.save(clip, "/sdcard/1.png");
                     img.recycle();
                     clip.recycle();
@@ -2070,8 +2060,8 @@ function 微微收藏() {
                     return false
                 }
                 日志.hide()
-                var img = captureScreen();
-                var color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
+                let img = captureScreen();
+                let color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
                 if (colors.red(color) >= 200 && colors.green(color) >= 200 && colors.blue(color) >= 200) {
                     p_sc.click();
                 }
@@ -2103,7 +2093,7 @@ function 微微收藏() {
                 sc = true;
             }
             p = text("取消收藏").findOnce();
-            var p2 = id(转发ID).findOnce();
+            let p2 = id(转发ID).findOnce();
             if (!p && p2) {
                 p2.click()
                 sleep(2000);
@@ -2129,9 +2119,9 @@ function 微微收藏() {
 function 微微播放(sj) {
     //auto.setWindowFilter((info) => { return true })
     try {
-        var p = null;
+        let p = null;
         sleep(5000);
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             p = text("开启活动订单").findOnce();
             if (p) {
                 sleep(1000);
@@ -2335,9 +2325,9 @@ function 微微播放(sj) {
 function 微微评论() {
     //auto.setWindowFilter((info) => { return true })
     try {
-        var p = null;
+        let p = null;
         sleep(5000);
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             p = text("开启活动订单").findOnce();
             if (p) {
                 sleep(1000);
@@ -2505,7 +2495,7 @@ function 微微评论() {
             }
             p = id("ax8").findOnce()
             if (p) {
-                var hs_str = 话术arr[random(0, 话术arr.length - 1)];
+                let hs_str = 话术arr[random(0, 话术arr.length - 1)];
                 sleep(2000);
                 p.setText(hs_str);
                 sleep(2000);
@@ -2534,7 +2524,7 @@ function 微微评论() {
             }
             p = id("b8q").findOnce()
             if (p) {
-                var hs_str = 话术arr[random(0, 话术arr.length - 1)];
+                let hs_str = 话术arr[random(0, 话术arr.length - 1)];
                 sleep(2000);
                 p.setText(hs_str);
                 sleep(2000);
@@ -2572,11 +2562,11 @@ function 微微评论() {
 
 function 微微评赞() {
     //auto.setWindowFilter((info) => { return true })
-    var js = 0;
+    let js = 0;
     try {
-        var p = null;
+        let p = null;
         sleep(5000);
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             p = text("开启活动订单").findOnce();
             if (p) {
                 sleep(1000);
@@ -2744,9 +2734,9 @@ function 微微评赞() {
             }
             p = id("xm").boundsInside(1, 高 * 0.1, 宽, 高 - 100).find()
             if (p.length > 1) {
-                var img = captureScreen();
-                for (var j = 0; j < p.length; j++) {
-                    var color = images.pixel(img, p[j].bounds().centerX(), p[j].bounds().centerY());
+                let img = captureScreen();
+                for (let j = 0; j < p.length; j++) {
+                    let color = images.pixel(img, p[j].bounds().centerX(), p[j].bounds().centerY());
                     if (colors.red(color) == 255 && colors.green(color) == 255 && colors.blue(color) == 255) {
                         js++
                         p[j].click()
@@ -2787,9 +2777,9 @@ function 微微评赞() {
 
 function 返回() {
     //auto.setWindowFilter((info) => { return true });
-    var p = null;
+    let p = null;
     console.info("开始返回接单界面")
-    for (var i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i++) {
         if (text("开启活动订单").findOnce()) {
             console.info("返回接单界面成功")
             if (shuaxin) {
@@ -2833,9 +2823,8 @@ function 返回() {
 
 function 返回二() {
     //auto.setWindowFilter((info) => { return true })
-    var p = null;
     console.info("开始返回文件传输界面")
-    for (var i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i++) {
         if (text("文件传输助手").findOnce()) {
             console.info("返回文件传输界面成功")
             return true
@@ -2849,10 +2838,9 @@ function 返回二() {
 
 function 返回三() {
     //auto.setWindowFilter((info) => { return true })
-    var p = null;
     console.info("开始微信界面")
     打开v()
-    for (var i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i++) {
         if (text("通讯录").className("android.widget.TextView").packageName("com.tencent.mm").findOnce()) {
             console.info("返回微信界面成功")
             return true
@@ -2866,7 +2854,7 @@ function 返回三() {
 }
 
 function 退出直播() {
-    let c = id('end').findOnce()
+    let c = packageName("com.tencent.mm").className("android.widget.RelativeLayout").id('end').findOnce()
     if (c) {
         x = c.bounds().right - 1;
         y = c.bounds().bottom - 1
@@ -2900,7 +2888,7 @@ function ui_log() {
     });
     time = new Date();
     time.setTime(time.getTime());
-    var jt_temp = time.getDate();
+    let jt_temp = time.getDate();
     if (jt_temp == jt) {
         files.write("/sdcard/jl.txt", JSON.stringify({ "jlt": jt, "dz": 点赞, "gz": 关注, "sc": 收藏, "bf": 播放, "pl": 评论, "zf": 转发, "rq": 人气, "sys": 搜一搜, "pz": 评赞, "yd": 阅读, "gzhgz": 公众号关注, "zk": 在看, "wzz": 文章赞 }));
     } else {
@@ -2927,12 +2915,12 @@ function ui_log() {
 }
 
 function 统计复位() {
-    var temp = null;
+    let temp = null;
     try {
         if (files.isFile("/sdcard/jl.txt")) {
             temp = files.read("/sdcard/jl.txt");
-            var jl = JSON.parse(temp);
-            var jlt = jl["jlt"];
+            let jl = JSON.parse(temp);
+            let jlt = jl["jlt"];
             if (jlt == jt) {
                 点赞 = jl["dz"] || 0;
                 关注 = jl["gz"] || 0;
@@ -3012,9 +3000,9 @@ function 悬浮窗() {
 
 function 微微视频() {
     //auto.setWindowFilter((info) => { return true })
-    var 任务结果;
+    let 任务结果;
     for (; ;) {
-        var myDate = new Date();
+        let myDate = new Date();
         if (ui.vq_yd.isChecked() && myDate.getHours() + "" + myDate.getMinutes() == "00") {
             console.info("手机到达凌晨12点,开始阅读任务")
             vq_yd = true;
@@ -3039,7 +3027,7 @@ function 微微视频() {
                 return false;
             }
             if (ww_get_task()) {
-                var ww_type = ww_task_data["type"];
+                let ww_type = ww_task_data["type"];
                 if ((!ww_dz && ww_type == 1) || (!ww_gz && ww_type == 2)) {
                     ww_giveup_task();
                     return false;
@@ -3167,9 +3155,9 @@ function 微微视频() {
 
 function 微圈视频() {
     //auto.setWindowFilter((info) => { return true })
-    var 任务结果;
+    let 任务结果;
     for (; ;) {
-        var myDate = new Date();
+        let myDate = new Date();
         if (ui.vq_yd.isChecked() && myDate.getHours() + "" + myDate.getMinutes() == "00") {
             console.info("手机到达凌晨12点,开始阅读任务")
             vq_yd = true;
@@ -3192,7 +3180,7 @@ function 微圈视频() {
             }
 
             if (vq_get_task()) {
-                var vq_type = vq_task_data["votetypeToText"]
+                let vq_type = vq_task_data["votetypeToText"]
                 if ((!vq_dz && vq_type == "视频号点赞") || (!vq_gz && vq_type == "视频号关注")) {
                     vq_giveup_task();
                     return false;
@@ -3304,9 +3292,9 @@ function 微圈视频() {
     }
 }
 function 微微提现() {
-    var temp = null;
+    let temp = null;
     try {
-        var temp = http.get(微微api + "sphao/wallet/info", {
+        let temp = http.get(微微api + "sphao/wallet/info", {
             headers: {
                 "Token": ww_token
             }
@@ -3317,9 +3305,9 @@ function 微微提现() {
                 temp = JSON.parse(temp);
                 temp = temp["data"]
                 if (temp["wallet"] - temp["wallet_freeze"] > 3000) {
-                    var 金豆 = temp["wallet"] - temp["wallet_freeze"]
+                    let 金豆 = temp["wallet"] - temp["wallet_freeze"]
                     金豆 = 金豆.toString().substring(0, 金豆.toString().length - 3);
-                    var 金豆 = 金豆 + "000"
+                    金豆 = 金豆 + "000"
                     temp = http.post(微微api + "sphao/wallet/tocash/do", {
                         "coin": 金豆
                     }, {
@@ -3350,7 +3338,7 @@ function 微微提现() {
 
 function 刷新token() {
     //auto.setWindowFilter((info) => { return true })
-    var p = null
+    let p = null
     console.info("微微token过期,开始刷新")
     返回();
     for (; ;) {
@@ -3381,28 +3369,28 @@ function 刷新token() {
 
 
 function decode(content, password) {
-    var key = javax.crypto.spec.SecretKeySpec(md5(password), "AES");
-    var cipher = javax.crypto.Cipher.getInstance("AES/CBC/PKCS5Padding");
-    var byteContent = android.util.Base64.decode(content, 0);
+    let key = javax.crypto.spec.SecretKeySpec(md5(password), "AES");
+    let cipher = javax.crypto.Cipher.getInstance("AES/CBC/PKCS5Padding");
+    let byteContent = android.util.Base64.decode(content, 0);
     cipher.init(javax.crypto.Cipher.DECRYPT_MODE, key, javax.crypto.spec.IvParameterSpec(md5(password.length)));
-    var result = java.lang.String(cipher.doFinal(byteContent));
+    let result = java.lang.String(cipher.doFinal(byteContent));
     return result.substring(4, result.length());
 }
 function md5(str) {
-    var md5 = java.security.MessageDigest.getInstance("MD5");
+    let md5 = java.security.MessageDigest.getInstance("MD5");
     md5.update(java.lang.String(str).getBytes());
     return md5.digest();
 }
 function randomx(n) {
-    var str = "";
-    for (var i = 0; i < n; i++) {
+    let str = "";
+    for (let i = 0; i < n; i++) {
         str += String.fromCharCode(random(0, 65535));
     }
     return str;
 }
 
 function 检测更新() {
-    var temp = null;
+    let temp = null;
     temp = http.get("http://43.132.202.156/weiwei/gg.txt");
     if (temp && temp.statusCode == 200) {
         temp = temp.body.json();
@@ -3411,7 +3399,7 @@ function 检测更新() {
         收藏ID = temp["shoucang_id"];
         转发ID = temp["zhuanfa_id"];
         if (temp['vq_domain']) {
-            var tmp_vq_url = storage.get("输入框_微圈链接", "");
+            let tmp_vq_url = storage.get("输入框_微圈链接", "");
             if (tmp_vq_url == 'https://vquan.gratefullifewcopa.net.cn/' && temp['vq_domain'] != 'https://vquan.gratefullifewcopa.net.cn/') {
                 微圈链接 = temp['vq_domain']
                 ui.输入框_微圈链接.setText(微圈链接);
@@ -3421,7 +3409,7 @@ function 检测更新() {
             微圈api = temp['vq_api']
         }
         if (temp['vv_domain']) {
-            var tmp_vv_url = storage.get("输入框_微微链接", "");
+            let tmp_vv_url = storage.get("输入框_微微链接", "");
             if (tmp_vv_url == 'http://aa.sph.xfeixfei.com' && temp['vv_domain'] != 'http://aa.sph.xfeixfei.com') {
                 微微链接 = temp['vv_domain']
                 ui.输入框_微微链接.setText(微微链接);
@@ -3454,8 +3442,8 @@ function 检测更新() {
 }
 
 function 微微点赞二(str) {
-    var 发送 = false;
-    var p = null;
+    let 发送 = false;
+    let p = null;
     /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
@@ -3468,7 +3456,7 @@ function 微微点赞二(str) {
         str = str.replace(/[\.\。 \，\,\#\s\@]+/g, "");
         storage.put("str", str);
         sleep(5000);
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             if (text("开启活动订单").findOnce()) {
                 sleep(1000)
                 back()
@@ -3528,8 +3516,8 @@ function 微微点赞二(str) {
             }
             p = id("u1").findOnce()
             if (p) {
-                for (var i = 0; i < 5; i++) {
-                    var t = id("u1").findOnce()
+                for (let i = 0; i < 5; i++) {
+                    let t = id("u1").findOnce()
                     if (t) {
                         if (t.bounds().bottom >= 高 - 100) {
                             swipe(宽 / 2, 高 * 0.3, 宽 / 2, 高 * 0.2, 1000);
@@ -3545,15 +3533,15 @@ function 微微点赞二(str) {
                 日志.hide()
                 sleep(2000);
                 p = id("u1").findOnce()
-                var img = captureScreen();
-                var color = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
+                let img = captureScreen();
+                let color = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
                 日志.show()
                 if (colors.red(color) == 255 && colors.green(color) == 255 && colors.blue(color) == 255) {
                     sleep(视频等待);
                     p.click();
                 } else {
                     console.log(colors.red(color), colors.green(color), colors.blue(color), p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2)
-                    var clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
+                    let clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
                     images.save(clip, "/sdcard/1.png");
                     img.recycle();
                     clip.recycle();
@@ -3581,8 +3569,8 @@ function 微微点赞二(str) {
             }
             p = id("xk").findOnce()
             if (p) {
-                for (var i = 0; i < 5; i++) {
-                    var t = id("xk").findOnce()
+                for (let i = 0; i < 5; i++) {
+                    let t = id("xk").findOnce()
                     if (t) {
                         if (t.bounds().bottom >= 高 - 100) {
                             swipe(宽 / 2, 高 * 0.3, 宽 / 2, 高 * 0.2, 1000);
@@ -3598,9 +3586,9 @@ function 微微点赞二(str) {
                 日志.hide()
                 sleep(2000);
                 p = id("xk").findOnce()
-                var img = captureScreen();
-                var color = images.pixel(img, p.bounds().left + (p.bounds().right - p.bounds().left) / 2, p.bounds().top + (p.bounds().right - p.bounds().left) / 2);
-                var color2 = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
+                let img = captureScreen();
+                let color = images.pixel(img, p.bounds().left + (p.bounds().right - p.bounds().left) / 2, p.bounds().top + (p.bounds().right - p.bounds().left) / 2);
+                let color2 = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
                 日志.show()
                 if (colors.red(color) == 204 && colors.green(color) == 204 && colors.blue(color) == 204) {
                     sleep(视频等待);
@@ -3614,8 +3602,8 @@ function 微微点赞二(str) {
                 } else {
                     console.log(colors.red(color), colors.green(color), colors.blue(color), p.bounds().left + (p.bounds().right - p.bounds().left) / 2, p.bounds().top + (p.bounds().right - p.bounds().left) / 2)
                     console.log(colors.red(color2), colors.green(color2), colors.blue(color2), p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2)
-                    var clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().right - p.bounds().left), (p.bounds().right - p.bounds().left));
-                    var clip2 = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
+                    let clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().right - p.bounds().left), (p.bounds().right - p.bounds().left));
+                    let clip2 = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
                     images.save(clip, "/sdcard/1.png");
                     images.save(clip2, "/sdcard/2.png");
                     img.recycle();
@@ -3654,8 +3642,8 @@ function 微微点赞二(str) {
 }
 
 function 微微点赞三(str) {
-    var 发送 = false;
-    var p = null;
+    let 发送 = false;
+    let p = null;
     /*auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
@@ -3668,7 +3656,7 @@ function 微微点赞三(str) {
         str = str.replace(/[\.\。 \，\,\#\s\@]+/g, "");
         storage.put("str", str);
         sleep(5000);
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             if (text("开启活动订单").findOnce()) {
                 sleep(1000)
                 back()
@@ -3734,8 +3722,8 @@ function 微微点赞三(str) {
             }
             p = id("u1").findOnce()
             if (p) {
-                for (var i = 0; i < 5; i++) {
-                    var t = id("u1").findOnce()
+                for (let i = 0; i < 5; i++) {
+                    let t = id("u1").findOnce()
                     if (t) {
                         if (t.bounds().bottom >= 高 - 100) {
                             swipe(宽 / 2, 高 * 0.3, 宽 / 2, 高 * 0.2, 1000);
@@ -3751,15 +3739,15 @@ function 微微点赞三(str) {
                 日志.hide()
                 sleep(2000);
                 p = id("u1").findOnce()
-                var img = captureScreen();
-                var color = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
+                let img = captureScreen();
+                let color = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
                 日志.show()
                 if (colors.red(color) == 255 && colors.green(color) == 255 && colors.blue(color) == 255) {
                     sleep(视频等待);
                     p.click();
                 } else {
                     console.log(colors.red(color), colors.green(color), colors.blue(color), p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2)
-                    var clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
+                    let clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
                     images.save(clip, "/sdcard/1.png");
                     img.recycle();
                     clip.recycle();
@@ -3787,8 +3775,8 @@ function 微微点赞三(str) {
             }
             p = id("xk").findOnce()
             if (p) {
-                for (var i = 0; i < 5; i++) {
-                    var t = id("xk").findOnce()
+                for (let i = 0; i < 5; i++) {
+                    let t = id("xk").findOnce()
                     if (t) {
                         if (t.bounds().bottom >= 高 - 100) {
                             swipe(宽 / 2, 高 * 0.3, 宽 / 2, 高 * 0.2, 1000);
@@ -3804,9 +3792,9 @@ function 微微点赞三(str) {
                 日志.hide()
                 sleep(2000);
                 p = id("xk").findOnce()
-                var img = captureScreen();
-                var color = images.pixel(img, p.bounds().left + (p.bounds().right - p.bounds().left) / 2, p.bounds().top + (p.bounds().right - p.bounds().left) / 2);
-                var color2 = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
+                let img = captureScreen();
+                let color = images.pixel(img, p.bounds().left + (p.bounds().right - p.bounds().left) / 2, p.bounds().top + (p.bounds().right - p.bounds().left) / 2);
+                let color2 = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
                 日志.show()
                 if (colors.red(color) == 204 && colors.green(color) == 204 && colors.blue(color) == 204) {
                     sleep(视频等待);
@@ -3820,8 +3808,8 @@ function 微微点赞三(str) {
                 } else {
                     console.log(colors.red(color), colors.green(color), colors.blue(color), p.bounds().left + (p.bounds().right - p.bounds().left) / 2, p.bounds().top + (p.bounds().right - p.bounds().left) / 2)
                     console.log(colors.red(color2), colors.green(color2), colors.blue(color2), p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2)
-                    var clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().right - p.bounds().left), (p.bounds().right - p.bounds().left));
-                    var clip2 = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
+                    let clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().right - p.bounds().left), (p.bounds().right - p.bounds().left));
+                    let clip2 = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
                     images.save(clip, "/sdcard/1.png");
                     images.save(clip2, "/sdcard/2.png");
                     img.recycle();
@@ -3861,11 +3849,11 @@ function 微微点赞三(str) {
 
 function 微微关注二(str) {
     //auto.setWindowFilter((info) => { return true })
-    var p = null;
-    var 发送 = false;
+    let p = null;
+    let 发送 = false;
     storage.put("str", str);
     sleep(5000);
-    for (var i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
         try {
             if (text("开启活动订单").findOnce()) {
                 sleep(1000)
@@ -3958,10 +3946,10 @@ function 微微搜一搜(str) {
         // }
         return true
     })*/
-    var p = null;
+    let p = null;
     storage.put("str", str);
     sleep(5000);
-    for (var i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
         try {
             if (text("开启活动订单").findOnce()) {
                 sleep(1000)
@@ -4079,7 +4067,7 @@ function 进入微微() {
     })*/
     console.info("开始进入微微")
     for (let j = 0; j < 5; j++) {
-        var 发送 = false
+        let 发送 = false
         /*p = text("微信").className("android.widget.TextView").boundsInside(0, 0, 宽, 高).findOne(1000)
         if (p && p.bounds().centerX() > 0 && p.bounds().centerY() > 0) {
             sleep(1000)
@@ -4212,7 +4200,7 @@ function 进入微微() {
 }
 function 按名称关闭应用(packageName) {//有内存溢出风险，可能是应用自启动导致
     log("尝试关闭" + packageName);
-    /*var name = getPackageName(packageName);
+    /*let name = getPackageName(packageName);
     if (!name) {
         if (getAppName(packageName)) {
             name = packageName;
@@ -4254,8 +4242,8 @@ function 按名称关闭应用(packageName) {//有内存溢出风险，可能是
 }
 function 关闭应用(ms) {
     if (ms) {
-        for (var d = 0; d < 10; d++) {
-            if ( !ssjpt&&text("文件传输助手").findOne(1000)) {
+        for (let d = 0; d < 10; d++) {
+            if (!ssjpt && text("文件传输助手").findOne(1000)) {
                 console.info("找到文件传输助手不关闭应用");
                 return
             }
@@ -4269,8 +4257,8 @@ function 关闭应用(ms) {
 
     console.info("开始退出应用");
     /*app.openAppSetting("com.tencent.mm");
-    for (var i = 0; i < 10; i++) {
-        var is_sure = textMatches(/(.*强.*|.*停.*|.*结.*|.*行.*)/).findOne(1000);
+    for (let i = 0; i < 10; i++) {
+        let is_sure = textMatches(/(.*强.*|.*停.*|.*结.*|.*行.*)/).findOne(1000);
         if (is_sure) {
             if (is_sure.enabled()) {
                 is_sure.click();
@@ -4347,7 +4335,7 @@ function 关闭应用(ms) {
 }
 
 /*function 关闭浮窗() {
-    var c = null
+    let c = null
     auto.setWindowFilter((info) => {
         // try{
         //    return info.getRoot().getPackageName()=="com.ss.android.ugc.aweme"
@@ -4370,7 +4358,7 @@ function 关闭应用(ms) {
 }
 
 function 清空文件夹(path) {
-    var arr = files.listDir(path);
+    let arr = files.listDir(path);
     for (let i = 0; i < arr.length; i++) {
         if (files.isDir(path + arr[i])) {
             files.removeDir(path + arr[i]);
@@ -4435,8 +4423,8 @@ function 微微总操作() {
 
 
 function vq_get_task() {
-    var temp = null;
-    var arr = []
+    let temp = null;
+    let arr = []
     vq_task_id = null;
     if (vq_dz && 点赞 < 点赞数量) {
         arr.push("8")
@@ -4465,9 +4453,9 @@ function vq_get_task() {
     if (vq_ydwzz) {
         arr.push("4")
     }
-    for (var i = 0; i < 15; i++) {
+    for (let i = 0; i < 15; i++) {
         try {
-            var myDate = new Date();
+            let myDate = new Date();
             if (ui.vq_yd.isChecked() && myDate.getHours() + "" + myDate.getMinutes() == "00") {
                 vq_yd = true;
                 return false
@@ -4509,9 +4497,9 @@ function vq_get_task() {
 
 
 function vq_submit_task() {
-    var temp = null;
+    let temp = null;
     if (vq_task_id) {
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             try {
                 temp = http.post(微圈api + "api/app/v_task_logc/submit", {
                     "v_task_log_id": vq_task_id,
@@ -4554,9 +4542,9 @@ function vq_submit_task() {
 
 
 function vq_giveup_task() {
-    var temp = null;
+    let temp = null;
     if (vq_task_id) {
-        for (var i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             try {
 
                 temp = http.post(微圈api + "api/app/v_task_logc/fangqi", {
@@ -4594,11 +4582,11 @@ function vq_giveup_task() {
 
 
 function vq_submit_img() {
-    var temp = null;
+    let temp = null;
     vq_img_url = "";
-    for (var i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
         try {
-            var imgFile = open("/sdcard/任务." + 图片编码);
+            let imgFile = open("/sdcard/任务." + 图片编码);
             temp = http.postMultipart("http://heimao.ccp3.com/api/app/alioss/upload", {
                 image: imgFile
             });
@@ -4628,7 +4616,7 @@ function vq_get_token() {
         // }
         return true
     })*/
-    var p = null;
+    let p = null;
     console.info("开始获取微圈token");
     for (; ;) {
         p = id("user_token").findOnce();
@@ -4650,7 +4638,7 @@ function vq_get_token() {
 
 
 function vq_get_info() {
-    var temp = null;
+    let temp = null;
     try {
         temp = http.get(微圈api + "api/app/user", {
             headers: {
@@ -4686,7 +4674,7 @@ function 刷新vq_token() {
         // }
         return true
     })*/
-    var p = null
+    let p = null
     console.info("微圈token过期,开始刷新")
     返回();
     for (; ;) {
@@ -4727,7 +4715,7 @@ function 进入微圈() {
     })*/
     console.info("开始进入微圈")
     for (; ;) {
-        var 发送 = false
+        let 发送 = false
         /*p = text("微信").className("android.widget.TextView").boundsInside(0, 0, 宽, 高).findOnce()
         if (p && p.bounds().centerX() > 0 && p.bounds().centerY() > 0) {
             sleep(1000)
@@ -4853,7 +4841,7 @@ function vqui_log() {
     });
     time = new Date();
     time.setTime(time.getTime());
-    var jt_temp = time.getDate();
+    let jt_temp = time.getDate();
     if (jt_temp == jt) {
         files.write("/sdcard/jl.txt", JSON.stringify({ "jlt": jt, "dz": 点赞, "gz": 关注, "sc": 收藏, "bf": 播放, "pl": 评论, "zf": 转发, "rq": 人气, "sys": 搜一搜, "pz": 评赞, "yd": 阅读, "gzhgz": 公众号关注, "zk": 在看, "wzz": 文章赞 }));
     } else {
@@ -4890,8 +4878,8 @@ function 微圈点赞() {
         return true
     })*/
     try {
-        var p = null;
-        for (var i = 0; i < 10; i++) {
+        let p = null;
+        for (let i = 0; i < 10; i++) {
             p = text("点赞").className("android.widget.CheckBox").boundsInside(1, 1, 宽, 高).checked(false).findOnce();
             if (p) {
                 p.click();
@@ -4990,8 +4978,8 @@ function 微圈点赞() {
             }
             p = id("u1").findOnce()
             if (p) {
-                for (var i = 0; i < 5; i++) {
-                    var t = id("u1").findOnce()
+                for (let i = 0; i < 5; i++) {
+                    let t = id("u1").findOnce()
                     if (t) {
                         if (t.bounds().bottom >= 高 - 100) {
                             swipe(宽 / 2, 高 * 0.3, 宽 / 2, 高 * 0.2, 1000);
@@ -5007,14 +4995,14 @@ function 微圈点赞() {
                 日志.hide()
                 sleep(2000);
                 p = id("u1").findOnce()
-                var img = captureScreen();
-                var color = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
+                let img = captureScreen();
+                let color = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
                 日志.show()
                 if (colors.red(color) == 255 && colors.green(color) == 255 && colors.blue(color) == 255) {
                     p.click();
                 } else {
                     console.log(colors.red(color), colors.green(color), colors.blue(color), p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2)
-                    var clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
+                    let clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
                     images.save(clip, "/sdcard/1.png");
                     img.recycle();
                     clip.recycle();
@@ -5042,8 +5030,8 @@ function 微圈点赞() {
             }
             p = id("xk").findOnce()
             if (p) {
-                for (var i = 0; i < 5; i++) {
-                    var t = id("xk").findOnce()
+                for (let i = 0; i < 5; i++) {
+                    let t = id("xk").findOnce()
                     if (t) {
                         if (t.bounds().bottom >= 高 - 50) {
                             swipe(宽 / 2, 高 * 0.3, 宽 / 2, 高 * 0.2, 1000);
@@ -5059,21 +5047,21 @@ function 微圈点赞() {
                 日志.hide()
                 sleep(2000);
                 p = id("xk").findOnce()
-                var img = captureScreen();
+                let img = captureScreen();
                 if (p.childCount() > 1) {
                     if (p.child(0).childCount() > 0) {
-                        var color = images.pixel(img, p.child(0).child(0).bounds().left + (p.child(0).child(0).bounds().right - p.child(0).child(0).bounds().left) / 2, p.child(0).child(0).bounds().top + (p.child(0).child(0).bounds().right - p.child(0).child(0).bounds().left) / 2);
-                        var color2 = images.pixel(img, p.child(0).child(0).bounds().left + (p.child(0).child(0).bounds().bottom - p.child(0).child(0).bounds().top) / 2, p.child(0).child(0).bounds().top + (p.child(0).child(0).bounds().bottom - p.child(0).child(0).bounds().top) / 2);
+                        let color = images.pixel(img, p.child(0).child(0).bounds().left + (p.child(0).child(0).bounds().right - p.child(0).child(0).bounds().left) / 2, p.child(0).child(0).bounds().top + (p.child(0).child(0).bounds().right - p.child(0).child(0).bounds().left) / 2);
+                        let color2 = images.pixel(img, p.child(0).child(0).bounds().left + (p.child(0).child(0).bounds().bottom - p.child(0).child(0).bounds().top) / 2, p.child(0).child(0).bounds().top + (p.child(0).child(0).bounds().bottom - p.child(0).child(0).bounds().top) / 2);
                     } else {
-                        var color = images.pixel(img, p.child(0).bounds().left + (p.child(0).bounds().right - p.child(0).bounds().left) / 2, p.child(0).bounds().top + (p.child(0).bounds().right - p.child(0).bounds().left) / 2);
-                        var color2 = images.pixel(img, p.child(0).bounds().left + (p.child(0).bounds().bottom - p.child(0).bounds().top) / 2, p.child(0).bounds().top + (p.child(0).bounds().bottom - p.child(0).bounds().top) / 2);
+                        let color = images.pixel(img, p.child(0).bounds().left + (p.child(0).bounds().right - p.child(0).bounds().left) / 2, p.child(0).bounds().top + (p.child(0).bounds().right - p.child(0).bounds().left) / 2);
+                        let color2 = images.pixel(img, p.child(0).bounds().left + (p.child(0).bounds().bottom - p.child(0).bounds().top) / 2, p.child(0).bounds().top + (p.child(0).bounds().bottom - p.child(0).bounds().top) / 2);
                     }
                 } else {
-                    var color = images.pixel(img, p.bounds().left + (p.bounds().right - p.bounds().left) / 2, p.bounds().top + (p.bounds().right - p.bounds().left) / 2);
-                    var color2 = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
+                    let color = images.pixel(img, p.bounds().left + (p.bounds().right - p.bounds().left) / 2, p.bounds().top + (p.bounds().right - p.bounds().left) / 2);
+                    let color2 = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
                 }
-                // var color = images.pixel(img, p.bounds().left + (p.bounds().right - p.bounds().left) / 2, p.bounds().top + (p.bounds().right - p.bounds().left) / 2);
-                // var color2 = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
+                // let color = images.pixel(img, p.bounds().left + (p.bounds().right - p.bounds().left) / 2, p.bounds().top + (p.bounds().right - p.bounds().left) / 2);
+                // let color2 = images.pixel(img, p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2);
                 日志.show()
                 if (colors.red(color) == 204 && colors.green(color) == 204 && colors.blue(color) == 204) {
                     p.click();
@@ -5084,8 +5072,8 @@ function 微圈点赞() {
                 } else {
                     console.log(colors.red(color), colors.green(color), colors.blue(color), p.bounds().left + (p.bounds().right - p.bounds().left) / 2, p.bounds().top + (p.bounds().right - p.bounds().left) / 2)
                     console.log(colors.red(color2), colors.green(color2), colors.blue(color2), p.bounds().left + (p.bounds().bottom - p.bounds().top) / 2, p.bounds().top + (p.bounds().bottom - p.bounds().top) / 2)
-                    var clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().right - p.bounds().left), (p.bounds().right - p.bounds().left));
-                    var clip2 = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
+                    let clip = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().right - p.bounds().left), (p.bounds().right - p.bounds().left));
+                    let clip2 = images.clip(img, p.bounds().left, p.bounds().top, (p.bounds().bottom - p.bounds().top), (p.bounds().bottom - p.bounds().top));
                     images.save(clip, "/sdcard/1.png");
                     images.save(clip2, "/sdcard/2.png");
                     img.recycle();
@@ -5128,8 +5116,8 @@ function 微圈点赞() {
 
 function 微圈关注() {
     //auto.setWindowFilter((info) => { return true })
-    var p = null;
-    for (var i = 0; i < 10; i++) {
+    let p = null;
+    for (let i = 0; i < 10; i++) {
         try {
             p = text("点赞").className("android.widget.CheckBox").boundsInside(1, 1, 宽, 高).checked(false).findOnce();
             if (p) {
@@ -5260,8 +5248,8 @@ function 微圈评论() {
         return true
     })*/
     try {
-        var p = null;
-        for (var i = 0; i < 10; i++) {
+        let p = null;
+        for (let i = 0; i < 10; i++) {
             p = text("点赞").className("android.widget.CheckBox").boundsInside(1, 1, 宽, 高).checked(false).findOnce();
             if (p) {
                 p.click();
@@ -5374,7 +5362,7 @@ function 微圈评论() {
             }
             p = id("ax8").findOnce()
             if (p) {
-                var hs_str = 话术arr[random(0, 话术arr.length - 1)];
+                let hs_str = 话术arr[random(0, 话术arr.length - 1)];
                 sleep(2000);
                 p.setText(hs_str);
                 sleep(2000);
@@ -5403,7 +5391,7 @@ function 微圈评论() {
             }
             p = id("b8q").findOnce()
             if (p) {
-                var hs_str = 话术arr[random(0, 话术arr.length - 1)];
+                let hs_str = 话术arr[random(0, 话术arr.length - 1)];
                 sleep(2000);
                 p.setText(hs_str);
                 sleep(2000);
@@ -5454,8 +5442,8 @@ function 微圈收藏() {
         return true
     })*/
     try {
-        var p = null;
-        for (var i = 0; i < 10; i++) {
+        let p = null;
+        for (let i = 0; i < 10; i++) {
             p = text("点赞").className("android.widget.CheckBox").boundsInside(1, 1, 宽, 高).checked(false).findOnce();
             if (p) {
                 p.click();
@@ -5560,16 +5548,16 @@ function 微圈收藏() {
             if (p_sc) {
                 日志.hide()
                 sleep(2000);
-                var img = captureScreen();
-                var p_bounds = p_sc.bounds();
-                var color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
+                let img = captureScreen();
+                let p_bounds = p_sc.bounds();
+                let color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
                 日志.show()
                 if (colors.red(color) >= 200 && colors.green(color) >= 200 && colors.blue(color) >= 200) {
                     sleep(视频等待);
                     click((p_bounds.centerX() + random(-5, 5)), (p_bounds.centerY() + random(-5, 5)));
                 } else {
                     console.log(colors.red(color), colors.green(color), colors.blue(color), p_bounds.left + 28, p_bounds.top + 28)
-                    var clip = images.clip(img, p_bounds.left, p_bounds.top, (p_bounds.bottom - p_bounds.top), (p_bounds.bottom - p_bounds.top));
+                    let clip = images.clip(img, p_bounds.left, p_bounds.top, (p_bounds.bottom - p_bounds.top), (p_bounds.bottom - p_bounds.top));
                     images.save(clip, "/sdcard/1.png");
                     img.recycle();
                     clip.recycle();
@@ -5590,8 +5578,8 @@ function 微圈收藏() {
                     return false
                 }
                 日志.hide()
-                var img = captureScreen();
-                var color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
+                let img = captureScreen();
+                let color = images.pixel(img, p_bounds.left + (p_bounds.bottom - p_bounds.top) / 2, p_bounds.top + (p_bounds.bottom - p_bounds.top) / 3);
                 if (colors.red(color) >= 200 && colors.green(color) >= 200 && colors.blue(color) >= 200) {
                     p_sc.click();
                 }
@@ -5616,7 +5604,7 @@ function 微圈收藏() {
                 sc = true;
             }
             p = text("取消收藏").findOnce();
-            var p2 = id(转发ID).findOnce();
+            let p2 = id(转发ID).findOnce();
             if (!p && p2) {
                 p2.click()
                 sleep(2000);
@@ -5649,8 +5637,8 @@ function 微圈播放() {
         return true
     })*/
     try {
-        var p = null;
-        for (var i = 0; i < 10; i++) {
+        let p = null;
+        for (let i = 0; i < 10; i++) {
             p = text("点赞").className("android.widget.CheckBox").boundsInside(1, 1, 宽, 高).checked(false).findOnce();
             if (p) {
                 p.click();
@@ -5786,10 +5774,10 @@ function 微圈阅读() {
         // }
         return true
     })*/
-    var js = 0
-    var wxjs = 0
+    let js = 0
+    let wxjs = 0
     try {
-        var p = null;
+        let p = null;
         p = text("阅读").className("android.widget.CheckBox").boundsInside(1, 1, 宽, 高).checked(false).findOnce();
         if (p) {
             p.click();
@@ -5852,7 +5840,7 @@ function 微圈阅读() {
                 sleep(2000)
             }
             if (id("js_name").findOnce() || id("acticity-name").findOnce() || id("publish_time").findOnce()) {
-                for (var j = 0; j < random(3, 5); j++) {
+                for (let j = 0; j < random(3, 5); j++) {
                     swipe(宽 / 2 + random(-10, 10), 高 * 0.3 + random(-10, 10), 宽 / 2 + random(-10, 10), 高 * 0.2 + random(-10, 10), random(500, 1500));
                     sleep(random(500, 1500));
                 }
@@ -5892,8 +5880,8 @@ function 微圈转发() {
     })*/
     转发check = false
     try {
-        var p = null;
-        for (var i = 0; i < 10; i++) {
+        let p = null;
+        for (let i = 0; i < 10; i++) {
             p = text("点赞").className("android.widget.CheckBox").boundsInside(1, 1, 宽, 高).checked(false).findOnce();
             if (p) {
                 p.click();
@@ -6035,7 +6023,7 @@ function 微圈转发() {
             if (p) {
                 sleep(1000);
                 clickx(p.bounds().centerX(), p.bounds().centerY());
-                for (var i = 0; i < 10; i++) {
+                for (let i = 0; i < 10; i++) {
                     if (转发check) {
                         if (截图()) {
                             return true;
@@ -6069,8 +6057,8 @@ function 阅读在看() {
         return true
     })*/
     try {
-        var p = null;
-        for (var i = 0; i < 30; i++) {
+        let p = null;
+        for (let i = 0; i < 30; i++) {
             p = text("点赞").className("android.widget.CheckBox").boundsInside(1, 1, 宽, 高).checked(false).findOnce();
             if (p) {
                 p.click();
@@ -6123,8 +6111,8 @@ function 阅读关注() {
         return true
     })*/
     try {
-        var p = null;
-        for (var i = 0; i < 30; i++) {
+        let p = null;
+        for (let i = 0; i < 30; i++) {
             p = text("点赞").className("android.widget.CheckBox").boundsInside(1, 1, 宽, 高).checked(false).findOnce();
             if (p) {
                 p.click();
@@ -6196,8 +6184,8 @@ function 阅读文章赞() {
         return true
     })*/
     try {
-        var p = null;
-        for (var i = 0; i < 30; i++) {
+        let p = null;
+        for (let i = 0; i < 30; i++) {
             p = text("点赞").className("android.widget.CheckBox").boundsInside(1, 1, 宽, 高).checked(false).findOnce();
             if (p) {
                 p.click();
@@ -6247,7 +6235,7 @@ function textplus(str) {
         // }
         return true
     })*/
-    var temp = null
+    let temp = null
     temp = textStartsWith(str).findOnce();
     if (temp) {
         return temp
@@ -6296,63 +6284,3 @@ function refreshStateInfo() {
     //log("==> topPackage: " + topPackage);
     //log("==> topActivity: " + topActivity);
 }
-
-//曲线滑动---贝塞尔曲线
-function bezier_curves(cp, t) {
-    cx = 3.0 * (cp[1].x - cp[0].x);
-    bx = 3.0 * (cp[2].x - cp[1].x) - cx;
-    ax = cp[3].x - cp[0].x - cx - bx;
-    cy = 3.0 * (cp[1].y - cp[0].y);
-    by = 3.0 * (cp[2].y - cp[1].y) - cy;
-    ay = cp[3].y - cp[0].y - cy - by;
-
-    tSquared = t * t;
-    tCubed = tSquared * t;
-    result = {
-        "x": 0,
-        "y": 0
-    };
-    result.x = (ax * tCubed) + (bx * tSquared) + (cx * t) + cp[0].x;
-    result.y = (ay * tCubed) + (by * tSquared) + (cy * t) + cp[0].y;
-    return result;
-};
-
-//仿真随机带曲线滑动  
-//qx, qy, zx, zy, time 代表起点x,起点y,终点x,终点y,过程耗时单位毫秒
-function sml_move(qx, qy, zx, zy, time) {
-    var xxy = [time];
-    var point = [];
-    var dx0 = {
-        "x": qx,
-        "y": qy
-    };
-
-    var dx1 = {
-        "x": random(qx - 100, qx + 100),
-        "y": random(qy, qy + 50)
-    };
-    var dx2 = {
-        "x": random(zx - 100, zx + 100),
-        "y": random(zy, zy + 50),
-    };
-    var dx3 = {
-        "x": zx,
-        "y": zy
-    };
-    for (var i = 0; i < 4; i++) {
-
-        eval("point.push(dx" + i + ")");
-
-    };
-    //log(point[3].x)
-
-    for (let i = 0; i < 1; i += 0.08) {
-        xxyy = [parseInt(bezier_curves(point, i).x), parseInt(bezier_curves(point, i).y)]
-
-        xxy.push(xxyy);
-
-    }
-
-    //log(xxy);
-    gesture.apply(null, xxy);
-};
