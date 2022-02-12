@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.2.4";
+var versionNum = "v1.2.5";
 
 
 function jm() {
@@ -329,7 +329,7 @@ ui.start1.on("click", () => {
                         home()
                         sleep(1500)
                         if(device.brand=='Meizu'){
-                            sml_move(device.width*0.3, device.height, device.width*0.4, device.height*0.4, 1500);
+                            sml_move(device.width*0.1, device.height-10, device.width*0.2, device.height*0.5, 1500);
                         }else if(device.brand=='Xiaomi'){
                             recents()
                         }
@@ -4078,7 +4078,7 @@ function 进入微微() {
         return true
     })*/
     console.info("开始进入微微")
-    for (; ;) {
+    for (let j = 0; j < 5; j++) {
         var 发送 = false
         /*p = text("微信").className("android.widget.TextView").boundsInside(0, 0, 宽, 高).findOne(1000)
         if (p && p.bounds().centerX() > 0 && p.bounds().centerY() > 0) {
@@ -4090,7 +4090,7 @@ function 进入微微() {
             打开v()
         }
 
-        for (var i = 0; i < 30; i++) {
+        for (let i = 0; i < 30; i++) {
             p = text("通讯录").className("android.widget.TextView").packageName("com.tencent.mm").findOnce()
             if (p) {
                 sleep(1000)
@@ -4114,9 +4114,9 @@ function 进入微微() {
                 } else {
                     setText(指定昵称);
                 }
-                sleep(2000)
+                sleep(3000)
                 //clickx(p.bounds().centerX(), p.bounds().centerY());
-                sleep(4000)
+                //sleep(2000)
             }
             if (ssjpt) {
                 p = textStartsWith('搜一搜').className("android.widget.TextView").packageName("com.tencent.mm").findOnce()
@@ -4208,6 +4208,7 @@ function 进入微微() {
         }
         关闭应用(true)
     }
+    关闭应用(false)
 }
 function 按名称关闭应用(packageName) {//有内存溢出风险，可能是应用自启动导致
     log("尝试关闭" + packageName);
