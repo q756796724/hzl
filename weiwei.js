@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.3.2";
+var versionNum = "v1.3.3";
 
 
 function jm() {
@@ -324,12 +324,14 @@ ui.start1.on("click", () => {
                 setInterval(关闭浮窗(), 5000);*/
 
                 function 清理后台() {
-                    if (device.getAvailMem() / 1024 / 1024 < 1000) {
-                        log(new Date().toLocaleString() + "-" + "清理后台");
-                       
-                        if (device.brand == 'Xiaomi') {
+                    log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
+                    if (device.brand == 'Xiaomi') {
+                        if (device.getAvailMem() / 1024 / 1024 < 300) {
+                            log(new Date().toLocaleString() + "-" + "清理后台");
                             home()
-                            sleep(1500)
+                            sleep(500)
+                            按名称关闭应用(PKG_NAME);
+                            sleep(500)
                             recents()
                             let cleanBtn = packageName("com.android.systemui").id("clearAnimView").findOne(2000)
                             if (cleanBtn) {
@@ -337,10 +339,15 @@ ui.start1.on("click", () => {
                             } else {
                                 click(device.width / 2, device.height * 0.9)
                             }
-                        } else if (device.brand == 'Meizu') {
+                        }
+                    } else if (device.brand == 'Meizu') {
+                        if (device.getAvailMem() / 1024 / 1024 < 200) {
+                            log(new Date().toLocaleString() + "-" + "清理后台");
                             home()
+                            sleep(500)
+                            按名称关闭应用(PKG_NAME);
                             sleep(1500)
-                            quickSettings()
+                            notifications()
                             let cleanBtn = packageName("com.android.systemui").text("手机加速").findOne(2000)
                             if (cleanBtn) {
                                 cleanBtn = cleanBtn.parent()
@@ -353,9 +360,14 @@ ui.start1.on("click", () => {
                                 sleep(2000);
                                 click(device.width / 2, device.height * 0.9)
                             }
-                        }else{
+                        }
+                    } else {
+                        if (device.getAvailMem() / 1024 / 1024 < 300) {
+                            log(new Date().toLocaleString() + "-" + "清理后台");
+                            home()
+                            sleep(500)
                             按名称关闭应用(PKG_NAME);
-                            sleep(1500)
+                            sleep(500)
                             home()
                         }
                     }
@@ -404,7 +416,6 @@ ui.start1.on("click", () => {
                 }
 
                 function 清理空间() {
-                    清理后台();
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/");
@@ -448,9 +459,11 @@ ui.start1.on("click", () => {
                 }
 
                 function 定时结束未响应() {
-                    if (等待未响应() == 0) {
+                    /*if (等待未响应() == 0) {
                         结束未响应()
-                    }
+                    }*/
+                    清理后台();
+                    结束未响应();
                     return 定时结束未响应;
                 }
                 setInterval(定时结束未响应(), 10000);
@@ -3148,7 +3161,7 @@ function 微微视频() {
                         if (返回三()) {
                             微微连续失败次数 = 0;
                         } else {
-                            关闭应用(true);
+                            关闭应用(false);
                             微微连续失败次数 = 0;
                             进入微微();
                         }
@@ -3292,7 +3305,7 @@ function 微圈视频() {
                         if (返回三()) {
                             微圈连续失败次数 = 0;
                         } else {
-                            关闭应用(true);
+                            关闭应用(false);
                             微圈连续失败次数 = 0;
                             进入微圈();
                         }
@@ -3335,6 +3348,7 @@ function 微微提现() {
                         }
                     });
                     if (temp && temp.statusCode == 200) {
+                        提现 = false
                         temp = temp.body.string();
                         if (/操作成功/.test(temp)) {
                             console.info("微微视频申请提现成功")
@@ -3345,6 +3359,8 @@ function 微微提现() {
                     } else {
                         console.warn("微微视频提现失败,网络异常");
                     }
+
+                } else if (temp["wallet"] - temp["wallet_freeze"] < 2500) {
                     提现 = false
                 }
             }
