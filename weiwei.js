@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.3.3";
+var versionNum = "v1.3.4";
 
 
 function jm() {
@@ -324,9 +324,9 @@ ui.start1.on("click", () => {
                 setInterval(关闭浮窗(), 5000);*/
 
                 function 清理后台() {
-                    log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                     if (device.brand == 'Xiaomi') {
                         if (device.getAvailMem() / 1024 / 1024 < 300) {
+                            log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                             log(new Date().toLocaleString() + "-" + "清理后台");
                             home()
                             sleep(500)
@@ -339,9 +339,11 @@ ui.start1.on("click", () => {
                             } else {
                                 click(device.width / 2, device.height * 0.9)
                             }
+                            log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                         }
                     } else if (device.brand == 'Meizu') {
                         if (device.getAvailMem() / 1024 / 1024 < 200) {
+                            log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                             log(new Date().toLocaleString() + "-" + "清理后台");
                             home()
                             sleep(500)
@@ -360,15 +362,18 @@ ui.start1.on("click", () => {
                                 sleep(2000);
                                 click(device.width / 2, device.height * 0.9)
                             }
+                            log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                         }
                     } else {
                         if (device.getAvailMem() / 1024 / 1024 < 300) {
+                            log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                             log(new Date().toLocaleString() + "-" + "清理后台");
                             home()
                             sleep(500)
                             按名称关闭应用(PKG_NAME);
                             sleep(500)
                             home()
+                            log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                         }
                     }
                 }
