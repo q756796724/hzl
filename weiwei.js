@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.3.4";
+var versionNum = "v1.3.5";
 
 
 function jm() {
@@ -342,7 +342,7 @@ ui.start1.on("click", () => {
                             log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                         }
                     } else if (device.brand == 'Meizu') {
-                        if (device.getAvailMem() / 1024 / 1024 < 200) {
+                        if (device.getAvailMem() / 1024 / 1024 < 300) {
                             log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                             log(new Date().toLocaleString() + "-" + "清理后台");
                             home()
