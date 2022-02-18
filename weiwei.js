@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.3.5";
+var versionNum = "v1.3.6";
 
 
 function jm() {
@@ -325,12 +325,12 @@ ui.start1.on("click", () => {
 
                 function 清理后台() {
                     if (device.brand == 'Xiaomi') {
-                        if (device.getAvailMem() / 1024 / 1024 < 300) {
+                        if (device.getAvailMem() / 1024 / 1024 < 350) {
                             log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                             log(new Date().toLocaleString() + "-" + "清理后台");
                             home()
                             sleep(500)
-                            按名称关闭应用(PKG_NAME);
+                            //按名称关闭应用(PKG_NAME);
                             sleep(500)
                             recents()
                             let cleanBtn = packageName("com.android.systemui").id("clearAnimView").findOne(2000)
@@ -342,7 +342,7 @@ ui.start1.on("click", () => {
                             log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                         }
                     } else if (device.brand == 'Meizu') {
-                        if (device.getAvailMem() / 1024 / 1024 < 300) {
+                        if (device.getAvailMem() / 1024 / 1024 < 350) {
                             log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                             log(new Date().toLocaleString() + "-" + "清理后台");
                             home()
@@ -365,7 +365,7 @@ ui.start1.on("click", () => {
                             log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                         }
                     } else {
-                        if (device.getAvailMem() / 1024 / 1024 < 300) {
+                        if (device.getAvailMem() / 1024 / 1024 < 350) {
                             log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                             log(new Date().toLocaleString() + "-" + "清理后台");
                             home()
