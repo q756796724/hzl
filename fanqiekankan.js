@@ -70,7 +70,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.5.9";
+        var versionNum = "v1.6.0";
 
         function refreshStateInfo() {
             sleep(1000);
@@ -145,7 +145,7 @@ ui.ok.click(function () {
         悬浮窗2.consoleLog.setConsole(runtime.console);
         悬浮窗2.setTouchable(false);
         悬浮窗2.setPosition(0, device.height * 0.1);
-        
+
         setInterval(() => { }, 1000);
 
 
@@ -474,12 +474,43 @@ ui.ok.click(function () {
             log(sleepTime / 1000 / 60 + "分钟");
             清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
             清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
-            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/");
+            if (files.listDir("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/").length > 100) {
+                清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/");
+            }
             清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideotmp/");
             清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideocache/");
             清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxanewfiles/");
             清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxafiles/");
             清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxacache/");
+            清空文件夹("/sdcard/Pictures/WeiXin/");
+            let path = "/sdcard/Android/data/com.tencent.mm/MicroMsg/";
+            let arr = files.listDir(path);
+            for (let i = 0; i < arr.length; i++) {
+                if (files.isDir(path + arr[i]) && arr[i].length == 32) {
+                    path = path + arr[i] + '/'
+                    if (files.listDir(path + "finder/image/").length > 30) {
+                        清空文件夹(path + "finder/image/");
+                    }
+                    if (files.listDir(path + "finder/video/").length > 8) {
+                        清空文件夹(path + "finder/video/");
+                    }
+                    if (files.listDir(path + "finder/tmp/").length > 100) {
+                        清空文件夹(path + "finder/tmp/");
+                    }
+                    if (查询目录下文件个数(path + "finder/avatar/") > 100) {
+                        清空文件夹(path + "finder/avatar/");
+                    }
+                    if (files.listDir(path + "image2/").length > 30) {
+                        清空文件夹(path + "image2/");
+                    }
+                    if (files.listDir(path + "record/").length > 30) {
+                        清空文件夹(path + "record/");
+                    }
+                    if (files.listDir(path + "video/").length > 30) {
+                        清空文件夹(path + "video/");
+                    }
+                }
+            }
             sleepLongTime(sleepTime);
         }
         function 清空文件夹(path) {
@@ -491,6 +522,16 @@ ui.ok.click(function () {
                     files.remove(path + arr[i]);
                 }
             }
+        }
+        function 查询目录下文件个数(path) {
+            let fileCount=0;
+            let arr = files.listDir(path);
+            for (let i = 0; i < arr.length; i++) {
+                if (!files.isDir(path + arr[i])) {
+                    fileCount++
+                } 
+            }
+            return fileCount;
         }
 
         function yuedu() {
@@ -618,6 +659,7 @@ ui.ok.click(function () {
                     }
                 }
             }*/
+            console.clear();
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                 kz();
                 //device.wakeUp();
@@ -893,34 +935,38 @@ ui.ok.click(function () {
 
 
         function 连接wifi(wifiName, connectTime) {
-            var totificationlistenersetting = function (actionname) {
-                let i = app.intent({
-                    action: "android.settings.WIFI_SETTINGS",
-                    flags: ["activity_new_task"]
-                    // data: "file:///sdcard/1.png"
-                });
-                context.startActivity(i);
+            if(zwifi!=dlwifi){
+                var totificationlistenersetting = function (actionname) {
+                    let i = app.intent({
+                        action: "android.settings.WIFI_SETTINGS",
+                        flags: ["activity_new_task"]
+                        // data: "file:///sdcard/1.png"
+                    });
+                    context.startActivity(i);
+                }
+                totificationlistenersetting()
+                sleep(2000);
+                let cBtn = text(wifiName).findOne(5000);
+                if (cBtn != null) {
+                    let cBounds = cBtn.bounds();
+                    click(cBounds.right - 1, cBounds.bottom - 1);
+                }
+                wifi弹窗处理();
+                sleep(connectTime);
+                cBtn = text(wifiName).findOne(5000);
+                if (cBtn != null) {
+                    cBounds = cBtn.bounds();
+                    click(cBounds.right - 1, cBounds.bottom - 1);
+                }
+                wifi弹窗处理();
+                sleep(1000);
+                back();
+                sleep(1000);
             }
-            totificationlistenersetting()
-            sleep(2000);
-            let cBtn = text(wifiName).findOne(5000);
-            if (cBtn != null) {
-                let cBounds = cBtn.bounds();
-                click(cBounds.right - 1, cBounds.bottom - 1);
-            }
-            wifi弹窗处理();
-            sleep(connectTime);
-            cBtn = text(wifiName).findOne(5000);
-            if (cBtn != null) {
-                cBounds = cBtn.bounds();
-                click(cBounds.right - 1, cBounds.bottom - 1);
-            }
-            wifi弹窗处理();
-            sleep(2000);
         }
         function wifi弹窗处理() {
             let qBtn = textMatches(/(完成|连接)/).findOne(1000);
-            if (qBtn != null&&qBtn.enabled()) {
+            if (qBtn != null && qBtn.enabled()) {
                 qBtn.click();
             } else {
                 qBtn = textMatches(/(取消)/).findOne(1000);
@@ -1024,7 +1070,7 @@ ui.ok.click(function () {
                 sleepLongTime(3600000);
                 continue;
             }
-
+            sleep(3000);
 
             连接wifi(zwifi, 5000);
             打开v();
