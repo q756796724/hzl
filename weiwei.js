@@ -97,7 +97,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.3.8";
+var versionNum = "v1.3.9";
 
 
 function jm() {
@@ -325,9 +325,21 @@ ui.start1.on("click", () => {
 
                 function 清理后台() {
                     if (device.brand == 'Xiaomi') {
-                        if (device.getAvailMem() / 1024 / 1024 < 250) {
+                        if (device.getAvailMem() / 1024 / 1024 < 350) {
                             log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                             log(new Date().toLocaleString() + "-" + "清理后台");
+                            recents()
+                            let cleanBtn = packageName("com.android.systemui").id("clearAnimView").findOne(2000)
+                            if (cleanBtn) {
+                                cleanBtn.click()
+                            } else {
+                                click(device.width / 2, device.height * 0.9)
+                            }
+                            sleep(5000)
+                            log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
+                        } /*else if (device.getAvailMem() / 1024 / 1024 < 250) {
+                            log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
+                            log(new Date().toLocaleString() + "-" + "home清理后台");
                             home()
                             sleep(500)
                             //按名称关闭应用(PKG_NAME);
@@ -339,16 +351,29 @@ ui.start1.on("click", () => {
                             } else {
                                 click(device.width / 2, device.height * 0.9)
                             }
+                            sleep(5000)
                             log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
-                        }
-                    } else if (device.brand == 'Meizu') {
-                        if (device.getAvailMem() / 1024 / 1024 < 250) {
+                        }*/ else if (device.getAvailMem() / 1024 / 1024 < 250) {
                             log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
-                            log(new Date().toLocaleString() + "-" + "清理后台");
+                            log(new Date().toLocaleString() + "-" + "关闭应用清理后台");
                             home()
                             sleep(500)
                             按名称关闭应用(PKG_NAME);
-                            sleep(1500)
+                            sleep(500)
+                            recents()
+                            let cleanBtn = packageName("com.android.systemui").id("clearAnimView").findOne(2000)
+                            if (cleanBtn) {
+                                cleanBtn.click()
+                            } else {
+                                click(device.width / 2, device.height * 0.9)
+                            }
+                            sleep(5000)
+                            log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
+                        }
+                    } else if (device.brand == 'Meizu') {
+                        if (device.getAvailMem() / 1024 / 1024 < 350) {
+                            log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
+                            log(new Date().toLocaleString() + "-" + "手机加速");
                             notifications()
                             let cleanBtn = packageName("com.android.systemui").text("手机加速").findOne(2000)
                             if (cleanBtn) {
@@ -362,17 +387,57 @@ ui.start1.on("click", () => {
                                 sleep(2000);
                                 click(device.width / 2, device.height * 0.9)
                             }
+                            sleep(5000)
+                            log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
+                        } else if (device.getAvailMem() / 1024 / 1024 < 250) {
+                            log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
+                            log(new Date().toLocaleString() + "-" + "手机加速清理后台");
+                            notifications()
+                            let cleanBtn = packageName("com.android.systemui").text("手机加速").findOne(2000)
+                            if (cleanBtn) {
+                                cleanBtn = cleanBtn.parent()
+                                if (cleanBtn) {
+                                    cleanBtn.click()
+                                    back()
+                                }
+                            }
+                            recents()
+                            sleep(2000);
+                            click(device.width / 2, device.height * 0.9)
+                            sleep(5000)
+                            log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
+                        } else if (device.getAvailMem() / 1024 / 1024 < 200) {
+                            log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
+                            log(new Date().toLocaleString() + "-" + "结束应用清理后台");
+                            home()
+                            sleep(500)
+                            按名称关闭应用(PKG_NAME);
+                            sleep(1500)
+                            notifications()
+                            let cleanBtn = packageName("com.android.systemui").text("手机加速").findOne(2000)
+                            if (cleanBtn) {
+                                cleanBtn = cleanBtn.parent()
+                                if (cleanBtn) {
+                                    cleanBtn.click()
+                                    back()
+                                }
+                            }
+                            recents()
+                            sleep(2000);
+                            click(device.width / 2, device.height * 0.9)
+                            sleep(5000)
                             log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                         }
                     } else {
                         if (device.getAvailMem() / 1024 / 1024 < 300) {
                             log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
-                            log(new Date().toLocaleString() + "-" + "清理后台");
+                            log(new Date().toLocaleString() + "-" + "结束应用");
                             home()
                             sleep(500)
                             按名称关闭应用(PKG_NAME);
-                            sleep(500)
+                            sleep(1000)
                             home()
+                            sleep(5000)
                             log(new Date().toLocaleString() + "-" + "可用内存" + device.getAvailMem() / 1024 / 1024);
                         }
                     }
@@ -419,16 +484,58 @@ ui.start1.on("click", () => {
                         }
                     }
                 }
-
+                function 查询目录下文件个数(path) {
+                    let fileCount=0;
+                    let arr = files.listDir(path);
+                    for (let i = 0; i < arr.length; i++) {
+                        if (!files.isDir(path + arr[i])) {
+                            fileCount++
+                        } 
+                    }
+                    return fileCount;
+                }
+                
                 function 清理空间() {
+                    日志.clearLog();
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
-                    清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/");
+                    if(files.listDir("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/").length>100){
+                        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/");
+                    }
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideotmp/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideocache/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxanewfiles/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxafiles/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxacache/");
+                    清空文件夹("/sdcard/Pictures/WeiXin/");
+                    let path="/sdcard/Android/data/com.tencent.mm/MicroMsg/";
+                    let arr = files.listDir(path);
+                    for (let i = 0; i < arr.length; i++) {
+                        if (files.isDir(path + arr[i])&&arr[i].length==32) {
+                            path=path + arr[i] + '/'
+                            if(files.listDir(path+"finder/image/").length>30){
+                                清空文件夹(path+"finder/image/");
+                            }
+                            if(files.listDir(path+"finder/video/").length>8){
+                                清空文件夹(path+"finder/video/");
+                            }
+                            if(files.listDir(path+"finder/tmp/").length>100){
+                                清空文件夹(path+"finder/tmp/");
+                            }
+                            if(查询目录下文件个数(path+"finder/avatar/")>100){
+                                清空文件夹(path+"finder/avatar/");
+                            }
+                            if(files.listDir(path+"image2/").length>30){
+                                清空文件夹(path+"image2/");
+                            }
+                            if(files.listDir(path+"record/").length>30){
+                                清空文件夹(path+"record/");
+                            }
+                            if(files.listDir(path+"video/").length>30){
+                                清空文件夹(path+"video/");
+                            }
+                        }
+                    }
 
                     return 清理空间;
                 }
