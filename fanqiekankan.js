@@ -70,7 +70,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.6.0";
+        var versionNum = "v1.6.1";
 
         function refreshStateInfo() {
             sleep(1000);
@@ -1068,6 +1068,11 @@ ui.ok.click(function () {
             if (lunCount > 12) {
                 log("当天已轮回" + (lunCount - 1).toString() + "次,休息中");
                 sleepLongTime(3600000);
+                continue;
+            }
+            if(nowHour<6){
+                log("当天已轮回" + (lunCount - 1).toString() + "次,休息中");
+                sleepLongTime(random(3600000, 5000000));
                 continue;
             }
             sleep(3000);
