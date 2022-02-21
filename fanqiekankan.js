@@ -70,7 +70,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.6.3";
+        var versionNum = "v1.6.4";
         var totificationlistenersetting = function (actionname) {
             let i = app.intent({
                 action: "android.settings.WIFI_SETTINGS",
@@ -387,7 +387,7 @@ ui.ok.click(function () {
             }
 
             if (textMatches(/(.*暂无任务可做)/).findOne(3000) != null) {
-                lunSleep(random(86400000, 130000000));
+                lunSleep(random(8640000, 13000000));
             } else {
                 lunSleep();
             }
@@ -477,7 +477,7 @@ ui.ok.click(function () {
             sleep(5000);
             home();
             if (sleepTime == undefined) {
-                sleepTime = random(4000000, 4200000);
+                sleepTime = random(6000000, 8000000);
             }
             log(new Date().toLocaleString() + "-" + "----------------------------------------------"+sleepTime / 1000 / 60 + "分钟");
             清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
