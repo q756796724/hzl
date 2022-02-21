@@ -70,7 +70,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.6.4";
+        var versionNum = "v1.6.5";
         var totificationlistenersetting = function (actionname) {
             let i = app.intent({
                 action: "android.settings.WIFI_SETTINGS",
@@ -477,7 +477,7 @@ ui.ok.click(function () {
             sleep(5000);
             home();
             if (sleepTime == undefined) {
-                sleepTime = random(6000000, 8000000);
+                sleepTime = random(4000000, 8000000);
             }
             log(new Date().toLocaleString() + "-" + "----------------------------------------------"+sleepTime / 1000 / 60 + "分钟");
             清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
