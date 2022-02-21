@@ -70,7 +70,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.6.2";
+        var versionNum = "v1.6.3";
         var totificationlistenersetting = function (actionname) {
             let i = app.intent({
                 action: "android.settings.WIFI_SETTINGS",
@@ -944,7 +944,7 @@ ui.ok.click(function () {
 
 
         function 连接wifi(wifiName, connectTime) {
-            if(zwifi!=dlwifi){
+            if(zwifi.toString()!=dlwifi.toString()){
                 totificationlistenersetting()
                 sleep(2000);
                 let cBtn = text(wifiName).findOne(5000);
@@ -1071,7 +1071,8 @@ ui.ok.click(function () {
                 sleepLongTime(3600000);
                 continue;
             } 
-            if(zwifi!=dlwifi&&nowHour<6){
+           
+            if(zwifi.toString()!=dlwifi.toString()&&nowHour<6){
                 log(new Date().toLocaleString() + "-" + "----------------------------------------------"+"当天已轮回" + (lunCount - 1).toString() + "次,休息中");
                 sleepLongTime(random(3600000, 5000000));
                 continue;
