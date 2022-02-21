@@ -70,7 +70,15 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.6.1";
+        var versionNum = "v1.6.2";
+        var totificationlistenersetting = function (actionname) {
+            let i = app.intent({
+                action: "android.settings.WIFI_SETTINGS",
+                flags: ["activity_new_task"]
+                // data: "file:///sdcard/1.png"
+            });
+            context.startActivity(i);
+        }
 
         function refreshStateInfo() {
             sleep(1000);
@@ -471,7 +479,7 @@ ui.ok.click(function () {
             if (sleepTime == undefined) {
                 sleepTime = random(4000000, 4200000);
             }
-            log(sleepTime / 1000 / 60 + "分钟");
+            log(new Date().toLocaleString() + "-" + "----------------------------------------------"+sleepTime / 1000 / 60 + "分钟");
             清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
             清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
             if (files.listDir("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/").length > 100) {
@@ -659,13 +667,14 @@ ui.ok.click(function () {
                     }
                 }
             }*/
-            console.clear();
+            
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                 kz();
                 //device.wakeUp();
                 //device.keepScreenOn(3600 * 1000)
                 sleep(60 * 1000);
             }
+            console.clear();
         }
         function 关闭应用(packageName) {
             log("尝试关闭" + packageName);
@@ -936,14 +945,6 @@ ui.ok.click(function () {
 
         function 连接wifi(wifiName, connectTime) {
             if(zwifi!=dlwifi){
-                var totificationlistenersetting = function (actionname) {
-                    let i = app.intent({
-                        action: "android.settings.WIFI_SETTINGS",
-                        flags: ["activity_new_task"]
-                        // data: "file:///sdcard/1.png"
-                    });
-                    context.startActivity(i);
-                }
                 totificationlistenersetting()
                 sleep(2000);
                 let cBtn = text(wifiName).findOne(5000);
@@ -1066,12 +1067,12 @@ ui.ok.click(function () {
             配置 = 读取配置(settingPath);
             lunCount = 配置["lunCount"];
             if (lunCount > 12) {
-                log("当天已轮回" + (lunCount - 1).toString() + "次,休息中");
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------"+"当天已轮回" + (lunCount - 1).toString() + "次,休息中");
                 sleepLongTime(3600000);
                 continue;
-            }
-            if(nowHour<6){
-                log("当天已轮回" + (lunCount - 1).toString() + "次,休息中");
+            } 
+            if(zwifi!=dlwifi&&nowHour<6){
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------"+"当天已轮回" + (lunCount - 1).toString() + "次,休息中");
                 sleepLongTime(random(3600000, 5000000));
                 continue;
             }
