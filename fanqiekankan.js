@@ -908,6 +908,7 @@ ui.ok.click(function () {
         function 连接wifi(wifiName, connectTime) {
             if (zwifi.toString() != dlwifi.toString()) {
                 ui.run(function () { 悬浮窗.jbkz.visibility = 8 });
+                sleep(1000);
                 totificationlistenersetting()
                 sleep(2000);
                 let cBtn = text(wifiName).findOne(5000);
@@ -927,6 +928,7 @@ ui.ok.click(function () {
                 back();
                 sleep(1000);
                 ui.run(function () { 悬浮窗.jbkz.visibility = 0 });
+                sleep(1000);
             }
         }
         function wifi弹窗处理() {
