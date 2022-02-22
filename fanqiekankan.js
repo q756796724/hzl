@@ -70,7 +70,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.6.5";
+        var versionNum = "v1.6.6";
         var totificationlistenersetting = function (actionname) {
             let i = app.intent({
                 action: "android.settings.WIFI_SETTINGS",
@@ -91,7 +91,7 @@ ui.ok.click(function () {
 
 
         var 悬浮窗 = floaty.window(
-            <frame h="auto" w="auto" gravity="center" bg="#77ff0000">
+            <frame id="jbkz" h="auto" w="auto" gravity="center" bg="#77ff0000">
                 <button id="console" text="暂停" />
             </frame>
         );
@@ -479,46 +479,8 @@ ui.ok.click(function () {
             if (sleepTime == undefined) {
                 sleepTime = random(4000000, 8000000);
             }
-            log(new Date().toLocaleString() + "-" + "----------------------------------------------"+sleepTime / 1000 / 60 + "分钟");
-            清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
-            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
-            if (files.listDir("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/").length > 100) {
-                清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/");
-            }
-            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideotmp/");
-            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideocache/");
-            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxanewfiles/");
-            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxafiles/");
-            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxacache/");
-            清空文件夹("/sdcard/Pictures/WeiXin/");
-            let path = "/sdcard/Android/data/com.tencent.mm/MicroMsg/";
-            let arr = files.listDir(path);
-            for (let i = 0; i < arr.length; i++) {
-                if (files.isDir(path + arr[i]) && arr[i].length == 32) {
-                    path = path + arr[i] + '/'
-                    if (files.listDir(path + "finder/image/").length > 30) {
-                        清空文件夹(path + "finder/image/");
-                    }
-                    if (files.listDir(path + "finder/video/").length > 8) {
-                        清空文件夹(path + "finder/video/");
-                    }
-                    if (files.listDir(path + "finder/tmp/").length > 100) {
-                        清空文件夹(path + "finder/tmp/");
-                    }
-                    if (查询目录下文件个数(path + "finder/avatar/") > 100) {
-                        清空文件夹(path + "finder/avatar/");
-                    }
-                    if (files.listDir(path + "image2/").length > 30) {
-                        清空文件夹(path + "image2/");
-                    }
-                    if (files.listDir(path + "record/").length > 30) {
-                        清空文件夹(path + "record/");
-                    }
-                    if (files.listDir(path + "video/").length > 30) {
-                        清空文件夹(path + "video/");
-                    }
-                }
-            }
+            log(new Date().toLocaleString() + "-" + "----------------------------------------------" + sleepTime / 1000 / 60 + "分钟");
+
             sleepLongTime(sleepTime);
         }
         function 清空文件夹(path) {
@@ -532,12 +494,12 @@ ui.ok.click(function () {
             }
         }
         function 查询目录下文件个数(path) {
-            let fileCount=0;
+            let fileCount = 0;
             let arr = files.listDir(path);
             for (let i = 0; i < arr.length; i++) {
                 if (!files.isDir(path + arr[i])) {
                     fileCount++
-                } 
+                }
             }
             return fileCount;
         }
@@ -667,7 +629,7 @@ ui.ok.click(function () {
                     }
                 }
             }*/
-            
+
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                 kz();
                 //device.wakeUp();
@@ -944,7 +906,8 @@ ui.ok.click(function () {
 
 
         function 连接wifi(wifiName, connectTime) {
-            if(zwifi.toString()!=dlwifi.toString()){
+            if (zwifi.toString() != dlwifi.toString()) {
+                ui.run(function () { 悬浮窗.jbkz.visibility = 8 });
                 totificationlistenersetting()
                 sleep(2000);
                 let cBtn = text(wifiName).findOne(5000);
@@ -963,6 +926,7 @@ ui.ok.click(function () {
                 sleep(1000);
                 back();
                 sleep(1000);
+                ui.run(function () { 悬浮窗.jbkz.visibility = 0 });
             }
         }
         function wifi弹窗处理() {
@@ -973,6 +937,65 @@ ui.ok.click(function () {
                 qBtn = textMatches(/(取消)/).findOne(1000);
                 if (qBtn != null) {
                     qBtn.click();
+                }
+            }
+        }
+        function 启动x5() {
+            连接wifi(zwifi, 5000);
+            打开v();
+            返回v首页();
+
+            refreshStateInfo();
+            let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("通讯录").findOne(3000);
+            if (topActivity == MAIN_PAGE && wBtn != null) {
+                log("进入v成功");
+                let wBtn = className("android.widget.TextView").text("我").findOne(3000);
+                for (let i = 0; i < 8; i++) {
+                    if (wBtn != null && wBtn.clickable()) {
+                        wBtn.click();
+                        sleep(3000);
+                        if (className("android.widget.TextView").text("收藏").findOne(5000) != null) {
+                            break;
+                        };
+                    } else {
+                        wBtn = wBtn.parent();
+                    }
+                }
+
+                if (结束未响应()) {
+                    return;
+                }
+                if (className("android.widget.TextView").text("收藏").findOne(5000) == null) {
+                    return;
+                };
+                log("进入我成功");
+                sleep(5000);
+                click("收藏");
+                sleep(1000);
+                if (结束未响应()) {
+                    return;
+                }
+                if (text("我的收藏").findOne(5000) == null) {
+                    return;
+                }
+                log("进入收藏成功");
+                sleep(3000);
+                let x5;
+                if (className("android.widget.TextView").textContains("debugmm.qq.com/?forcex5=true").findOne(5000) != null) {
+                    x5 = className("android.widget.TextView").textContains("debugmm.qq.com/?forcex5=true").findOne(5000).bounds();
+                    click(x5.right - 1, x5.bottom - 1);
+                    sleep(3000);
+                    if (className("android.widget.TextView").textContains("debugmm.qq.com/?forcex5=true").findOne(5000) != null) {
+                        x5 = className("android.widget.TextView").textContains("debugmm.qq.com/?forcex5=true").findOne(5000).bounds();
+                        click(x5.right - 1, x5.bottom - 1);
+                        p = packageName("com.tencent.mm").className("android.widget.TextView").textContains("force use x5 switch is on").findOne(8000)
+                        if (p) {
+                            console.info("x5成功")
+                            sleep(random(1000, 2000));
+                            back()
+                            返回v首页();
+                        }
+                    }
                 }
             }
         }
@@ -1063,17 +1086,60 @@ ui.ok.click(function () {
                 初始化配置(settingPath);
                 toastLog("初始化配置");
                 console.clear();
+                清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
+                清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
+                if (files.listDir("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/").length > 100) {
+                    清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/");
+                }
+                清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideotmp/");
+                清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideocache/");
+                清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxanewfiles/");
+                清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxafiles/");
+                清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxacache/");
+                清空文件夹("/sdcard/Pictures/WeiXin/");
+                let path = "/sdcard/Android/data/com.tencent.mm/MicroMsg/";
+                let arr = files.listDir(path);
+                for (let i = 0; i < arr.length; i++) {
+                    if (files.isDir(path + arr[i]) && arr[i].length == 32) {
+                        path = path + arr[i] + '/'
+                        if (files.listDir(path + "finder/image/").length > 30) {
+                            清空文件夹(path + "finder/image/");
+                        }
+                        if (files.listDir(path + "finder/video/").length > 8) {
+                            清空文件夹(path + "finder/video/");
+                        }
+                        if (files.listDir(path + "finder/tmp/").length > 100) {
+                            清空文件夹(path + "finder/tmp/");
+                        }
+                        if (查询目录下文件个数(path + "finder/avatar/") > 100) {
+                            清空文件夹(path + "finder/avatar/");
+                        }
+                        if (files.listDir(path + "image2/").length > 30) {
+                            清空文件夹(path + "image2/");
+                        }
+                        if (files.listDir(path + "record/").length > 30) {
+                            清空文件夹(path + "record/");
+                        }
+                        if (files.listDir(path + "video/").length > 30) {
+                            清空文件夹(path + "video/");
+                        }
+                    }
+                }
+
+                启动x5()
+
             }
+            
             配置 = 读取配置(settingPath);
             lunCount = 配置["lunCount"];
             if (lunCount > 12) {
-                log(new Date().toLocaleString() + "-" + "----------------------------------------------"+"当天已轮回" + (lunCount - 1).toString() + "次,休息中");
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息中");
                 sleepLongTime(3600000);
                 continue;
-            } 
-           
-            if(zwifi.toString()!=dlwifi.toString()&&nowHour<6){
-                log(new Date().toLocaleString() + "-" + "----------------------------------------------"+"当天已轮回" + (lunCount - 1).toString() + "次,休息中");
+            }
+
+            if (zwifi.toString() != dlwifi.toString() && nowHour < 6) {
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息中");
                 sleepLongTime(random(3600000, 5000000));
                 continue;
             }
