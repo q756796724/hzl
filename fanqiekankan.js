@@ -70,7 +70,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.6.9";
+        var versionNum = "v1.7.0";
         var readNum=0;//最近获取到的阅读次数
         var totificationlistenersetting = function (actionname) {
             let i = app.intent({
@@ -1026,7 +1026,8 @@ ui.ok.click(function () {
                     if (className("android.widget.TextView").textContains("debugmm.qq.com/?forcex5=true").findOne(5000) != null) {
                         x5 = className("android.widget.TextView").textContains("debugmm.qq.com/?forcex5=true").findOne(5000).bounds();
                         click(x5.right - 1, x5.bottom - 1);
-                        p = packageName("com.tencent.mm").className("android.widget.TextView").textContains("force use x5 switch is on").findOne(8000)
+                        sleep(random(5000, 8000));
+                        p = packageName("com.tencent.mm").className("android.widget.TextView").textContains("force use x5 switch is on").findOne(3000)
                         if (p) {
                             console.info("x5成功")
                             sleep(random(1000, 2000));
