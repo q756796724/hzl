@@ -70,7 +70,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.6.7";
+        var versionNum = "v1.6.8";
         var readNum;//最近获取到的阅读次数
         var totificationlistenersetting = function (actionname) {
             let i = app.intent({
@@ -946,6 +946,13 @@ ui.ok.click(function () {
                 wifi弹窗处理();
                 sleep(connectTime);
                 cBtn = text(wifiName).findOne(5000);
+                if (cBtn != null) {
+                    cBounds = cBtn.bounds();
+                    click(cBounds.right - 1, cBounds.bottom - 1);
+                }
+                wifi弹窗处理();
+                sleep(1000);
+                cBtn = text(wifiName).findOne(8000);
                 if (cBtn != null) {
                     cBounds = cBtn.bounds();
                     click(cBounds.right - 1, cBounds.bottom - 1);
