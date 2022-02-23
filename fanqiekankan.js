@@ -70,7 +70,8 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.6.6";
+        var versionNum = "v1.6.7";
+        var readNum;//最近获取到的阅读次数
         var totificationlistenersetting = function (actionname) {
             let i = app.intent({
                 action: "android.settings.WIFI_SETTINGS",
@@ -85,8 +86,8 @@ ui.ok.click(function () {
             topPackage = currentPackage();
             sleep(1000);
             topActivity = currentActivity();
-            log("==> topPackage: " + topPackage);
-            log("==> topActivity: " + topActivity);
+            //log("==> topPackage: " + topPackage);
+            //log("==> topActivity: " + topActivity);
         }
 
 
@@ -305,7 +306,9 @@ ui.ok.click(function () {
             if (className("android.widget.TextView").textContains("RHtWWJm").findOne(5000) == null
                 && className("android.widget.TextView").textContains("migokkm").findOne(5000) == null
                 && className("android.widget.TextView").textContains("ckmokkm").findOne(5000) == null
-                && className("android.widget.TextView").textContains("gPmokkm").findOne(5000) == null) {
+                && className("android.widget.TextView").textContains("gPmokkm").findOne(5000) == null
+                && className("android.widget.TextView").textContains("JVJAkkm").findOne(5000) == null
+                && className("android.widget.TextView").textContains("TiLAkkm").findOne(5000) == null) {
                 toastLog("未添加到收藏夹");
                 exit();
             }
@@ -318,7 +321,12 @@ ui.ok.click(function () {
                 阅读 = className("android.widget.TextView").textContains("ckmokkm").findOne(5000).bounds();
             } else if (className("android.widget.TextView").textContains("gPmokkm").findOne(5000) != null) {
                 阅读 = className("android.widget.TextView").textContains("gPmokkm").findOne(5000).bounds();
+            }else if (className("android.widget.TextView").textContains("JVJAkkm").findOne(5000) != null) {
+                阅读 = className("android.widget.TextView").textContains("JVJAkkm").findOne(5000).bounds();
+            }else if (className("android.widget.TextView").textContains("TiLAkkm").findOne(5000) != null) {
+                阅读 = className("android.widget.TextView").textContains("TiLAkkm").findOne(5000).bounds();
             }
+            
             click(阅读.right - 1, 阅读.bottom - 1);
             sleep(3000);
 
@@ -330,6 +338,10 @@ ui.ok.click(function () {
                 阅读 = className("android.widget.TextView").textContains("ckmokkm").findOne(5000).bounds();
             } else if (className("android.widget.TextView").textContains("gPmokkm").findOne(5000) != null) {
                 阅读 = className("android.widget.TextView").textContains("gPmokkm").findOne(5000).bounds();
+            } else if (className("android.widget.TextView").textContains("JVJAkkm").findOne(5000) != null) {
+                阅读 = className("android.widget.TextView").textContains("JVJAkkm").findOne(5000).bounds();
+            } else if (className("android.widget.TextView").textContains("TiLAkkm").findOne(5000) != null) {
+                阅读 = className("android.widget.TextView").textContains("TiLAkkm").findOne(5000).bounds();
             }
             click(阅读.right - 1, 阅读.bottom - 1);
             sleep(8000);
@@ -350,19 +362,32 @@ ui.ok.click(function () {
             if (结束未响应()) {
                 return;
             }
-            if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(5000) != null) {
+            if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(5000) != null) {
                 log("渠道匹配");
                 kz();
+                let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOnce()
+                if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN') {
+                    readNum=parseInt(readNumDiv.text());
+                }
                 if (textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOne(3000) != null) {
                     lunCount = 99;
                     配置["lunCount"] = 99;
                     保存配置(settingPath, 配置);
+                    返回v首页();
+                    return;
+                }
+                
+                if (readNum > 150) {
+                    lunCount = 99;
+                    配置["lunCount"] = 99;
+                    保存配置(settingPath, 配置);
+                    返回v首页();
                     return;
                 }
                 click("开始阅读");
                 for (var i = 0; i < 5; i++) {
                     sleep(3000);
-                    if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(3000) != null) {
+                    if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(3000) != null) {
                         log("重试点击开始阅读成功");
                         let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
                         if (sBtn != null) {
@@ -387,6 +412,7 @@ ui.ok.click(function () {
             }
 
             if (textMatches(/(.*暂无任务可做)/).findOne(3000) != null) {
+                readNum=0;
                 lunSleep(random(8640000, 13000000));
             } else {
                 lunSleep();
@@ -477,10 +503,9 @@ ui.ok.click(function () {
             sleep(5000);
             home();
             if (sleepTime == undefined) {
-                sleepTime = random(4000000, 8000000);
+                sleepTime = random(6000000, 8400000);
             }
-            log(new Date().toLocaleString() + "-" + "----------------------------------------------" + sleepTime / 1000 / 60 + "分钟");
-
+            log(new Date().toLocaleString() + "-" + "-----------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息"+ sleepTime / 1000 / 60 + "分钟");
             sleepLongTime(sleepTime);
         }
         function 清空文件夹(path) {
@@ -532,7 +557,7 @@ ui.ok.click(function () {
                     }
                 }*/
                 if (页面异常处理()) {
-                    if (textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(5000) != null) {
+                    if (textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(5000) != null) {
                         let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
                         if (sBtn != null) {
                             sBtn.click();
@@ -547,11 +572,11 @@ ui.ok.click(function () {
                 }
 
                 //判断阅读提前结束
-                if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(3000) != null) {
+                if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(3000) != null) {
                     for (var i = 0; i < 5; i++) {
                         kz();
                         sleep(3000);
-                        if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和)/).findOne(3000) != null) {
+                        if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(3000) != null) {
                             if (i < 3) {
                                 log("重试点击开始阅读成功");
                                 let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
@@ -629,7 +654,8 @@ ui.ok.click(function () {
                     }
                 }
             }*/
-
+            toastLog("版本号:" + versionNum);
+            log(new Date().toLocaleString() + "-" + "-----------" +readNum+ "次");
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                 kz();
                 //device.wakeUp();
@@ -637,6 +663,7 @@ ui.ok.click(function () {
                 sleep(60 * 1000);
             }
             console.clear();
+            toastLog("版本号:" + versionNum);
         }
         function 关闭应用(packageName) {
             log("尝试关闭" + packageName);
@@ -1085,6 +1112,7 @@ ui.ok.click(function () {
             log("当前时间:" + nowHour + "时");
             配置 = 读取配置(settingPath);
             if (配置["date"] != new Date().toLocaleDateString()) {
+                readNum=0;
                 初始化配置(settingPath);
                 toastLog("初始化配置");
                 console.clear();
@@ -1131,17 +1159,20 @@ ui.ok.click(function () {
                 启动x5()
 
             }
-            
+
             配置 = 读取配置(settingPath);
             lunCount = 配置["lunCount"];
             if (lunCount > 12) {
+                连接wifi(zwifi, 5000);
+                sleep(5000);
+                home();
                 log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息中");
-                sleepLongTime(3600000);
+                sleepLongTime(random(3600000, 5000000));
                 continue;
             }
 
             if (zwifi.toString() != dlwifi.toString() && nowHour < 6) {
-                log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息中");
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                 sleepLongTime(random(3600000, 5000000));
                 continue;
             }
