@@ -71,7 +71,7 @@ ui.ok.click(function () {
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
         var versionNum = "v1.6.8";
-        var readNum;//最近获取到的阅读次数
+        var readNum=0;//最近获取到的阅读次数
         var totificationlistenersetting = function (actionname) {
             let i = app.intent({
                 action: "android.settings.WIFI_SETTINGS",
