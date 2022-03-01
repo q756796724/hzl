@@ -75,7 +75,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.7.1";
+        var versionNum = "v1.7.2";
         var readNum=0;//最近获取到的阅读次数
         var retryCount=0;//进入页面重试次数
         var todayTxCount=0;
@@ -1057,18 +1057,18 @@ ui.ok.click(function () {
             }else if(wifiName==dlwifi){
                 try {
                     let url=readurl;
-                    //log("url="+url)
-                    let r = http.get(url);
+                    log("url="+url)
+                    let r = http.get(url.toString());
                     if (r.statusCode == "200") {
                         try {
                             url="www.baidu.com";
-                            //log("url="+url)
+                            log("url="+url)
                             r = http.get(url);
                             //if (r.statusCode == "200") {
                                 return false
                             //}
                         } catch (err) {
-                            //log(err.name)
+                            log(err)
                             if (err.name == "JavaException"){
                                 return true
                             }else{
@@ -1314,7 +1314,7 @@ ui.ok.click(function () {
                 continue;
             }
             sleep(3000);
-            连接wifi(zwifi, 5000);
+            连接wifi(dlwifi, 5000);
             打开v();
 
 
