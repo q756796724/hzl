@@ -171,7 +171,9 @@ ui.ok.click(function () {
         悬浮窗2.setPosition(0, device.height * 0.1);
 
         setInterval(() => {
-            device.wakeUp()
+            if(device.isScreenOn()==false){
+                device.wakeUp()
+            }
          }, 10000);
 
 
