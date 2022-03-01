@@ -3,6 +3,8 @@
 storage = storages.create("fanqiekankan配置");
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
+auto_tx = storage.get("auto_tx", false);
+readurl= storage.get("readurl", "m.jk123.xyz");
 ui.layout(
     <vertical padding="16">
         <Switch id="autoService" text="无障碍服务" checked="{{auto.service != null}}" padding="8 8 8 8" textSize="15sp" />
@@ -10,6 +12,9 @@ ui.layout(
         <input id="zwifi" text="{{zwifi}}" />
         <text textSize="16sp" textColor="black" text="请输入代理Wifi" />
         <input id="dlwifi" text="{{dlwifi}}" />
+        <text textSize="16sp" textColor="black" text="url" />
+        <input id="readurl" text="{{readurl}}" />
+        <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}"  textSize="18sp" />\
         <button id="ok" text="开始运行" />
     </vertical>
 
@@ -70,15 +75,21 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.7.0";
+        var versionNum = "v1.7.1";
         var readNum=0;//最近获取到的阅读次数
+        var retryCount=0;//进入页面重试次数
+        var todayTxCount=0;
         var totificationlistenersetting = function (actionname) {
-            let i = app.intent({
-                action: "android.settings.WIFI_SETTINGS",
-                flags: ["activity_new_task"]
-                // data: "file:///sdcard/1.png"
-            });
-            context.startActivity(i);
+            try {
+                let i = app.intent({
+                    action: "android.settings.WIFI_SETTINGS",
+                    flags: ["activity_new_task"]
+                    // data: "file:///sdcard/1.png"
+                });
+                context.startActivity(i);
+            }catch (err) {
+                console.error("错误原因:" + err);
+            }
         }
 
         function refreshStateInfo() {
@@ -89,7 +100,11 @@ ui.ok.click(function () {
             //log("==> topPackage: " + topPackage);
             //log("==> topActivity: " + topActivity);
         }
-
+        function clickx(x, y) {
+            x = x + random(-5, -1)
+            y = y + random(-5, -1)
+            click(x < 0 ? 1 : x, y < 0 ? 1 : y)
+        }
 
         var 悬浮窗 = floaty.window(
             <frame id="jbkz" h="auto" w="auto" gravity="center" bg="#77ff0000">
@@ -303,6 +318,7 @@ ui.ok.click(function () {
             }
             log("进入收藏成功");
             sleep(3000);
+            
             if (className("android.widget.TextView").textContains("RHtWWJm").findOne(5000) == null
                 && className("android.widget.TextView").textContains("migokkm").findOnce() == null
                 && className("android.widget.TextView").textContains("ckmokkm").findOnce() == null
@@ -312,6 +328,7 @@ ui.ok.click(function () {
                 toastLog("未添加到收藏夹");
                 exit();
             }
+
             let 阅读;
             if (className("android.widget.TextView").textContains("RHtWWJm").findOne(5000) != null) {
                 阅读 = className("android.widget.TextView").textContains("RHtWWJm").findOnce().bounds();
@@ -327,23 +344,30 @@ ui.ok.click(function () {
                 阅读 = className("android.widget.TextView").textContains("TiLAkkm").findOnce().bounds();
             }
             
-            click(阅读.right - 1, 阅读.bottom - 1);
+            clickx(阅读.right, 阅读.bottom);
             sleep(3000);
 
-            if (className("android.widget.TextView").textContains("RHtWWJm").findOne(5000) != null) {
-                阅读 = className("android.widget.TextView").textContains("RHtWWJm").findOnce().bounds();
-            } else if (className("android.widget.TextView").textContains("migokkm").findOnce() != null) {
-                阅读 = className("android.widget.TextView").textContains("migokkm").findOnce().bounds();
-            } else if (className("android.widget.TextView").textContains("ckmokkm").findOnce() != null) {
-                阅读 = className("android.widget.TextView").textContains("ckmokkm").findOnce().bounds();
-            } else if (className("android.widget.TextView").textContains("gPmokkm").findOnce() != null) {
-                阅读 = className("android.widget.TextView").textContains("gPmokkm").findOnce().bounds();
-            } else if (className("android.widget.TextView").textContains("JVJAkkm").findOnce() != null) {
-                阅读 = className("android.widget.TextView").textContains("JVJAkkm").findOnce().bounds();
-            } else if (className("android.widget.TextView").textContains("TiLAkkm").findOnce() != null) {
-                阅读 = className("android.widget.TextView").textContains("TiLAkkm").findOnce().bounds();
+            if(auto_tx){
+                if (className("android.widget.TextView").textContains(readurl).findOne(5000) != null) {
+                    阅读 = className("android.widget.TextView").textContains(readurl).findOnce().bounds();
+                } 
+            }else{
+                if (className("android.widget.TextView").textContains("RHtWWJm").findOne(5000) != null) {
+                    阅读 = className("android.widget.TextView").textContains("RHtWWJm").findOnce().bounds();
+                } else if (className("android.widget.TextView").textContains("migokkm").findOnce() != null) {
+                    阅读 = className("android.widget.TextView").textContains("migokkm").findOnce().bounds();
+                } else if (className("android.widget.TextView").textContains("ckmokkm").findOnce() != null) {
+                    阅读 = className("android.widget.TextView").textContains("ckmokkm").findOnce().bounds();
+                } else if (className("android.widget.TextView").textContains("gPmokkm").findOnce() != null) {
+                    阅读 = className("android.widget.TextView").textContains("gPmokkm").findOnce().bounds();
+                } else if (className("android.widget.TextView").textContains("JVJAkkm").findOnce() != null) {
+                    阅读 = className("android.widget.TextView").textContains("JVJAkkm").findOnce().bounds();
+                } else if (className("android.widget.TextView").textContains("TiLAkkm").findOnce() != null) {
+                    阅读 = className("android.widget.TextView").textContains("TiLAkkm").findOnce().bounds();
+                }
             }
-            click(阅读.right - 1, 阅读.bottom - 1);
+            
+            clickx(阅读.right, 阅读.bottom);
             sleep(8000);
             log("点击链接成功");
 
@@ -362,11 +386,44 @@ ui.ok.click(function () {
             if (结束未响应()) {
                 return;
             }
+            if(auto_tx){
+                let cBtn=packageName("com.tencent.mm").id('read_box').className("android.view.View").findOnce();
+                if(cBtn){
+                    cBtn.click();
+                    sleep(8000);
+                    if((nowHour >13&&todayTxCount<1)||(nowHour >21&&todayTxCount<2)){
+                        let jfTxt=packageName("com.tencent.mm").className("android.view.View").textContains("积分:").findOnce()
+                        if(jfTxt){
+                            if (jfTxt != null && parseInt(jfTxt.text().split("积分:")[1]).toString() != 'NaN'&&parseInt(jfTxt.text().split("积分:")[1])>100) {
+                                todayTxCount++
+                                click("积分兑换")
+                                sleep(5000);
+                                let qBtn = textMatches(/(.*确定.*)/).findOnce()
+                                if (qBtn != null) {
+                                    qBtn.click();
+                                }
+                                sleep(3000);
+                                click("提现")
+                                sleep(5000);
+                                qBtn = textMatches(/(.*确定.*)/).findOnce()
+                                if (qBtn != null) {
+                                    qBtn.click();
+                                }
+                                let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
+                                if (sBtn == null) {
+                                    back();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(5000) != null) {
                 log("渠道匹配");
+                retryCount=0;
                 kz();
                 let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOnce()
-                if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN') {
+                if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN'&&parseInt(readNumDiv.text())>readNum) {
                     readNum=parseInt(readNumDiv.text());
                 }
                 if (textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOne(3000) != null) {
@@ -407,12 +464,21 @@ ui.ok.click(function () {
                     }
                 }
             } else {
-                返回v首页();
+                let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
+                if (stopPage != null ) {
+                    exit();
+                }
+                if(retryCount>3){
+                    retryCount=0;
+                    关闭应用(PKG_NAME);
+                }else{
+                    retryCount++
+                    返回v首页();
+                }
                 return;
             }
 
             if (textMatches(/(.*暂无任务可做)/).findOne(3000) != null) {
-                readNum=0;
                 lunSleep(random(8640000, 13000000));
             } else {
                 lunSleep();
@@ -616,6 +682,12 @@ ui.ok.click(function () {
                     连接wifi(dlwifi, 5000);
                     app.launch(PKG_NAME);
                 }
+                if(count%5==0){
+                    if(联网验证(dlwifi)!=true){
+                        连接wifi(dlwifi, 5000);
+                        app.launch(PKG_NAME);
+                    }
+                } 
 
                 if (等待未响应() == 0) {
                     if (结束未响应()) {
@@ -872,7 +944,6 @@ ui.ok.click(function () {
             gesture.apply(null, xxy);
         };
 
-
         function 结束未响应() {
             if (textMatches(/(.*未响应.*|.*没有响应.*|.*无响应.*)/).findOne(3000) != null) {
                 log(new Date().toLocaleString() + "-" + "检测到应用未响应");
@@ -884,7 +955,7 @@ ui.ok.click(function () {
                     if (cBtn != null) {
                         log("控件关闭失败，参数坐标点击关闭");
                         let cBounds = cBtn.bounds();
-                        click(cBounds.right - 1, cBounds.bottom - 1);
+                        clickx(cBounds.right, cBounds.bottom);
                     } else {
                         log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
                         return true;
@@ -913,7 +984,7 @@ ui.ok.click(function () {
                     if (cBtn != null) {
                         log("等待控件关闭失败，参数坐标点击关闭");
                         let cBounds = cBtn.bounds();
-                        click(cBounds.right - 1, cBounds.bottom - 1);
+                        clickx(cBounds.right, cBounds.bottom);
                     } else {
                         log(new Date().toLocaleString() + "-" + "----------------------------------------------等待未响应成功");
                         return 1;
@@ -941,28 +1012,76 @@ ui.ok.click(function () {
                 let cBtn = text(wifiName).findOne(5000);
                 if (cBtn != null) {
                     let cBounds = cBtn.bounds();
-                    click(cBounds.right - 1, cBounds.bottom - 1);
+                    clickx(cBounds.right, cBounds.bottom);
                 }
                 wifi弹窗处理();
                 sleep(connectTime);
-                cBtn = text(wifiName).findOne(5000);
-                if (cBtn != null) {
-                    cBounds = cBtn.bounds();
-                    click(cBounds.right - 1, cBounds.bottom - 1);
+
+                for(let i=0;i<5;i++){
+                    if(联网验证(wifiName)!=true){
+                        log("第"+(i+1)+"次连接重试")
+                        cBtn = text(wifiName).findOne(5000);
+                        if (cBtn != null) {
+                            cBounds = cBtn.bounds();
+                            clickx(cBounds.right, cBounds.bottom);
+                        }
+                        wifi弹窗处理();
+                        sleep(connectTime);
+                    }else{
+                        log("连接正常")
+                        break
+                    }
                 }
-                wifi弹窗处理();
-                sleep(1000);
-                cBtn = text(wifiName).findOne(8000);
-                if (cBtn != null) {
-                    cBounds = cBtn.bounds();
-                    click(cBounds.right - 1, cBounds.bottom - 1);
-                }
-                wifi弹窗处理();
-                sleep(1000);
+                
                 back();
                 sleep(1000);
                 ui.run(function () { 悬浮窗.jbkz.visibility = 0 });
                 sleep(1000);
+            }
+        }
+        function 联网验证(wifiName) {
+            http.__okhttp__.setTimeout(3000);
+            if(wifiName==zwifi){
+                try {
+                    let url="www.baidu.com";
+                    //log("url="+url)
+                    let r = http.get(url);
+                    if (r.statusCode == "200") {
+                        return true
+                    }
+                } catch (err) {
+                    //log(err.name)
+                    //if (err.name == "JavaException")
+                    return false
+                }
+            }else if(wifiName==dlwifi){
+                try {
+                    let url=readurl;
+                    //log("url="+url)
+                    let r = http.get(url);
+                    if (r.statusCode == "200") {
+                        try {
+                            url="www.baidu.com";
+                            //log("url="+url)
+                            r = http.get(url);
+                            //if (r.statusCode == "200") {
+                                return false
+                            //}
+                        } catch (err) {
+                            //log(err.name)
+                            if (err.name == "JavaException"){
+                                return true
+                            }else{
+                                false
+                            }
+                           
+                        }
+                    }
+                } catch (err) {
+                    //log(err.name)
+                    //if (err.name == "JavaException")
+                    return false
+                }
             }
         }
         function wifi弹窗处理() {
@@ -1021,11 +1140,11 @@ ui.ok.click(function () {
                 let x5;
                 if (className("android.widget.TextView").textContains("debugmm.qq.com/?forcex5=true").findOne(5000) != null) {
                     x5 = className("android.widget.TextView").textContains("debugmm.qq.com/?forcex5=true").findOne(5000).bounds();
-                    click(x5.right - 1, x5.bottom - 1);
+                    clickx(x5.right, x5.bottom);
                     sleep(3000);
                     if (className("android.widget.TextView").textContains("debugmm.qq.com/?forcex5=true").findOne(5000) != null) {
                         x5 = className("android.widget.TextView").textContains("debugmm.qq.com/?forcex5=true").findOne(5000).bounds();
-                        click(x5.right - 1, x5.bottom - 1);
+                        clickx(x5.right, x5.bottom);
                         sleep(random(5000, 8000));
                         p = packageName("com.tencent.mm").className("android.widget.TextView").textContains("force use x5 switch is on").findOne(3000)
                         if (p) {
@@ -1053,11 +1172,18 @@ ui.ok.click(function () {
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
         zwifi = ui.zwifi.getText();
-        toast("主Wifi:" + zwifi);
+        log("主Wifi:" + zwifi);
         dlwifi = ui.dlwifi.getText();
-        toast("代理Wifi:" + dlwifi);
+        log("代理Wifi:" + dlwifi);
+        readurl = ui.readurl.getText();
+        log("readurl:" + readurl);
+        auto_tx=ui.auto_tx.isChecked();
+        log("tx:" + auto_tx);
+       
         storage.put("zwifi", ui.zwifi.text());
         storage.put("dlwifi", ui.dlwifi.text());
+        storage.put("auto_tx", ui.auto_tx.isChecked());
+        storage.put("readurl", ui.readurl.text());
         device.keepScreenDim();
         home();
         //定义
@@ -1123,6 +1249,7 @@ ui.ok.click(function () {
             配置 = 读取配置(settingPath);
             if (配置["date"] != new Date().toLocaleDateString()) {
                 readNum=0;
+                todayTxCount=0;
                 初始化配置(settingPath);
                 toastLog("初始化配置");
                 console.clear();
@@ -1187,7 +1314,6 @@ ui.ok.click(function () {
                 continue;
             }
             sleep(3000);
-
             连接wifi(zwifi, 5000);
             打开v();
 
