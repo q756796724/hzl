@@ -1057,12 +1057,12 @@ ui.ok.click(function () {
             }else if(wifiName==dlwifi){
                 try {
                     let url=readurl;
-                    log("url="+url)
+                    //log("url="+url)
                     let r = http.get(url.toString());
                     if (r.statusCode == "200") {
                         try {
                             url="www.baidu.com";
-                            log("url="+url)
+                            //log("url="+url)
                             r = http.get(url);
                             //if (r.statusCode == "200") {
                                 return false
@@ -1314,7 +1314,7 @@ ui.ok.click(function () {
                 continue;
             }
             sleep(3000);
-            连接wifi(dlwifi, 5000);
+            连接wifi(zwifi, 5000);
             打开v();
 
 
