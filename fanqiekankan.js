@@ -75,7 +75,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.7.7";
+        var versionNum = "v1.7.8";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -412,7 +412,7 @@ ui.ok.click(function () {
                                 todayTxCount++
                                 click("积分兑换")
                                 sleep(6000);
-                                cBtn = textMatches(/(确定)/).findOne(1000);
+                                cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
                                 if (cBtn != null) {
                                     sleep(500)
                                     cBtn.click();
@@ -428,8 +428,8 @@ ui.ok.click(function () {
                                         txBtn.click();
                                     }
                                 }
-                                sleep(3000);
-                                cBtn = textMatches(/(确定)/).findOne(1000);
+                                sleep(8000);
+                                cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
                                 if (cBtn != null) {
                                     sleep(500)
                                     cBtn.click();
