@@ -75,7 +75,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.7.6";
+        var versionNum = "v1.7.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -411,7 +411,14 @@ ui.ok.click(function () {
                             if (jfTxt != null && parseInt(jfTxt.text().split("积分:")[1]).toString() != 'NaN' && parseInt(jfTxt.text().split("积分:")[1]) > 100) {
                                 todayTxCount++
                                 click("积分兑换")
-                                sleep(8000);
+                                sleep(6000);
+                                cBtn = textMatches(/(确定)/).findOne(1000);
+                                if (cBtn != null) {
+                                    sleep(500)
+                                    cBtn.click();
+                                    
+                                }
+                                sleep(1000);
                                 let txBtn = packageName("com.tencent.mm").id('doWithdraw').className("android.widget.Button").findOnce();
                                 if (txBtn) {
                                     txBtn.click();
@@ -421,8 +428,15 @@ ui.ok.click(function () {
                                         txBtn.click();
                                     }
                                 }
-                                sleep(5000);
-                                back();
+                                sleep(3000);
+                                cBtn = textMatches(/(确定)/).findOne(1000);
+                                if (cBtn != null) {
+                                    sleep(500)
+                                    cBtn.click();
+                                    sleep(1000);
+                                }else{
+                                    back();
+                                }
                                 for (var i = 0; i < 3; i++) {
                                     sleep(3000);
                                     let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
@@ -431,6 +445,7 @@ ui.ok.click(function () {
                                     } else {
                                         break;
                                     }
+
                                 }
 
                             }
