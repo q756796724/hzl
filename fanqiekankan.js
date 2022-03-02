@@ -75,7 +75,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.7.9";
+        var versionNum = "v1.8.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -170,9 +170,7 @@ ui.ok.click(function () {
         悬浮窗2.setTouchable(false);
         悬浮窗2.setPosition(0, device.height * 0.1);
 
-        setInterval(() => {
-            device.wakeUp()
-        }, 10000);
+        setInterval(() => { }, 1000);
 
 
 
@@ -414,13 +412,13 @@ ui.ok.click(function () {
                                 if (cBtn != null) {
                                     sleep(500)
                                     cBtn.click();
-                                    
+
                                 }
                                 sleep(1000);
                                 let txBtn = packageName("com.tencent.mm").id('doWithdraw').className("android.widget.Button").findOnce();
                                 if (txBtn) {
                                     txBtn.click();
-                                }else{
+                                } else {
                                     txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("提现").findOne(3000);
                                     if (txBtn) {
                                         txBtn.click();
@@ -432,7 +430,7 @@ ui.ok.click(function () {
                                     sleep(500)
                                     cBtn.click();
                                     sleep(1000);
-                                }else{
+                                } else {
                                     back();
                                 }
                                 for (var i = 0; i < 3; i++) {
@@ -909,13 +907,14 @@ ui.ok.click(function () {
         }
 
         function swapeToRead() {
-            let x1 = device.width * random(200, 500) / 1000;
-            let y1 = device.height * random(700, 900) / 1000;
-            let x2 = device.width * random(300, 800) / 1000;
-            let y2 = device.height * random(200, 500) / 1000;
-            //swipe(x1, y1, x2, y2, random(1200, 1500));
-            sml_move(x1, y1, x2, y2, random(1200, 1500));
-
+            if (currentPackage() != "com.miui.home") {
+                let x1 = device.width * random(200, 500) / 1000;
+                let y1 = device.height * random(700, 900) / 1000;
+                let x2 = device.width * random(300, 800) / 1000;
+                let y2 = device.height * random(200, 500) / 1000;
+                //swipe(x1, y1, x2, y2, random(1200, 1500));
+                sml_move(x1, y1, x2, y2, random(1200, 1500));
+            }
         }
         //曲线滑动---贝塞尔曲线
         function bezier_curves(cp, t) {
