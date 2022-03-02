@@ -75,7 +75,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.7.4";
+        var versionNum = "v1.7.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -171,10 +171,10 @@ ui.ok.click(function () {
         悬浮窗2.setPosition(0, device.height * 0.1);
 
         setInterval(() => {
-            if(device.isScreenOn()==false){
+            if (device.isScreenOn() == false) {
                 device.wakeUp()
             }
-         }, 10000);
+        }, 10000);
 
 
 
@@ -412,11 +412,21 @@ ui.ok.click(function () {
                                 todayTxCount++
                                 click("积分兑换")
                                 sleep(8000);
-                                click("提现")
-                                sleep(8000);
-                                let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
-                                if (sBtn == null) {
-                                    back();
+                                let txBtn = packageName("com.tencent.mm").className("android.view.View").text("提现").findOnce();
+                                if (txBtn) {
+                                    txBtn.click();
+                                }
+                                sleep(5000);
+                                back();
+                                for (var i = 0; i < 3; i++) {
+                                    sleep(3000);
+                                    let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
+                                    if (sBtn == null) {
+                                        back();
+                                    } else {
+                                        break;
+                                    }
+
                                 }
                             }
                         }
