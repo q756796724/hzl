@@ -75,7 +75,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.7.8";
+        var versionNum = "v1.7.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -171,9 +171,7 @@ ui.ok.click(function () {
         悬浮窗2.setPosition(0, device.height * 0.1);
 
         setInterval(() => {
-            if (device.isScreenOn() == false) {
-                device.wakeUp()
-            }
+            device.wakeUp()
         }, 10000);
 
 
@@ -457,7 +455,7 @@ ui.ok.click(function () {
                 log("渠道匹配");
                 retryCount = 0;
                 kz();
-                let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOnce()
+                let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                 if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
                     readNum = parseInt(readNumDiv.text());
                 }
