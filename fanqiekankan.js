@@ -75,7 +75,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.7.5";
+        var versionNum = "v1.7.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -412,9 +412,14 @@ ui.ok.click(function () {
                                 todayTxCount++
                                 click("积分兑换")
                                 sleep(8000);
-                                let txBtn = packageName("com.tencent.mm").className("android.view.View").text("提现").findOnce();
+                                let txBtn = packageName("com.tencent.mm").id('doWithdraw').className("android.widget.Button").findOnce();
                                 if (txBtn) {
                                     txBtn.click();
+                                }else{
+                                    txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("提现").findOne(3000);
+                                    if (txBtn) {
+                                        txBtn.click();
+                                    }
                                 }
                                 sleep(5000);
                                 back();
@@ -426,8 +431,8 @@ ui.ok.click(function () {
                                     } else {
                                         break;
                                     }
-
                                 }
+
                             }
                         }
                     }
