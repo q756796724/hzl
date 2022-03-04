@@ -75,7 +75,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.8.0";
+        var versionNum = "v1.8.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -170,7 +170,7 @@ ui.ok.click(function () {
         悬浮窗2.setTouchable(false);
         悬浮窗2.setPosition(0, device.height * 0.1);
 
-        setInterval(() => { }, 1000);
+        setInterval(() => {}, 1000);
 
 
 
@@ -458,18 +458,40 @@ ui.ok.click(function () {
                     readNum = parseInt(readNumDiv.text());
                 }
                 if (textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOne(3000) != null) {
-                    lunCount = 99;
-                    配置["lunCount"] = 99;
-                    保存配置(settingPath, 配置);
-                    返回v首页();
+                    if (auto_tx) {
+                        lunCount++;
+                        配置["lunCount"] = lunCount;
+                        配置["count"] = 1;
+                        保存配置(settingPath, 配置);
+                        返回v首页();
+                        sleep(1000);
+                        home();
+                        lunSleep();
+                    }else{
+                        lunCount = 99;
+                        配置["lunCount"] = 99;
+                        保存配置(settingPath, 配置);
+                        返回v首页();
+                    }
                     return;
                 }
 
                 if (readNum > 150) {
-                    lunCount = 99;
-                    配置["lunCount"] = 99;
-                    保存配置(settingPath, 配置);
-                    返回v首页();
+                    if (auto_tx) {
+                        lunCount++;
+                        配置["lunCount"] = lunCount;
+                        配置["count"] = 1;
+                        保存配置(settingPath, 配置);
+                        返回v首页();
+                        sleep(1000);
+                        home();
+                        lunSleep();
+                    }else{
+                        lunCount = 99;
+                        配置["lunCount"] = 99;
+                        保存配置(settingPath, 配置);
+                        返回v首页();
+                    }
                     return;
                 }
                 click("开始阅读");
