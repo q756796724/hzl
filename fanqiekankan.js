@@ -75,7 +75,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.8.1";
+        var versionNum = "v1.8.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -532,7 +532,11 @@ ui.ok.click(function () {
             }
 
             if (textMatches(/(.*暂无任务可做)/).findOne(3000) != null) {
-                lunSleep(random(8640000, 13000000));
+                if (auto_tx) {
+                    lunSleep();
+                }else{
+                    lunSleep(random(8640000, 13000000));
+                }
             } else {
                 lunSleep();
             }
