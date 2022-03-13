@@ -75,7 +75,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.8.3";
+        var versionNum = "v1.8.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1385,6 +1385,9 @@ ui.ok.click(function () {
                 continue;
             }
 
+            连接wifi(zwifi, 5000);
+            打开v();
+            sleep(5000);
             refreshStateInfo();
             if(topPackage == PKG_NAME){
                 sleep(random(600000, 1200000));
