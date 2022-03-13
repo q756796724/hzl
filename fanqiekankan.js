@@ -75,7 +75,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.8.2";
+        var versionNum = "v1.8.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -623,7 +623,7 @@ ui.ok.click(function () {
         function lunSleep(sleepTime) {
             返回v首页();
             连接wifi(zwifi, 5000);
-            sleep(5000);
+            sleep(random(600000, 1200000));
             home();
             if (sleepTime == undefined) {
                 sleepTime = random(6000000, 8400000);
@@ -1379,14 +1379,19 @@ ui.ok.click(function () {
             if (topActivity == MAIN_PAGE && wBtn != null) {
                 log("第" + lunCount + "轮");
                 onMainPage();
-                continue;
             } else {
                 log(wBtn);
                 返回v首页();
+                continue;
             }
 
-
-            sleep(10000);
+            refreshStateInfo();
+            if(topPackage == PKG_NAME){
+                sleep(random(600000, 1200000));
+            }else{
+                sleep(random(10000, 30000));
+            }
+            
 
         }
 
