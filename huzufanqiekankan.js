@@ -76,7 +76,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.8.5test";
+        var versionNum = "v1.8.6test";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -227,6 +227,7 @@ ui.ok.click(function () {
         }
         function setConfig(lastTalkName, lastLinkTitle) {
             let temp = null;
+            log(new Date().toLocaleString() + "-" + "-----------------发言人:" + lastTalkName+ ",标题:" + lastLinkTitle);
             try {
                 temp = http.postJson("106.55.225.58:8081/fanqie/setConfig", {
                     "lastTalkName": lastTalkName,
@@ -299,16 +300,25 @@ ui.ok.click(function () {
             if (topActivity == MAIN_PAGE && wBtn != null) {
                 log("返回首页成功");
                 wBtn = className("android.widget.TextView").text("微信").findOne(3000);
-                for (let i = 0; i < 8; i++) {
-                    if (wBtn != null && wBtn.clickable()) {
-                        wBtn.click();
-                        if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) != null) {
-                            break;
-                        };
-                    } else {
-                        wBtn = wBtn.parent();
+                try{
+                    for (let i = 0; i < 8; i++) {
+                        if (wBtn != null && wBtn.clickable()) {
+                            wBtn.click();
+                            if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) != null) {
+                                break;
+                            };
+                        } else {
+                            wBtn = wBtn.parent();
+                        }
                     }
+                }catch(e){
+                    log(wBtn)
+                    if (wBtn != null) {
+                        wBtn.click();
+                    }
+                    
                 }
+                
             }
             wBtn = packageName("com.tencent.mm").id('bg1').findOnce();
             if (wBtn != null) {
@@ -322,6 +332,7 @@ ui.ok.click(function () {
                         sleep(10000)
                         continue;
                     }
+                    log(repData)
                     let lastTalkName = repData["lastTalkName"] != undefined ? repData["lastTalkName"] : "";//上一发言人
                     let lastLinkTitle = repData["lastLinkTitle"] != undefined ? repData["lastLinkTitle"] : "";//上一文章的标题
                     let latestTalkName = "";//当前发言人
@@ -349,9 +360,8 @@ ui.ok.click(function () {
                     log(new Date().toLocaleString() + "-" + "-----------------当前发言人:" + latestTalkName+ ",当前标题:" + latestLinkTitle);
                     if (latestTalkName!=""&&latestTalkName != lastTalkName) {
                         log(new Date().toLocaleString() + "-" + "-----------------发言人变化,上一发言人:" + lastTalkName + ",当前发言人:" + latestTalkName);
-                        lastTalkName = latestTalkName;
-                        lastLinkTitle = latestLinkTitle;
-                        if (setConfig(lastTalkName, lastLinkTitle)) {
+                        
+                        if (setConfig(latestTalkName, latestLinkTitle)) {
                             if (latestLinkTitle != "") {
                                 log(" <标题不为空点击>");
                                 latestLink.click();
@@ -362,9 +372,8 @@ ui.ok.click(function () {
                     } else {
                         if (lastLinkTitle!=""&&lastLinkTitle != latestLinkTitle) {
                             log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
-                            lastTalkName = latestTalkName;
-                            lastLinkTitle = latestLinkTitle;
-                            if (setConfig(lastTalkName, lastLinkTitle)) {
+                            
+                            if (setConfig(latestTalkName, latestLinkTitle)) {
                                 if (latestLinkTitle != "") {
                                     log(" <标题不为空点击>");
                                     latestLink.click();
