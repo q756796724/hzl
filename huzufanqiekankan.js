@@ -318,6 +318,10 @@ ui.ok.click(function () {
                 let icount = random(720, 840);
                 for (let i = 0; i < icount; i++) {
                     let repData = getConfig();
+                    if(repData==undefined){
+                        sleep(10000)
+                        continue;
+                    }
                     let lastTalkName = repData["lastTalkName"] != undefined ? repData["lastTalkName"] : "";//上一发言人
                     let lastLinkTitle = repData["lastLinkTitle"] != undefined ? repData["lastLinkTitle"] : "";//上一文章的标题
                     let latestTalkName = "";//当前发言人
@@ -342,8 +346,8 @@ ui.ok.click(function () {
                             }
                         }
                     }
-
-                    if (latestTalkName != lastTalkName) {
+                    log(new Date().toLocaleString() + "-" + "-----------------当前发言人:" + latestTalkName+ ",当前标题:" + latestLinkTitle);
+                    if (latestTalkName!=""&&latestTalkName != lastTalkName) {
                         log(new Date().toLocaleString() + "-" + "-----------------发言人变化,上一发言人:" + lastTalkName + ",当前发言人:" + latestTalkName);
                         lastTalkName = latestTalkName;
                         lastLinkTitle = latestLinkTitle;
@@ -356,7 +360,7 @@ ui.ok.click(function () {
                         }
 
                     } else {
-                        if (lastLinkTitle != latestLinkTitle) {
+                        if (lastLinkTitle!=""&&lastLinkTitle != latestLinkTitle) {
                             log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
                             lastTalkName = latestTalkName;
                             lastLinkTitle = latestLinkTitle;
