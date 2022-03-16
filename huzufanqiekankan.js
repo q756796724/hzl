@@ -302,8 +302,7 @@ ui.ok.click(function () {
                 for (let i = 0; i < 8; i++) {
                     if (wBtn != null && wBtn.clickable()) {
                         wBtn.click();
-                        sleep(3000);
-                        if (className("android.widget.TextView").text("大家庭").findOne(5000) != null) {
+                        if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) != null) {
                             break;
                         };
                     } else {
@@ -311,7 +310,7 @@ ui.ok.click(function () {
                     }
                 }
             }
-            wBtn = className("android.widget.TextView").text("大家庭").findOnce();
+            wBtn = packageName("com.tencent.mm").id('bg1').findOnce();
             if (wBtn != null) {
                 wBtn.click();
                 sleep(3000);
