@@ -76,7 +76,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.8.5";
+        var versionNum = "v1.8.5test";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -291,6 +291,7 @@ ui.ok.click(function () {
         }
         function jieshouwenzhang() {
             //进入指定群，接收文章
+            连接wifi(zwifi, 5000);
             返回v首页();
 
             refreshStateInfo();
@@ -1681,6 +1682,7 @@ ui.ok.click(function () {
             let wBtn = className("android.widget.TextView").text("我").findOne(3000);
             if (topActivity == MAIN_PAGE && wBtn != null) {
                 log("第" + lunCount + "轮");
+                jieshouwenzhang()
                 onMainPage();
             } else {
                 log(wBtn);
