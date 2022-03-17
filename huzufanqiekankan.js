@@ -76,7 +76,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.8.8";
+        var versionNum = "v1.8.8test";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -485,17 +485,21 @@ ui.ok.click(function () {
             let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOne(5000)
             if (stopPage != null) {
                 //exit();
+                log("1")
                 return false;
             }
             let cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("专属链接").findOne(4000);
             if (cBtn != null) {
+                log("2")
                 cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("阅读美文").findOnce();
                 if (cBtn != null) {
+                    log("3")
                     sleep(500)
                     cBtn.click();
                     return true;
                 }
             } else {
+                log("4")
                 return false;
             }
         }
