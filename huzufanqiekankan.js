@@ -78,7 +78,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.9.1";
+        var versionNum = "v1.9.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -293,12 +293,17 @@ ui.ok.click(function () {
                     }
                 } else {
                     console.error("发送给" + name + "失败");
+                    back();
                 }
             }
         }
         function jieshouwenzhang() {
             //进入指定群，接收文章
-            连接wifi(zwifi, 5000);
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                app.launch(PKG_NAME);
+            }
+            
             返回v首页();
 
             refreshStateInfo();
@@ -476,7 +481,9 @@ ui.ok.click(function () {
             if(!lanlibangflag){
                 return false
             }
-            连接wifi(zwifi, 5000);
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+            }
             进入收藏();
             let 阅读;
             if (className("android.widget.TextView").textContains("lanlitao").findOne(5000) != null) {
@@ -1185,7 +1192,9 @@ ui.ok.click(function () {
 
         function lunSleep(sleepTime) {
             返回v首页();
-            连接wifi(zwifi, 5000);
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+            }
             sleep(random(300000, 600000));
             home();
             if (sleepTime == undefined) {
@@ -1803,7 +1812,9 @@ ui.ok.click(function () {
             }
         }
         function 启动x5() {
-            连接wifi(zwifi, 5000);
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+            }
             打开v();
             返回v首页();
 
@@ -2010,7 +2021,9 @@ ui.ok.click(function () {
             lunCount = 配置["lunCount"];
             lunCountllb = 配置["lunCountllb"];
             if (lunCount > 12) {
-                连接wifi(zwifi, 5000);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                }
                 sleep(5000);
                 home();
                 log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息中");
@@ -2033,7 +2046,9 @@ ui.ok.click(function () {
             }
            
             sleep(3000);
-            连接wifi(zwifi, 5000);
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+            }
             打开v();
 
 
@@ -2051,7 +2066,9 @@ ui.ok.click(function () {
                 continue;
             }
 
-            连接wifi(zwifi, 5000);
+            /*if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+            }
             打开v();
             sleep(5000);
             refreshStateInfo();
@@ -2059,7 +2076,7 @@ ui.ok.click(function () {
                 sleep(random(600000, 1200000));
             } else {
                 sleep(random(10000, 30000));
-            }
+            }*/
 
 
         }
