@@ -78,7 +78,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.9.4";
+        var versionNum = "v1.9.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -531,7 +531,7 @@ ui.ok.click(function () {
                         checkxianzhiFlag = false;
                         xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                         storage.put("xianzhidate", xianzhidate);
-                        if(nowHour<18){
+                        if(nowHour>=6&&nowHour<18){
                             lunSleep();
                             if (gotollb()) {
                                 yuedulanlibang();
@@ -547,7 +547,7 @@ ui.ok.click(function () {
                         checkxianzhiFlag = false;
                         xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                         storage.put("xianzhidate", xianzhidate);
-                        if(nowHour<18){
+                        if(nowHour>=6&&nowHour<18){
                             lunSleep();
                             if (gotollb()) {
                                 yuedulanlibang();
@@ -574,7 +574,7 @@ ui.ok.click(function () {
                             checkxianzhiFlag = false;
                             xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                             storage.put("xianzhidate", xianzhidate);
-                            if(nowHour<18){
+                            if(nowHour>=6&&nowHour<18){
                                 lunSleep();
                                 if (gotollb()) {
                                     yuedulanlibang();
@@ -588,7 +588,7 @@ ui.ok.click(function () {
                     checkxianzhiFlag = false;
                     xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                     storage.put("xianzhidate", xianzhidate);
-                    if(nowHour<18){
+                    if(nowHour>=6&&nowHour<18){
                         lunSleep();
                         if (gotollb()) {
                             yuedulanlibang();
@@ -2033,11 +2033,17 @@ ui.ok.click(function () {
 
             sleep(3000);
             for(let i=0;i<5;i++){
-                if (checkxianzhiFlag) {
-                    checkxianzhi();
+                if( calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0){
+                    if (checkxianzhiFlag && nowHour > 4) {
+                        checkxianzhi();
+                    }else{
+                        break;
+                    }
                 }else{
+                    checkxianzhiFlag=false
                     break;
                 }
+                
             }
 
             if (zwifi.toString() != dlwifi.toString() && nowHour < 6) {
