@@ -78,11 +78,12 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.9.6";
+        var versionNum = "v1.9.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
         var checkxianzhiFlag = true;//是否检查限制
+        var yichang1count=0;//异常1次数
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -902,9 +903,27 @@ ui.ok.click(function () {
                 
             }*/
             if (页面异常处理()) {
+                yichang1count++
                 返回v首页();
+                if(yichang1count>5){
+                    console.error("yichang1count="+yichang1count)
+                    if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                        jieshouwenzhang();
+                        if (gotollb()) {
+                            yuedulanlibang();
+                        }
+                        jieshouwenzhang();
+                    } else {
+                        lunSleep();
+                        if (gotollb()) {
+                            yuedulanlibang();
+                        }
+                        lunSleep();
+                    }
+                }
                 return;
             }
+            yichang1count=0;
             if (结束未响应()) {
                 return;
             }
