@@ -78,7 +78,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.9.7";
+        var versionNum = "v1.9.8";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -427,10 +427,7 @@ ui.ok.click(function () {
 
                 }
             } else {
-                lunSleep();
-                if (gotollb()) {
-                    yuedulanlibang();
-                }
+                console.error("not found bg1")
                 lunSleep();
             }
         }
@@ -908,12 +905,18 @@ ui.ok.click(function () {
                 if(yichang1count>5){
                     console.error("yichang1count="+yichang1count)
                     if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                        if (gotollb()) {
+                            yuedulanlibang();
+                        }
                         jieshouwenzhang();
                         if (gotollb()) {
                             yuedulanlibang();
                         }
                         jieshouwenzhang();
                     } else {
+                        if (gotollb()) {
+                            yuedulanlibang();
+                        }
                         lunSleep();
                         if (gotollb()) {
                             yuedulanlibang();
@@ -1002,6 +1005,9 @@ ui.ok.click(function () {
                         返回v首页();
                         sleep(1000);
                         home();
+                        if (gotollb()) {
+                            yuedulanlibang();
+                        }
                         lunSleep();
                         if (gotollb()) {
                             yuedulanlibang();
@@ -1025,6 +1031,9 @@ ui.ok.click(function () {
                         返回v首页();
                         sleep(1000);
                         home();
+                        if (gotollb()) {
+                            yuedulanlibang();
+                        }
                         lunSleep();
                         if (gotollb()) {
                             yuedulanlibang();
@@ -1064,12 +1073,18 @@ ui.ok.click(function () {
                                 lunSleep();
                             }*/
                             if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                if (gotollb()) {
+                                    yuedulanlibang();
+                                }
                                 jieshouwenzhang();
                                 if (gotollb()) {
                                     yuedulanlibang();
                                 }
                                 jieshouwenzhang();
                             } else {
+                                if (gotollb()) {
+                                    yuedulanlibang();
+                                }
                                 lunSleep();
                                 if (gotollb()) {
                                     yuedulanlibang();
@@ -1086,6 +1101,9 @@ ui.ok.click(function () {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                 if (stopPage != null) {
                     //exit();
+                    if (gotollb()) {
+                        yuedulanlibang();
+                    }
                     lunSleep();
                     if (gotollb()) {
                         yuedulanlibang();
@@ -1106,12 +1124,18 @@ ui.ok.click(function () {
                 xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                 storage.put("xianzhidate", xianzhidate);
                 if (auto_tx) {
+                    if (gotollb()) {
+                        yuedulanlibang();
+                    }
                     lunSleep();
                     if (gotollb()) {
                         yuedulanlibang();
                     }
                     lunSleep();
                 } else {
+                    if (gotollb()) {
+                        yuedulanlibang();
+                    }
                     lunSleep();
                     if (gotollb()) {
                         yuedulanlibang();
@@ -1123,6 +1147,9 @@ ui.ok.click(function () {
                     lunSleep();
                 }
             } else {
+                if (gotollb()) {
+                    yuedulanlibang();
+                }
                 lunSleep();
                 if (gotollb()) {
                     yuedulanlibang();
