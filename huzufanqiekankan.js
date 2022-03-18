@@ -78,7 +78,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.9.0";
+        var versionNum = "v1.9.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -255,22 +255,22 @@ ui.ok.click(function () {
 
         }
         function fenxiangwenzhang(name) {
-            let cBtn = packageName("com.tencent.mm").id("js_bottom_share_btn").className("android.widget.Button").findOne(2000)
+            let cBtn = packageName("com.tencent.mm").id("js_bottom_share_btn").className("android.widget.Button").findOne(3000)
             if (cBtn != null) {
-                sleep(1000)
+                sleep(random(2000, 3000));
                 cBtn.click();
                 log("底部fenxiang1");
             } else {
-                cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("分享").findOnce();
+                cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("分享").findOne(2000)
                 if (cBtn != null) {
-                    sleep(1000)
+                    sleep(random(2000, 3000));
                     cBtn.click();
                     log("底部fenxiang2");
                 } else {
                     log("2")
                     cBtn = packageName("com.tencent.mm").className("android.widget.ImageView").desc("返回").findOnce();
                     if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
-                        sleep(1000)
+                        sleep(random(2000, 3000));
                         click(device.width - random(1, 10), cBtn.bounds().bottom - random(1, 5));;
                         log("按右上fenxiang");
                     } else {
@@ -280,15 +280,15 @@ ui.ok.click(function () {
             }
             cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("发送给朋友").findOne(2000);
             if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
-                sleep(random(800, 1500));
+                sleep(random(2000, 3000));
                 cBtn.parent().click();
                 cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text(name).findOne(2000);
                 if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
-                    sleep(random(800, 1500));
+                    sleep(random(2000, 3000));
                     cBtn.parent().click();
                     cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("发送").findOne(2000);
                     if (cBtn != null && cBtn.clickable()) {
-                        sleep(random(800, 1500));
+                        sleep(random(2000, 3000));
                         cBtn.click();
                     }
                 } else {
