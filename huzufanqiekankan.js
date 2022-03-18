@@ -78,7 +78,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.9.2";
+        var versionNum = "v1.9.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1260,7 +1260,8 @@ ui.ok.click(function () {
                             fenxiangwenzhang("大家庭");
                         }
                         sleep(8000);
-                        log("llb第" + lunCountllb + "轮,第" + count + "次");
+                    }
+                    log("llb第" + lunCountllb + "轮,第" + count + "次");
 
 
                         log("滑动");
@@ -1296,7 +1297,6 @@ ui.ok.click(function () {
                         count++;
                         配置["countllb"] = count;
                         保存配置(settingPath, 配置);
-                    }
                 } else {
                     return true
                 }
