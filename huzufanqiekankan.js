@@ -4,6 +4,7 @@ storage = storages.create("fanqiekankan配置");
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
+lanlibangflag = storage.get("lanlibangflag", true);
 readurl = storage.get("readurl", "m.jk123.xyz");
 xianzhidate = storage.get("xianzhidate", "2022-01-01");//限制时间
 ui.layout(
@@ -16,6 +17,7 @@ ui.layout(
         <text textSize="16sp" textColor="black" text="url" />
         <input id="readurl" text="{{readurl}}" />
         <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
+        <checkbox text="lanlibang" id="lanlibangflag" checked="{{lanlibangflag}}" textSize="18sp" />\
         <button id="ok" text="开始运行" />
     </vertical>
 
@@ -76,7 +78,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.8.8test";
+        var versionNum = "v1.8.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -255,17 +257,20 @@ ui.ok.click(function () {
         function fenxiangwenzhang(name) {
             let cBtn = packageName("com.tencent.mm").id("js_bottom_share_btn").className("android.widget.Button").findOne(2000)
             if (cBtn != null) {
+                sleep(1000)
                 cBtn.click();
                 log("底部fenxiang1");
             } else {
                 cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("分享").findOnce();
                 if (cBtn != null) {
+                    sleep(1000)
                     cBtn.click();
                     log("底部fenxiang2");
                 } else {
                     log("2")
                     cBtn = packageName("com.tencent.mm").className("android.widget.ImageView").desc("返回").findOnce();
                     if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
+                        sleep(1000)
                         click(device.width - random(1, 10), cBtn.bounds().bottom - random(1, 5));;
                         log("按右上fenxiang");
                     } else {
@@ -417,9 +422,9 @@ ui.ok.click(function () {
                 }
             } else {
                 lunSleep();
-                /*if (gotollb()) {
+                if (gotollb()) {
                     yuedulanlibang();
-                }*/
+                }
                 lunSleep();
             }
         }
@@ -468,6 +473,9 @@ ui.ok.click(function () {
         }
         //进入llb
         function gotollb() {
+            if(!lanlibangflag){
+                return false
+            }
             连接wifi(zwifi, 5000);
             进入收藏();
             let 阅读;
@@ -488,13 +496,13 @@ ui.ok.click(function () {
                 log("1")
                 return false;
             }
-            let cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("专属链接").findOne(4000);
+            let cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("专属链接").findOne(8000);
             if (cBtn != null) {
                 log("2")
-                cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("阅读美文").findOnce();
+                cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("阅读美文").findOne(5000);
                 if (cBtn != null) {
                     log("3")
-                    sleep(500)
+                    sleep(1000)
                     cBtn.click();
                     return true;
                 }
@@ -517,9 +525,9 @@ ui.ok.click(function () {
                         xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                         storage.put("xianzhidate", xianzhidate);
                         lunSleep();
-                        /*if (gotollb()) {
+                        if (gotollb()) {
                             yuedulanlibang();
-                        }*/
+                        }
                         lunSleep();
                         return;
                     }
@@ -531,9 +539,9 @@ ui.ok.click(function () {
                         xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                         storage.put("xianzhidate", xianzhidate);
                         lunSleep();
-                        /*if (gotollb()) {
+                        if (gotollb()) {
                             yuedulanlibang();
-                        }*/
+                        }
                         lunSleep();
                         return;
                     }
@@ -543,12 +551,12 @@ ui.ok.click(function () {
                         if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                             //未限制
                             checkxianzhiFlag = false;
-                            /*if (yuedulanlibang()) {
+                            if (yuedulanlibang()) {
                                 lunCountllb++;
                                 配置["lunCountllb"] = lunCountllb;
                                 配置["countllb"] = 1;
                                 保存配置(settingPath, 配置);
-                            }*/
+                            }
 
                         } else if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(5000) != null) {
                             log("限制")
@@ -556,9 +564,9 @@ ui.ok.click(function () {
                             xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                             storage.put("xianzhidate", xianzhidate);
                             lunSleep();
-                            /*if (gotollb()) {
+                            if (gotollb()) {
                                 yuedulanlibang();
-                            }*/
+                            }
                             lunSleep();
                         }
                     }
@@ -568,9 +576,9 @@ ui.ok.click(function () {
                     xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                     storage.put("xianzhidate", xianzhidate);
                     lunSleep();
-                    /*if (gotollb()) {
+                    if (gotollb()) {
                         yuedulanlibang();
-                    }*/
+                    }
                     lunSleep();
                 }
             }
@@ -586,7 +594,7 @@ ui.ok.click(function () {
             swapeToRead()
             sleep(random(3000, 7000));
             if (device.brand == "samsung") {
-                for (let i = 0; i < 20; i++) {
+                for (let i = 0; i < 10; i++) {
                     kz();
                     swapeToRead();
                     sleep(random(3000, 7000));
@@ -596,7 +604,7 @@ ui.ok.click(function () {
                     }
                 }
             } else {
-                for (let i = 0; i < 20; i++) {
+                for (let i = 0; i < 10; i++) {
                     kz();
                     var img = captureScreen();
                     var imgH = img.height;
@@ -961,9 +969,9 @@ ui.ok.click(function () {
                         sleep(1000);
                         home();
                         lunSleep();
-                        /*if (gotollb()) {
+                        if (gotollb()) {
                             yuedulanlibang();
-                        }*/
+                        }
                         lunSleep();
                     } else {
                         lunCount = 99;
@@ -984,9 +992,9 @@ ui.ok.click(function () {
                         sleep(1000);
                         home();
                         lunSleep();
-                        /*if (gotollb()) {
+                        if (gotollb()) {
                             yuedulanlibang();
-                        }*/
+                        }
                         lunSleep();
                     } else {
                         lunCount = 99;
@@ -1023,15 +1031,15 @@ ui.ok.click(function () {
                             }*/
                             if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
                                 jieshouwenzhang();
-                                /*if (gotollb()) {
+                                if (gotollb()) {
                                     yuedulanlibang();
-                                }*/
+                                }
                                 jieshouwenzhang();
                             } else {
                                 lunSleep();
-                                /*if (gotollb()) {
+                                if (gotollb()) {
                                     yuedulanlibang();
-                                }*/
+                                }
                                 lunSleep();
                             }
 
@@ -1043,12 +1051,12 @@ ui.ok.click(function () {
             } else {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                 if (stopPage != null) {
-                    exit();
-                    /*lunSleep();
+                    //exit();
+                    lunSleep();
                     if (gotollb()) {
                         yuedulanlibang();
                     }
-                    lunSleep();*/
+                    lunSleep();
                 }
                 if (retryCount > 3) {
                     retryCount = 0;
@@ -1065,26 +1073,26 @@ ui.ok.click(function () {
                 storage.put("xianzhidate", xianzhidate);
                 if (auto_tx) {
                     lunSleep();
-                    /*if (gotollb()) {
+                    if (gotollb()) {
                         yuedulanlibang();
-                    }*/
+                    }
                     lunSleep();
                 } else {
                     lunSleep();
-                    /*if (gotollb()) {
+                    if (gotollb()) {
                         yuedulanlibang();
-                    }*/
+                    }
                     lunSleep();
-                    /*if (gotollb()) {
+                    if (gotollb()) {
                         yuedulanlibang();
-                    }*/
+                    }
                     lunSleep();
                 }
             } else {
                 lunSleep();
-                /*if (gotollb()) {
+                if (gotollb()) {
                     yuedulanlibang();
-                }*/
+                }
                 lunSleep();
             }
 
@@ -1867,11 +1875,13 @@ ui.ok.click(function () {
         readurl = ui.readurl.getText();
         log("readurl:" + readurl);
         auto_tx = ui.auto_tx.isChecked();
+        lanlibangflag=ui.lanlibangflag.isChecked();
         log("tx:" + auto_tx);
 
         storage.put("zwifi", ui.zwifi.text());
         storage.put("dlwifi", ui.dlwifi.text());
         storage.put("auto_tx", ui.auto_tx.isChecked());
+        storage.put("lanlibangflag", ui.lanlibangflag.isChecked());
         storage.put("readurl", ui.readurl.text());
         device.keepScreenDim();
         home();
@@ -2006,9 +2016,14 @@ ui.ok.click(function () {
                 continue;
             }
             sleep(3000);
-            if (checkxianzhiFlag) {
-                checkxianzhi();
+            for(let i=0;i<5;i++){
+                if (checkxianzhiFlag) {
+                    checkxianzhi();
+                }else{
+                    break;
+                }
             }
+           
             sleep(3000);
             连接wifi(zwifi, 5000);
             打开v();
