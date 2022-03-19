@@ -80,7 +80,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.0.0";
+        var versionNum = "v2.0.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -364,7 +364,9 @@ ui.ok.click(function () {
                             }
                         }
                     }
-                    log(new Date().toLocaleString() + "-" + "-----------------当前发言人:" + latestTalkName + ",当前标题:" + latestLinkTitle);
+                    if(latestTalkName==""&&latestLinkTitle==""){
+                        console.error(new Date().toLocaleString() + "-" + "-----------------当前发言人:" + latestTalkName + ",当前标题:" + latestLinkTitle);
+                    }
     
                     for (let i = 0; i < icount; i++) {
                         let repData = getConfig();
