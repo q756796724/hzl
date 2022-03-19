@@ -80,7 +80,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.0.3";
+        var versionNum = "v2.0.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -599,15 +599,21 @@ ui.ok.click(function () {
             let 阅读;
             if (className("android.widget.TextView").textContains("lanlitao").findOne(5000) != null) {
                 阅读 = className("android.widget.TextView").textContains("lanlitao").findOnce().bounds();
+                clickx(阅读.right, 阅读.bottom);
+            }else{
+                return false;
             }
 
-            clickx(阅读.right, 阅读.bottom);
+            
             sleep(3000);
 
             if (className("android.widget.TextView").textContains("lanlitao").findOne(5000) != null) {
                 阅读 = className("android.widget.TextView").textContains("lanlitao").findOnce().bounds();
+                clickx(阅读.right, 阅读.bottom);
+            }else{
+                return false;
             }
-            clickx(阅读.right, 阅读.bottom);
+           
             let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOne(5000)
             if (stopPage != null) {
                 //exit();
@@ -1003,14 +1009,18 @@ ui.ok.click(function () {
                 阅读 = className("android.widget.TextView").textContains("JVJAkkm").findOnce().bounds();
             } else if (className("android.widget.TextView").textContains("TiLAkkm").findOnce() != null) {
                 阅读 = className("android.widget.TextView").textContains("TiLAkkm").findOnce().bounds();
+            }else{
+                return;
             }
-
+            
             clickx(阅读.right, 阅读.bottom);
             sleep(3000);
 
             if (auto_tx) {
                 if (className("android.widget.TextView").textContains(readurl).findOne(5000) != null) {
                     阅读 = className("android.widget.TextView").textContains(readurl).findOnce().bounds();
+                }else{
+                    return;
                 }
             } else {
                 if (className("android.widget.TextView").textContains("RHtWWJm").findOne(5000) != null) {
@@ -1025,6 +1035,8 @@ ui.ok.click(function () {
                     阅读 = className("android.widget.TextView").textContains("JVJAkkm").findOnce().bounds();
                 } else if (className("android.widget.TextView").textContains("TiLAkkm").findOnce() != null) {
                     阅读 = className("android.widget.TextView").textContains("TiLAkkm").findOnce().bounds();
+                }else{
+                    return;
                 }
             }
 
