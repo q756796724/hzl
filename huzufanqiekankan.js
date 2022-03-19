@@ -5,6 +5,7 @@ zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
 lanlibangflag = storage.get("lanlibangflag", true);
+fanqieflag = storage.get("fanqieflag", false);
 readurl = storage.get("readurl", "m.jk123.xyz");
 xianzhidate = storage.get("xianzhidate", "2022-01-01");//限制时间
 ui.layout(
@@ -18,6 +19,7 @@ ui.layout(
         <input id="readurl" text="{{readurl}}" />
         <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
         <checkbox text="lanlibang" id="lanlibangflag" checked="{{lanlibangflag}}" textSize="18sp" />\
+        <checkbox text="fanqie" id="fanqieflag" checked="{{fanqieflag}}" textSize="18sp" />\
         <button id="ok" text="开始运行" />
     </vertical>
 
@@ -78,7 +80,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.9.9";
+        var versionNum = "v2.0.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -571,6 +573,9 @@ ui.ok.click(function () {
                                 配置["lunCountllb"] = lunCountllb;
                                 配置["countllb"] = 1;
                                 保存配置(settingPath, 配置);
+                            }
+                            if(!fanqieflag){
+                                jieshouwenzhang();
                             }
 
                         } else if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(5000) != null) {
@@ -1280,78 +1285,70 @@ ui.ok.click(function () {
             var count = 配置["countllb"];//次数
 
             let wifiCount = count;
-            for (; ;) {
+            for (let i=0;i<25 ;i++) {
                 kz();
-
-                /*if (页面异常处理()) {
-                    if (textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(5000) != null) {
-                        let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
-                        if (sBtn != null) {
-                            sBtn.click();
-                        } else {
-                            返回v首页();
-                            return false;
+                
+                if(count == wifiCount){
+                    let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(10000)
+                    if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
+                        //判断是否需要互助
+                        if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 1) {
+                            let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(8000)
+                            if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
+                                fenxiangwenzhang("大家庭");
+                            } else {
+                                console.error(标题识别失败);
+                                sleep(6000)
+                                fenxiangwenzhang("大家庭");
+                            }
+                            sleep(8000);
                         }
-                    } else {
-                        返回v首页();
-                        return false;
-                    }
-                }*/
-
-                //判断阅读提前结束
-                cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(10000)
-                if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
-                    //判断是否需要互助
-                    if (count == wifiCount && checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 1) {
-                        let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(8000)
-                        if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
-                            fenxiangwenzhang("大家庭");
-                        } else {
-                            console.error(标题识别失败);
-                            sleep(6000)
-                            fenxiangwenzhang("大家庭");
-                        }
-                        sleep(8000);
-                    }
-                    log("llb第" + lunCountllb + "轮,第" + count + "次");
-
-
-                        log("滑动");
-                        swapeToRead();
-                        sleep(random(3000, 7000));
-                        swapeToRead();
-                        sleep(random(3000, 7000));
-                        swapeToRead();
-                        sleep(random(3000, 5000));
-                        swapeToRead();
-                        sleep(random(2000, 4000));
-                        if (count == wifiCount) {
-                            连接wifi(dlwifi, 5000);
-                            app.launch(PKG_NAME);
-                        }
-                        if (count % 5 == 0) {
-                            if (联网验证(dlwifi) != true) {
+                        log("llb第" + lunCountllb + "轮,第" + count + "次");
+                            log("滑动");
+                            swapeToRead();
+                            sleep(random(3000, 7000));
+                            swapeToRead();
+                            sleep(random(3000, 7000));
+                            swapeToRead();
+                            sleep(random(3000, 5000));
+                            swapeToRead();
+                            sleep(random(2000, 4000));
+                            if (count == wifiCount) {
                                 连接wifi(dlwifi, 5000);
                                 app.launch(PKG_NAME);
                             }
-                        }
+                            
+                    } else {
+                        return true
+                    }
+                }else{
+                    if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(random(10000,15000)) != null) {
+                        return true
+                    }
+                    log("llb第" + lunCountllb + "轮,第" + count + "次");
+                }
 
-                        if (等待未响应() == 0) {
-                            if (结束未响应()) {
-                                配置["countllb"] = count;
-                                保存配置(settingPath, 配置);
-                                return false;
-                            }
-                        }
+                if (count % 5 == 0) {
+                    if (联网验证(dlwifi) != true) {
+                        连接wifi(dlwifi, 5000);
+                        app.launch(PKG_NAME);
+                    }
+                }
 
-
-                        back();
-                        count++;
+                if (等待未响应() == 0) {
+                    if (结束未响应()) {
                         配置["countllb"] = count;
                         保存配置(settingPath, 配置);
-                } else {
-                    return true
+                        return false;
+                    }
                 }
+
+
+                back();
+                count++;
+                配置["countllb"] = count;
+                保存配置(settingPath, 配置);
+                
             }
         }
         function yuedu() {
@@ -1947,12 +1944,14 @@ ui.ok.click(function () {
         log("readurl:" + readurl);
         auto_tx = ui.auto_tx.isChecked();
         lanlibangflag=ui.lanlibangflag.isChecked();
+        fanqieflag=ui.fanqieflag.isChecked();
         log("tx:" + auto_tx);
 
         storage.put("zwifi", ui.zwifi.text());
         storage.put("dlwifi", ui.dlwifi.text());
         storage.put("auto_tx", ui.auto_tx.isChecked());
         storage.put("lanlibangflag", ui.lanlibangflag.isChecked());
+        storage.put("fanqieflag", ui.fanqieflag.isChecked());
         storage.put("readurl", ui.readurl.text());
         device.keepScreenDim();
         home();
@@ -2117,7 +2116,29 @@ ui.ok.click(function () {
             let wBtn = className("android.widget.TextView").text("我").findOne(3000);
             if (topActivity == MAIN_PAGE && wBtn != null) {
                 log("第" + lunCount + "轮");
-                onMainPage();
+                if(fanqieflag){
+                    onMainPage(); 
+                }else{
+                    if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                        if (gotollb()) {
+                            yuedulanlibang();
+                        }
+                        jieshouwenzhang();
+                        if (gotollb()) {
+                            yuedulanlibang();
+                        }
+                        jieshouwenzhang();
+                    } else {
+                        if (gotollb()) {
+                            yuedulanlibang();
+                        }
+                        lunSleep();
+                        if (gotollb()) {
+                            yuedulanlibang();
+                        }
+                        lunSleep();
+                    }
+                }
             } else {
                 log(wBtn);
                 返回v首页();
