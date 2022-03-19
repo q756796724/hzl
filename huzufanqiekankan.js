@@ -80,7 +80,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.0.1";
+        var versionNum = "v2.0.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -374,7 +374,7 @@ ui.ok.click(function () {
                             sleep(10000)
                             continue;
                         }
-                        log(repData)
+                        //log(repData)
                         let lastTalkName = repData["lastTalkName"] != undefined ? repData["lastTalkName"] : "";//上一发言人
                         let lastLinkTitle = repData["lastLinkTitle"] != undefined ? repData["lastLinkTitle"] : "";//上一文章的标题
     
@@ -620,23 +620,23 @@ ui.ok.click(function () {
             swapeToRead()
             sleep(random(3000, 7000));
             if (device.brand == "samsung") {
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i < 7; i++) {
                     kz();
                     swapeToRead();
-                    sleep(random(3000, 7000));
+                    sleep(random(4000, 5000));
                     if (checkWatchFull()) {
                         log("到底了");
                         break;
                     }
                 }
             } else {
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i < 7; i++) {
                     kz();
                     var img = captureScreen();
                     var imgH = img.height;
                     var clip = images.clip(img, 0, img.height - 200, 200, 20);
                     swapeToRead();
-                    sleep(random(3000, 7000));
+                    sleep(random(4000, 5000));
                     var p = findImage(captureScreen(), clip, {
                         region: [0, imgH - 300, 220, 150],
                         threshold: 1
