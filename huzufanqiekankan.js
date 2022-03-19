@@ -78,7 +78,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v1.9.8";
+        var versionNum = "v1.9.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -334,48 +334,18 @@ ui.ok.click(function () {
             }
             wBtn = packageName("com.tencent.mm").id('bg1').findOnce();
             if (wBtn != null) {
+                sleep(1000)
                 wBtn.click();
                 sleep(3000);
-
-                let icount = random(360, 400) //random(720, 840);
-                let latestTalkName = "";//当前发言人
-                let latestLinkTitle = "";//当前文章的标题
-                let latestLink;//当前文章
-                let news = packageName("com.tencent.mm").className("android.widget.ListView").findOne(5000);
-                if (news != null && news.children() != null) {
-                    let newsList = news.children();
-                    if (newsList.length > 0) {
-                        //最新消息
-                        let latestNews = newsList[newsList.length - 1];
-                        if (latestNews.className() == "android.widget.RelativeLayout") {
-                            latestNews.children().forEach(function (child) {
-                                if (child.className() == "android.widget.ImageView" && child.desc()) {
-                                    latestTalkName = child.desc();
-                                }
-                                if (child.className() == "android.widget.FrameLayout") {
-                                    latestLink = child;
-                                    latestLinkTitle = child.children()[0].text();
-                                }
-                            })
-                        }
-                    }
-                }
-                log(new Date().toLocaleString() + "-" + "-----------------当前发言人:" + latestTalkName + ",当前标题:" + latestLinkTitle);
-
-                for (let i = 0; i < icount; i++) {
-                    let repData = getConfig();
-                    if (repData == undefined) {
-                        sleep(10000)
-                        continue;
-                    }
-                    log(repData)
-                    let lastTalkName = repData["lastTalkName"] != undefined ? repData["lastTalkName"] : "";//上一发言人
-                    let lastLinkTitle = repData["lastLinkTitle"] != undefined ? repData["lastLinkTitle"] : "";//上一文章的标题
-
-
-                    news = packageName("com.tencent.mm").className("android.widget.ListView").findOne(5000);
+                wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);//id=ipv
+                if (wBtn != null) {
+                    let icount = random(360, 400) //random(720, 840);
+                    let latestTalkName = "";//当前发言人
+                    let latestLinkTitle = "";//当前文章的标题
+                    let latestLink;//当前文章
+                    let news = packageName("com.tencent.mm").className("android.widget.ListView").findOne(5000);
                     if (news != null && news.children() != null) {
-                        newsList = news.children();
+                        let newsList = news.children();
                         if (newsList.length > 0) {
                             //最新消息
                             let latestNews = newsList[newsList.length - 1];
@@ -392,22 +362,42 @@ ui.ok.click(function () {
                             }
                         }
                     }
-
-                    if (latestTalkName != "" && latestTalkName != lastTalkName) {
-                        //log(new Date().toLocaleString() + "-" + "-----------------发言人变化,上一发言人:" + lastTalkName + ",当前发言人:" + latestTalkName);
-
-                        if (setConfig(latestTalkName, latestLinkTitle)) {
-                            if (latestLinkTitle != "") {
-                                //log(" <标题不为空点击>");
-                                latestLink.click();
-                                阅读到底();
+                    log(new Date().toLocaleString() + "-" + "-----------------当前发言人:" + latestTalkName + ",当前标题:" + latestLinkTitle);
+    
+                    for (let i = 0; i < icount; i++) {
+                        let repData = getConfig();
+                        if (repData == undefined) {
+                            sleep(10000)
+                            continue;
+                        }
+                        log(repData)
+                        let lastTalkName = repData["lastTalkName"] != undefined ? repData["lastTalkName"] : "";//上一发言人
+                        let lastLinkTitle = repData["lastLinkTitle"] != undefined ? repData["lastLinkTitle"] : "";//上一文章的标题
+    
+    
+                        news = packageName("com.tencent.mm").className("android.widget.ListView").findOne(5000);
+                        if (news != null && news.children() != null) {
+                            newsList = news.children();
+                            if (newsList.length > 0) {
+                                //最新消息
+                                let latestNews = newsList[newsList.length - 1];
+                                if (latestNews.className() == "android.widget.RelativeLayout") {
+                                    latestNews.children().forEach(function (child) {
+                                        if (child.className() == "android.widget.ImageView" && child.desc()) {
+                                            latestTalkName = child.desc();
+                                        }
+                                        if (child.className() == "android.widget.FrameLayout") {
+                                            latestLink = child;
+                                            latestLinkTitle = child.children()[0].text();
+                                        }
+                                    })
+                                }
                             }
                         }
-
-                    } else {
-                        if (lastLinkTitle != "" && lastLinkTitle != latestLinkTitle) {
-                            //log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
-
+    
+                        if (latestTalkName != "" && latestTalkName != lastTalkName) {
+                            //log(new Date().toLocaleString() + "-" + "-----------------发言人变化,上一发言人:" + lastTalkName + ",当前发言人:" + latestTalkName);
+    
                             if (setConfig(latestTalkName, latestLinkTitle)) {
                                 if (latestLinkTitle != "") {
                                     //log(" <标题不为空点击>");
@@ -415,16 +405,32 @@ ui.ok.click(function () {
                                     阅读到底();
                                 }
                             }
+    
+                        } else {
+                            if (lastLinkTitle != "" && lastLinkTitle != latestLinkTitle) {
+                                //log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
+    
+                                if (setConfig(latestTalkName, latestLinkTitle)) {
+                                    if (latestLinkTitle != "") {
+                                        //log(" <标题不为空点击>");
+                                        latestLink.click();
+                                        阅读到底();
+                                    }
+                                }
+                            }
                         }
-                    }
-                    sleep(10000)
-                    if (i % 5 == 0) {
-                        if (联网验证(zwifi) != true) {
-                            连接wifi(zwifi, 5000);
-                            app.launch(PKG_NAME);
+                        sleep(10000)
+                        if (i % 5 == 0) {
+                            if (联网验证(zwifi) != true) {
+                                连接wifi(zwifi, 5000);
+                                app.launch(PKG_NAME);
+                            }
                         }
+    
                     }
-
+                }else {
+                    console.error("not found 大家庭")
+                    lunSleep();
                 }
             } else {
                 console.error("not found bg1")
