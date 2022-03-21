@@ -6,7 +6,7 @@ dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
 lanlibangflag = storage.get("lanlibangflag", true);
 fanqieflag = storage.get("fanqieflag", false);
-readurl = storage.get("readurl", "m.jk123.xyz");
+readurl = storage.get("readurl", "");
 xianzhidate = storage.get("xianzhidate", "2022-03-20");//限制时间
 ui.layout(
     <vertical padding="16">
@@ -1812,6 +1812,7 @@ ui.ok.click(function () {
                         }
                     }
                 } else {
+                    
                     if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(random(10000, 15000)) != null) {
                         return true
                     } else if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1&&packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOne(1000) != null) {
@@ -1822,13 +1823,20 @@ ui.ok.click(function () {
                     }else if (currentActivity() != "com.tencent.mm.plugin.webview.ui.tools.WebviewMpUI") {
                         log("不在h5")
                         return true
+                    }else{
+                        if(packageName("com.tencent.mm").textMatches(/(.*无法打开网页.*|.*网页无法打开.*)/).findOne(10000)){
+                            sleep(2000)
+                        }else{
+                            sleep(10000)
+                            console.warn(new Date().toLocaleString() + "-----------" +"notFound无法打开网页")
+                        }
                     }
                 }
 
                
                 配置["countllb"] = count;
                 保存配置(settingPath, 配置);
-                log("llb第" + lunCountllb + "轮,第" + count + "次完成");
+                log(new Date().toLocaleString() + "-----------" +"llb第" + lunCountllb + "轮,第" + count + "次完成");
 
                 if (count == 10||count == 20) {
                     连接wifi(zwifi, 5000);
@@ -2328,7 +2336,8 @@ ui.ok.click(function () {
                 }
             } else if (wifiName == dlwifi) {
                 try {
-                    let url = readurl;
+                    //let url = readurl;
+                    let url="web.zechengnet.cn";
                     //log("url="+url)
                     let r = http.get(url.toString());
                     if (r.statusCode == "200") {
@@ -2517,6 +2526,7 @@ ui.ok.click(function () {
         var lunCount = 1;//轮回次数
         var lunCountllb = 1;//lanlibang轮回次数
         for (; ;) {
+            log(联网验证(dlwifi))
             kz();
             var nowHour = new Date().getHours();
             log("当前时间:" + nowHour + "时");
