@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.1.2";
+        var versionNum = "v2.1.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1869,11 +1869,11 @@ ui.ok.click(function () {
             for (let i = 0; i < 17; i++) {
                 kz();
 
-                if (count == 1 || count == 2|| count == 7|| count == 11 || count == 13 || count == 21) {
+                if (count == 1 || count == 2|| count == 7||count == 8|| count == 11 || count == 13 || count == 21) {
                     let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                         //判断是否需要互助
-                        if (count == 1 || count == 2|| count == 7|| count == 11|| count == 13  ){
+                        if (count == 1 || count == 2|| count == 7||count == 8|| count == 11|| count == 13  ){
                             if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
                                 if (fenxiangwenzhang("大家庭")) {
                                     sleep(8000);
@@ -1905,7 +1905,7 @@ ui.ok.click(function () {
                         swapeToRead();
                         sleep(random(2000, 4000));
 
-                        if (count == 2|| count == 7|| count == 11|| count == 13 ){
+                        if (count == 2|| count == 8|| count == 11|| count == 13 ){
                             连接wifi(dlwifi, 5000);
                         }
                         
