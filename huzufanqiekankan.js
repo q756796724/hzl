@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.0.9";
+        var versionNum = "v2.1.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -607,7 +607,7 @@ ui.ok.click(function () {
             sleep(3000);
 
             if (className("android.widget.TextView").textContains("lanlitao").findOne(5000) != null) {
-                if (havejieshouren(2) == false) {
+                if (havejieshouren(2) == false&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
                     return false;
                 }
                 阅读 = className("android.widget.TextView").textContains("lanlitao").findOnce().bounds();
@@ -628,7 +628,7 @@ ui.ok.click(function () {
                 cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("阅读美文").findOne(5000);
                 if (cBtn != null) {
                     sleep(2500)
-                    if (havejieshouren(2) == false) {
+                    if (havejieshouren(2) == false&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
                         log("3false")
                         return false;
                     }
@@ -2809,7 +2809,7 @@ ui.ok.click(function () {
             打开v();
             sleep(5000);
             refreshStateInfo();
-            if (topPackage == PKG_NAME && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4) {
+            if (topPackage == PKG_NAME && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
                 sleep(random(600000, 1200000));
             } else {
                 sleep(random(10000, 30000));
