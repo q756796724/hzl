@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.1.3";
+        var versionNum = "v2.1.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -796,7 +796,7 @@ ui.ok.click(function () {
                     }
                     lunSleep();
                     //}
-                } else if (packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOne(1000) != null || packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOne(1000) != null) {
+                } else if (packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOnce() != null || packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOnce() != null|| packageName("com.tencent.mm").className("android.view.View").textContains("暂时没有精选文章了，过点时间再来").findOnce() != null|| packageName("com.tencent.mm").className("android.view.View").textContains("文章无法访问").findOnce() != null) {
                     log("未限制")
                     checkxianzhiFlag = false;
                     if (!fanqieflag && checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
@@ -1912,7 +1912,7 @@ ui.ok.click(function () {
                         app.launch(PKG_NAME);
 
                     } else {
-                        if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(3000) != null || packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOne(1000) != null || packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOne(1000) != null) {
+                        if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(3000) != null || packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOnce() != null || packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOnce() != null|| packageName("com.tencent.mm").className("android.view.View").textContains("暂时没有精选文章了，过点时间再来").findOnce() != null|| packageName("com.tencent.mm").className("android.view.View").textContains("文章无法访问").findOnce() != null) {
                             return true
                         } else if (currentActivity() != "com.tencent.mm.plugin.webview.ui.tools.WebviewMpUI") {
                             log("不在h5")
@@ -1924,7 +1924,7 @@ ui.ok.click(function () {
                     }
                 } else {
 
-                    if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(random(10000, 15000)) != null || packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOne(1000) != null || packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOne(1000) != null) {
+                    if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(random(10000, 15000)) != null || packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOnce() != null || packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOnce() != null|| packageName("com.tencent.mm").className("android.view.View").textContains("暂时没有精选文章了，过点时间再来").findOnce() != null|| packageName("com.tencent.mm").className("android.view.View").textContains("文章无法访问").findOnce() != null) {
                         return true
                     } else if (currentActivity() != "com.tencent.mm.plugin.webview.ui.tools.WebviewMpUI") {
                         log("不在h5")
