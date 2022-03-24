@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.0.6";
+        var versionNum = "v2.0.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -276,27 +276,7 @@ ui.ok.click(function () {
             }
 
         }
-        //获取接收人数
-        function getjieshouCount() {
-            let temp = null;
-            try {
-                temp = http.get("106.55.225.58:8081/fanqie/getjieshouCount");
-                if (temp && temp.statusCode == 200) {
-                    temp = temp.body.string();
-                    let rep = JSON.parse(temp);
-                    let repState = rep["state"];
-                    if (repState == 1) {
-                        let repData = rep["data"];
-                        return repData
-                    } else {
-                        console.warn("getjieshouCount获取数据失败" + temp);
-                    }
-                }
-            } catch (err) {
-                console.error("getjieshouCount报错,原因:" + err);
-            }
 
-        }
         function getConfig() {
             let temp = null;
             try {
@@ -366,6 +346,7 @@ ui.ok.click(function () {
                             log("按右上fenxiang");
                         } else {
                             console.error("寻找fenxiang失败")
+                            return false
                         }
                     }
                 }
@@ -381,12 +362,20 @@ ui.ok.click(function () {
                         if (cBtn != null && cBtn.clickable()) {
                             sleep(random(2000, 3000));
                             cBtn.click();
+                            return true
                         }
                     } else {
                         console.error("发送给" + name + "失败");
                         back();
+                        return false
                     }
+                }else{
+                    console.error("notfound发送给朋友");
+                    return false
                 }
+            }else{
+                log("havejieshouren1false")
+                return false
             }
         }
         function jieshouwenzhang() {
@@ -588,6 +577,15 @@ ui.ok.click(function () {
                 sleep(3000);
             }
         }
+        //判断是否有接收人
+        function havejieshouren(peoplecCount){
+            let repData = getjieshouCount()
+            if (repData != undefined && repData["jieshouCount"] != undefined && repData["jieshouCount"] >= peoplecCount) {
+                return true
+            }else{
+                return false
+            }
+        }
         //进入llb
         function gotollb() {
             if (!lanlibangflag) {
@@ -609,6 +607,9 @@ ui.ok.click(function () {
             sleep(3000);
 
             if (className("android.widget.TextView").textContains("lanlitao").findOne(5000) != null) {
+                if(havejieshouren(2)==false){
+                    return false;
+                }
                 阅读 = className("android.widget.TextView").textContains("lanlitao").findOnce().bounds();
                 clickx(阅读.right, 阅读.bottom);
             }else{
@@ -626,9 +627,13 @@ ui.ok.click(function () {
                 log("2")
                 cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("阅读美文").findOne(5000);
                 if (cBtn != null) {
-                    log("3")
                     sleep(2500)
+                    if(havejieshouren(2)==false){
+                        log("3false")
+                        return false;
+                    }
                     cBtn.click();
+                    log("3")
                     return true;
                 }
             } else {
@@ -706,7 +711,7 @@ ui.ok.click(function () {
                                 配置["countllb"] = 1;
                                 保存配置(settingPath, 配置);
                             }
-                            if (!fanqieflag && checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                            if (!fanqieflag && checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                 jieshouwenzhang();
                             }
 
@@ -757,13 +762,11 @@ ui.ok.click(function () {
                 if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                     if (yuedulanlibang()) {
                         lunCountllb++;
-                        if (配置["countllb"] <= 6) {
+                        if (配置["countllb"] <= 14) {
                             checkxianzhiFlag = false;
                             log(new Date().toLocaleString() + "-----------限制")
                             xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                             storage.put("xianzhidate", xianzhidate);
-                        } else if (配置["countllb"] > 6 && 配置["countllb"] < 9) {
-                            log(new Date().toLocaleString() + "-----------初步未限制,下一轮继续验证")
                         } else {
                             checkxianzhiFlag = false;
                             log(new Date().toLocaleString() + "-----------未限制")
@@ -772,7 +775,7 @@ ui.ok.click(function () {
                         配置["countllb"] = 1;
                         保存配置(settingPath, 配置);
                     }
-                    if (!fanqieflag && checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                    if (!fanqieflag && checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                         jieshouwenzhang();
                     }
 
@@ -781,7 +784,7 @@ ui.ok.click(function () {
                     checkxianzhiFlag = false;
                     xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                     storage.put("xianzhidate", xianzhidate);
-                    if (nowHour < 18) {
+                    //if (nowHour < 18) {
                         lunSleep();
                         if (gotollb()) {
                             if (yuedulanlibang()) {
@@ -792,13 +795,11 @@ ui.ok.click(function () {
                             }
                         }
                         lunSleep();
-                    }
-                }else if (packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOne(1000) != null) {
+                    //}
+                }else if (packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOne(1000) != null||packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOne(1000) != null) {
                     log("未限制")
                     checkxianzhiFlag = false;
-                    xianzhidate = formatDate(new Date(), "2022-03-20");
-                    storage.put("xianzhidate", xianzhidate);
-                    if (!fanqieflag && checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                    if (!fanqieflag && checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                         jieshouwenzhang();
                     }
                 }
@@ -1118,14 +1119,14 @@ ui.ok.click(function () {
                 返回v首页();
                 if (yichang1count > 5) {
                     console.error("yichang1count=" + yichang1count)
-                    if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                    if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                         if (gotollb()) {
                             if (yuedulanlibang()) {
                                 lunCountllb++;
-                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                     checkxianzhiFlag = true;
                                     log(new Date().toLocaleString() + "-----------重新检查限制")
-                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                     xianzhidate ="2022-03-20";
                                     storage.put("xianzhidate", xianzhidate);
                                     log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1139,10 +1140,10 @@ ui.ok.click(function () {
                         if (gotollb()) {
                             if (yuedulanlibang()) {
                                 lunCountllb++;
-                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                     checkxianzhiFlag = true;
                                     log(new Date().toLocaleString() + "-----------重新检查限制")
-                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                     xianzhidate ="2022-03-20";
                                     storage.put("xianzhidate", xianzhidate);
                                     log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1157,10 +1158,10 @@ ui.ok.click(function () {
                         if (gotollb()) {
                             if (yuedulanlibang()) {
                                 lunCountllb++;
-                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                     checkxianzhiFlag = true;
                                     log(new Date().toLocaleString() + "-----------重新检查限制")
-                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                     xianzhidate ="2022-03-20";
                                     storage.put("xianzhidate", xianzhidate);
                                     log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1174,10 +1175,10 @@ ui.ok.click(function () {
                         if (gotollb()) {
                             if (yuedulanlibang()) {
                                 lunCountllb++;
-                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                     checkxianzhiFlag = true;
                                     log(new Date().toLocaleString() + "-----------重新检查限制")
-                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                     xianzhidate ="2022-03-20";
                                     storage.put("xianzhidate", xianzhidate);
                                     log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1274,10 +1275,10 @@ ui.ok.click(function () {
                         if (gotollb()) {
                             if (yuedulanlibang()) {
                                 lunCountllb++;
-                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                     checkxianzhiFlag = true;
                                     log(new Date().toLocaleString() + "-----------重新检查限制")
-                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                     xianzhidate ="2022-03-20";
                                     storage.put("xianzhidate", xianzhidate);
                                     log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1291,10 +1292,10 @@ ui.ok.click(function () {
                         if (gotollb()) {
                             if (yuedulanlibang()) {
                                 lunCountllb++;
-                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                     checkxianzhiFlag = true;
                                     log(new Date().toLocaleString() + "-----------重新检查限制")
-                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                     xianzhidate ="2022-03-20";
                                     storage.put("xianzhidate", xianzhidate);
                                     log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1326,10 +1327,10 @@ ui.ok.click(function () {
                         if (gotollb()) {
                             if (yuedulanlibang()) {
                                 lunCountllb++;
-                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                     checkxianzhiFlag = true;
                                     log(new Date().toLocaleString() + "-----------重新检查限制")
-                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                     xianzhidate ="2022-03-20";
                                     storage.put("xianzhidate", xianzhidate);
                                     log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1343,10 +1344,10 @@ ui.ok.click(function () {
                         if (gotollb()) {
                             if (yuedulanlibang()) {
                                 lunCountllb++;
-                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                     checkxianzhiFlag = true;
                                     log(new Date().toLocaleString() + "-----------重新检查限制")
-                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                     xianzhidate ="2022-03-20";
                                     storage.put("xianzhidate", xianzhidate);
                                     log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1383,21 +1384,21 @@ ui.ok.click(function () {
                             配置["count"] = 1;
                             保存配置(settingPath, 配置);
                             //判断是否接收文章
-                            /*if (jieshouwenzhangflag && lunCount == 2 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 1) {//昨天限制今天可以的话第一轮不接收，昨天没限制第一轮接收
+                            /*if (jieshouwenzhangflag && lunCount == 2 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {//昨天限制今天可以的话第一轮不接收，昨天没限制第一轮接收
                                 jieshouwenzhang();
                             } else if (jieshouwenzhangflag && lunCount > 2) {
                                 jieshouwenzhang();
                             } else {
                                 lunSleep();
                             }*/
-                            if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                            if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                 if (gotollb()) {
                                     if (yuedulanlibang()) {
                                         lunCountllb++;
-                                        if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                        if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                             checkxianzhiFlag = true;
                                             log(new Date().toLocaleString() + "-----------重新检查限制")
-                                        } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                                        } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                             xianzhidate ="2022-03-20";
                                             storage.put("xianzhidate", xianzhidate);
                                             log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1411,10 +1412,10 @@ ui.ok.click(function () {
                                 if (gotollb()) {
                                     if (yuedulanlibang()) {
                                         lunCountllb++;
-                                        if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                        if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                             checkxianzhiFlag = true;
                                             log(new Date().toLocaleString() + "-----------重新检查限制")
-                                        } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                                        } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                             xianzhidate ="2022-03-20";
                                             storage.put("xianzhidate", xianzhidate);
                                             log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1429,10 +1430,10 @@ ui.ok.click(function () {
                                 if (gotollb()) {
                                     if (yuedulanlibang()) {
                                         lunCountllb++;
-                                        if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                        if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                             checkxianzhiFlag = true;
                                             log(new Date().toLocaleString() + "-----------重新检查限制")
-                                        } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                                        } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                             xianzhidate ="2022-03-20";
                                             storage.put("xianzhidate", xianzhidate);
                                             log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1446,10 +1447,10 @@ ui.ok.click(function () {
                                 if (gotollb()) {
                                     if (yuedulanlibang()) {
                                         lunCountllb++;
-                                        if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                        if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                             checkxianzhiFlag = true;
                                             log(new Date().toLocaleString() + "-----------重新检查限制")
-                                        } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                                        } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                             xianzhidate ="2022-03-20";
                                             storage.put("xianzhidate", xianzhidate);
                                             log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1474,10 +1475,10 @@ ui.ok.click(function () {
                     if (gotollb()) {
                         if (yuedulanlibang()) {
                             lunCountllb++;
-                            if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                            if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                 checkxianzhiFlag = true;
                                 log(new Date().toLocaleString() + "-----------重新检查限制")
-                            } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                            } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                 xianzhidate ="2022-03-20";
                                 storage.put("xianzhidate", xianzhidate);
                                 log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1491,10 +1492,10 @@ ui.ok.click(function () {
                     if (gotollb()) {
                         if (yuedulanlibang()) {
                             lunCountllb++;
-                            if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                            if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                 checkxianzhiFlag = true;
                                 log(new Date().toLocaleString() + "-----------重新检查限制")
-                            } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                            } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                 xianzhidate ="2022-03-20";
                                 storage.put("xianzhidate", xianzhidate);
                                 log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1523,10 +1524,10 @@ ui.ok.click(function () {
                     if (gotollb()) {
                         if (yuedulanlibang()) {
                             lunCountllb++;
-                            if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                            if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                 checkxianzhiFlag = true;
                                 log(new Date().toLocaleString() + "-----------重新检查限制")
-                            } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                            } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                 xianzhidate ="2022-03-20";
                                 storage.put("xianzhidate", xianzhidate);
                                 log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1540,10 +1541,10 @@ ui.ok.click(function () {
                     if (gotollb()) {
                         if (yuedulanlibang()) {
                             lunCountllb++;
-                            if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                            if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                 checkxianzhiFlag = true;
                                 log(new Date().toLocaleString() + "-----------重新检查限制")
-                            } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                            } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                 xianzhidate ="2022-03-20";
                                 storage.put("xianzhidate", xianzhidate);
                                 log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1558,10 +1559,10 @@ ui.ok.click(function () {
                     if (gotollb()) {
                         if (yuedulanlibang()) {
                             lunCountllb++;
-                            if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                            if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                 checkxianzhiFlag = true;
                                 log(new Date().toLocaleString() + "-----------重新检查限制")
-                            } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                            } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                 xianzhidate ="2022-03-20";
                                 storage.put("xianzhidate", xianzhidate);
                                 log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1575,10 +1576,10 @@ ui.ok.click(function () {
                     if (gotollb()) {
                         if (yuedulanlibang()) {
                             lunCountllb++;
-                            if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                            if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                 checkxianzhiFlag = true;
                                 log(new Date().toLocaleString() + "-----------重新检查限制")
-                            } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                            } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                 xianzhidate ="2022-03-20";
                                 storage.put("xianzhidate", xianzhidate);
                                 log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1592,10 +1593,10 @@ ui.ok.click(function () {
                     if (gotollb()) {
                         if (yuedulanlibang()) {
                             lunCountllb++;
-                            if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                            if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                 checkxianzhiFlag = true;
                                 log(new Date().toLocaleString() + "-----------重新检查限制")
-                            } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                            } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                                 xianzhidate ="2022-03-20";
                                 storage.put("xianzhidate", xianzhidate);
                                 log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1611,10 +1612,10 @@ ui.ok.click(function () {
                 if (gotollb()) {
                     if (yuedulanlibang()) {
                         lunCountllb++;
-                        if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                        if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                             checkxianzhiFlag = true;
                             log(new Date().toLocaleString() + "-----------重新检查限制")
-                        } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                        } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                             xianzhidate ="2022-03-20";
                             storage.put("xianzhidate", xianzhidate);
                             log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1628,10 +1629,10 @@ ui.ok.click(function () {
                 if (gotollb()) {
                     if (yuedulanlibang()) {
                         lunCountllb++;
-                        if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                        if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                             checkxianzhiFlag = true;
                             log(new Date().toLocaleString() + "-----------重新检查限制")
-                        } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
+                        } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4){
                             xianzhidate ="2022-03-20";
                             storage.put("xianzhidate", xianzhidate);
                             log(new Date().toLocaleString() + "-----------改为未限制")
@@ -1761,24 +1762,21 @@ ui.ok.click(function () {
             //var count = 配置["countllb"];//次数
             var count = 1;//次数
             //let wifiCount = count;
-            for (let i = 0; i < 35; i++) {
+            for (let i = 0; i < 17; i++) {
                 kz();
 
                 if (count == 1||count == 11||count == 21) {
-                    let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(10000)
+                    let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                         //判断是否需要互助
                         if (count == 1||count == 11) {
-                            if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 1) {
-                                let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(8000)
-                                if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
-                                    fenxiangwenzhang("大家庭");
-                                } else {
-                                    console.error(标题识别失败);
-                                    sleep(6000)
-                                    fenxiangwenzhang("大家庭");
+                            if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4) {
+                                if(fenxiangwenzhang("大家庭")){
+                                    sleep(8000);
+                                }else{
+                                    return true;
                                 }
-                                sleep(8000);
+                                
                             }
                         }
                         
@@ -1797,12 +1795,7 @@ ui.ok.click(function () {
                         app.launch(PKG_NAME);
 
                     } else {
-                        if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(3000) != null) {
-                            return true
-                        } else if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1&&packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOne(1000) != null) {
-                            log("改为未限制")
-                            xianzhidate = formatDate(new Date(), "2022-03-20");
-                            storage.put("xianzhidate", xianzhidate);
+                        if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(3000) != null||packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOne(1000) != null||packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOne(1000) != null) {
                             return true
                         }else if (currentActivity() != "com.tencent.mm.plugin.webview.ui.tools.WebviewMpUI") {
                             log("不在h5")
@@ -1814,14 +1807,9 @@ ui.ok.click(function () {
                     }
                 } else {
                     
-                    if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(random(10000, 15000)) != null) {
+                    if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(random(10000, 15000)) != null||packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOne(1000) != null||packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOne(1000) != null) {
                         return true
-                    } else if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1&&packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOne(1000) != null) {
-                        log("改为未限制")
-                        xianzhidate = formatDate(new Date(), "2022-03-20");
-                        storage.put("xianzhidate", xianzhidate);
-                        return true
-                    }else if (currentActivity() != "com.tencent.mm.plugin.webview.ui.tools.WebviewMpUI") {
+                    } else if (currentActivity() != "com.tencent.mm.plugin.webview.ui.tools.WebviewMpUI") {
                         log("不在h5")
                         return true
                     }else{
@@ -1842,6 +1830,9 @@ ui.ok.click(function () {
                 if (count == 10||count == 20) {
                     连接wifi(zwifi, 5000);
                     app.launch(PKG_NAME);
+                    if(checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4&&havejieshouren(1)==false){
+                        return true;
+                    }
                 }else if (count % 5 == 0) {
                     if (联网验证(dlwifi) != true) {
                         连接wifi(dlwifi, 5000);
@@ -1930,7 +1921,7 @@ ui.ok.click(function () {
                     return true;
                 }
                 //判断是否需要互助
-                if (count == wifiCount && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 1) {
+                if (count == wifiCount && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4) {
                     let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(8000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                         fenxiangwenzhang("大家庭");
@@ -2604,7 +2595,7 @@ ui.ok.click(function () {
 
             sleep(3000);
             for (let i = 0; i < 5; i++) {
-                if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                     if (checkxianzhiFlag) {
                         checkxianzhi();
                     } else {
@@ -2633,18 +2624,14 @@ ui.ok.click(function () {
                 if (fanqieflag) {
                     onMainPage();
                 } else {
-                    if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                    if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                         if (gotollb()) {
                             if (yuedulanlibang()) {
                                 lunCountllb++;
-                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                     checkxianzhiFlag = true;
                                     log(new Date().toLocaleString() + "-----------重新检查限制")
-                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
-                                    xianzhidate ="2022-03-20";
-                                    storage.put("xianzhidate", xianzhidate);
-                                    log(new Date().toLocaleString() + "-----------改为未限制")
-                                }
+                                } 
                                 配置["lunCountllb"] = lunCountllb;
                                 配置["countllb"] = 1;
                                 保存配置(settingPath, 配置);
@@ -2654,14 +2641,10 @@ ui.ok.click(function () {
                         if (gotollb()) {
                             if (yuedulanlibang()) {
                                 lunCountllb++;
-                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                                     checkxianzhiFlag = true;
                                     log(new Date().toLocaleString() + "-----------重新检查限制")
-                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
-                                    xianzhidate ="2022-03-20";
-                                    storage.put("xianzhidate", xianzhidate);
-                                    log(new Date().toLocaleString() + "-----------改为未限制")
-                                }
+                                } 
                                 配置["lunCountllb"] = lunCountllb;
                                 配置["countllb"] = 1;
                                 保存配置(settingPath, 配置);
@@ -2672,14 +2655,6 @@ ui.ok.click(function () {
                         if (gotollb()) {
                             if (yuedulanlibang()) {
                                 lunCountllb++;
-                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
-                                    checkxianzhiFlag = true;
-                                    log(new Date().toLocaleString() + "-----------重新检查限制")
-                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
-                                    xianzhidate ="2022-03-20";
-                                    storage.put("xianzhidate", xianzhidate);
-                                    log(new Date().toLocaleString() + "-----------改为未限制")
-                                }
                                 配置["lunCountllb"] = lunCountllb;
                                 配置["countllb"] = 1;
                                 保存配置(settingPath, 配置);
@@ -2689,14 +2664,6 @@ ui.ok.click(function () {
                         if (gotollb()) {
                             if (yuedulanlibang()) {
                                 lunCountllb++;
-                                if (配置["countllb"] <= 5&& calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
-                                    checkxianzhiFlag = true;
-                                    log(new Date().toLocaleString() + "-----------重新检查限制")
-                                } else if(配置["countllb"]>22&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <1){
-                                    xianzhidate ="2022-03-20";
-                                    storage.put("xianzhidate", xianzhidate);
-                                    log(new Date().toLocaleString() + "-----------改为未限制")
-                                }
                                 配置["lunCountllb"] = lunCountllb;
                                 配置["countllb"] = 1;
                                 保存配置(settingPath, 配置);
@@ -2717,7 +2684,7 @@ ui.ok.click(function () {
             打开v();
             sleep(5000);
             refreshStateInfo();
-            if (topPackage == PKG_NAME && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 1) {
+            if (topPackage == PKG_NAME && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) <4) {
                 sleep(random(600000, 1200000));
             } else {
                 sleep(random(10000, 30000));
