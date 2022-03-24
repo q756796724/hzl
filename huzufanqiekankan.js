@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.1.0";
+        var versionNum = "v2.1.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1869,11 +1869,11 @@ ui.ok.click(function () {
             for (let i = 0; i < 17; i++) {
                 kz();
 
-                if (count == 1 || count == 11 || count == 21) {
+                if (count == 1 || count == 2|| count == 7|| count == 11 || count == 21) {
                     let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                         //判断是否需要互助
-                        if (count == 1 || count == 11) {
+                        if (count == 1 || count == 2|| count == 7|| count == 11 ){
                             if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
                                 if (fenxiangwenzhang("大家庭")) {
                                     sleep(8000);
@@ -1905,7 +1905,10 @@ ui.ok.click(function () {
                         swapeToRead();
                         sleep(random(2000, 4000));
 
-                        连接wifi(dlwifi, 5000);
+                        if (count == 2|| count == 7|| count == 11 ){
+                            连接wifi(dlwifi, 5000);
+                        }
+                        
                         app.launch(PKG_NAME);
 
                     } else {
@@ -1941,7 +1944,7 @@ ui.ok.click(function () {
                 保存配置(settingPath, 配置);
                 log(new Date().toLocaleString() + "-----------" + "llb第" + lunCountllb + "轮,第" + count + "次完成");
 
-                if (count == 10 || count == 20) {
+                if (count == 6 ||count == 10 || count == 20) {
                     连接wifi(zwifi, 5000);
                     app.launch(PKG_NAME);
                     if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4 && havejieshouren(1) == false) {
