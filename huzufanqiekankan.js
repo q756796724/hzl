@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.1.5";
+        var versionNum = "v2.1.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -324,11 +324,12 @@ ui.ok.click(function () {
 
         }
         function fenxiangwenzhang(name) {
+            sleep(random(2000, 3000));
             let repData = getjieshouCount()
             if (repData != undefined && repData["jieshouCount"] != undefined && repData["jieshouCount"] > 0) {
                 let cBtn = packageName("com.tencent.mm").id("js_bottom_share_btn").className("android.widget.Button").findOne(3000)
                 if (cBtn != null) {
-                    sleep(random(2000, 3000));
+                    sleep(random(1000, 2000));
                     cBtn.click();
                     log("底部fenxiang1");
                 } else {
@@ -350,7 +351,7 @@ ui.ok.click(function () {
                         }
                     }
                 }
-                cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("发送给朋友").findOne(2000);
+                cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("发送给朋友").findOne(4000);
                 if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
                     sleep(random(2000, 3000));
                     cBtn.parent().click();
