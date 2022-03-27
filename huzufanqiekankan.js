@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.1.9";
+        var versionNum = "v2.2.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1873,63 +1873,64 @@ ui.ok.click(function () {
                 kz();
 
                 if (count == 1 || count == 2|| count == 7||count == 8|| count == 11 || count == 13|| count == 14 || count == 21) {
-                    let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
-                    if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
-                        //判断是否需要互助
-                        if (count == 1 || count == 2|| count == 7||count == 8|| count == 11|| count == 13|| count == 14  ){
-                            if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
-                                if (fenxiangwenzhang("大家庭")) {
-                                    sleep(8000);
-                                } else {
-                                    swapeToRead();
-                                    sleep(random(3000, 7000));
-                                    swapeToRead();
-                                    sleep(random(3000, 7000));
-                                    swapeToRead();
-                                    sleep(random(3000, 7000));
-                                    swapeToRead();
-                                    sleep(random(3000, 7000));
-                                    swapeToRead();
-                                    sleep(random(3000, 7000));
-                                    return true;
-                                }
-
-                            }
-                        }
-
-                        log("llb第" + lunCountllb + "轮,第" + count + "次");
-                        log("滑动");
-                        swapeToRead();
-                        sleep(random(3000, 7000));
-                        swapeToRead();
-                        sleep(random(3000, 7000));
-                        swapeToRead();
-                        sleep(random(3000, 6000));
-                        swapeToRead();
-                        sleep(random(3000, 6000));
-                        swapeToRead();
-                        sleep(random(3000, 6000));
-
-                        if (count == 2|| count == 8|| count == 11|| count == 14 ){
-                            连接wifi(dlwifi, 5000);
-                        }
-                        
-                        app.launch(PKG_NAME);
-
+                    
+                    if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(10000) != null ) {
+                        return true
+                    } else if (packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOnce() != null || packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOnce() != null|| packageName("com.tencent.mm").className("android.view.View").textContains("暂时没有精选文章了，过点时间再来").findOnce() != null) {
+                        配置["countllb"] = 99;
+                        保存配置(settingPath, 配置);
+                        return true
+                    } else if (packageName("com.tencent.mm").className("android.view.View").textContains("文章无法访问").findOnce() != null) {
+                        log("文章无法访问")
+                        return false
+                    }else if (currentActivity() != "com.tencent.mm.plugin.webview.ui.tools.WebviewMpUI") {
+                        log("不在h5")
+                        return true
                     } else {
-                        if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(3000) != null ) {
-                            return true
-                        } else if (packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOnce() != null || packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOnce() != null|| packageName("com.tencent.mm").className("android.view.View").textContains("暂时没有精选文章了，过点时间再来").findOnce() != null) {
-                            配置["countllb"] = 99;
-                            保存配置(settingPath, 配置);
-                            return true
-                        } else if (packageName("com.tencent.mm").className("android.view.View").textContains("文章无法访问").findOnce() != null) {
-                            log("文章无法访问")
-                            return false
-                        }else if (currentActivity() != "com.tencent.mm.plugin.webview.ui.tools.WebviewMpUI") {
-                            log("不在h5")
-                            return true
-                        }  else {
+                        let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                        if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
+                            //判断是否需要互助
+                            if (count == 1 || count == 2|| count == 7||count == 8|| count == 11|| count == 13|| count == 14  ){
+                                if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                    if (fenxiangwenzhang("大家庭")) {
+                                        sleep(8000);
+                                    } else {
+                                        swapeToRead();
+                                        sleep(random(3000, 7000));
+                                        swapeToRead();
+                                        sleep(random(3000, 7000));
+                                        swapeToRead();
+                                        sleep(random(3000, 7000));
+                                        swapeToRead();
+                                        sleep(random(3000, 7000));
+                                        swapeToRead();
+                                        sleep(random(3000, 7000));
+                                        return true;
+                                    }
+    
+                                }
+                            }
+    
+                            log("llb第" + lunCountllb + "轮,第" + count + "次");
+                            log("滑动");
+                            swapeToRead();
+                            sleep(random(3000, 7000));
+                            swapeToRead();
+                            sleep(random(3000, 7000));
+                            swapeToRead();
+                            sleep(random(3000, 6000));
+                            swapeToRead();
+                            sleep(random(3000, 6000));
+                            swapeToRead();
+                            sleep(random(3000, 6000));
+    
+                            if (count == 2|| count == 8|| count == 11|| count == 14 ){
+                                连接wifi(dlwifi, 5000);
+                            }
+                            
+                            app.launch(PKG_NAME);
+    
+                        }else{
                             console.error("留意异常")
                             return false
                         }
