@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.2.1";
+        var versionNum = "v2.2.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1886,7 +1886,7 @@ ui.ok.click(function () {
                     if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(10000) != null ) {
                         return true
                     } else if (packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOnce() != null || packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOnce() != null|| packageName("com.tencent.mm").className("android.view.View").textContains("暂时没有精选文章了，过点时间再来").findOnce() != null) {
-                        配置["countllb"] = 99;
+                        配置["countllb"] = 20;
                         保存配置(settingPath, 配置);
                         return true
                     } else if (packageName("com.tencent.mm").className("android.view.View").textContains("文章无法访问").findOnce() != null) {
@@ -1949,7 +1949,7 @@ ui.ok.click(function () {
                     if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(random(10000, 15000)) != null ) {
                         return true
                     }else if (packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOnce() != null || packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOnce() != null|| packageName("com.tencent.mm").className("android.view.View").textContains("暂时没有精选文章了，过点时间再来").findOnce() != null) {
-                        配置["countllb"] = 99;
+                        配置["countllb"] = 20;
                         保存配置(settingPath, 配置);
                         return true
                     }else if (packageName("com.tencent.mm").className("android.view.View").textContains("文章无法访问").findOnce() != null) {
@@ -2748,12 +2748,12 @@ ui.ok.click(function () {
                         break;
                     }
                 } else {
-                    /*checkxianzhiFlag = false
-                    xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
-                    storage.put("xianzhidate", xianzhidate);*/
+                    checkxianzhiFlag = false
+                    break;
+                }
+                if(i==4&&checkxianzhiFlag){
                     console.error(new Date().toLocaleString() + "连续5次检测，留意")
                     exit();
-                    //break;
                 }
             }
 
