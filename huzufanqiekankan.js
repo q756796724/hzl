@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.2.0";
+        var versionNum = "v2.2.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -763,11 +763,14 @@ ui.ok.click(function () {
                 if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                     if (yuedulanlibang()) {
                         lunCountllb++;
-                        if (配置["countllb"] <= 14) {
+                        if (配置["countllb"] <=5) {
                             checkxianzhiFlag = false;
-                            log(new Date().toLocaleString() + "-----------限制")
+                            log(new Date().toLocaleString() + "-----------小于等于5限制")
                             xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                             storage.put("xianzhidate", xianzhidate);
+                        } else if (配置["countllb"] <= 14) {
+                            log(new Date().toLocaleString() + "-----------不确定，下轮重新检查")
+                            lunSleep();
                         } else {
                             checkxianzhiFlag = false;
                             log(new Date().toLocaleString() + "-----------未限制")
@@ -783,7 +786,7 @@ ui.ok.click(function () {
                     }
 
                 } else if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(5000) != null) {
-                    log("限制")
+                    log("文章出错了限制")
                     checkxianzhiFlag = false;
                     xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                     storage.put("xianzhidate", xianzhidate);
@@ -799,12 +802,18 @@ ui.ok.click(function () {
                     }
                     lunSleep();
                     //}
-                } else if (packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOnce() != null || packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOnce() != null|| packageName("com.tencent.mm").className("android.view.View").textContains("暂时没有精选文章了，过点时间再来").findOnce() != null|| packageName("com.tencent.mm").className("android.view.View").textContains("文章无法访问").findOnce() != null) {
-                    log("未限制")
+                } else if (packageName("com.tencent.mm").className("android.view.View").textContains("今日没有新文章给您推荐了").findOnce() != null) {
+                    log("今日没有新文章给您推荐了")
                     checkxianzhiFlag = false;
                     if (!fanqieflag && checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                         jieshouwenzhang();
                     }
+                }else if (packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOnce() != null || packageName("com.tencent.mm").className("android.view.View").textContains("暂时没有精选文章了，过点时间再来").findOnce() != null) {
+                    log(new Date().toLocaleString() + "-----------初步未限制，下次重新检查")
+                    lunSleep()
+                }else if (packageName("com.tencent.mm").className("android.view.View").textContains("文章无法访问").findOnce() != null) {
+                    log("文章无法访问")
+                    sleep(300000);
                 }
             }
         }
@@ -2739,8 +2748,12 @@ ui.ok.click(function () {
                         break;
                     }
                 } else {
-                    checkxianzhiFlag = false
-                    break;
+                    /*checkxianzhiFlag = false
+                    xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
+                    storage.put("xianzhidate", xianzhidate);*/
+                    console.error(new Date().toLocaleString() + "连续5次检测，留意")
+                    exit();
+                    //break;
                 }
             }
 
