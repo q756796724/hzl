@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.1.8";
+        var versionNum = "v2.1.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -426,7 +426,7 @@ ui.ok.click(function () {
                 wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);//id=ipv
                 if (wBtn != null) {
                     addjieshouCount()
-                    let icount = random(330, 360) //random(720, 840);
+                    let icount = random(360, 400) //random(720, 840);
                     let latestTalkName = "";//当前发言人
                     let latestLinkTitle = "";//当前文章的标题
                     let latestLink;//当前文章
@@ -1839,7 +1839,7 @@ ui.ok.click(function () {
             sleep(random(300000, 600000));
             home();
             if (sleepTime == undefined) {
-                sleepTime = random(3300000, 3600000);
+                sleepTime = random(3600000, 4000000);
             }
             log(new Date().toLocaleString() + "-" + "-----------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息" + sleepTime / 1000 / 60 + "分钟");
             sleepLongTime(sleepTime);
@@ -2723,7 +2723,7 @@ ui.ok.click(function () {
                 continue;
             }
 
-            if (zwifi.toString() != dlwifi.toString() && nowHour < 7) {
+            if (zwifi.toString() != dlwifi.toString() && (nowHour < 7 || nowHour >22)) {
                 log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                 sleepLongTime(random(3600000, 5000000));
                 continue;
