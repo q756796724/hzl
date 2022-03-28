@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.2.5";
+        var versionNum = "v2.2.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -426,7 +426,7 @@ ui.ok.click(function () {
                 wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);//id=ipv
                 if (wBtn != null) {
                     addjieshouCount()
-                    let icount = random(330, 400) //random(720, 840);
+                    let icount = random(360, 400) //random(720, 840);
                     let latestTalkName = "";//当前发言人
                     let latestLinkTitle = "";//当前文章的标题
                     let latestLink;//当前文章
@@ -608,7 +608,7 @@ ui.ok.click(function () {
             sleep(3000);
 
             if (className("android.widget.TextView").textContains("lanlitao").findOne(5000) != null) {
-                if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4&&havejieshouren(2) == false) {
+                if (havejieshouren(2) == false&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
                     return false;
                 }
                 阅读 = className("android.widget.TextView").textContains("lanlitao").findOnce().bounds();
@@ -629,7 +629,7 @@ ui.ok.click(function () {
                 cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("阅读美文").findOne(5000);
                 if (cBtn != null) {
                     sleep(2500)
-                    if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4&&havejieshouren(2) == false) {
+                    if (havejieshouren(2) == false&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
                         log("3false")
                         return false;
                     }
@@ -762,26 +762,29 @@ ui.ok.click(function () {
                 cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(10000)
                 if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                     if (yuedulanlibang()) {
-                        
-                        if (配置["countllb"] < 5) {
+                        lunCountllb++;
+                        if (配置["countllb"] <=5) {
                             checkxianzhiFlag = false;
-                            log(new Date().toLocaleString() + "-----------小于5限制，次数："+配置["countllb"])
+                            log(new Date().toLocaleString() + "-----------小于等于5限制")
                             xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                             storage.put("xianzhidate", xianzhidate);
-                            lunSleep()
                         } else if (配置["countllb"] <= 14) {
-                            log(new Date().toLocaleString() + "-----------不确定，下小轮重新检查")
+                            log(new Date().toLocaleString() + "-----------不确定，下轮重新检查")
+                            lunSleep();
                         } else {
                             checkxianzhiFlag = false;
                             log(new Date().toLocaleString() + "-----------未限制")
                         }
-                       
+                        配置["lunCountllb"] = lunCountllb;
+                        配置["countllb"] = 1;
+                        保存配置(settingPath, 配置);
                     }else{
-                       log(new Date().toLocaleString() + "-----------yuedu-false，下小轮重新检查")
+                        lunSleep();
                     }
                     if (!fanqieflag && checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
                         jieshouwenzhang();
                     }
+
                 } else if (packageName("com.tencent.mm").className("android.view.View").textContains("文章出错了").findOne(5000) != null) {
                     log("文章出错了限制")
                     checkxianzhiFlag = false;
@@ -806,37 +809,13 @@ ui.ok.click(function () {
                         jieshouwenzhang();
                     }
                 }else if (packageName("com.tencent.mm").className("android.view.View").textContains("您看了太久了眼睛休息一下").findOnce() != null || packageName("com.tencent.mm").className("android.view.View").textContains("暂时没有精选文章了，过点时间再来").findOnce() != null) {
-                    log("本轮上限") 
-                    checkxianzhiFlag = false;
-                    if (!fanqieflag && checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
-                        jieshouwenzhang();
-                    }
+                    log(new Date().toLocaleString() + "-----------初步未限制，下次重新检查")
+                    lunSleep()
                 }else if (packageName("com.tencent.mm").className("android.view.View").textContains("文章无法访问").findOnce() != null) {
                     log("文章无法访问")
                     sleep(300000);
                 }
             }
-        }
-        function llbLunRead(){
-            if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4&&havejieshouren(2) == false) {
-                return ;
-            }
-            for (let i = 0; i < 5; i++) {
-                if (gotollb()) {
-                    if (yuedulanlibang()) {
-                        if (配置["countllb"] < 5) {
-                            if(calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3){
-                                checkxianzhiFlag = true;
-                                log(new Date().toLocaleString() + "-----------重新检查限制")
-                            }
-                            break
-                        }
-                    }
-                }
-            }
-            lunCountllb++;
-            配置["lunCountllb"] = lunCountllb;
-            保存配置(settingPath, 配置);
         }
 
         function 阅读到底() {
@@ -1153,27 +1132,89 @@ ui.ok.click(function () {
                 if (yichang1count > 5) {
                     console.error("yichang1count=" + yichang1count)
                     if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
-                        llbLunRead()
+                        if (gotollb()) {
+                            if (yuedulanlibang()) {
+                                lunCountllb++;
+                                if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                    checkxianzhiFlag = true;
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                    checkxianzhiFlag = true;
+                                    xianzhidate = "2022-03-20";
+                                    storage.put("xianzhidate", xianzhidate);
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                }
+                                配置["lunCountllb"] = lunCountllb;
+                                配置["countllb"] = 1;
+                                保存配置(settingPath, 配置);
+                            }
+                        }
                         if(checkxianzhiFlag){
                             lunSleep()
                             return
                         }
                         jieshouwenzhang();
-
-                        llbLunRead()
+                        if (gotollb()) {
+                            if (yuedulanlibang()) {
+                                lunCountllb++;
+                                if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                    checkxianzhiFlag = true;
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                    checkxianzhiFlag = true;
+                                    xianzhidate = "2022-03-20";
+                                    storage.put("xianzhidate", xianzhidate);
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                }
+                                配置["lunCountllb"] = lunCountllb;
+                                配置["countllb"] = 1;
+                                保存配置(settingPath, 配置);
+                            }
+                        }
                         if(checkxianzhiFlag){
                             return
                         }
                         jieshouwenzhang();
                     } else {
-                        llbLunRead()
+                        if (gotollb()) {
+                            if (yuedulanlibang()) {
+                                lunCountllb++;
+                                if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                    checkxianzhiFlag = true;
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                    checkxianzhiFlag = true;
+                                    xianzhidate = "2022-03-20";
+                                    storage.put("xianzhidate", xianzhidate);
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                }
+                                配置["lunCountllb"] = lunCountllb;
+                                配置["countllb"] = 1;
+                                保存配置(settingPath, 配置);
+                            }
+                        }
                         if(checkxianzhiFlag){
                             lunSleep()
                             return
                         }
                         lunSleep();
-                        
-                        llbLunRead()
+                        if (gotollb()) {
+                            if (yuedulanlibang()) {
+                                lunCountllb++;
+                                if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                    checkxianzhiFlag = true;
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                    checkxianzhiFlag = true;
+                                    xianzhidate = "2022-03-20";
+                                    storage.put("xianzhidate", xianzhidate);
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                }
+                                配置["lunCountllb"] = lunCountllb;
+                                配置["countllb"] = 1;
+                                保存配置(settingPath, 配置);
+                            }
+                        }
                         if(checkxianzhiFlag){
                             lunSleep()
                             return
@@ -1262,15 +1303,45 @@ ui.ok.click(function () {
                         返回v首页();
                         sleep(1000);
                         home();
-
-                        llbLunRead()
+                        if (gotollb()) {
+                            if (yuedulanlibang()) {
+                                lunCountllb++;
+                                if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                    checkxianzhiFlag = true;
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                    checkxianzhiFlag = true;
+                                    xianzhidate = "2022-03-20";
+                                    storage.put("xianzhidate", xianzhidate);
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                }
+                                配置["lunCountllb"] = lunCountllb;
+                                配置["countllb"] = 1;
+                                保存配置(settingPath, 配置);
+                            }
+                        }
                         if(checkxianzhiFlag){
                             lunSleep()
                             return
                         }
                         lunSleep();
-
-                        llbLunRead()
+                        if (gotollb()) {
+                            if (yuedulanlibang()) {
+                                lunCountllb++;
+                                if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                    checkxianzhiFlag = true;
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                    checkxianzhiFlag = true;
+                                    xianzhidate = "2022-03-20";
+                                    storage.put("xianzhidate", xianzhidate);
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                }
+                                配置["lunCountllb"] = lunCountllb;
+                                配置["countllb"] = 1;
+                                保存配置(settingPath, 配置);
+                            }
+                        }
                         if(checkxianzhiFlag){
                             lunSleep()
                             return
@@ -1294,15 +1365,45 @@ ui.ok.click(function () {
                         返回v首页();
                         sleep(1000);
                         home();
-
-                        llbLunRead()
+                        if (gotollb()) {
+                            if (yuedulanlibang()) {
+                                lunCountllb++;
+                                if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                    checkxianzhiFlag = true;
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                    checkxianzhiFlag = true;
+                                    xianzhidate = "2022-03-20";
+                                    storage.put("xianzhidate", xianzhidate);
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                }
+                                配置["lunCountllb"] = lunCountllb;
+                                配置["countllb"] = 1;
+                                保存配置(settingPath, 配置);
+                            }
+                        }
                         if(checkxianzhiFlag){
                             lunSleep()
                             return
                         }
                         lunSleep();
-
-                        llbLunRead()
+                        if (gotollb()) {
+                            if (yuedulanlibang()) {
+                                lunCountllb++;
+                                if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                    checkxianzhiFlag = true;
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                    checkxianzhiFlag = true;
+                                    xianzhidate = "2022-03-20";
+                                    storage.put("xianzhidate", xianzhidate);
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                }
+                                配置["lunCountllb"] = lunCountllb;
+                                配置["countllb"] = 1;
+                                保存配置(settingPath, 配置);
+                            }
+                        }
                         if(checkxianzhiFlag){
                             lunSleep()
                             return
@@ -1342,28 +1443,90 @@ ui.ok.click(function () {
                                 lunSleep();
                             }*/
                             if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
-                                llbLunRead()
+                                if (gotollb()) {
+                                    if (yuedulanlibang()) {
+                                        lunCountllb++;
+                                        if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                            checkxianzhiFlag = true;
+                                            log(new Date().toLocaleString() + "-----------重新检查限制")
+                                        } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                            checkxianzhiFlag = true;
+                                            xianzhidate = "2022-03-20";
+                                            storage.put("xianzhidate", xianzhidate);
+                                            log(new Date().toLocaleString() + "-----------重新检查限制")
+                                        }
+                                        配置["lunCountllb"] = lunCountllb;
+                                        配置["countllb"] = 1;
+                                        保存配置(settingPath, 配置);
+                                    }
+                                }
                                 if(checkxianzhiFlag){
                                     lunSleep()
                                     return
                                 }
                                 jieshouwenzhang();
-
-                                llbLunRead()
+                                if (gotollb()) {
+                                    if (yuedulanlibang()) {
+                                        lunCountllb++;
+                                        if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                            checkxianzhiFlag = true;
+                                            log(new Date().toLocaleString() + "-----------重新检查限制")
+                                        } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                            checkxianzhiFlag = true;
+                                            xianzhidate = "2022-03-20";
+                                            storage.put("xianzhidate", xianzhidate);
+                                            log(new Date().toLocaleString() + "-----------重新检查限制")
+                                        }
+                                        配置["lunCountllb"] = lunCountllb;
+                                        配置["countllb"] = 1;
+                                        保存配置(settingPath, 配置);
+                                    }
+                                }
                                 if(checkxianzhiFlag){
                                     lunSleep()
                                     return
                                 }
                                 jieshouwenzhang();
                             } else {
-                                llbLunRead()
+                                if (gotollb()) {
+                                    if (yuedulanlibang()) {
+                                        lunCountllb++;
+                                        if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                            checkxianzhiFlag = true;
+                                            log(new Date().toLocaleString() + "-----------重新检查限制")
+                                        } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                            checkxianzhiFlag = true;
+                                            xianzhidate = "2022-03-20";
+                                            storage.put("xianzhidate", xianzhidate);
+                                            log(new Date().toLocaleString() + "-----------重新检查限制")
+                                        }
+                                        配置["lunCountllb"] = lunCountllb;
+                                        配置["countllb"] = 1;
+                                        保存配置(settingPath, 配置);
+                                    }
+                                }
                                 if(checkxianzhiFlag){
                                     lunSleep()
                                     return
                                 }
                                 lunSleep();
-
-                                llbLunRead()
+                                if (gotollb()) {
+                                    if (yuedulanlibang()) {
+                                        lunCountllb++;
+                                        if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                            checkxianzhiFlag = true;
+                                            log(new Date().toLocaleString() + "-----------重新检查限制")
+                                        } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                            checkxianzhiFlag = true;
+                                            xianzhidate = "2022-03-20";
+                                            storage.put("xianzhidate", xianzhidate);
+                                            log(new Date().toLocaleString() + "-----------重新检查限制")
+                                        }
+                                        配置["lunCountllb"] = lunCountllb;
+                                        配置["countllb"] = 1;
+                                        保存配置(settingPath, 配置);
+                                    }
+                                }
                                 if(checkxianzhiFlag){
                                     lunSleep()
                                     return
@@ -1380,15 +1543,45 @@ ui.ok.click(function () {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                 if (stopPage != null) {
                     //exit();
-
-                    llbLunRead()
+                    if (gotollb()) {
+                        if (yuedulanlibang()) {
+                            lunCountllb++;
+                            if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                checkxianzhiFlag = true;
+                                log(new Date().toLocaleString() + "-----------重新检查限制")
+                            } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                checkxianzhiFlag = true;
+                                xianzhidate = "2022-03-20";
+                                storage.put("xianzhidate", xianzhidate);
+                                log(new Date().toLocaleString() + "-----------重新检查限制")
+                            }
+                            配置["lunCountllb"] = lunCountllb;
+                            配置["countllb"] = 1;
+                            保存配置(settingPath, 配置);
+                        }
+                    }
                     if(checkxianzhiFlag){
                         lunSleep()
                         return
                     }
                     lunSleep();
-
-                    llbLunRead()
+                    if (gotollb()) {
+                        if (yuedulanlibang()) {
+                            lunCountllb++;
+                            if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                checkxianzhiFlag = true;
+                                log(new Date().toLocaleString() + "-----------重新检查限制")
+                            } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                checkxianzhiFlag = true;
+                                xianzhidate = "2022-03-20";
+                                storage.put("xianzhidate", xianzhidate);
+                                log(new Date().toLocaleString() + "-----------重新检查限制")
+                            }
+                            配置["lunCountllb"] = lunCountllb;
+                            配置["countllb"] = 1;
+                            保存配置(settingPath, 配置);
+                        }
+                    }
                     if(checkxianzhiFlag){
                         lunSleep()
                         return
@@ -1409,35 +1602,112 @@ ui.ok.click(function () {
                 xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                 storage.put("xianzhidate", xianzhidate);
                 if (auto_tx) {
-                    llbLunRead()
+                    if (gotollb()) {
+                        if (yuedulanlibang()) {
+                            lunCountllb++;
+                            if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                checkxianzhiFlag = true;
+                                log(new Date().toLocaleString() + "-----------重新检查限制")
+                            } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                checkxianzhiFlag = true;
+                                xianzhidate = "2022-03-20";
+                                storage.put("xianzhidate", xianzhidate);
+                                log(new Date().toLocaleString() + "-----------重新检查限制")
+                            }
+                            配置["lunCountllb"] = lunCountllb;
+                            配置["countllb"] = 1;
+                            保存配置(settingPath, 配置);
+                        }
+                    }
                     if(checkxianzhiFlag){
                         lunSleep()
                         return
                     }
                     lunSleep();
-                    
-                    llbLunRead()
+                    if (gotollb()) {
+                        if (yuedulanlibang()) {
+                            lunCountllb++;
+                            if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                checkxianzhiFlag = true;
+                                log(new Date().toLocaleString() + "-----------重新检查限制")
+                            } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                checkxianzhiFlag = true;
+                                xianzhidate = "2022-03-20";
+                                storage.put("xianzhidate", xianzhidate);
+                                log(new Date().toLocaleString() + "-----------重新检查限制")
+                            }
+                            配置["lunCountllb"] = lunCountllb;
+                            配置["countllb"] = 1;
+                            保存配置(settingPath, 配置);
+                        }
+                    }
                     if(checkxianzhiFlag){
                         lunSleep()
                         return
                     }
                     lunSleep();
                 } else {
-                    llbLunRead()
+                    if (gotollb()) {
+                        if (yuedulanlibang()) {
+                            lunCountllb++;
+                            if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                checkxianzhiFlag = true;
+                                log(new Date().toLocaleString() + "-----------重新检查限制")
+                            } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                checkxianzhiFlag = true;
+                                xianzhidate = "2022-03-20";
+                                storage.put("xianzhidate", xianzhidate);
+                                log(new Date().toLocaleString() + "-----------重新检查限制")
+                            }
+                            配置["lunCountllb"] = lunCountllb;
+                            配置["countllb"] = 1;
+                            保存配置(settingPath, 配置);
+                        }
+                    }
                     if(checkxianzhiFlag){
                         lunSleep()
                         return
                     }
                     lunSleep();
-                    
-                    llbLunRead()
+                    if (gotollb()) {
+                        if (yuedulanlibang()) {
+                            lunCountllb++;
+                            if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                checkxianzhiFlag = true;
+                                log(new Date().toLocaleString() + "-----------重新检查限制")
+                            } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                checkxianzhiFlag = true;
+                                xianzhidate = "2022-03-20";
+                                storage.put("xianzhidate", xianzhidate);
+                                log(new Date().toLocaleString() + "-----------重新检查限制")
+                            }
+                            配置["lunCountllb"] = lunCountllb;
+                            配置["countllb"] = 1;
+                            保存配置(settingPath, 配置);
+                        }
+                    }
                     if(checkxianzhiFlag){
                         lunSleep()
                         return
                     }
                     lunSleep();
-
-                    llbLunRead()
+                    if (gotollb()) {
+                        if (yuedulanlibang()) {
+                            lunCountllb++;
+                            if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                checkxianzhiFlag = true;
+                                log(new Date().toLocaleString() + "-----------重新检查限制")
+                            } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                                checkxianzhiFlag = true;
+                                xianzhidate = "2022-03-20";
+                                storage.put("xianzhidate", xianzhidate);
+                                log(new Date().toLocaleString() + "-----------重新检查限制")
+                            }
+                            配置["lunCountllb"] = lunCountllb;
+                            配置["countllb"] = 1;
+                            保存配置(settingPath, 配置);
+                        }
+                    }
                     if(checkxianzhiFlag){
                         lunSleep()
                         return
@@ -1445,14 +1715,45 @@ ui.ok.click(function () {
                     lunSleep();
                 }
             } else {
-                llbLunRead()
+                if (gotollb()) {
+                    if (yuedulanlibang()) {
+                        lunCountllb++;
+                        if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                            checkxianzhiFlag = true;
+                            log(new Date().toLocaleString() + "-----------重新检查限制")
+                        } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                            checkxianzhiFlag = true;
+                            xianzhidate = "2022-03-20";
+                            storage.put("xianzhidate", xianzhidate);
+                            log(new Date().toLocaleString() + "-----------重新检查限制")
+                        }
+                        配置["lunCountllb"] = lunCountllb;
+                        配置["countllb"] = 1;
+                        保存配置(settingPath, 配置);
+                    }
+                }
                 if(checkxianzhiFlag){
                     lunSleep()
                     return
                 }
                 lunSleep();
-                
-                llbLunRead()
+                if (gotollb()) {
+                    if (yuedulanlibang()) {
+                        lunCountllb++;
+                        if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                            checkxianzhiFlag = true;
+                            log(new Date().toLocaleString() + "-----------重新检查限制")
+                        } else if (配置["countllb"] > 22 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                            checkxianzhiFlag = true;
+                            xianzhidate = "2022-03-20";
+                            storage.put("xianzhidate", xianzhidate);
+                            log(new Date().toLocaleString() + "-----------重新检查限制")
+                        }
+                        配置["lunCountllb"] = lunCountllb;
+                        配置["countllb"] = 1;
+                        保存配置(settingPath, 配置);
+                    }
+                }
                 if(checkxianzhiFlag){
                     lunSleep()
                     return
@@ -1547,7 +1848,7 @@ ui.ok.click(function () {
             sleep(random(300000, 600000));
             home();
             if (sleepTime == undefined) {
-                sleepTime = random(3300000, 4000000);
+                sleepTime = random(3600000, 4000000);
             }
             log(new Date().toLocaleString() + "-" + "-----------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息" + sleepTime / 1000 / 60 + "分钟");
             sleepLongTime(sleepTime);
@@ -1576,10 +1877,8 @@ ui.ok.click(function () {
             配置 = 读取配置(settingPath);
             //var count = 配置["countllb"];//次数
             var count = 1;//次数
-            配置["countllb"] = 1;
-            保存配置(settingPath, 配置);
             //let wifiCount = count;
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 17; i++) {
                 kz();
 
                 if (count == 1 || count == 2|| count == 7||count == 8|| count == 11 || count == 13|| count == 14 || count == 21) {
@@ -1698,9 +1997,6 @@ ui.ok.click(function () {
 
                 back();
                 count++;
-                if(i==4){
-                    sleep(6000)
-                }
 
             }
         }
@@ -2449,11 +2745,6 @@ ui.ok.click(function () {
                     if (checkxianzhiFlag) {
                         checkxianzhi();
                     } else {
-                        lunCountllb++;
-                        配置["lunCountllb"] = lunCountllb;
-                        配置["countllb"] = 1;
-                        保存配置(settingPath, 配置);
-
                         break;
                     }
                 } else {
@@ -2462,15 +2753,7 @@ ui.ok.click(function () {
                 }
                 if(i==4&&checkxianzhiFlag){
                     console.error(new Date().toLocaleString() + "连续5次检测，留意")
-                    checkxianzhiFlag = false
-
-                    lunCountllb++;
-                    配置["lunCountllb"] = lunCountllb;
-                    配置["countllb"] = 1;
-                    保存配置(settingPath, 配置);
-
-                    lunSleep()
-                    break;
+                    exit();
                 }
             }
 
@@ -2491,30 +2774,62 @@ ui.ok.click(function () {
                 if (fanqieflag) {
                     onMainPage();
                 } else {
-                    if (checkxianzhiFlag == false) {
-                        if(calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3){
-                            llbLunRead()
-                            if(checkxianzhiFlag){
-                                lunSleep()
-                                continue
+                    if (checkxianzhiFlag == false && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                        if (gotollb()) {
+                            if (yuedulanlibang()) {
+                                lunCountllb++;
+                                if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                    checkxianzhiFlag = true;
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                }
+                                配置["lunCountllb"] = lunCountllb;
+                                配置["countllb"] = 1;
+                                保存配置(settingPath, 配置);
                             }
-                            jieshouwenzhang();
-                            
-                            
-                            llbLunRead()
-                            if(checkxianzhiFlag){
-                                lunSleep()
-                                continue
-                            }
-                            jieshouwenzhang();
-                        }else{
-                            llbLunRead()
-                            lunSleep();
-    
-                            llbLunRead()
-                            lunSleep();
                         }
-                    }else{
+                        if(checkxianzhiFlag){
+                            lunSleep()
+                            continue
+                        }
+                        jieshouwenzhang();
+                        
+                        
+                        if (gotollb()) {
+                            if (yuedulanlibang()) {
+                                lunCountllb++;
+                                if (配置["countllb"] <= 5 && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 3) {
+                                    checkxianzhiFlag = true;
+                                    log(new Date().toLocaleString() + "-----------重新检查限制")
+                                }
+                                配置["lunCountllb"] = lunCountllb;
+                                配置["countllb"] = 1;
+                                保存配置(settingPath, 配置);
+                            }
+                        }
+                        if(checkxianzhiFlag){
+                            lunSleep()
+                            continue
+                        }
+                        jieshouwenzhang();
+                        
+                    } else {
+                        if (gotollb()) {
+                            if (yuedulanlibang()) {
+                                lunCountllb++;
+                                配置["lunCountllb"] = lunCountllb;
+                                配置["countllb"] = 1;
+                                保存配置(settingPath, 配置);
+                            }
+                        }
+                        lunSleep();
+                        if (gotollb()) {
+                            if (yuedulanlibang()) {
+                                lunCountllb++;
+                                配置["lunCountllb"] = lunCountllb;
+                                配置["countllb"] = 1;
+                                保存配置(settingPath, 配置);
+                            }
+                        }
                         lunSleep();
                     }
                 }
