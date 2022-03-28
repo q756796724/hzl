@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.2.4";
+        var versionNum = "v2.2.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -426,7 +426,7 @@ ui.ok.click(function () {
                 wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);//id=ipv
                 if (wBtn != null) {
                     addjieshouCount()
-                    let icount = random(360, 400) //random(720, 840);
+                    let icount = random(330, 400) //random(720, 840);
                     let latestTalkName = "";//当前发言人
                     let latestLinkTitle = "";//当前文章的标题
                     let latestLink;//当前文章
@@ -608,7 +608,7 @@ ui.ok.click(function () {
             sleep(3000);
 
             if (className("android.widget.TextView").textContains("lanlitao").findOne(5000) != null) {
-                if (havejieshouren(2) == false&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4&&havejieshouren(2) == false) {
                     return false;
                 }
                 阅读 = className("android.widget.TextView").textContains("lanlitao").findOnce().bounds();
@@ -629,7 +629,7 @@ ui.ok.click(function () {
                 cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("阅读美文").findOne(5000);
                 if (cBtn != null) {
                     sleep(2500)
-                    if (havejieshouren(2) == false&&calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
+                    if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4&&havejieshouren(2) == false) {
                         log("3false")
                         return false;
                     }
@@ -818,6 +818,9 @@ ui.ok.click(function () {
             }
         }
         function llbLunRead(){
+            if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4&&havejieshouren(2) == false) {
+                return ;
+            }
             for (let i = 0; i < 5; i++) {
                 if (gotollb()) {
                     if (yuedulanlibang()) {
@@ -1544,7 +1547,7 @@ ui.ok.click(function () {
             sleep(random(300000, 600000));
             home();
             if (sleepTime == undefined) {
-                sleepTime = random(3600000, 4000000);
+                sleepTime = random(3300000, 4000000);
             }
             log(new Date().toLocaleString() + "-" + "-----------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息" + sleepTime / 1000 / 60 + "分钟");
             sleepLongTime(sleepTime);
