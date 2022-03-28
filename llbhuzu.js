@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.2.3";
+        var versionNum = "v2.2.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -762,7 +762,7 @@ ui.ok.click(function () {
                 cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(10000)
                 if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                     if (yuedulanlibang()) {
-                        lunCountllb++;
+                        
                         if (配置["countllb"] < 5) {
                             checkxianzhiFlag = false;
                             log(new Date().toLocaleString() + "-----------小于5限制，次数："+配置["countllb"])
@@ -775,9 +775,7 @@ ui.ok.click(function () {
                             checkxianzhiFlag = false;
                             log(new Date().toLocaleString() + "-----------未限制")
                         }
-                        配置["lunCountllb"] = lunCountllb;
-                        配置["countllb"] = 1;
-                        保存配置(settingPath, 配置);
+                       
                     }else{
                        log(new Date().toLocaleString() + "-----------yuedu-false，下小轮重新检查")
                     }
@@ -2448,6 +2446,11 @@ ui.ok.click(function () {
                     if (checkxianzhiFlag) {
                         checkxianzhi();
                     } else {
+                        lunCountllb++;
+                        配置["lunCountllb"] = lunCountllb;
+                        配置["countllb"] = 1;
+                        保存配置(settingPath, 配置);
+
                         break;
                     }
                 } else {
@@ -2457,6 +2460,12 @@ ui.ok.click(function () {
                 if(i==4&&checkxianzhiFlag){
                     console.error(new Date().toLocaleString() + "连续5次检测，留意")
                     checkxianzhiFlag = false
+
+                    lunCountllb++;
+                    配置["lunCountllb"] = lunCountllb;
+                    配置["countllb"] = 1;
+                    保存配置(settingPath, 配置);
+
                     lunSleep()
                     break;
                 }
