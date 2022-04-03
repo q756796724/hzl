@@ -211,8 +211,10 @@ function fenxi(timu, xa, xb, xc, xd, duoxuan) {
 }
 function pipei(cont,timuidx) {
     var le = parseInt(cont.length / 2);
-    if(le<1){
+    if(le<4){
         le=1
+    }else{
+        le=le-3
     }
     for (let i = 0; i < le; i++) {
         log(cont.substr(i, cont.length - 2 * i))
