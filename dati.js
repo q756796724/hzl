@@ -31,7 +31,7 @@ var 悬浮窗 = floaty.window(
             return
         }
         let xa = ""
-        let xadiv=packageName("com.tencent.mm").className("android.view.View").textContains("A、").findOnce()
+        xadiv=packageName("com.tencent.mm").className("android.view.View").textContains("A、").findOnce()
         if(xadiv!=null){
             xa=xadiv.text();
             log("a："+xa)
@@ -40,7 +40,7 @@ var 悬浮窗 = floaty.window(
             return
         }
         let xb = ""
-        let xbdiv=packageName("com.tencent.mm").className("android.view.View").textContains("B、").findOnce()
+        xbdiv=packageName("com.tencent.mm").className("android.view.View").textContains("B、").findOnce()
         if(xbdiv!=null){
             xb=xbdiv.text();
             log("b："+xb)
@@ -49,7 +49,7 @@ var 悬浮窗 = floaty.window(
             return
         }
         let xc = ""
-        let xcdiv=packageName("com.tencent.mm").className("android.view.View").textContains("C、").findOnce()
+        xcdiv=packageName("com.tencent.mm").className("android.view.View").textContains("C、").findOnce()
         if(xcdiv!=null){
             xc=xcdiv.text();
             log("c："+xc)
@@ -58,7 +58,7 @@ var 悬浮窗 = floaty.window(
             return
         }
         let xd = ""
-        let xddiv=packageName("com.tencent.mm").className("android.view.View").textContains("D、").findOnce()
+        xddiv=packageName("com.tencent.mm").className("android.view.View").textContains("D、").findOnce()
         if(xddiv!=null){
             xd=xddiv.text();
             log("d："+xd)
@@ -160,7 +160,16 @@ function fenxi(timu, xa, xb, xc, xd, duoxuan) {
         if(daa==""){
             toastLog("无法解答")
         }else{
-            toastLog(daa+daaidx)
+            log(daa+daaidx)
+            if(daa=="A"){
+                xadiv.click()
+            }else if(daa=="B"){
+                xbdiv.click()
+            }else if(daa=="C"){
+                xcdiv.click()
+            }else if(daa=="D"){
+                xddiv.click()
+            }
         }
         
     }else{
@@ -170,29 +179,33 @@ function fenxi(timu, xa, xb, xc, xd, duoxuan) {
             daa = "A"
             //toastLog(daa+daaidx)
             daan=daa+daaidx+" "
+            xadiv.click()
         }
         if (xbidx>-1&&xbidx-timuidx<300) {
             daaidx = xbidx-timuidx
             daa = "B"
             //toastLog(daa+daaidx)
             daan=daan+daa+daaidx+" "
+            xbdiv.click()
         }
         if (xcidx>-1&&xcidx-timuidx<300) {
             daaidx = xcidx-timuidx
             daa = "C"
             //toastLog(daa+daaidx)
             daan=daan+daa+daaidx+" "
+            xcdiv.click()
         }
         if (xdidx>-1&&xdidx-timuidx<300) {
             daaidx = xdidx-timuidx
             daa = "D"
             //toastLog(daa+daaidx)
             daan=daan+daa+daaidx+" "
+            xddiv.click()
         }
         if(daan==""){
             toastLog("多选无法解答")
         }else{
-            toastLog(daan)
+            log(daan)
         }
     }
 }
