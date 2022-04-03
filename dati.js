@@ -206,7 +206,7 @@ function pipei(cont,timuidx) {
         let conte = cont.substr(i, cont.length - 2 * i);
         if (tihu.indexOf(conte,timuidx) > -1) {
             if(timuidx==0){
-                return tihu.indexOf(conte,timuidx)-i
+                return tihu.indexOf(conte,timuidx)-i-10
             }else{
                 return tihu.indexOf(conte,timuidx)
             }
