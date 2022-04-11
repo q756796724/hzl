@@ -83,7 +83,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v2.2.6";
+        var versionNum = "v2.2.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -2532,6 +2532,26 @@ ui.ok.click(function () {
                 sleep(5000);
                 home();
                 log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息中");
+                sleepLongTime(random(3600000, 5000000));
+                continue;
+            }
+            if(dailiflag==true&&lunCountllb>8){
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                }
+                sleep(5000);
+                home();
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "llb当天已轮回" + (lunCountllb - 1).toString() + "次,休息中");
+                sleepLongTime(random(3600000, 5000000));
+                continue;
+            }
+            if(dailiflag==false&&lunCountllb>3){
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                }
+                sleep(5000);
+                home();
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "llb当天已轮回" + (lunCountllb - 1).toString() + "次,休息中");
                 sleepLongTime(random(3600000, 5000000));
                 continue;
             }
