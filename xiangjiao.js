@@ -1,6 +1,6 @@
 //自动重启香蕉
 
-var versionNum = "v1.0.2";
+var versionNum = "v1.0.3";
 
 
 
@@ -20,7 +20,7 @@ var w = floaty.rawWindow(
 );
 
 //w.setPosition(500, 3);
-w.setPosition(device.width * 0.03, device.height * 0.158);
+w.setPosition(33, 298);
 //定义
 /** 前台服务保活 */
 let KeepAliveService = {
@@ -73,7 +73,8 @@ home()
 sleep(2000)
 if (!files.exists("/sdcard/xiangjiao.png")) {
     let img = captureScreen();
-    let clip = images.clip(img, device.width * 0.04, device.height * 0.155, device.width * 0.1, device.height * 0.05);
+    //let clip = images.clip(img, device.width * 0.04, device.height * 0.155, device.width * 0.1, device.height * 0.05);
+    let clip = images.clip(img, 40, 293, device.width * 0.08, device.height * 0.04);
     images.save(clip, "/sdcard/xiangjiao.png");
     img.recycle();
     clip.recycle();
@@ -199,7 +200,7 @@ for (; ;) {
     }
 
     if (currentPackage() != "com.feige.autoapp004" && currentActivity() != "com.stardust.autojs.execution.ScriptExecuteActivity") {
-        let gb = images.read("/sdcard/关闭.png");
+        let gb = images.read("/sdcard/xiangjiao.png");
         let faultCount = 0;
         for (let i = 0; i < 5; i++) {
             sleep(3000)
@@ -208,16 +209,20 @@ for (; ;) {
             }
             // 截图并找图
             let img = captureScreen();
-            let p = findImage(img, gb, {
+            /*let p = findImage(img, gb, {
                 region: [0, device.height * 0.1, device.width * 0.3, device.height * 0.3],
+                threshold: 0.9
+            });*/ 
+            let p = findImage(img, gb, {
+                region: [0, 200, 300, 400],
                 threshold: 0.9
             });
             img.recycle();
             if (!p) {
                 faultCount++
-                //log(faultCount)
+                log(faultCount)
                 if (faultCount == 5) {
-                    log("没有找到");
+                    //log("没有找到");
                     home();
                     sleep(5000);
                     app.launch("com.feige.autoapp004");
