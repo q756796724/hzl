@@ -1,6 +1,6 @@
 //进程守护
 
-var versionNum = "v1.0.1";
+var versionNum = "v1.0.2";
 
 
 
@@ -115,6 +115,8 @@ for (; ;) {
     let repData = getAppAlive(device.serial);
     if (repData != undefined && repData["boolean"] != undefined && repData["boolean"] == false) {
         log("重启主应用")
+        home();
+        sleep(5000);
         app.launch("com.fanqie.xiangjiao");
     }
     sleep(60 * 1000);
