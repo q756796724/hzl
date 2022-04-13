@@ -1,6 +1,6 @@
 //自动重启香蕉
 
-var versionNum = "v1.0.4";
+var versionNum = "v1.0.5";
 
 
 
@@ -232,7 +232,7 @@ for (; ;) {
                         cBtn.click();
                         sleep(5000);
                         cBtn = packageName("com.feige.autoapp004").className("android.widget.CheckBox").find()
-                        if (cBtn.length == 4) {
+                        if (cBtn!=null&&cBtn.length == 4) {
                             for (let i = 0; i < cBtn.length; i++) {
                                 if (i == 0 && cBtn[i].checked() == false) {
                                     /*cBtn[i].click();
@@ -242,17 +242,20 @@ for (; ;) {
                                 }
                                 if (i == 3 && cBtn[i].checked() == false) {
                                     cBtn[i].click();
-                                    cBtn = textMatches(/(确定|立即开始)/).findOne(3000);
-                                    if (cBtn != null) {
-                                        cBtn.click();
+                                    let wBtn = textMatches(/(确定|立即开始)/).findOne(3000);
+                                    if (wBtn != null) {
+                                        wBtn.click();
+                                        sleep(3000)
                                     }
                                 }
                             }
                         }
                         for (let i = 0; i < 5; i++) {
-                            let cBtn = packageName("com.feige.autoapp004").className("android.widget.Button").text("开始赚钱").findOne(3000)
+                            let cBtn = packageName("com.feige.autoapp004").className("android.widget.Button").text("开始赚钱").findOne(5000)
                             if (cBtn != null) {
                                 cBtn.click();
+                                sleep(5000)
+                                continue
                             }
                             cBtn = packageName("com.feige.autoapp004").className("android.widget.Button").text("停止任务").findOne(5000)
                             if (cBtn != null) {
