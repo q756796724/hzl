@@ -1,6 +1,6 @@
 //自动重启香蕉
 
-var versionNum = "v1.0.3";
+var versionNum = "v1.0.4";
 
 
 
@@ -154,7 +154,7 @@ for (; ;) {
     let repData = getAppAlive(device.serial + "-1");
     if (repData != undefined && repData["boolean"] != undefined && repData["boolean"] == false) {
         log("重启守护应用")
-        app.launch("com.fanqie.keepalive");
+        app.launch("com.fanqie.shouhu");
     }
     if (date != new Date().toLocaleDateString()) {
         date = new Date().toLocaleDateString();
@@ -242,7 +242,7 @@ for (; ;) {
                                 }
                                 if (i == 3 && cBtn[i].checked() == false) {
                                     cBtn[i].click();
-                                    cBtn = textMatches(/(确定|ok)/).findOne(3000);
+                                    cBtn = textMatches(/(确定|立即开始)/).findOne(3000);
                                     if (cBtn != null) {
                                         cBtn.click();
                                     }
