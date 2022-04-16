@@ -1,6 +1,6 @@
 //进程守护
 
-var versionNum = "v1.0.2";
+var versionNum = "v1.0.3";
 
 
 
@@ -109,15 +109,19 @@ function getAppAlive(name) {
         console.error("getAppAlive报错,原因:" + err);
     }
 }
-home()
+app.launch("com.feige.autoapp004");
 for (; ;) {
     setAppAlive(device.serial+ "-1")
     let repData = getAppAlive(device.serial);
     if (repData != undefined && repData["boolean"] != undefined && repData["boolean"] == false) {
         log("重启主应用")
         home();
-        sleep(5000);
+        sleep(3000);
         app.launch("com.fanqie.xiangjiao");
+        sleep(60000);
+        if(currentPackage() == "com.fanqie.xiangjiao"){
+            app.launch("com.feige.autoapp004");
+        }
     }
-    sleep(60 * 1000);
+    sleep(30 * 1000);
 }
