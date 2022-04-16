@@ -1,6 +1,6 @@
 //自动重启香蕉
 
-var versionNum = "v1.0.6";
+var versionNum = "v1.0.7";
 
 
 
@@ -80,7 +80,9 @@ if (!files.exists("/sdcard/xiangjiao.png")) {
     clip.recycle();
 }
 
-sleep(10000);
+sleep(5000);
+app.launch("com.feige.autoapp004");
+
 date = new Date().toLocaleDateString();
 function 清空文件夹(path) {
     var arr = files.listDir(path);
@@ -149,6 +151,77 @@ function getAppAlive(name) {
         console.error("getAppAlive报错,原因:" + err);
     }
 }
+function startrun() {
+    let cBtn = packageName("com.feige.autoapp004").className("android.widget.Button").text("开始赚钱").findOne(30000);
+    if (cBtn != null) {
+        sleep(8000);
+        cBtn.click();
+        sleep(5000);
+        cBtn = packageName("com.feige.autoapp004").className("android.widget.CheckBox").find()
+        if (cBtn != null && cBtn.length == 4) {
+            for (let i = 0; i < cBtn.length; i++) {
+                if (i == 0 && cBtn[i].checked() == false) {
+                    /*cBtn[i].click();
+                    log("未启动无障碍")
+                    exit()*/
+                    break
+                }
+                if (i == 3 && cBtn[i].checked() == false) {
+                    cBtn[i].click();
+                    let wBtn = textMatches(/(确定|立即开始)/).findOne(3000);
+                    if (wBtn != null) {
+                        wBtn.click();
+                        sleep(3000)
+                    }
+                }
+            }
+        }
+        for (let i = 0; i < 5; i++) {
+            let cBtn = packageName("com.feige.autoapp004").className("android.widget.Button").text("开始赚钱").findOne(5000)
+            if (cBtn != null) {
+                cBtn.click();
+                sleep(5000)
+                continue
+            }
+            cBtn = packageName("com.feige.autoapp004").className("android.widget.Button").text("停止任务").findOne(5000)
+            if (cBtn != null) {
+                break
+            }
+        }
+    }else{
+        cBtn = packageName("com.feige.autoapp004").className("android.widget.CheckBox").find()
+        if (cBtn != null && cBtn.length == 4) {
+            for (let i = 0; i < cBtn.length; i++) {
+                if (i == 0 && cBtn[i].checked() == false) {
+                    /*cBtn[i].click();
+                    log("未启动无障碍")
+                    exit()*/
+                    break
+                }
+                if (i == 3 && cBtn[i].checked() == false) {
+                    cBtn[i].click();
+                    let wBtn = textMatches(/(确定|立即开始)/).findOne(3000);
+                    if (wBtn != null) {
+                        wBtn.click();
+                        sleep(3000)
+                    }
+                }
+            }
+        }
+        for (let i = 0; i < 5; i++) {
+            let cBtn = packageName("com.feige.autoapp004").className("android.widget.Button").text("开始赚钱").findOne(5000)
+            if (cBtn != null) {
+                cBtn.click();
+                sleep(5000)
+                continue
+            }
+            cBtn = packageName("com.feige.autoapp004").className("android.widget.Button").text("停止任务").findOne(5000)
+            if (cBtn != null) {
+                break
+            }
+        }
+    }
+}
 for (; ;) {
     setAppAlive(device.serial)
     let repData = getAppAlive(device.serial + "-1");
@@ -207,6 +280,7 @@ for (; ;) {
         for (let i = 0; i < 5; i++) {
             sleep(3000)
             if (currentPackage() == "com.feige.autoapp004" || currentActivity() == "com.stardust.autojs.execution.ScriptExecuteActivity") {
+                startrun()
                 break;
             }
             // 截图并找图
@@ -214,7 +288,7 @@ for (; ;) {
             /*let p = findImage(img, gb, {
                 region: [0, device.height * 0.1, device.width * 0.3, device.height * 0.3],
                 threshold: 0.9
-            });*/ 
+            });*/
             let p = findImage(img, gb, {
                 region: [0, 200, 300, 400],
                 threshold: 0.9
@@ -222,49 +296,13 @@ for (; ;) {
             img.recycle();
             if (!p) {
                 faultCount++
-                log(faultCount)
+                //log(faultCount)
                 if (faultCount == 5) {
-                    //log("没有找到");
+                    log("没有找到,启动香蕉");
                     home();
                     sleep(5000);
                     app.launch("com.feige.autoapp004");
-                    let cBtn = packageName("com.feige.autoapp004").className("android.widget.Button").text("开始赚钱").findOne(300000);
-                    if (cBtn != null) {
-                        sleep(8000);
-                        cBtn.click();
-                        sleep(5000);
-                        cBtn = packageName("com.feige.autoapp004").className("android.widget.CheckBox").find()
-                        if (cBtn!=null&&cBtn.length == 4) {
-                            for (let i = 0; i < cBtn.length; i++) {
-                                if (i == 0 && cBtn[i].checked() == false) {
-                                    /*cBtn[i].click();
-                                    log("未启动无障碍")
-                                    exit()*/
-                                    break
-                                }
-                                if (i == 3 && cBtn[i].checked() == false) {
-                                    cBtn[i].click();
-                                    let wBtn = textMatches(/(确定|立即开始)/).findOne(3000);
-                                    if (wBtn != null) {
-                                        wBtn.click();
-                                        sleep(3000)
-                                    }
-                                }
-                            }
-                        }
-                        for (let i = 0; i < 5; i++) {
-                            let cBtn = packageName("com.feige.autoapp004").className("android.widget.Button").text("开始赚钱").findOne(5000)
-                            if (cBtn != null) {
-                                cBtn.click();
-                                sleep(5000)
-                                continue
-                            }
-                            cBtn = packageName("com.feige.autoapp004").className("android.widget.Button").text("停止任务").findOne(5000)
-                            if (cBtn != null) {
-                                break
-                            }
-                        }
-                    }
+                    startrun()
                 }
             } else {
                 break;
@@ -273,5 +311,5 @@ for (; ;) {
         gb.recycle();
     }
 
-    sleep(60 * 1000);
+    sleep(30 * 1000);
 }
