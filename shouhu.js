@@ -1,6 +1,6 @@
 //进程守护
 
-var versionNum = "v1.0.3";
+var versionNum = "v1.0.4";
 
 
 
@@ -13,7 +13,7 @@ var w = floaty.rawWindow(
     </frame>
 );
 
-w.setPosition(500, 3);
+w.setPosition(500, 50);
 //w.setPosition(device.width * 0.03, device.height * 0.158);
 //定义
 /** 前台服务保活 */
