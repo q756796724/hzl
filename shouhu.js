@@ -1,12 +1,16 @@
 //进程守护
 
-var versionNum = "v1.0.6";
+var versionNum = "v1.0.7";
 toolsStorage = storages.create("tools配置");
 
 
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
+var settingPath = files.join("/sdcard/fanqie/", "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
+if (!files.exists(settingPath)) {
+    初始化配置(settingPath);
+    toastLog("初始化配置");
+}
 toastLog("版本号:" + versionNum);
-toastLog(toolsStorage.get(device.serial))
 setInterval(() => { }, 1000);
 var w = floaty.rawWindow(
     <frame gravity="center">
@@ -110,12 +114,52 @@ KeepAliveService.start("keepalive", "进程守护");
 //         console.error("getAppAlive报错,原因:" + err);
 //     }
 // }
+
+function 初始化配置(path) {
+    files.createWithDirs(path)  //开始创建文件
+    let jsonContent = {
+        /*"date": new Date().toLocaleDateString(),
+        "lunCount": 1,
+        "count": 1,
+        "lunCountllb": 1,
+        "countllb": 1*/
+    }
+    jsonContent[device.serial]=new Date().getTime()
+    jsonContent[device.serial+ "-1"]=new Date().getTime()
+    files.write(path, JSON.stringify(jsonContent));
+    sleep(1000);
+}
+
+function 保存配置(path, jsonContent) {
+    files.createWithDirs(path)  //开始创建文件
+    files.write(path, JSON.stringify(jsonContent));
+    sleep(1000);
+}
+
+function 读取配置(path) {
+    return JSON.parse(files.read(path));
+}
+
 function setAppAlive(name) {
-    log(name)
-    toolsStorage.put(name, new Date().getTime());
+    //log(name)
+    //toolsStorage.put(name, new Date().getTime());
+    配置 = 读取配置(settingPath);
+    配置[name] = new Date().getTime();
+    保存配置(settingPath, 配置);
 }
 function getAppAlive(name) {
-    if(toolsStorage.get(name)!=undefined){
+    配置 = 读取配置(settingPath);
+    if (配置[name] != undefined) {
+        if (new Date().getTime() - 配置[name] < 60 * 1000) {
+            return true
+        } else {
+            return false
+        }
+
+    } else {
+        return true
+    }
+    /*if(toolsStorage.get(name)!=undefined){
         if(new Date().getTime()-toolsStorage.get(name)<3*60*1000){
             return true
         }else{
@@ -124,7 +168,7 @@ function getAppAlive(name) {
 
     }else{
         return true
-    }
+    }*/
 }
 for (; ;) {
     setAppAlive(device.serial+ "-1")
