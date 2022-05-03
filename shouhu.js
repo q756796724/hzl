@@ -1,6 +1,6 @@
 //进程守护
 
-var versionNum = "v1.0.4";
+var versionNum = "v1.0.5";
 
 
 
@@ -64,64 +64,85 @@ KeepAliveService.start("keepalive", "进程守护");
 
 
 //app保活双进程守护
-function setAppAlive(name) {
-    let temp = null;
-    try {
-        temp = http.post("106.55.225.58:8081/fanqie/setAppAlive", {
-            "serial": name
-        });
-        if (temp && temp.statusCode == 200) {
-            temp = temp.body.string();
-            let rep = JSON.parse(temp);
-            let repState = rep["state"];
-            if (repState == 1) {
-                return true
-            } else {
-                console.warn("setAppAlive失败" + temp);
-                return false
-            }
-        }
-        return false
-    } catch (err) {
-        console.error("setAppAlive报错,原因:" + err);
-        return false
-    }
+// function setAppAlive(name) {
+//     let temp = null;
+//     try {
+//         temp = http.post("106.55.225.58:8081/fanqie/setAppAlive", {
+//             "serial": name
+//         });
+//         if (temp && temp.statusCode == 200) {
+//             temp = temp.body.string();
+//             let rep = JSON.parse(temp);
+//             let repState = rep["state"];
+//             if (repState == 1) {
+//                 return true
+//             } else {
+//                 console.warn("setAppAlive失败" + temp);
+//                 return false
+//             }
+//         }
+//         return false
+//     } catch (err) {
+//         console.error("setAppAlive报错,原因:" + err);
+//         return false
+//     }
 
+// }
+// function getAppAlive(name) {
+//     let temp = null;
+//     try {
+//         temp = http.post("106.55.225.58:8081/fanqie/getAppAlive", {
+//             "serial": name
+//         });
+//         if (temp && temp.statusCode == 200) {
+//             temp = temp.body.string();
+//             let rep = JSON.parse(temp);
+//             let repState = rep["state"];
+//             if (repState == 1) {
+//                 let repData = rep["data"];
+//                 return repData
+//             } else {
+//                 console.warn("getAppAlive获取数据失败" + temp);
+//             }
+//         }
+//     } catch (err) {
+//         console.error("getAppAlive报错,原因:" + err);
+//     }
+// }
+function setAppAlive(name) {
+    log(name)
+    toolsStorage.put(name, new Date().getTime());
 }
 function getAppAlive(name) {
-    let temp = null;
-    try {
-        temp = http.post("106.55.225.58:8081/fanqie/getAppAlive", {
-            "serial": name
-        });
-        if (temp && temp.statusCode == 200) {
-            temp = temp.body.string();
-            let rep = JSON.parse(temp);
-            let repState = rep["state"];
-            if (repState == 1) {
-                let repData = rep["data"];
-                return repData
-            } else {
-                console.warn("getAppAlive获取数据失败" + temp);
-            }
+    if(toolsStorage.get(name)!=undefined){
+        if(new Date().getTime()-toolsStorage.get(name)<3*60*1000){
+            return true
+        }else{
+            return false
         }
-    } catch (err) {
-        console.error("getAppAlive报错,原因:" + err);
+
+    }else{
+        return true
     }
 }
-app.launch("com.feige.autoapp004");
 for (; ;) {
     setAppAlive(device.serial+ "-1")
-    let repData = getAppAlive(device.serial);
-    if (repData != undefined && repData["boolean"] != undefined && repData["boolean"] == false) {
+    if (getAppAlive(device.serial) == false) {
+        setAppAlive(device.serial)
         log("重启主应用")
         home();
-        sleep(3000);
-        app.launch("com.fanqie.xiangjiao");
-        sleep(60000);
-        if(currentPackage() == "com.fanqie.xiangjiao"){
-            app.launch("com.feige.autoapp004");
-        }
+        sleep(5000);
+        app.launch("com.fanqie.cloud");
+
+        // log("重启主应用")
+        // home();
+        // sleep(3000);
+        // app.launch("com.fanqie.xiangjiao");
+        // sleep(60000);
+        // if(currentPackage() == "com.fanqie.xiangjiao"){
+        //     app.launch("com.feige.autoapp004");
+        // }
     }
+   
     sleep(30 * 1000);
 }
