@@ -60,9 +60,11 @@ function main() {
         getSelect(index)
     }).on("dismiss", (dialog) => {
         toast("对话框消失了");
-        sleep(10000)
-        engines.execScript('fanqie', github下载的脚本);  //运行脚本
-        console.hide();
+        setTimeout(() => {
+            engines.execScript('fanqie', github下载的脚本);  //运行脚本
+            console.hide();
+        }, 10000);
+        
     }).show();
     setTimeout(() => {
         //toast("对话框消失");
