@@ -244,7 +244,7 @@ function floatyModule() {
     }
 
 }
-events.observeToast();
+//events.observeToast();
 events.onToast(function (toast) {
     var pkg = toast.getPackageName();
     if (pkg == "com.tencent.mm" && (toast.getText() == "已分享" || toast.getText() == "微信：已分享")) {
