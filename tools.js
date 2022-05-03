@@ -3,10 +3,10 @@
  * 个人配置
  */
 var 仓库名 = "hzl"     //需要更换仓库名
-var versionNum = "v1.1.1";
+var versionNum = "v1.1.2";
 
 toolsStorage = storages.create("tools配置");
-//threads.start(main);//启动线程运行main函数
+threads.start(main);//启动线程运行main函数
 
 setInterval(进程守护(), 60000);
 
@@ -28,7 +28,7 @@ function getAppAlive(name) {
     }
 }
 function 进程守护() {
-    log("进程守护")
+    //log("进程守护")
     setAppAlive(device.serial)
     if (getAppAlive(device.serial + "-1") == false) {
         setAppAlive(device.serial+ "-1")
