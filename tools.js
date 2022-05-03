@@ -59,15 +59,14 @@ function main() {
         toolsStorage.put("toolsSelectIdx", index);
         getSelect(index)
     }).on("dismiss", (dialog) => {
-        toast("对话框消失了");
+        //toast("对话框消失了");
         autoSel=false;
         engines.execScript('fanqie', github下载的脚本);  //运行脚本
         console.hide();
-        
     }).show();
     setTimeoutA=setTimeout(() => {
         if(autoSel){
-            toast("对话框消失");
+            //toast("对话框消失");
             getSelect(toolsStorage.get("toolsSelectIdx", 0))
             d.dismiss();
         }
