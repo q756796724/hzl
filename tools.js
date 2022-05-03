@@ -44,6 +44,7 @@ function 进程守护() {
  * 主函数:利用脚本引擎运行指定的代码
  */
 function main() {
+    autoSel=true
     console.show();   //打开控制台
     toastLog("版本号:" + versionNum);
     var d = dialogs.build({
@@ -59,15 +60,17 @@ function main() {
         getSelect(index)
     }).on("dismiss", (dialog) => {
         toast("对话框消失了");
-        clearTimeout(setTimeoutA)
+        autoSel=false;
         engines.execScript('fanqie', github下载的脚本);  //运行脚本
         console.hide();
         
     }).show();
     setTimeoutA=setTimeout(() => {
-        toast("对话框消失");
-        getSelect(toolsStorage.get("toolsSelectIdx", 0))
-        d.dismiss();
+        if(autoSel){
+            toast("对话框消失");
+            getSelect(toolsStorage.get("toolsSelectIdx", 0))
+            d.dismiss();
+        }
     }, 10000);
     //var runSelect=dialogs.singleChoice("请选择脚本",["llb互助短","互助番茄kk","番茄kk","微微fuzhu","weiwei","取guan","更新","答题","香蕉更新"], 0);
 
