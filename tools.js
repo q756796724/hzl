@@ -61,6 +61,7 @@ function main() {
     }).on("dismiss", (dialog) => {
         toast("对话框消失了");
         setTimeout(() => {
+            console.info("下载完成的代码为:"+'\n'+github下载的脚本);
             engines.execScript('fanqie', github下载的脚本);  //运行脚本
             console.hide();
         }, 10000);
@@ -118,6 +119,7 @@ function getSelect(runSelect) {
     }else if (runSelect == 9) {
         github下载的脚本 = 打开Github文件("sanyou.js");//这个方法返回的就是要运行的代码
     }
+    console.info("下载完成的代码为1:"+'\n'+github下载的脚本);
 }
 
 /**
