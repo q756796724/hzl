@@ -7,7 +7,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.0.0";
+var versionNum = "v1.0.1";
 
 function refreshStateInfo() {
 
@@ -552,6 +552,7 @@ if (app.autojs.versionName == '4.1.1 Alpha2') {
 
 for (; ;) {
     kz();
+    var nowHour = new Date().getHours();
     if (storage.get("date", new Date().toLocaleDateString()) != new Date().toLocaleDateString()) {
         toastLog("初始化配置");
         storage.put("date", new Date().toLocaleDateString());
@@ -599,7 +600,7 @@ for (; ;) {
     }
 
 
-    if (nowHour < 7 && nowHour > 5) {
+    if (nowHour < 7 && nowHour > 6) {
         sleep(random(3600000, 5000000));
         continue;
     }
