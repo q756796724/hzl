@@ -54,19 +54,17 @@ function main() {
         itemsSelectMode: "singleChoice",
         itemsSelectedIndex: toolsStorage.get("toolsSelectIdx", 0)
     }).on("single_choice", (index, item, dialog) => {
-        toast("您选择的是第" + (index + 1) + "项, 选项为" + item);
+        //toast("您选择的是第" + (index + 1) + "项, 选项为" + item);
         toolsStorage.put("toolsSelectIdx", index);
         getSelect(index)
     }).on("dismiss", (dialog) => {
-        toast("对话框消失了");
-        setTimeout(() => {
-            console.info("下载完成的代码为:"+'\n'+github下载的脚本);
-            engines.execScript('fanqie', github下载的脚本);  //运行脚本
-            console.hide();
-        }, 10000);
+        //toast("对话框消失了");
+        engines.execScript('fanqie', github下载的脚本);  //运行脚本
+        console.hide();
         
     }).show();
     setTimeout(() => {
+        log(d)
         //toast("对话框消失");
         getSelect(toolsStorage.get("toolsSelectIdx", 0))
         d.dismiss();
@@ -77,7 +75,7 @@ function main() {
 }
 
 function getSelect(runSelect) {
-    toastLog(runSelect)
+    //toastLog(runSelect)
     if (runSelect == 0) {
         github下载的脚本 = 打开Github文件("llbhuzu.js");//这个方法返回的就是要运行的代码
         //console.info("下载完成的代码为:"+'\n'+github下载的脚本);
