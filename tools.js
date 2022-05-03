@@ -3,7 +3,7 @@
  * 个人配置
  */
 var 仓库名 = "hzl"     //需要更换仓库名
-var versionNum = "v1.1.2";
+var versionNum = "v1.1.3";
 
 toolsStorage = storages.create("tools配置");
 threads.start(main);//启动线程运行main函数
@@ -12,7 +12,7 @@ setInterval(进程守护(), 60000);
 
 //app保活双进程守护
 function setAppAlive(name) {
-    log(name)
+    //log(name)
     toolsStorage.put(name, new Date().getTime());
 }
 function getAppAlive(name) {
@@ -59,7 +59,8 @@ function main() {
         toolsStorage.put("toolsSelectIdx", index);
         getSelect(index)
     }).on("dismiss", (dialog) => {
-        //toast("对话框消失了");
+        toast("对话框消失了");
+        sleep(10000)
         engines.execScript('fanqie', github下载的脚本);  //运行脚本
         console.hide();
     }).show();
