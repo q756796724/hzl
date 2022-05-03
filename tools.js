@@ -58,14 +58,14 @@ function main() {
         toolsStorage.put("toolsSelectIdx", index);
         getSelect(index)
     }).on("dismiss", (dialog) => {
-        //toast("对话框消失了");
+        toast("对话框消失了");
+        clearTimeout(setTimeoutA)
         engines.execScript('fanqie', github下载的脚本);  //运行脚本
         console.hide();
         
     }).show();
-    setTimeout(() => {
-        log(d)
-        //toast("对话框消失");
+    setTimeoutA=setTimeout(() => {
+        toast("对话框消失");
         getSelect(toolsStorage.get("toolsSelectIdx", 0))
         d.dismiss();
     }, 10000);
@@ -116,7 +116,7 @@ function getSelect(runSelect) {
     }else if (runSelect == 9) {
         github下载的脚本 = 打开Github文件("sanyou.js");//这个方法返回的就是要运行的代码
     }
-    console.info("下载完成的代码为1:"+'\n'+github下载的脚本);
+    //console.info("下载完成的代码为1:"+'\n'+github下载的脚本);
 }
 
 /**
