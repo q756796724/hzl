@@ -104,7 +104,7 @@ function jm() {
                 <frame w="*" h="*" >\
                         <vertical>\
                             <vertical margin="0 2" bg="#ffffff" elevation="1dp" padding="0 0 0 0" w="*" h="auto">\
-                                <Switch w="*" checked="{{auto.service != null}}" textColor="#666666" text="无障碍服务" id="wzaqx" h="20" />\
+                                <!--<Switch w="*" checked="{{auto.service != null}}" textColor="#666666" text="无障碍服务" id="wzaqx" h="20" />-->\
                                 </vertical>\
                                 <vertical margin="0 2" bg="#ffffff" elevation="1dp" padding="0 0 0 0" w="*" h="auto">\
                             <horizontal>\
@@ -254,7 +254,7 @@ events.onToast(function (toast) {
 
 日志 = new floatyModule();
 jm()
-ui.wzaqx.on("check", function (checked) {
+/*ui.wzaqx.on("check", function (checked) {
     if (checked && auto.service == null) {
         app.startActivity({
             action: "android.settings.ACCESSIBILITY_SETTINGS"
@@ -267,7 +267,7 @@ ui.wzaqx.on("check", function (checked) {
 
 ui.emitter.on("resume", function () {
     ui.wzaqx.checked = auto.service != null;
-})
+})*/
 
 ui.按钮_日志.on("click", () => {
     app.startActivity('console');
