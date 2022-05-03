@@ -17,7 +17,7 @@ function setAppAlive(name) {
 }
 function getAppAlive(name) {
     if(toolsStorage.get(name)!=undefined){
-        if(new Date().getTime()-toolsStorage.get(name)<3*60*1000){
+        if(new Date().getTime()-toolsStorage.get(name)<60*1000){
             return true
         }else{
             return false
