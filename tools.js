@@ -3,35 +3,77 @@
  * 个人配置
  */
 var 仓库名 = "hzl"     //需要更换仓库名
-var versionNum = "v1.1.3";
+var versionNum = "v1.1.4";
 
 toolsStorage = storages.create("tools配置");
+var settingPath = files.join("/sdcard/fanqie/", "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
+if (!files.exists(settingPath)) {
+    初始化配置(settingPath);
+    toastLog("初始化配置");
+}
 threads.start(main);//启动线程运行main函数
 
 setInterval(进程守护(), 60000);
 
+function 初始化配置(path) {
+    files.createWithDirs(path)  //开始创建文件
+    let jsonContent = {
+        /*"date": new Date().toLocaleDateString(),
+        "lunCount": 1,
+        "count": 1,
+        "lunCountllb": 1,
+        "countllb": 1*/
+    }
+    jsonContent[device.serial]=new Date().getTime()
+    files.write(path, JSON.stringify(jsonContent));
+    sleep(1000);
+}
+
+function 保存配置(path, jsonContent) {
+    files.createWithDirs(path)  //开始创建文件
+    files.write(path, JSON.stringify(jsonContent));
+    sleep(1000);
+}
+
+function 读取配置(path) {
+    return JSON.parse(files.read(path));
+}
+
 //app保活双进程守护
 function setAppAlive(name) {
-    //log(name)
-    toolsStorage.put(name, new Date().getTime());
+    配置 = 读取配置(settingPath);
+    配置[name] = new Date().getTime();
+    保存配置(settingPath, 配置);
+    //toolsStorage.put(name, new Date().getTime());
 }
 function getAppAlive(name) {
-    if(toolsStorage.get(name)!=undefined){
-        if(new Date().getTime()-toolsStorage.get(name)<60*1000){
+    配置 = 读取配置(settingPath);
+    if (配置[name] != undefined) {
+        if (new Date().getTime() - 配置[name] < 60 * 1000) {
             return true
-        }else{
+        } else {
             return false
         }
 
-    }else{
+    } else {
         return true
     }
+    /*if (toolsStorage.get(name) != undefined) {
+        if (new Date().getTime() - toolsStorage.get(name) < 60 * 1000) {
+            return true
+        } else {
+            return false
+        }
+
+    } else {
+        return true
+    }*/
 }
 function 进程守护() {
     //log("进程守护")
     setAppAlive(device.serial)
     if (getAppAlive(device.serial + "-1") == false) {
-        setAppAlive(device.serial+ "-1")
+        setAppAlive(device.serial + "-1")
         log("重启守护应用")
         home();
         sleep(5000);
@@ -44,14 +86,14 @@ function 进程守护() {
  * 主函数:利用脚本引擎运行指定的代码
  */
 function main() {
-    autoSel=true
+    autoSel = true
     console.show();   //打开控制台
     toastLog("版本号:" + versionNum);
     var d = dialogs.build({
         title: "请选择",
         positive: "确定",
         negative: "取消",
-        items: ["llb互助短", "互助番茄kk", "番茄kk", "微微fuzhu", "weiwei", "取guan", "更新app", "答题", "香蕉更新", "珊友"],
+        items: ["llb互助短", "互助番茄kk", "番茄kk", "微微fuzhu", "weiwei", "取guan", "更新app", "答题", "更新守护", "珊友"],
         itemsSelectMode: "singleChoice",
         itemsSelectedIndex: toolsStorage.get("toolsSelectIdx", 0)
     }).on("single_choice", (index, item, dialog) => {
@@ -60,12 +102,12 @@ function main() {
         getSelect(index)
     }).on("dismiss", (dialog) => {
         //toast("对话框消失了");
-        autoSel=false;
+        autoSel = false;
         engines.execScript('fanqie', github下载的脚本);  //运行脚本
         console.hide();
     }).show();
-    setTimeoutA=setTimeout(() => {
-        if(autoSel){
+    setTimeoutA = setTimeout(() => {
+        if (autoSel) {
             //toast("对话框消失");
             getSelect(toolsStorage.get("toolsSelectIdx", 0))
             d.dismiss();
@@ -115,7 +157,7 @@ function getSelect(runSelect) {
             console.error(err)  //抛出异常
         }
         exit()
-    }else if (runSelect == 9) {
+    } else if (runSelect == 9) {
         github下载的脚本 = 打开Github文件("sanyou.js");//这个方法返回的就是要运行的代码
     }
     //console.info("下载完成的代码为1:"+'\n'+github下载的脚本);
