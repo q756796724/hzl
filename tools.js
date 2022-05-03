@@ -46,7 +46,6 @@ function 进程守护() {
 function main() {
     console.show();   //打开控制台
     toastLog("版本号:" + versionNum);
-    github下载的脚本;
     var d = dialogs.build({
         title: "请选择",
         positive: "确定",
