@@ -1,11 +1,12 @@
 //进程守护
 
-var versionNum = "v1.0.5";
-
+var versionNum = "v1.0.6";
+toolsStorage = storages.create("tools配置");
 
 
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 toastLog("版本号:" + versionNum);
+toastLog(toolsStorage.get(device.serial))
 setInterval(() => { }, 1000);
 var w = floaty.rawWindow(
     <frame gravity="center">
