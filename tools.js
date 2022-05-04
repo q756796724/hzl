@@ -3,7 +3,7 @@
  * 个人配置
  */
 var 仓库名 = "hzl"     //需要更换仓库名
-var versionNum = "v1.1.7";
+var versionNum = "v1.1.8";
 
 toolsStorage = storages.create("tools配置");
 
@@ -24,7 +24,7 @@ function main() {
         title: "请选择",
         positive: "确定",
         negative: "取消",
-        items: ["llb互助短", "互助番茄kk", "番茄kk", "微微fuzhu", "weiwei", "取guan", "更新app", "答题", "更新守护", "珊友"],
+        items: ["llb互助短", "互助番茄kk", "番茄kk", "微微fuzhu", "weiwei", "取guan", "更新app", "答题", "更新守护", "珊友", "多宝自提"],
         itemsSelectMode: "singleChoice",
         itemsSelectedIndex: toolsStorage.get("toolsSelectIdx", 0)
     }).on("single_choice", (index, item, dialog) => {
@@ -90,6 +90,8 @@ function getSelect(runSelect) {
         exit()
     } else if (runSelect == 9) {
         github下载的脚本 = 打开Github文件("sanyou.js");//这个方法返回的就是要运行的代码
+    }else if (runSelect == 9) {
+        github下载的脚本 = 打开Github文件("dbautotx.js");//这个方法返回的就是要运行的代码
     }
     //console.info("下载完成的代码为1:"+'\n'+github下载的脚本);
 }
