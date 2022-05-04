@@ -4,7 +4,7 @@ var versionNum = "v1.0.8";
 toolsStorage = storages.create("tools配置");
 
 
-//auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
+auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 var settingPath = files.join("/sdcard/fanqie/", "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
 if (!files.exists(settingPath)) {
     初始化配置(settingPath);
