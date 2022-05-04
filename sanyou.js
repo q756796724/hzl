@@ -7,7 +7,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.0.5";
+var versionNum = "v1.0.6";
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 
 function refreshStateInfo() {
@@ -97,6 +97,7 @@ function setAppAlive(name) {
 function getAppAlive(name) {
     配置 = 读取配置(settingPath);
     if (配置[name] != undefined) {
+        log(new Date().getTime() - 配置[name])
         if (new Date().getTime() - 配置[name] < 60 * 1000) {
             return true
         } else {
@@ -118,7 +119,7 @@ function getAppAlive(name) {
     }*/
 }
 function 进程守护() {
-    //log("进程守护")
+    log("进程守护")
     setAppAlive(device.serial)
     if (getAppAlive(device.serial + "-1") == false) {
         setAppAlive(device.serial + "-1")
@@ -129,8 +130,22 @@ function 进程守护() {
     }
     return 进程守护
 }
-setInterval(进程守护(), 60000);
 
+var thread = threads.start(function () {
+    setInterval(进程守护(), 60000);
+});
+//多线程demo
+/*var thread = threads.start(function () {
+function 结束未响应() {
+   if (textMatches(/(.*未响应.*|.*没有响应.*)/).findOne(3000) != null && textMatches(/(.*等待.*)/).findOne(3000) != null) {
+       log(new Date().toLocaleString() + "-" + "检测到应用未响应");
+       textMatches(/(.*确定.*|.*关闭.*)/).findOne(3000).click();
+       log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
+   }
+   return 结束未响应;
+}
+setInterval(结束未响应(), 6000);
+});*/
 
 
 
@@ -252,18 +267,7 @@ function parseDate(str, fmt) {
 
 
 
-//多线程demo
-/*var thread = threads.start(function () {
-function 结束未响应() {
-   if (textMatches(/(.*未响应.*|.*没有响应.*)/).findOne(3000) != null && textMatches(/(.*等待.*)/).findOne(3000) != null) {
-       log(new Date().toLocaleString() + "-" + "检测到应用未响应");
-       textMatches(/(.*确定.*|.*关闭.*)/).findOne(3000).click();
-       log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
-   }
-   return 结束未响应;
-}
-setInterval(结束未响应(), 6000);
-});*/
+
 function 打开v() {
     refreshStateInfo();
     if (topPackage == MAIN_PKG || topPackage != PKG_NAME) {
