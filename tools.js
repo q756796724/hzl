@@ -106,6 +106,7 @@ function main() {
         autoSel = false;
         engines.execScript('fanqie', github下载的脚本);  //运行脚本
         console.hide();
+        exit()
     }).show();
     setTimeoutA = setTimeout(() => {
         if (autoSel) {
