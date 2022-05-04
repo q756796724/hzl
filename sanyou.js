@@ -7,7 +7,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.0.9";
+var versionNum = "v1.1.0";
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 
 function refreshStateInfo() {
@@ -363,39 +363,47 @@ function onMainPage() {
             sleep(5000);
             if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) != null) {
                 let sleepTime = random(300000, 600000)
-                for (let i = 0; i < sleepTime / 1000 / 60; i++) {
-                    kz();
-                    for (let i = 0; i < 6; i++) {
-                        let x1 = device.width * random(400, 900) / 1000;
-                        let y1 = device.height * random(300, 800) / 1000;
-                        press(x1, y1, random(2000, 2500));
-                        sleep(random(1000, 2000));
-                        if(text("取消顶置").findOne(5000) != null){
-                            back();
-                        }
-                        if (text("不再关注").findOne(5000) != null) {
-                            click("不再关注");
+                let cBtn = packageName("com.tencent.mm").id('a4k').find()
+                if (cBtn != null && cBtn.length > 6) {
+                    for (let i = 0; i < sleepTime / 1000 / 60; i++) {
+                        kz();
+                        for (let i = 0; i < 6; i++) {
+                            let x1 = device.width * random(400, 900) / 1000;
+                            let y1 = device.height * random(300, 800) / 1000;
+                            press(x1, y1, random(2000, 2500));
                             sleep(random(1000, 2000));
-                            if (text("不再关注").findOne(5000) != null) {
+                            if (text("取消顶置").findOne(5000) != null) {
+                                back();
+                            }
+                            if (text("不再关注").findOnce() != null) {
                                 click("不再关注");
+                                sleep(random(1000, 2000));
+                                if (text("不再关注").findOne(5000) != null) {
+                                    click("不再关注");
+                                }
+                            } else if (text("删除该聊天").findOnce() != null) {
+                                click("删除该聊天");
+                                sleep(random(1000, 2000));
+                                if (text("删除").findOne(5000) != null) {
+                                    click("删除");
+                                }
                             }
-                        } else  if (text("删除该聊天").findOne(5000) != null) {
-                            click("删除该聊天");
-                            sleep(random(1000, 2000));
-                            if (text("删除").findOne(5000) != null) {
-                                click("删除");
-                            }
+                            sleep(random(4000, 6000));
+    
                         }
-                        sleep(random(4000, 6000));
-
                     }
+                }else{
+                    sleep(random(300000, 600000))
                 }
+                
                 break;
             };
         } else if (wBtn != null && wBtn.parent() != null) {
             wBtn = wBtn.parent();
         }
     }
+
+
     wBtn = className("android.widget.TextView").text("通讯录").findOne(3000);
     for (let i = 0; i < 8; i++) {
         if (wBtn != null && wBtn.clickable()) {
