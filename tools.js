@@ -3,7 +3,7 @@
  * 个人配置
  */
 var 仓库名 = "hzl"     //需要更换仓库名
-var versionNum = "v1.1.5";
+var versionNum = "v1.1.6";
 
 toolsStorage = storages.create("tools配置");
 var settingPath = files.join("/sdcard/fanqie/", "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
@@ -70,7 +70,7 @@ function getAppAlive(name) {
     }*/
 }
 function 进程守护() {
-    //log("进程守护")
+    log("进程守护")
     setAppAlive(device.serial)
     if (getAppAlive(device.serial + "-1") == false) {
         setAppAlive(device.serial + "-1")
