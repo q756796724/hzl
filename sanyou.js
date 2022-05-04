@@ -7,7 +7,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.0.6";
+var versionNum = "v1.0.7";
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 
 function refreshStateInfo() {
@@ -15,6 +15,7 @@ function refreshStateInfo() {
     sleep(1000);
     topPackage = currentPackage();
     sleep(1000);
+
     topActivity = currentActivity();
     //log("==> topPackage: " + topPackage);
     //log("==> topActivity: " + topActivity);
@@ -97,7 +98,7 @@ function setAppAlive(name) {
 function getAppAlive(name) {
     配置 = 读取配置(settingPath);
     if (配置[name] != undefined) {
-        log(new Date().getTime() - 配置[name])
+        setAppAlive(device.serial)
         if (new Date().getTime() - 配置[name] < 60 * 1000) {
             return true
         } else {
@@ -119,8 +120,8 @@ function getAppAlive(name) {
     }*/
 }
 function 进程守护() {
-    log("进程守护")
-    setAppAlive(device.serial)
+    //log("进程守护")
+    
     if (getAppAlive(device.serial + "-1") == false) {
         setAppAlive(device.serial + "-1")
         log("重启守护应用")
