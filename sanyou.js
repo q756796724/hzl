@@ -7,7 +7,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.0.1";
+var versionNum = "v1.0.2";
 
 function refreshStateInfo() {
 
@@ -222,25 +222,34 @@ function shanyou() {
     let cBtn = packageName("com.tencent.mm").id('ft6').find()
     if (cBtn != null) {
         for (let i = 0; i < cBtn.length; i++) {
-            if (cBtn[i].text() == "ROmantic~zZ" || cBtn[i].text() == "群姐" || cBtn[i].text() == "ZhaoLin") {
+            if (cBtn[i].text() == "ROmantic~zZ" || cBtn[i].text() == "群姐" || cBtn[i].text() == "ZhaoLin"|| cBtn[i].text().lastIndexOf('信团队') >-1|| cBtn[i].text().lastIndexOf('传输助手') >-1|| cBtn[i].text().lastIndexOf('别信') >-1) {
                 continue
             }
-            clickx(cBtn[i].bounds().right, cBtn[i].bounds().bottom);
+            let wBtn = cBtn[i]
+            for (let i = 0; i < 4; i++) {
+                if (wBtn != null && wBtn.clickable()) {
+                    wBtn.click();
+                    break;
+                } else {
+                    wBtn = wBtn.parent();
+                }
+            }
+            //clickx(cBtn[i].bounds().centerX(), cBtn[i].bounds().bottom);
             sleep(random(3000, 5000))
-            let cBtn1 = packageName("com.tencent.mm").id('d8').findOne(3000)
+            let cBtn1 = packageName("com.tencent.mm").id('d8').findOne(8000)
             if (cBtn1 != null && cBtn1.clickable()) {
                 cBtn1.click();
                 sleep(random(3000, 5000))
-                let cBtn2 = packageName("com.tencent.mm").id('h8z').findOne(3000)
-                if (cBtn2 != null && cBtn2.clickable()) {
-                    cBtn2.click();
+                let cBtn2 = packageName("com.tencent.mm").text("删除").findOne(3000)
+                if (cBtn2 != null) {
+                    click("删除")
                     sleep(random(3000, 5000))
                     let cBtn3 = packageName("com.tencent.mm").id('ffp').findOne(3000)
                     if (cBtn3 != null && cBtn3.clickable()) {
                         cBtn3.click();
                         sleep(random(3000, 5000))
                         return false
-                    }else {
+                    } else {
                         back()
                         sleep(random(2000, 3000))
                         back()
@@ -261,10 +270,12 @@ function shanyou() {
                 sleep(random(2000, 3000))
                 continue
             }
+
         }
         return true
     }
 }
+
 function onMainPage() {
     log("进入v成功");
 
@@ -290,20 +301,102 @@ function onMainPage() {
         return;
     };
     log("进入通讯录成功");
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 4; i++) {
         if (等待未响应() == 0) {
             if (结束未响应()) {
                 return;
             }
         }
         
-        if(shanyou()){
-            break;
+        if (shanyou()) {
+            if(random(0,1)==1){
+                swapeToRead()
+            }else{
+                swapeDown()
+            }
         }
     }
 }
 
+function swapeToRead() {
+    if (currentPackage() == "com.tencent.mm") {
+        let x1 = device.width * random(200, 500) / 1000;
+        let y1 = device.height * random(700, 900) / 1000;
+        let x2 = device.width * random(300, 800) / 1000;
+        let y2 = device.height * random(400, 600) / 1000;
+        //swipe(x1, y1, x2, y2, random(1200, 1500));
+        sml_move(x1, y1, x2, y2, random(1200, 1500));
+    }
+}
+function swapeDown() {
+    if (currentPackage() == "com.tencent.mm") {
+        let x1 = device.width * random(200, 500) / 1000;
+        let y1 = device.height * random(700, 900) / 1000;
+        let x2 = device.width * random(300, 800) / 1000;
+        let y2 = device.height * random(400, 600) / 1000;
+        //swipe(x1, y1, x2, y2, random(1200, 1500));
+        sml_move( x2, y2,x1, y1, random(1200, 1500));
+    }
+}
+//曲线滑动---贝塞尔曲线
+function bezier_curves(cp, t) {
+    cx = 3.0 * (cp[1].x - cp[0].x);
+    bx = 3.0 * (cp[2].x - cp[1].x) - cx;
+    ax = cp[3].x - cp[0].x - cx - bx;
+    cy = 3.0 * (cp[1].y - cp[0].y);
+    by = 3.0 * (cp[2].y - cp[1].y) - cy;
+    ay = cp[3].y - cp[0].y - cy - by;
 
+    tSquared = t * t;
+    tCubed = tSquared * t;
+    result = {
+        "x": 0,
+        "y": 0
+    };
+    result.x = (ax * tCubed) + (bx * tSquared) + (cx * t) + cp[0].x;
+    result.y = (ay * tCubed) + (by * tSquared) + (cy * t) + cp[0].y;
+    return result;
+};
+
+//仿真随机带曲线滑动  
+//qx, qy, zx, zy, time 代表起点x,起点y,终点x,终点y,过程耗时单位毫秒
+function sml_move(qx, qy, zx, zy, time) {
+    var xxy = [time];
+    var point = [];
+    var dx0 = {
+        "x": qx,
+        "y": qy
+    };
+
+    var dx1 = {
+        "x": random(qx - 100, qx + 100),
+        "y": random(qy, qy + 50)
+    };
+    var dx2 = {
+        "x": random(zx - 100, zx + 100),
+        "y": random(zy, zy + 50),
+    };
+    var dx3 = {
+        "x": zx,
+        "y": zy
+    };
+    for (var i = 0; i < 4; i++) {
+
+        eval("point.push(dx" + i + ")");
+
+    };
+    //log(point[3].x)
+
+    for (let i = 0; i < 1; i += 0.08) {
+        xxyy = [parseInt(bezier_curves(point, i).x), parseInt(bezier_curves(point, i).y)]
+
+        xxy.push(xxyy);
+
+    }
+
+    //log(xxy);
+    gesture.apply(null, xxy);
+};
 
 
 function 清空文件夹(path) {
@@ -384,7 +477,7 @@ function 返回v首页() {
             sleep(1000);
             return;
         }
-        
+
         let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
         if (rBtn != null && rBtn.parent() != null) {
             rBtn.parent().click();
