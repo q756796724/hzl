@@ -7,7 +7,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.0.2";
+var versionNum = "v1.0.3";
 
 function refreshStateInfo() {
 
@@ -55,8 +55,80 @@ ui.run(function () { 悬浮窗2.consoleLog.findViewById(context.getResources().g
 悬浮窗2.setTouchable(false);
 悬浮窗2.setPosition(0, device.height * 0.1);
 
-setInterval(() => { }, 1000);
+//setInterval(() => { }, 1000);
 
+var settingPath = files.join("/sdcard/fanqie/", "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
+if (!files.exists(settingPath)) {
+    初始化配置(settingPath);
+    toastLog("初始化配置");
+}
+function 初始化配置(path) {
+    files.createWithDirs(path)  //开始创建文件
+    let jsonContent = {
+        /*"date": new Date().toLocaleDateString(),
+        "lunCount": 1,
+        "count": 1,
+        "lunCountllb": 1,
+        "countllb": 1*/
+    }
+    jsonContent[device.serial]=new Date().getTime()
+    files.write(path, JSON.stringify(jsonContent));
+    sleep(1000);
+}
+
+function 保存配置(path, jsonContent) {
+    files.createWithDirs(path)  //开始创建文件
+    files.write(path, JSON.stringify(jsonContent));
+    sleep(1000);
+}
+
+function 读取配置(path) {
+    return JSON.parse(files.read(path));
+}
+
+//app保活双进程守护
+function setAppAlive(name) {
+    配置 = 读取配置(settingPath);
+    配置[name] = new Date().getTime();
+    保存配置(settingPath, 配置);
+    //toolsStorage.put(name, new Date().getTime());
+}
+function getAppAlive(name) {
+    配置 = 读取配置(settingPath);
+    if (配置[name] != undefined) {
+        if (new Date().getTime() - 配置[name] < 60 * 1000) {
+            return true
+        } else {
+            return false
+        }
+
+    } else {
+        return true
+    }
+    /*if (toolsStorage.get(name) != undefined) {
+        if (new Date().getTime() - toolsStorage.get(name) < 60 * 1000) {
+            return true
+        } else {
+            return false
+        }
+
+    } else {
+        return true
+    }*/
+}
+function 进程守护() {
+    //log("进程守护")
+    setAppAlive(device.serial)
+    if (getAppAlive(device.serial + "-1") == false) {
+        setAppAlive(device.serial + "-1")
+        log("重启守护应用")
+        home();
+        sleep(5000);
+        app.launch("com.fanqie.shouhu");
+    }
+    return 进程守护
+}
+setInterval(进程守护(), 60000);
 
 
 
@@ -230,7 +302,7 @@ function shanyou() {
                 if (wBtn != null && wBtn.clickable()) {
                     wBtn.click();
                     break;
-                } else {
+                } else if(wBtn != null &&wBtn.parent()!=null){
                     wBtn = wBtn.parent();
                 }
             }
@@ -277,7 +349,7 @@ function shanyou() {
 }
 
 function onMainPage() {
-    log("进入v成功");
+    //log("进入v成功");
 
     let wBtn = className("android.widget.TextView").text("通讯录").findOne(3000);
     for (let i = 0; i < 8; i++) {
@@ -287,7 +359,7 @@ function onMainPage() {
             if (className("android.widget.TextView").text("公众号").findOne(5000) != null) {
                 break;
             };
-        } else {
+        } else if(wBtn != null &&wBtn.parent()!=null){
             wBtn = wBtn.parent();
         }
     }
@@ -300,7 +372,7 @@ function onMainPage() {
     if (className("android.widget.TextView").text("公众号").findOne(5000) == null) {
         return;
     };
-    log("进入通讯录成功");
+    //log("进入通讯录成功");
     for (let i = 0; i < 4; i++) {
         if (等待未响应() == 0) {
             if (结束未响应()) {
@@ -320,20 +392,20 @@ function onMainPage() {
 
 function swapeToRead() {
     if (currentPackage() == "com.tencent.mm") {
-        let x1 = device.width * random(200, 500) / 1000;
-        let y1 = device.height * random(700, 900) / 1000;
-        let x2 = device.width * random(300, 800) / 1000;
-        let y2 = device.height * random(400, 600) / 1000;
+        let x1 = device.width * random(300, 400) / 1000;
+        let y1 = device.height * random(700, 850) / 1000;
+        let x2 = device.width * random(400, 500) / 1000;
+        let y2 = device.height * random(450, 600) / 1000;
         //swipe(x1, y1, x2, y2, random(1200, 1500));
         sml_move(x1, y1, x2, y2, random(1200, 1500));
     }
 }
 function swapeDown() {
     if (currentPackage() == "com.tencent.mm") {
-        let x1 = device.width * random(200, 500) / 1000;
-        let y1 = device.height * random(700, 900) / 1000;
-        let x2 = device.width * random(300, 800) / 1000;
-        let y2 = device.height * random(400, 600) / 1000;
+        let x1 = device.width * random(300, 400) / 1000;
+        let y1 = device.height * random(700, 850) / 1000;
+        let x2 = device.width * random(400, 500) / 1000;
+        let y2 = device.height * random(450, 600) / 1000;
         //swipe(x1, y1, x2, y2, random(1200, 1500));
         sml_move( x2, y2,x1, y1, random(1200, 1500));
     }
