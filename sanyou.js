@@ -7,7 +7,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.1";
+var versionNum = "v1.1.2";
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 
 function refreshStateInfo() {
@@ -364,11 +364,11 @@ function onMainPage() {
             if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) != null) {
                 let sleepTime = random(300000, 600000)
                 let cBtn = packageName("com.tencent.mm").id('a4k').find()//8.0.10
-                if(cBtn==null){
+                if(cBtn.length==0){
                     //8.0.1
                     cBtn = packageName("com.tencent.mm").id('bg1').find()
                 }
-                if (cBtn != null && cBtn.length > 6) {
+                if (cBtn.length > 6) {
                     for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                         kz();
                         for (let i = 0; i < 6; i++) {
