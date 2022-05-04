@@ -7,7 +7,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.0.8";
+var versionNum = "v1.0.9";
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 
 function refreshStateInfo() {
@@ -73,7 +73,7 @@ function 初始化配置(path) {
         "lunCountllb": 1,
         "countllb": 1*/
     }
-    jsonContent[device.serial]=new Date().getTime()
+    jsonContent[device.serial] = new Date().getTime()
     files.write(path, JSON.stringify(jsonContent));
     sleep(1000);
 }
@@ -121,7 +121,7 @@ function getAppAlive(name) {
 }
 function 进程守护() {
     //log("进程守护")
-    
+
     if (getAppAlive(device.serial + "-1") == false) {
         setAppAlive(device.serial + "-1")
         log("重启守护应用")
@@ -300,7 +300,7 @@ function shanyou() {
     let cBtn = packageName("com.tencent.mm").id('ft6').find()
     if (cBtn != null) {
         for (let i = 0; i < cBtn.length; i++) {
-            if (cBtn[i].text() == "ROmantic~zZ" || cBtn[i].text() == "群姐" || cBtn[i].text() == "ZhaoLin"|| cBtn[i].text().lastIndexOf('信团队') >-1|| cBtn[i].text().lastIndexOf('传输助手') >-1|| cBtn[i].text().lastIndexOf('别信') >-1) {
+            if (cBtn[i].text() == "ROmantic~zZ" || cBtn[i].text() == "群姐" || cBtn[i].text() == "ZhaoLin" || cBtn[i].text().lastIndexOf('信团队') > -1 || cBtn[i].text().lastIndexOf('传输助手') > -1 || cBtn[i].text().lastIndexOf('别信') > -1) {
                 continue
             }
             let wBtn = cBtn[i]
@@ -308,7 +308,7 @@ function shanyou() {
                 if (wBtn != null && wBtn.clickable()) {
                     wBtn.click();
                     break;
-                } else if(wBtn != null &&wBtn.parent()!=null){
+                } else if (wBtn != null && wBtn.parent() != null) {
                     wBtn = wBtn.parent();
                 }
             }
@@ -361,8 +361,38 @@ function onMainPage() {
         if (wBtn != null && wBtn.clickable()) {
             wBtn.click();
             sleep(5000);
-            break;
-        } else if(wBtn != null &&wBtn.parent()!=null){
+            if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) != null) {
+                let sleepTime = random(300000, 600000)
+                for (let i = 0; i < sleepTime / 1000 / 60; i++) {
+                    kz();
+                    for (let i = 0; i < 6; i++) {
+                        let x1 = device.width * random(400, 900) / 1000;
+                        let y1 = device.height * random(300, 800) / 1000;
+                        press(x1, y1, random(2000, 2500));
+                        sleep(random(1000, 2000));
+                        if(text("取消顶置").findOne(5000) != null){
+                            back();
+                        }
+                        if (text("不再关注").findOne(5000) != null) {
+                            click("不再关注");
+                            sleep(random(1000, 2000));
+                            if (text("不再关注").findOne(5000) != null) {
+                                click("不再关注");
+                            }
+                        } else  if (text("删除该聊天").findOne(5000) != null) {
+                            click("删除该聊天");
+                            sleep(random(1000, 2000));
+                            if (text("删除").findOne(5000) != null) {
+                                click("删除");
+                            }
+                        }
+                        sleep(random(4000, 6000));
+
+                    }
+                }
+                break;
+            };
+        } else if (wBtn != null && wBtn.parent() != null) {
             wBtn = wBtn.parent();
         }
     }
@@ -374,7 +404,7 @@ function onMainPage() {
             if (className("android.widget.TextView").text("公众号").findOne(5000) != null) {
                 break;
             };
-        } else if(wBtn != null &&wBtn.parent()!=null){
+        } else if (wBtn != null && wBtn.parent() != null) {
             wBtn = wBtn.parent();
         }
     }
@@ -394,11 +424,11 @@ function onMainPage() {
                 return;
             }
         }
-        
+
         if (shanyou()) {
-            if(random(0,1)==1){
+            if (random(0, 1) == 1) {
                 swapeToRead()
-            }else{
+            } else {
                 swapeDown()
             }
         }
@@ -422,7 +452,7 @@ function swapeDown() {
         let x2 = device.width * random(400, 500) / 1000;
         let y2 = device.height * random(450, 600) / 1000;
         //swipe(x1, y1, x2, y2, random(1200, 1500));
-        sml_move( x2, y2,x1, y1, random(1200, 1500));
+        sml_move(x2, y2, x1, y1, random(1200, 1500));
     }
 }
 //曲线滑动---贝塞尔曲线
@@ -796,7 +826,7 @@ for (; ;) {
         返回v首页();
         continue;
     }
-    sleep(random(300000, 600000));
+    //sleep(random(300000, 600000));
 
 }
 
