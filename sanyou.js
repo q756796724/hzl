@@ -7,7 +7,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.2";
+var versionNum = "v1.1.3";
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 
 function refreshStateInfo() {
@@ -364,7 +364,7 @@ function onMainPage() {
             if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) != null) {
                 let sleepTime = random(300000, 600000)
                 let cBtn = packageName("com.tencent.mm").id('a4k').find()//8.0.10
-                if(cBtn.length==0){
+                if (cBtn.length == 0) {
                     //8.0.1
                     cBtn = packageName("com.tencent.mm").id('bg1').find()
                 }
@@ -393,13 +393,13 @@ function onMainPage() {
                                 }
                             }
                             sleep(random(4000, 6000));
-    
+
                         }
                     }
-                }else{
+                } else {
                     sleep(random(300000, 600000))
                 }
-                
+
                 break;
             };
         } else if (wBtn != null && wBtn.parent() != null) {
@@ -818,11 +818,37 @@ for (; ;) {
                 }
             }
         }
+        
+        app.launch("com.ss.android.ugc.aweme");
+        sleep(60000)
+        if (currentPackage() == "com.ss.android.ugc.aweme") {
+            home();
+            sleep(10000)
+        }
+        app.launch("com.smile.gifmaker");
+        sleep(60000)
+        if (currentPackage() == "com.smile.gifmaker") {
+            home();
+            sleep(10000)
+        }
+        app.launch("com.ss.android.ugc.live");
+        sleep(60000)
+        if (currentPackage() == "com.ss.android.ugc.live") {
+            home();
+            sleep(10000)
+        }
+        app.launch("com.ss.android.article.news");
+        sleep(60000)
+        if (currentPackage() == "com.ss.android.article.news") {
+            home();
+            sleep(10000)
+        }
+        
 
     }
 
 
-    if (nowHour < 7 && nowHour > 6) {
+    if (nowHour < 7 && nowHour > 2) {
         sleep(random(3600000, 5000000));
         continue;
     }
