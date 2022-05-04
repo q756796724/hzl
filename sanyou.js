@@ -7,7 +7,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.0.7";
+var versionNum = "v1.0.8";
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 
 function refreshStateInfo() {
@@ -356,12 +356,21 @@ function shanyou() {
 
 function onMainPage() {
     //log("进入v成功");
-
-    let wBtn = className("android.widget.TextView").text("通讯录").findOne(3000);
+    let wBtn = className("android.widget.TextView").text("微信").findOne(3000);
     for (let i = 0; i < 8; i++) {
         if (wBtn != null && wBtn.clickable()) {
             wBtn.click();
-            sleep(3000);
+            sleep(5000);
+            break;
+        } else if(wBtn != null &&wBtn.parent()!=null){
+            wBtn = wBtn.parent();
+        }
+    }
+    wBtn = className("android.widget.TextView").text("通讯录").findOne(3000);
+    for (let i = 0; i < 8; i++) {
+        if (wBtn != null && wBtn.clickable()) {
+            wBtn.click();
+            sleep(5000);
             if (className("android.widget.TextView").text("公众号").findOne(5000) != null) {
                 break;
             };
