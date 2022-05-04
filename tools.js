@@ -3,7 +3,7 @@
  * 个人配置
  */
 var 仓库名 = "hzl"     //需要更换仓库名
-var versionNum = "v1.1.4";
+var versionNum = "v1.1.5";
 
 toolsStorage = storages.create("tools配置");
 var settingPath = files.join("/sdcard/fanqie/", "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
@@ -13,7 +13,7 @@ if (!files.exists(settingPath)) {
 }
 threads.start(main);//启动线程运行main函数
 
-setInterval(进程守护(), 60000);
+
 
 function 初始化配置(path) {
     files.createWithDirs(path)  //开始创建文件
@@ -86,6 +86,7 @@ function 进程守护() {
  * 主函数:利用脚本引擎运行指定的代码
  */
 function main() {
+    setInterval(进程守护(), 60000);
     autoSel = true
     console.show();   //打开控制台
     toastLog("版本号:" + versionNum);
