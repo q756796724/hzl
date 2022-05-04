@@ -7,7 +7,8 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.0.4";
+var versionNum = "v1.0.5";
+auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 
 function refreshStateInfo() {
 
@@ -646,7 +647,7 @@ function 等待未响应() {
 
 
 
-auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
+
 //console.show();
 /*sleep(1000);
 console.setSize(device.width -100, device.height / 4);
