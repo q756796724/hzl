@@ -1,6 +1,6 @@
 //进程守护
 
-var versionNum = "v1.0.8";
+var versionNum = "v1.0.9";
 toolsStorage = storages.create("tools配置");
 
 
@@ -151,16 +151,11 @@ function getAppAlive(name) {
     配置 = 读取配置(settingPath);
     if (配置[name] != undefined) {
         if (new Date().getTime() - 配置[name] < 3*60 * 1000) {
-
-            log(new Date().getTime() - 配置[name])
             return true
         } else {
-            log("3")
             return false
         }
-
     } else {
-        log("1")
         return true
     }
     /*if(toolsStorage.get(name)!=undefined){
