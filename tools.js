@@ -90,7 +90,7 @@ function getSelect(runSelect) {
         exit()
     } else if (runSelect == 9) {
         github下载的脚本 = 打开Github文件("sanyou.js");//这个方法返回的就是要运行的代码
-    }else if (runSelect == 9) {
+    }else if (runSelect == 10) {
         github下载的脚本 = 打开Github文件("dbautotx.js");//这个方法返回的就是要运行的代码
     }
     //console.info("下载完成的代码为1:"+'\n'+github下载的脚本);
