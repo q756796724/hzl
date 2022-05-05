@@ -1,5 +1,5 @@
 //duobaoAutoTx
-var versionNum = "v1.0.0";
+var versionNum = "v1.0.1";
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 
 toastLog(device.brand);
@@ -26,12 +26,21 @@ for (; ;) {
         storage.put("dbTodayTxCount", 0);
     }
     if (currentPackage() == "com.frp.fun") {
-
+        if(packageName("com.frp.fun").textContains("请检查您的网络").findOnce()!=null){
+            sleep(1000)
+            click("确定")
+            sleep(5000)
+        }
         let cBtn = packageName("com.frp.fun").id('ll_tab_two').findOnce()
         if (cBtn != null) {
             cBtn.click()
             sleep(10000)
             log(packageName("com.frp.fun").id('loginwxbtn').find().length)
+        }
+        if(packageName("com.frp.fun").textContains("请检查您的网络").findOnce()!=null){
+            sleep(1000)
+            click("确定")
+            sleep(5000)
         }
         cBtn = packageName("com.frp.fun").id('ll_tab_five').findOnce()
         if (cBtn != null) {
@@ -54,23 +63,42 @@ for (; ;) {
                         if (cBtn != null) {
                             cBtn.click()
                             sleep(4000)
-                            click("确定")
-                            sleep(4000)
-    
-                            click("确定")
-                            sleep(4000)
-                            back()
-                            sleep(4000)
-                            back()
-                            sleep(4000)
-                            back()
+                            if(packageName("com.frp.fun").textContains("确认提现").findOnce()!=null){
+                                click("确定")
+                                sleep(4000)
+        
+                                click("确定")
+                                sleep(4000)
+                                back()
+                                sleep(4000)
+                                back()
+                                sleep(4000)
+                                back()
+                            }
                         }
                     }
                 }
             }
         }
     }
-    sleep(300000)
+    if(packageName("com.frp.fun").textContains("请检查您的网络").findOnce()!=null){
+        sleep(1000)
+        click("确定")
+        sleep(5000)
+    }
+    sleep(100000)
+    if(packageName("com.frp.fun").textContains("请检查您的网络").findOnce()!=null){
+        sleep(1000)
+        click("确定")
+        sleep(5000)
+    }
+    sleep(100000)
+    if(packageName("com.frp.fun").textContains("请检查您的网络").findOnce()!=null){
+        sleep(1000)
+        click("确定")
+        sleep(5000)
+    }
+    sleep(100000)
 }
 
 
