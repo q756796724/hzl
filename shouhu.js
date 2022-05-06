@@ -1,25 +1,898 @@
-//进程守护
 
-var versionNum = "v1.0.9";
-toolsStorage = storages.create("tools配置");
+storage = storages.create("fanqiecloud配置");
 
+var topPackage = "";
+var topActivity = "";
 
+var MAIN_PKG = "com.fanqie.cloud";
+var PKG_NAME = "com.tencent.mm";
+var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
+var versionNum = "v1.1.4调试";
+var minliaotiancount = 100;//聊天列表最小数量
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
+
+function refreshStateInfo() {
+
+    sleep(1000);
+    topPackage = currentPackage();
+    sleep(1000);
+
+    topActivity = currentActivity();
+    //log("==> topPackage: " + topPackage);
+    //log("==> topActivity: " + topActivity);
+}
+function clickx(x, y) {
+    x = x + random(-5, -1)
+    y = y + random(-5, -1)
+    click(x < 0 ? 1 : x, y < 0 ? 1 : y)
+}
+function longclickx(x, y) {
+    x = x + random(-5, -1)
+    y = y + random(-5, -1)
+    press(x < 0 ? 1 : x, y < 0 ? 1 : y, random(2000, 2500));
+}
+
+var 悬浮窗 = floaty.window(
+    <frame id="jbkz" h="auto" w="auto" gravity="center" bg="#77ff0000">
+        <button id="console" text="暂停" />
+    </frame>
+);
+
+悬浮窗.setPosition(10, device.height / 2);   //设置位置（x，y）
+悬浮窗.setAdjustEnabled(true);   //显示调节位置控件
+悬浮窗.exitOnClose();   //关闭悬浮窗时自动结束脚本运行
+
+
+var logDemo = ('<vertical id="win"  bg="#80000000" h="{{Math.floor(device.height *0.7)}}px" >\
+     <View bg="#00ccff" h="1px"  w="{{Math.floor(device.width*0.8)}}px"  />\
+        <text  id="wz" textColor="#FFFFFFFF" textSize="12" textStyle="bold" text=""  textIsSelectable="true"  maxliness="1"  />\
+    <View bg="#00ccff" h="1px" textSize="10"  w="{{Math.floor(device.width*0.8)}}px" />\
+    <com.stardust.autojs.core.console.ConsoleView    id="consoleLog"   />\
+</vertical>');
+var console_arr = android.util.SparseArray();
+console_arr.put(android.util.Log.VERBOSE, java.lang.Integer(colors.parseColor("#ffa500")));
+console_arr.put(android.util.Log.DEBUG, java.lang.Integer(colors.parseColor("#ffffff")));
+console_arr.put(android.util.Log.INFO, java.lang.Integer(colors.parseColor("#64dd17")));
+console_arr.put(android.util.Log.WARN, java.lang.Integer(colors.parseColor("#00ddff")));
+console_arr.put(android.util.Log.ERROR, java.lang.Integer(colors.parseColor("#ff0000")));
+console_arr.put(android.util.Log.ASSERT, java.lang.Integer(colors.parseColor("#ffff534e")));
+var 悬浮窗2 = floaty.rawWindow(logDemo);
+ui.run(function () { 悬浮窗2.consoleLog.findViewById(context.getResources().getIdentifier("input_container", "id", context.getPackageName())).setVisibility(8); });
+悬浮窗2.consoleLog.setColors(console_arr);
+悬浮窗2.consoleLog.setConsole(runtime.console);
+悬浮窗2.setTouchable(false);
+悬浮窗2.setPosition(0, device.height * 0.1);
+
+//setInterval(() => { }, 1000);
+
 var settingPath = files.join("/sdcard/fanqie/", "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
 if (!files.exists(settingPath)) {
     初始化配置(settingPath);
     toastLog("初始化配置");
 }
-toastLog("版本号:" + versionNum);
-setInterval(() => { }, 1000);
-var w = floaty.rawWindow(
-    <frame gravity="center">
-        <text id="text">。 。 。</text>
-    </frame>
-);
+function 初始化配置(path) {
+    files.createWithDirs(path)  //开始创建文件
+    let jsonContent = {
+        /*"date": new Date().toLocaleDateString(),
+        "lunCount": 1,
+        "count": 1,
+        "lunCountllb": 1,
+        "countllb": 1*/
+    }
+    jsonContent[device.serial] = new Date().getTime()
+    files.write(path, JSON.stringify(jsonContent));
+    sleep(1000);
+}
 
-w.setPosition(500, 50);
-//w.setPosition(device.width * 0.03, device.height * 0.158);
+function 保存配置(path, jsonContent) {
+    files.createWithDirs(path)  //开始创建文件
+    files.write(path, JSON.stringify(jsonContent));
+    sleep(1000);
+}
+
+function 读取配置(path) {
+    return JSON.parse(files.read(path));
+}
+
+//app保活双进程守护
+function setAppAlive(name) {
+    配置 = 读取配置(settingPath);
+    配置[name] = new Date().getTime();
+    保存配置(settingPath, 配置);
+    //toolsStorage.put(name, new Date().getTime());
+}
+function getAppAlive(name) {
+    配置 = 读取配置(settingPath);
+    if (配置[name] != undefined) {
+        setAppAlive(device.serial)
+        if (new Date().getTime() - 配置[name] < 60 * 1000) {
+            return true
+        } else {
+            return false
+        }
+
+    } else {
+        return true
+    }
+    /*if (toolsStorage.get(name) != undefined) {
+        if (new Date().getTime() - toolsStorage.get(name) < 60 * 1000) {
+            return true
+        } else {
+            return false
+        }
+
+    } else {
+        return true
+    }*/
+}
+function 进程守护() {
+    //log("进程守护")
+
+    if (getAppAlive(device.serial + "-1") == false) {
+        setAppAlive(device.serial + "-1")
+        log("重启守护应用")
+        home();
+        sleep(5000);
+        app.launch("com.fanqie.shouhu");
+    }
+    return 进程守护
+}
+
+var thread = threads.start(function () {
+    setInterval(进程守护(), 60000);
+});
+//多线程demo
+/*var thread = threads.start(function () {
+function 结束未响应() {
+   if (textMatches(/(.*未响应.*|.*没有响应.*)/).findOne(3000) != null && textMatches(/(.*等待.*)/).findOne(3000) != null) {
+       log(new Date().toLocaleString() + "-" + "检测到应用未响应");
+       textMatches(/(.*确定.*|.*关闭.*)/).findOne(3000).click();
+       log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
+   }
+   return 结束未响应;
+}
+setInterval(结束未响应(), 6000);
+});*/
+
+
+
+
+//指定确定按钮点击时要执行的动作
+悬浮窗.console.click(function () {
+    反状态 = 悬浮窗.console.getText();  //获得id="console"的按钮的文字
+    if (反状态 == "暂停") {
+        toast("脚本已暂停");
+        ui.run(function () {
+            悬浮窗.console.setText("开始");  //设置按钮文本
+        });
+    } else {
+        toast("脚本已继续");
+        ui.run(function () {
+            悬浮窗.console.setText("暂停");
+        });
+    }
+});
+function kz() {
+    while (1) {
+        反状态 = 悬浮窗.console.getText();
+        //log(反状态)
+        if (反状态 == "开始") {//反状态为开始时，脚本要暂停，即被阻塞
+            toastLog("脚本暂停中");
+            sleep(2000) //这个只影响主程序，就是你可以在这期间点开始运行，在sleep结束后，主程序会继续运行
+        } else {//反状态为暂停时，脚本要运行，即跳出死循环
+            break
+        }
+    }
+}
+
+
+
+
+
+/**
+* 日期相减获取天数（用于公式计算）
+* @param date1 日期一 '2020-06-05'
+* @param date2 日期二 '2020-06-04'
+* @returns {string}
+*/
+function calcDateDayDiff(date1Str, date2Str) {
+    //异常返回内容
+    var errorResult = "";
+    //解析
+    let date1 = parseDate(date1Str)
+    let date2 = parseDate(date2Str)
+    try {
+        //进行计算
+        var result = (date1 - date2) / (1000 * 60 * 60 * 24);
+        //保留0位小数
+        result = result.toFixed(0);
+        return result;
+    } catch (e) {
+        console.error("计算日期相差天数异常");
+        return errorResult;
+    }
+}
+/**
+             * 将日期格式化成指定格式的字符串
+             * @param date 要格式化的日期，不传时默认当前时间，也可以是一个时间戳
+             * @param fmt 目标字符串格式，支持的字符有：y,M,d,q,w,H,h,m,S，默认：yyyy-MM-dd HH:mm:ss
+             * @returns 返回格式化后的日期字符串
+             */
+function formatDate(date, fmt) {
+    date = date == undefined ? new Date() : date;
+    date = typeof date == 'number' ? new Date(date) : date;
+    fmt = fmt || 'yyyy-MM-dd HH:mm:ss';
+    var obj =
+    {
+        'y': date.getFullYear(), // 年份，注意必须用getFullYear
+        'M': date.getMonth() + 1, // 月份，注意是从0-11
+        'd': date.getDate(), // 日期
+        'q': Math.floor((date.getMonth() + 3) / 3), // 季度
+        'w': date.getDay(), // 星期，注意是0-6
+        'H': date.getHours(), // 24小时制
+        'h': date.getHours() % 12 == 0 ? 12 : date.getHours() % 12, // 12小时制
+        'm': date.getMinutes(), // 分钟
+        's': date.getSeconds(), // 秒
+        'S': date.getMilliseconds() // 毫秒
+    };
+    var week = ['天', '一', '二', '三', '四', '五', '六'];
+    for (var i in obj) {
+        fmt = fmt.replace(new RegExp(i + '+', 'g'), function (m) {
+            var val = obj[i] + '';
+            if (i == 'w') return (m.length > 2 ? '星期' : '周') + week[val];
+            for (var j = 0, len = val.length; j < m.length - len; j++) val = '0' + val;
+            return m.length == 1 ? val : val.substring(val.length - m.length);
+        });
+    }
+    return fmt;
+}
+/**
+             * 将字符串解析成日期
+             * @param str 输入的日期字符串，如'2014-09-13'
+             * @param fmt 字符串格式，默认'yyyy-MM-dd'，支持如下：y、M、d、H、m、s、S，不支持w和q
+             * @returns 解析后的Date类型日期
+             */
+function parseDate(str, fmt) {
+    fmt = fmt || 'yyyy-MM-dd';
+    var obj = { y: 0, M: 1, d: 0, H: 0, h: 0, m: 0, s: 0, S: 0 };
+    fmt.replace(/([^yMdHmsS]*?)(([yMdHmsS])\3*)([^yMdHmsS]*?)/g, function (m, $1, $2, $3, $4, idx, old) {
+        str = str.replace(new RegExp($1 + '(\\d{' + $2.length + '})' + $4), function (_m, _$1) {
+            obj[$3] = parseInt(_$1);
+            return '';
+        });
+        return '';
+    });
+    obj.M--; // 月份是从0开始的，所以要减去1
+    var date = new Date(obj.y, obj.M, obj.d, obj.H, obj.m, obj.s);
+    if (obj.S !== 0) date.setMilliseconds(obj.S); // 如果设置了毫秒
+    return date;
+}
+
+
+
+
+
+
+
+
+function 打开v() {
+    refreshStateInfo();
+    if (topPackage == MAIN_PKG || topPackage != PKG_NAME) {
+        home();
+        sleep(2000);
+        log("打开" + PKG_NAME);
+        app.launch(PKG_NAME);
+        sleep(15000);
+    }
+    refreshStateInfo();
+    if (topPackage == MAIN_PKG || topPackage != PKG_NAME) {
+        home();
+        sleep(2000);
+        log("打开" + PKG_NAME);
+        app.launch(PKG_NAME);
+        sleep(10000);
+    }
+
+    refreshStateInfo();
+    if (topPackage != PKG_NAME) {
+        关闭应用(PKG_NAME);
+        sleep(3000);
+        log("打开" + PKG_NAME);
+        app.launch(PKG_NAME);
+        sleep(30000);
+    }
+}
+function shanyou() {
+    let cBtn = packageName("com.tencent.mm").id('ft6').find()
+    if (cBtn != null) {
+        for (let i = 0; i < cBtn.length; i++) {
+            if (cBtn[i].text() == "ROmantic~zZ" || cBtn[i].text() == "群姐" || cBtn[i].text() == "ZhaoLin" || cBtn[i].text().lastIndexOf('信团队') > -1 || cBtn[i].text().lastIndexOf('传输助手') > -1 || cBtn[i].text().lastIndexOf('别信') > -1) {
+                continue
+            }
+            let wBtn = cBtn[i]
+            for (let i = 0; i < 4; i++) {
+                if (wBtn != null && wBtn.clickable()) {
+                    wBtn.click();
+                    break;
+                } else if (wBtn != null && wBtn.parent() != null) {
+                    wBtn = wBtn.parent();
+                }
+            }
+            //clickx(cBtn[i].bounds().centerX(), cBtn[i].bounds().bottom);
+            sleep(random(3000, 5000))
+            let cBtn1 = packageName("com.tencent.mm").id('d8').desc("更多信息").findOne(8000)
+            if (cBtn1 != null && cBtn1.clickable()) {
+                cBtn1.click();
+                sleep(random(3000, 5000))
+                let cBtn2 = packageName("com.tencent.mm").text("删除").findOne(3000)
+                if (cBtn2 != null) {
+                    click("删除")
+                    sleep(random(3000, 5000))
+                    let cBtn3 = packageName("com.tencent.mm").id('ffp').findOne(3000)
+                    if (cBtn3 != null && cBtn3.clickable()) {
+                        cBtn3.click();
+                        sleep(random(3000, 5000))
+                        return false
+                    } else {
+                        back()
+                        sleep(random(2000, 3000))
+                        back()
+                        sleep(random(2000, 3000))
+                        back()
+                        sleep(random(2000, 3000))
+                        continue
+                    }
+                } else {
+                    back()
+                    sleep(random(2000, 3000))
+                    back()
+                    sleep(random(2000, 3000))
+                    continue
+                }
+            } else {
+                back()
+                sleep(random(2000, 3000))
+                continue
+            }
+
+        }
+        return true
+    }
+}
+
+function liaotianshanyou() {
+    if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) == null) {
+        sleep(random(5000, 10000))
+        return
+    }
+    let cBtn = packageName("com.tencent.mm").id('a4k').find()//8.0.10
+    // if (cBtn.length == 0) {
+    //     //8.0.1
+    //     cBtn = packageName("com.tencent.mm").id('bg1').find()
+    // }
+    if (cBtn.length > 1 && cBtn.length != minliaotiancount) {
+        for (let i = 1; i < cBtn.length; i++) {
+            kz();
+            longclickx(cBtn[i].bounds().centerX(), cBtn[i].bounds().bottom)
+
+            sleep(random(1000, 2000));
+            if (text("取消顶置").findOne(5000) != null) {
+                back();
+                sleep(1000)
+                if (cBtn.length < minliaotiancount) {
+                    minliaotiancount = cBtn.length
+                }
+                continue;
+            }
+            if (text("不再关注").findOnce() != null) {
+                click("不再关注");
+                sleep(random(1000, 2000));
+                if (text("不再关注").findOne(5000) != null) {
+                    click("不再关注");
+                }
+                return
+            } else if (text("置顶公众号").findOnce() != null) {
+                click("删除该聊天");
+                sleep(random(1000, 2000));
+                if (text("删除").findOne(5000) != null) {
+                    click("删除");
+                }
+                return
+            } else {
+                clickx(cBtn[i].bounds().centerX(), cBtn[i].bounds().bottom)
+                sleep(1500)
+                clickx(cBtn[i].bounds().centerX(), cBtn[i].bounds().bottom)
+                sleep(random(1500, 2000))
+                if (packageName("com.tencent.mm").id('ipt').className("android.widget.TextView").textMatches(/(ROmantic~zZ|群姐|ZhaoLin|.*信团队|.*传输助手)/).findOne(3000) != null) {
+                    back();
+                    sleep(3000)
+                    if (cBtn.length < minliaotiancount) {
+                        minliaotiancount = cBtn.length
+                    }
+                    continue;
+                }
+
+                let wbtn = packageName("com.tencent.mm").id('d8').className("android.widget.ImageView").desc("聊天信息").findOnce();
+                if (wbtn != null && wbtn.clickable()) {
+                    wbtn.click();
+                    sleep(random(4000, 5000))
+                    if (packageName("com.tencent.mm").id('h8t').className("android.widget.ImageView").find().length > 0 && packageName("com.tencent.mm").id('h8t').className("android.widget.ImageView").find()[0].click()) {
+                        sleep(random(4000, 5000))
+                        let cBtn1 = packageName("com.tencent.mm").id('d8').desc("更多信息").findOne(8000)
+                        if (cBtn1 != null && cBtn1.clickable()) {
+                            cBtn1.click();
+                            sleep(random(3000, 5000))
+                            let cBtn2 = packageName("com.tencent.mm").text("删除").findOne(3000)
+                            if (cBtn2 != null) {
+                                click("删除")
+                                sleep(random(3000, 5000))
+                                let cBtn3 = packageName("com.tencent.mm").id('ffp').findOne(3000)
+                                if (cBtn3 != null && cBtn3.clickable()) {
+                                    cBtn3.click();
+                                    sleep(random(3000, 5000))
+                                    return
+                                } else {
+                                    back()
+                                    sleep(random(4000, 5000))
+                                    back()
+                                    sleep(random(4000, 5000))
+                                    back();
+                                    sleep(random(4000, 5000))
+                                    back();
+                                    sleep(random(4000, 5000))
+                                    back();
+                                    sleep(random(4000, 5000))
+                                    longclickx(cBtn[i].bounds().centerX(), cBtn[i].bounds().bottom)
+                                    sleep(random(1000, 2000));
+                                    if (text("删除该聊天").findOne(5000) != null) {
+                                        click("删除该聊天");
+                                        sleep(random(1000, 2000));
+                                        if (text("删除").findOne(5000) != null) {
+                                            click("删除");
+                                        }
+                                        return
+                                    } else {
+                                        back();
+                                        sleep(1000)
+                                        continue
+                                    }
+
+                                }
+                            } else {
+                                back()
+                                sleep(random(4000, 5000))
+                                back();
+                                sleep(random(4000, 5000))
+                                back();
+                                sleep(random(4000, 5000))
+                                back();
+                                sleep(random(4000, 5000))
+                                longclickx(cBtn[i].bounds().centerX(), cBtn[i].bounds().bottom)
+                                sleep(random(1000, 2000));
+                                if (text("删除该聊天").findOne(5000) != null) {
+                                    click("删除该聊天");
+                                    sleep(random(1000, 2000));
+                                    if (text("删除").findOne(5000) != null) {
+                                        click("删除");
+                                    }
+                                    return
+                                } else {
+                                    back();
+                                    sleep(1000)
+                                    continue
+                                }
+
+                            }
+                        } else {
+                            back();
+                            sleep(random(4000, 5000))
+                            back();
+                            sleep(random(4000, 5000))
+                            back();
+                            sleep(random(4000, 5000))
+                            longclickx(cBtn[i].bounds().centerX(), cBtn[i].bounds().bottom)
+                            sleep(random(1000, 2000));
+                            if (text("删除该聊天").findOne(5000) != null) {
+                                click("删除该聊天");
+                                sleep(random(1000, 2000));
+                                if (text("删除").findOne(5000) != null) {
+                                    click("删除");
+                                }
+                                return
+                            } else {
+                                back();
+                                sleep(1000)
+                                continue
+                            }
+
+                        }
+                    } else {
+                        back();
+                        sleep(random(4000, 5000))
+                        back();
+                        sleep(random(4000, 5000))
+                        longclickx(cBtn[i].bounds().centerX(), cBtn[i].bounds().bottom)
+                        sleep(random(1000, 2000));
+                        if (text("删除该聊天").findOne(5000) != null) {
+                            click("删除该聊天");
+                            sleep(random(1000, 2000));
+                            if (text("删除").findOne(5000) != null) {
+                                click("删除");
+                            }
+                            return
+                        } else {
+                            back();
+                            sleep(1000)
+                            continue
+                        }
+                    }
+                } else {
+                    back();
+                    sleep(random(4000, 5000))
+                    longclickx(cBtn[i].bounds().centerX(), cBtn[i].bounds().bottom)
+                    sleep(random(1000, 2000));
+                    if (text("删除该聊天").findOne(5000) != null) {
+                        click("删除该聊天");
+                        sleep(random(1000, 2000));
+                        if (text("删除").findOne(5000) != null) {
+                            click("删除");
+                        }
+                        return
+                    } else {
+                        back();
+                        sleep(1000)
+                        continue
+                    }
+                }
+            }
+        }
+
+    } else {
+        sleep(random(5000, 10000))
+    }
+}
+
+function onMainPage() {
+    //log("进入v成功");
+    let wBtns = className("android.widget.TextView").text("微信").find();
+    for (let i = 0; i < wBtns.length; i++) {
+        let wBtn = wBtns[i];
+        for (let i = 0; i < 4; i++) {
+            //log(i)
+            //log(wBtn)
+            if (wBtn != null && wBtn.clickable()) {
+                wBtn.click();
+                sleep(5000);
+                if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) != null) {
+                    let sleepTime = random(300000, 600000)
+                    for (let i = 0; i < sleepTime / 1000 / 60; i++) {
+                        liaotianshanyou();
+                    }
+                };
+            } else if (wBtn != null && wBtn.parent() != null) {
+                wBtn = wBtn.parent();
+            }
+        }
+    }
+
+
+    wBtns = className("android.widget.TextView").text("通讯录").find();
+    for (let i = 0; i < wBtns.length; i++) {
+        let wBtn = wBtns[i];
+        for (let i = 0; i < 4; i++) {
+            if (wBtn != null && wBtn.clickable()) {
+                wBtn.click();
+                sleep(5000);
+                if (className("android.widget.TextView").text("公众号").findOne(5000) != null) {
+                    break;
+                };
+            } else if (wBtn != null && wBtn.parent() != null) {
+                wBtn = wBtn.parent();
+            }
+        }
+    }
+
+
+    if (等待未响应() == 0) {
+        if (结束未响应()) {
+            return;
+        }
+    }
+    if (className("android.widget.TextView").text("公众号").findOne(5000) == null) {
+        return;
+    };
+    //log("进入通讯录成功");
+    for (let i = 0; i < 4; i++) {
+        if (等待未响应() == 0) {
+            if (结束未响应()) {
+                return;
+            }
+        }
+
+        if (shanyou()) {
+            if (random(0, 1) == 1) {
+                swapeToRead()
+            } else {
+                swapeDown()
+            }
+        }
+    }
+}
+
+function swapeToRead() {
+    if (currentPackage() == "com.tencent.mm") {
+        let x1 = device.width * random(300, 400) / 1000;
+        let y1 = device.height * random(700, 850) / 1000;
+        let x2 = device.width * random(400, 500) / 1000;
+        let y2 = device.height * random(450, 600) / 1000;
+        //swipe(x1, y1, x2, y2, random(1200, 1500));
+        sml_move(x1, y1, x2, y2, random(1200, 1500));
+    }
+}
+function swapeDown() {
+    if (currentPackage() == "com.tencent.mm") {
+        let x1 = device.width * random(300, 400) / 1000;
+        let y1 = device.height * random(700, 850) / 1000;
+        let x2 = device.width * random(400, 500) / 1000;
+        let y2 = device.height * random(450, 600) / 1000;
+        //swipe(x1, y1, x2, y2, random(1200, 1500));
+        sml_move(x2, y2, x1, y1, random(1200, 1500));
+    }
+}
+//曲线滑动---贝塞尔曲线
+function bezier_curves(cp, t) {
+    cx = 3.0 * (cp[1].x - cp[0].x);
+    bx = 3.0 * (cp[2].x - cp[1].x) - cx;
+    ax = cp[3].x - cp[0].x - cx - bx;
+    cy = 3.0 * (cp[1].y - cp[0].y);
+    by = 3.0 * (cp[2].y - cp[1].y) - cy;
+    ay = cp[3].y - cp[0].y - cy - by;
+
+    tSquared = t * t;
+    tCubed = tSquared * t;
+    result = {
+        "x": 0,
+        "y": 0
+    };
+    result.x = (ax * tCubed) + (bx * tSquared) + (cx * t) + cp[0].x;
+    result.y = (ay * tCubed) + (by * tSquared) + (cy * t) + cp[0].y;
+    return result;
+};
+
+//仿真随机带曲线滑动  
+//qx, qy, zx, zy, time 代表起点x,起点y,终点x,终点y,过程耗时单位毫秒
+function sml_move(qx, qy, zx, zy, time) {
+    var xxy = [time];
+    var point = [];
+    var dx0 = {
+        "x": qx,
+        "y": qy
+    };
+
+    var dx1 = {
+        "x": random(qx - 100, qx + 100),
+        "y": random(qy, qy + 50)
+    };
+    var dx2 = {
+        "x": random(zx - 100, zx + 100),
+        "y": random(zy, zy + 50),
+    };
+    var dx3 = {
+        "x": zx,
+        "y": zy
+    };
+    for (var i = 0; i < 4; i++) {
+
+        eval("point.push(dx" + i + ")");
+
+    };
+    //log(point[3].x)
+
+    for (let i = 0; i < 1; i += 0.08) {
+        xxyy = [parseInt(bezier_curves(point, i).x), parseInt(bezier_curves(point, i).y)]
+
+        xxy.push(xxyy);
+
+    }
+
+    //log(xxy);
+    gesture.apply(null, xxy);
+};
+
+
+function 清空文件夹(path) {
+    var arr = files.listDir(path);
+    for (let i = 0; i < arr.length; i++) {
+        if (files.isDir(path + arr[i])) {
+            files.removeDir(path + arr[i]);
+        } else {
+            files.remove(path + arr[i]);
+        }
+    }
+}
+function 查询目录下文件个数(path) {
+    let fileCount = 0;
+    let arr = files.listDir(path);
+    for (let i = 0; i < arr.length; i++) {
+        if (!files.isDir(path + arr[i])) {
+            fileCount++
+        }
+    }
+    return fileCount;
+}
+
+
+
+function 关闭应用(packageName) {
+    log("尝试关闭" + packageName);
+    var name = getPackageName(packageName);
+    if (!name) {
+        if (getAppName(packageName)) {
+            name = packageName;
+        } else {
+            log("关闭" + packageName + "失败");
+            return false;
+        }
+    }
+    app.openAppSetting(name);
+    sleep(2000);
+    if (text(app.getAppName(name)).findOne(5000) != null && text("卸载").findOne(5000) != null) {
+        let is_sure = textMatches(/(.*强.*|.*停.*|.*结.*|.*行.*)/).findOne(3000);
+        if (is_sure != null) {
+            if (is_sure.enabled()) {
+                is_sure.click();
+                sleep(2000);
+                let closeBtn = textMatches(/(.*确定|.*停止)/).findOne(3000);
+                if (closeBtn != null) {
+                    closeBtn.click();
+                }
+                log(app.getAppName(name) + "应用已被关闭");
+                sleep(2000);
+                back();
+            } else {
+                log(app.getAppName(name) + "应用不能被正常关闭或不在后台运行");
+                back();
+            }
+        } else {
+            log("没有找到" + app.getAppName(name) + "应用强行结束");
+        }
+    } else {
+        log("不在" + app.getAppName(name) + "应用设置界面");
+    }
+
+}
+
+function 返回v首页() {
+    for (let i = 0; i < 15; i++) {
+        if (等待未响应() == 0) {
+            if (结束未响应()) {
+                return;
+            }
+        }
+        kz();
+        refreshStateInfo();
+        if (topPackage != PKG_NAME) {
+            关闭应用(PKG_NAME);
+            sleep(2000);
+            home();
+            sleep(1000);
+            return;
+        }
+
+        let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+        if (rBtn != null && rBtn.parent() != null) {
+            rBtn.parent().click();
+            log("按左上角返回");
+        }
+
+        let wBtn = className("android.widget.TextView").text("通讯录").findOne(5000);
+        refreshStateInfo();
+        if (topActivity != MAIN_PAGE || wBtn == null) {
+            log("按返回键" + wBtn);
+            back();
+            sleep(5000);
+        } else {
+            return;
+        }
+    }
+    关闭应用(PKG_NAME);
+    sleep(2000);
+    home();
+    sleep(1000);
+}
+
+
+
+
+
+
+
+
+
+function 结束未响应() {
+    if (textMatches(/(.*未响应.*|.*没有响应.*|.*无响应.*)/).findOne(3000) != null) {
+        log(new Date().toLocaleString() + "-" + "检测到应用未响应");
+        let cBtn = textMatches(/(确定|关闭|关闭应用)/).findOne(3000);
+        if (cBtn != null) {
+            cBtn.click();
+            sleep(1000);
+            cBtn = textMatches(/(确定|关闭|关闭应用)/).findOne(3000);
+            if (cBtn != null) {
+                log("控件关闭失败，参数坐标点击关闭");
+                let cBounds = cBtn.bounds();
+                clickx(cBounds.right, cBounds.bottom);
+            } else {
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
+                return true;
+            }
+            cBtn = textMatches(/(确定|关闭|关闭应用)/).findOne(3000);
+            if (cBtn != null) {
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应失败");
+                return false;
+            } else {
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function 等待未响应() {
+    if (textMatches(/(.*未响应.*|.*没有响应.*|.*无响应.*)/).findOne(3000) != null) {
+        log(new Date().toLocaleString() + "-" + "检测到应用未响应");
+        let cBtn = textMatches(/(等待)/).findOne(3000);
+        if (cBtn != null) {
+            cBtn.click();
+            sleep(1000);
+            cBtn = textMatches(/(等待)/).findOne(3000);
+            if (cBtn != null) {
+                log("等待控件关闭失败，参数坐标点击关闭");
+                let cBounds = cBtn.bounds();
+                clickx(cBounds.right, cBounds.bottom);
+            } else {
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------等待未响应成功");
+                sleep(30000)
+                return 1;
+            }
+            cBtn = textMatches(/(等待)/).findOne(3000);
+            if (cBtn != null) {
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------等待未响应失败");
+                return 0;
+            } else {
+                log(new Date().toLocaleString() + "-" + "----------------------------------------------等待未响应成功");
+                sleep(30000)
+                return 1;
+            }
+        }
+    }
+    return -1;
+}
+
+
+
+
+
+
+
+
+//console.show();
+/*sleep(1000);
+console.setSize(device.width -100, device.height / 4);
+sleep(2000);*/
+/*if (!requestScreenCapture()) {
+    toastLog("请求截图失败");
+    exit();
+} else {
+    toastLog("请求截图成功");
+}*/
+toastLog(device.brand);
+toastLog("版本号:" + versionNum);
+
+
+
+device.keepScreenDim();
+home();
 //定义
 /** 前台服务保活 */
 let KeepAliveService = {
@@ -60,133 +933,153 @@ let KeepAliveService = {
         manager.cancelAll();
     },
 };
-//if (app.autojs.versionName == '4.1.1 Alpha2') {
-sleep(1000);
-KeepAliveService.stop();
-sleep(5000);
-KeepAliveService.start("keepalive", "进程守护");
-//}
-
-
-//app保活双进程守护
-// function setAppAlive(name) {
-//     let temp = null;
-//     try {
-//         temp = http.post("106.55.225.58:8081/fanqie/setAppAlive", {
-//             "serial": name
-//         });
-//         if (temp && temp.statusCode == 200) {
-//             temp = temp.body.string();
-//             let rep = JSON.parse(temp);
-//             let repState = rep["state"];
-//             if (repState == 1) {
-//                 return true
-//             } else {
-//                 console.warn("setAppAlive失败" + temp);
-//                 return false
-//             }
-//         }
-//         return false
-//     } catch (err) {
-//         console.error("setAppAlive报错,原因:" + err);
-//         return false
-//     }
-
-// }
-// function getAppAlive(name) {
-//     let temp = null;
-//     try {
-//         temp = http.post("106.55.225.58:8081/fanqie/getAppAlive", {
-//             "serial": name
-//         });
-//         if (temp && temp.statusCode == 200) {
-//             temp = temp.body.string();
-//             let rep = JSON.parse(temp);
-//             let repState = rep["state"];
-//             if (repState == 1) {
-//                 let repData = rep["data"];
-//                 return repData
-//             } else {
-//                 console.warn("getAppAlive获取数据失败" + temp);
-//             }
-//         }
-//     } catch (err) {
-//         console.error("getAppAlive报错,原因:" + err);
-//     }
-// }
-
-function 初始化配置(path) {
-    files.createWithDirs(path)  //开始创建文件
-    let jsonContent = {
-        /*"date": new Date().toLocaleDateString(),
-        "lunCount": 1,
-        "count": 1,
-        "lunCountllb": 1,
-        "countllb": 1*/
-    }
-    jsonContent[device.serial]=new Date().getTime()
-    jsonContent[device.serial+ "-1"]=new Date().getTime()
-    files.write(path, JSON.stringify(jsonContent));
+if (app.autojs.versionName == '4.1.1 Alpha2') {
     sleep(1000);
+    KeepAliveService.stop();
+    sleep(5000);
+    KeepAliveService.start("fanqie", "茄子云");
 }
 
-function 保存配置(path, jsonContent) {
-    files.createWithDirs(path)  //开始创建文件
-    files.write(path, JSON.stringify(jsonContent));
-    sleep(1000);
-}
 
-function 读取配置(path) {
-    return JSON.parse(files.read(path));
-}
 
-function setAppAlive(name) {
-    //log(name)
-    //toolsStorage.put(name, new Date().getTime());
-    配置 = 读取配置(settingPath);
-    配置[name] = new Date().getTime();
-    保存配置(settingPath, 配置);
-}
-function getAppAlive(name) {
-    配置 = 读取配置(settingPath);
-    if (配置[name] != undefined) {
-        if (new Date().getTime() - 配置[name] < 3*60 * 1000) {
-            return true
-        } else {
-            return false
-        }
-    } else {
-        return true
-    }
-    /*if(toolsStorage.get(name)!=undefined){
-        if(new Date().getTime()-toolsStorage.get(name)<3*60*1000){
-            return true
-        }else{
-            return false
-        }
 
-    }else{
-        return true
-    }*/
-}
+
 for (; ;) {
-    setAppAlive(device.serial+ "-1")
-    if (getAppAlive(device.serial) == false) {
-        setAppAlive(device.serial)
-        log("重启主应用")
+    kz();
+    var nowHour = new Date().getHours();
+    if (storage.get("date", new Date().toLocaleDateString()) != new Date().toLocaleDateString()) {
+        toastLog("初始化配置");
+        storage.put("date", new Date().toLocaleDateString());
+        console.clear();
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
+        if (files.listDir("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/").length > 100) {
+            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/");
+        }
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideotmp/");
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideocache/");
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxanewfiles/");
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxafiles/");
+        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxacache/");
+        清空文件夹("/sdcard/Pictures/WeiXin/");
+        let path = "/sdcard/Android/data/com.tencent.mm/MicroMsg/";
+        let arr = files.listDir(path);
+        for (let i = 0; i < arr.length; i++) {
+            if (files.isDir(path + arr[i]) && arr[i].length == 32) {
+                path = path + arr[i] + '/'
+                if (files.listDir(path + "finder/image/").length > 30) {
+                    清空文件夹(path + "finder/image/");
+                }
+                if (files.listDir(path + "finder/video/").length > 8) {
+                    清空文件夹(path + "finder/video/");
+                }
+                if (files.listDir(path + "finder/tmp/").length > 100) {
+                    清空文件夹(path + "finder/tmp/");
+                }
+                if (查询目录下文件个数(path + "finder/avatar/") > 100) {
+                    清空文件夹(path + "finder/avatar/");
+                }
+                if (files.listDir(path + "image2/").length > 30) {
+                    清空文件夹(path + "image2/");
+                }
+                if (files.listDir(path + "record/").length > 30) {
+                    清空文件夹(path + "record/");
+                }
+                if (files.listDir(path + "video/").length > 30) {
+                    清空文件夹(path + "video/");
+                }
+            }
+        }
+
+        app.launch("com.ss.android.ugc.aweme");
+        sleep(60000)
+        if (currentPackage() == "com.ss.android.ugc.aweme") {
+            home();
+            sleep(5000);
+            关闭应用("com.ss.android.ugc.aweme");
+            sleep(10000)
+        }
+        app.launch("com.smile.gifmaker");
+        sleep(60000)
+        if (currentPackage() == "com.smile.gifmaker") {
+            home();
+            sleep(5000);
+            关闭应用("com.smile.gifmaker");
+            sleep(10000)
+        }
+        app.launch("com.ss.android.ugc.live");
+        sleep(60000)
+        if (currentPackage() == "com.ss.android.ugc.live") {
+            home();
+            sleep(5000);
+            关闭应用("com.ss.android.ugc.live");
+            sleep(10000)
+        }
+        app.launch("com.ss.android.article.news");
+        sleep(60000)
+        if (currentPackage() == "com.ss.android.article.news") {
+            home();
+            sleep(5000);
+            关闭应用("com.ss.android.article.news");
+            sleep(10000)
+        }
+
+
+    }
+
+
+    if (nowHour < 7 && nowHour > 2) {
+        sleep(random(3600000, 5000000));
+        continue;
+    }
+
+    打开v();
+
+    app.launch("com.ss.android.ugc.aweme");
+    sleep(60000)
+    if (currentPackage() == "com.ss.android.ugc.aweme") {
         home();
         sleep(5000);
-        app.launch("com.fanqie.cloud");
-
-        // log("重启主应用")
-        // home();
-        // sleep(3000);
-        // app.launch("com.fanqie.xiangjiao");
-        // sleep(60000);
-        // if(currentPackage() == "com.fanqie.xiangjiao"){
-        //     app.launch("com.feige.autoapp004");
-        // }
+        关闭应用("com.ss.android.ugc.aweme");
+        sleep(10000)
     }
-   
-    sleep(30 * 1000);
+    app.launch("com.smile.gifmaker");
+    sleep(60000)
+    if (currentPackage() == "com.smile.gifmaker") {
+        home();
+        sleep(5000);
+        关闭应用("com.smile.gifmaker");
+        sleep(10000)
+    }
+    app.launch("com.ss.android.ugc.live");
+    sleep(60000)
+    if (currentPackage() == "com.ss.android.ugc.live") {
+        home();
+        sleep(5000);
+        关闭应用("com.ss.android.ugc.live");
+        sleep(10000)
+    }
+    app.launch("com.ss.android.article.news");
+    sleep(60000)
+    if (currentPackage() == "com.ss.android.article.news") {
+        home();
+        sleep(5000);
+        关闭应用("com.ss.android.article.news");
+        sleep(10000)
+    }
+
+
+    refreshStateInfo();
+    let wBtn = className("android.widget.TextView").text("通讯录").findOne(3000);
+    if (topActivity == MAIN_PAGE && wBtn != null) {
+        onMainPage();
+    } else {
+        返回v首页();
+        continue;
+    }
+    //sleep(random(300000, 600000));
+
 }
+
+
+
