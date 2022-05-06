@@ -1,11 +1,11 @@
 //duobaoAutoTx
-var versionNum = "v1.0.1";
+var versionNum = "v1.0.2";
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 
 toastLog(device.brand);
 toastLog("版本号:" + versionNum);
 storage = storages.create("fanqiecloud配置");
-var dbTodayTxCount=storage.get("dbTodayTxCount", 0);
+var dbTodayTxCount = storage.get("dbTodayTxCount", 0);
 var thread = threads.start(function () {
     setInterval(() => { }, 1000);
 });
@@ -26,7 +26,7 @@ for (; ;) {
         storage.put("dbTodayTxCount", 0);
     }
     if (currentPackage() == "com.frp.fun") {
-        if(packageName("com.frp.fun").textContains("请检查您的网络").findOnce()!=null){
+        if (packageName("com.frp.fun").textContains("请检查您的网络").findOnce() != null) {
             sleep(1000)
             click("确定")
             sleep(5000)
@@ -37,7 +37,7 @@ for (; ;) {
             sleep(10000)
             log(packageName("com.frp.fun").id('loginwxbtn').find().length)
         }
-        if(packageName("com.frp.fun").textContains("请检查您的网络").findOnce()!=null){
+        if (packageName("com.frp.fun").textContains("请检查您的网络").findOnce() != null) {
             sleep(1000)
             click("确定")
             sleep(5000)
@@ -46,7 +46,7 @@ for (; ;) {
         if (cBtn != null) {
             cBtn.click()
             sleep(10000)
-            if ((nowHour > 15  &&nowHour < 20&& dbTodayTxCount < 1) || (nowHour > 17 &&nowHour < 20 && dbTodayTxCount < 2)|| (nowHour > 19 &&nowHour < 20 && dbTodayTxCount < 3)) {
+            if ((nowHour > 15 && nowHour < 20 && dbTodayTxCount < 1) || (nowHour > 17 && nowHour < 20 && dbTodayTxCount < 2) || (nowHour > 19 && nowHour < 20 && dbTodayTxCount < 3)) {
                 cBtn = packageName("com.frp.fun").id('tixianlayout').findOnce()
                 if (cBtn != null) {
                     dbTodayTxCount++
@@ -63,37 +63,35 @@ for (; ;) {
                         if (cBtn != null) {
                             cBtn.click()
                             sleep(4000)
-                            if(packageName("com.frp.fun").textContains("确认提现").findOnce()!=null){
-                                click("确定")
-                                sleep(4000)
-        
-                                click("确定")
-                                sleep(4000)
-                                back()
-                                sleep(4000)
-                                back()
-                                sleep(4000)
-                                back()
-                            }
+                            click("确定")
+                            sleep(4000)
+
+                            click("确定")
+                            sleep(4000)
+                            back()
+                            sleep(4000)
+                            back()
+                            sleep(4000)
+                            back()
                         }
                     }
                 }
             }
         }
     }
-    if(packageName("com.frp.fun").textContains("请检查您的网络").findOnce()!=null){
+    if (packageName("com.frp.fun").textContains("请检查您的网络").findOnce() != null) {
         sleep(1000)
         click("确定")
         sleep(5000)
     }
     sleep(100000)
-    if(packageName("com.frp.fun").textContains("请检查您的网络").findOnce()!=null){
+    if (packageName("com.frp.fun").textContains("请检查您的网络").findOnce() != null) {
         sleep(1000)
         click("确定")
         sleep(5000)
     }
     sleep(100000)
-    if(packageName("com.frp.fun").textContains("请检查您的网络").findOnce()!=null){
+    if (packageName("com.frp.fun").textContains("请检查您的网络").findOnce() != null) {
         sleep(1000)
         click("确定")
         sleep(5000)
