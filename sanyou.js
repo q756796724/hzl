@@ -1,13 +1,16 @@
 
 storage = storages.create("fanqiecloud配置");
-
+if(storage.get("date")==undefined){
+    toastLog("初始化");
+    storage.put("date", new Date().toLocaleDateString());
+}
 var topPackage = "";
 var topActivity = "";
 
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.4调试";
+var versionNum = "v1.1.4";
 var minliaotiancount = 100;//聊天列表最小数量
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 
@@ -68,7 +71,7 @@ ui.run(function () { 悬浮窗2.consoleLog.findViewById(context.getResources().g
 var settingPath = files.join("/sdcard/fanqie/", "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
 if (!files.exists(settingPath)) {
     初始化配置(settingPath);
-    toastLog("初始化配置");
+    toastLog("初始化文件配置");
 }
 function 初始化配置(path) {
     files.createWithDirs(path)  //开始创建文件
@@ -947,8 +950,8 @@ if (app.autojs.versionName == '4.1.1 Alpha2') {
 for (; ;) {
     kz();
     var nowHour = new Date().getHours();
-    if (storage.get("date", new Date().toLocaleDateString()) != new Date().toLocaleDateString()) {
-        toastLog("初始化配置");
+    if (storage.get("date") != new Date().toLocaleDateString()) {
+        toastLog("每日初始化配置");
         storage.put("date", new Date().toLocaleDateString());
         console.clear();
         清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
@@ -1034,40 +1037,6 @@ for (; ;) {
     }
 
     打开v();
-
-    app.launch("com.ss.android.ugc.aweme");
-    sleep(60000)
-    if (currentPackage() == "com.ss.android.ugc.aweme") {
-        home();
-        sleep(5000);
-        关闭应用("com.ss.android.ugc.aweme");
-        sleep(10000)
-    }
-    app.launch("com.smile.gifmaker");
-    sleep(60000)
-    if (currentPackage() == "com.smile.gifmaker") {
-        home();
-        sleep(5000);
-        关闭应用("com.smile.gifmaker");
-        sleep(10000)
-    }
-    app.launch("com.ss.android.ugc.live");
-    sleep(60000)
-    if (currentPackage() == "com.ss.android.ugc.live") {
-        home();
-        sleep(5000);
-        关闭应用("com.ss.android.ugc.live");
-        sleep(10000)
-    }
-    app.launch("com.ss.android.article.news");
-    sleep(60000)
-    if (currentPackage() == "com.ss.android.article.news") {
-        home();
-        sleep(5000);
-        关闭应用("com.ss.android.article.news");
-        sleep(10000)
-    }
-
 
     refreshStateInfo();
     let wBtn = className("android.widget.TextView").text("通讯录").findOne(3000);
