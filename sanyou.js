@@ -10,7 +10,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.6";
+var versionNum = "v1.1.7";
 var minliaotiancount = 100;//聊天列表最小数量
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 
@@ -373,6 +373,7 @@ function liaotianshanyou() {
     } 
     if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) == null) {
         sleep(random(5000, 10000))
+        minliaotiancount = 100
         return
     }
     let cBtn = packageName("com.tencent.mm").id('a4k').find()//8.0.10
@@ -400,6 +401,7 @@ function liaotianshanyou() {
                 if (text("不再关注").findOne(5000) != null) {
                     click("不再关注");
                 }
+                minliaotiancount = 100
                 return
             } else if (text("置顶公众号").findOnce() != null) {
                 click("删除该聊天");
@@ -407,6 +409,7 @@ function liaotianshanyou() {
                 if (text("删除").findOne(5000) != null) {
                     click("删除");
                 }
+                minliaotiancount = 100
                 return
             } else {
                 clickx(cBtn[i].bounds().centerX(), cBtn[i].bounds().bottom)
@@ -440,6 +443,7 @@ function liaotianshanyou() {
                                 if (cBtn3 != null && cBtn3.clickable()) {
                                     cBtn3.click();
                                     sleep(random(3000, 5000))
+                                    minliaotiancount = 100
                                     return
                                 } else {
                                     back()
@@ -460,6 +464,7 @@ function liaotianshanyou() {
                                         if (text("删除").findOne(5000) != null) {
                                             click("删除");
                                         }
+                                        minliaotiancount = 100
                                         return
                                     } else {
                                         back();
@@ -485,6 +490,7 @@ function liaotianshanyou() {
                                     if (text("删除").findOne(5000) != null) {
                                         click("删除");
                                     }
+                                    minliaotiancount = 100
                                     return
                                 } else {
                                     back();
@@ -508,6 +514,7 @@ function liaotianshanyou() {
                                 if (text("删除").findOne(5000) != null) {
                                     click("删除");
                                 }
+                                minliaotiancount = 100
                                 return
                             } else {
                                 back();
@@ -529,6 +536,7 @@ function liaotianshanyou() {
                             if (text("删除").findOne(5000) != null) {
                                 click("删除");
                             }
+                            minliaotiancount = 100
                             return
                         } else {
                             back();
@@ -547,6 +555,7 @@ function liaotianshanyou() {
                         if (text("删除").findOne(5000) != null) {
                             click("删除");
                         }
+                        minliaotiancount = 100
                         return
                     } else {
                         back();
