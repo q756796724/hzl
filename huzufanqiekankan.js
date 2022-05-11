@@ -50,14 +50,17 @@ ui.emitter.on("resume", function () {
     // 此时根据无障碍服务的开启情况，同步开关的状态
     ui.autoService.checked = auto.service != null;
 });
-setTimeoutA = setTimeout(() => {
-    ui.ok.click()
-    sleep(8000)
-    let kbtn=textMatches(/(立即开始|.*立即开始.*)/).findOne(3000);
-    if (kbtn != null) {
-        kbtn.click()
-    }
-}, 30000);
+var thread1 = threads.start(function () {
+    setTimeoutA = setTimeout(() => {
+        ui.ok.click()
+        sleep(8000)
+        let kbtn=textMatches(/(立即开始|.*立即开始.*)/).findOne(3000);
+        if (kbtn != null) {
+            kbtn.click()
+        }
+    }, 30000);
+});
+
 //指定确定按钮点击时要执行的动作
 ui.ok.click(function () {
     //程序开始运行之前判断无障碍服务
@@ -88,7 +91,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.0.6";
+        var versionNum = "v3.0.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
