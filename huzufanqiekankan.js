@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.0.2";
+        var versionNum = "v3.0.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -391,11 +391,6 @@ ui.ok.click(function () {
             }
         }
         function jieshouwenzhang() {
-            let repData = getjieshouCount()
-            if (repData != undefined && repData["jieshouCount"] != undefined && repData["jieshouCount"] > 20) {
-                console.warn("当前人数：" + repData["jieshouCount"])
-                return
-            }
             //进入指定群，接收文章
             if (联网验证(zwifi) != true) {
                 连接wifi(zwifi, 5000);
@@ -429,7 +424,10 @@ ui.ok.click(function () {
                 }
 
             }
-            wBtn = packageName("com.tencent.mm").id('bg1').findOnce();
+            wBtn = packageName("com.tencent.mm").id('a4k').findOnce();//8.0.10
+            if (wBtn==null) {
+                wBtn = packageName("com.tencent.mm").id('bg1').findOnce();//8.0.1
+            }
             if (wBtn != null) {
                 sleep(1000)
                 wBtn.click();
