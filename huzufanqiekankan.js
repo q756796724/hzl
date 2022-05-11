@@ -192,57 +192,6 @@ ui.ok.click(function () {
 
         setInterval(() => { }, 1000);
 
-
-
-        //app保活双进程守护
-        function setAppAlive(name) {
-            配置 = 读取配置(settingPath);
-            配置[name] = new Date().getTime();
-            保存配置(settingPath, 配置);
-            //toolsStorage.put(name, new Date().getTime());
-        }
-        function getAppAlive(name) {
-            配置 = 读取配置(settingPath);
-            if (配置[name] != undefined) {
-                setAppAlive(device.serial)
-                if (new Date().getTime() - 配置[name] < 60 * 1000) {
-                    return true
-                } else {
-                    return false
-                }
-
-            } else {
-                return true
-            }
-            /*if (toolsStorage.get(name) != undefined) {
-                if (new Date().getTime() - toolsStorage.get(name) < 60 * 1000) {
-                    return true
-                } else {
-                    return false
-                }
-        
-            } else {
-                return true
-            }*/
-        }
-        function 进程守护() {
-            //log("进程守护")
-
-            if (getAppAlive(device.serial + "-1") == false) {
-                setAppAlive(device.serial + "-1")
-                log("重启守护应用")
-                home();
-                sleep(5000);
-                app.launch("com.fanqie.shouhu");
-            }
-            return 进程守护
-        }
-
-        var thread = threads.start(function () {
-            setInterval(进程守护(), 60000);
-        });
-
-
         //指定确定按钮点击时要执行的动作
         悬浮窗.console.click(function () {
             反状态 = 悬浮窗.console.getText();  //获得id="console"的按钮的文字
@@ -1962,6 +1911,54 @@ ui.ok.click(function () {
             初始化配置(settingPath);
             toastLog("初始化文件配置");
         }
+
+        //app保活双进程守护
+        function setAppAlive(name) {
+            配置 = 读取配置(settingPath);
+            配置[name] = new Date().getTime();
+            保存配置(settingPath, 配置);
+            //toolsStorage.put(name, new Date().getTime());
+        }
+        function getAppAlive(name) {
+            配置 = 读取配置(settingPath);
+            if (配置[name] != undefined) {
+                setAppAlive(device.serial)
+                if (new Date().getTime() - 配置[name] < 60 * 1000) {
+                    return true
+                } else {
+                    return false
+                }
+
+            } else {
+                return true
+            }
+            /*if (toolsStorage.get(name) != undefined) {
+                if (new Date().getTime() - toolsStorage.get(name) < 60 * 1000) {
+                    return true
+                } else {
+                    return false
+                }
+        
+            } else {
+                return true
+            }*/
+        }
+        function 进程守护() {
+            //log("进程守护")
+
+            if (getAppAlive(device.serial + "-1") == false) {
+                setAppAlive(device.serial + "-1")
+                log("重启守护应用")
+                home();
+                sleep(5000);
+                app.launch("com.fanqie.shouhu");
+            }
+            return 进程守护
+        }
+
+        var thread = threads.start(function () {
+            setInterval(进程守护(), 60000);
+        });
 
         var lunCount = 1;//轮回次数
         for (; ;) {
