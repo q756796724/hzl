@@ -83,7 +83,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.0.4";
+        var versionNum = "v3.0.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -183,7 +183,53 @@ ui.ok.click(function () {
 
 
 
+        //app保活双进程守护
+        function setAppAlive(name) {
+            配置 = 读取配置(settingPath);
+            配置[name] = new Date().getTime();
+            保存配置(settingPath, 配置);
+            //toolsStorage.put(name, new Date().getTime());
+        }
+        function getAppAlive(name) {
+            配置 = 读取配置(settingPath);
+            if (配置[name] != undefined) {
+                setAppAlive(device.serial)
+                if (new Date().getTime() - 配置[name] < 60 * 1000) {
+                    return true
+                } else {
+                    return false
+                }
 
+            } else {
+                return true
+            }
+            /*if (toolsStorage.get(name) != undefined) {
+                if (new Date().getTime() - toolsStorage.get(name) < 60 * 1000) {
+                    return true
+                } else {
+                    return false
+                }
+        
+            } else {
+                return true
+            }*/
+        }
+        function 进程守护() {
+            //log("进程守护")
+
+            if (getAppAlive(device.serial + "-1") == false) {
+                setAppAlive(device.serial + "-1")
+                log("重启守护应用")
+                home();
+                sleep(5000);
+                app.launch("com.fanqie.shouhu");
+            }
+            return 进程守护
+        }
+
+        var thread = threads.start(function () {
+            setInterval(进程守护(), 60000);
+        });
 
 
         //指定确定按钮点击时要执行的动作
@@ -427,7 +473,7 @@ ui.ok.click(function () {
 
             }
             wBtn = packageName("com.tencent.mm").id('a4k').findOnce();//8.0.10
-            if (wBtn==null) {
+            if (wBtn == null) {
                 wBtn = packageName("com.tencent.mm").id('bg1').findOnce();//8.0.1
             }
             if (wBtn != null) {
@@ -2033,14 +2079,16 @@ ui.ok.click(function () {
             }
 
             if (zwifi.toString() != dlwifi.toString()) {
-                if (xianzhidays > 0 && nowHour < 11) {
+                if (xianzhidays > 0 && nowHour < 7) {
                     log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                     sleepLongTime(random(3600000, 5000000));
                     continue;
-                } else if (xianzhidays == 0 && nowHour < 7) {
-                    log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
-                    sleepLongTime(random(3600000, 5000000));
-                    continue;
+                } else if (xianzhidays == 0) {
+                    if (lunCount > 1 && nowHour < 7) {
+                        log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
+                        sleepLongTime(random(3600000, 5000000));
+                        continue;
+                    }
                 }
             }
 
