@@ -52,6 +52,11 @@ ui.emitter.on("resume", function () {
 });
 setTimeoutA = setTimeout(() => {
     ui.ok.click()
+    sleep(8000)
+    let kbtn=textMatches(/(立即开始|.*立即开始.*)/).findOne(3000);
+    if (kbtn != null) {
+        kbtn.click()
+    }
 }, 30000);
 //指定确定按钮点击时要执行的动作
 ui.ok.click(function () {
@@ -83,7 +88,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.0.5";
+        var versionNum = "v3.0.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1946,13 +1951,11 @@ ui.ok.click(function () {
             KeepAliveService.start("fanqie", "茄子云");
         }
 
-
-        var settingPath = files.join(files.cwd(), "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
+        var settingPath = files.join("/sdcard/fanqie/", "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
         if (!files.exists(settingPath)) {
             初始化配置(settingPath);
-            toastLog("初始化配置");
+            toastLog("初始化文件配置");
         }
-
 
         var lunCount = 1;//轮回次数
         for (; ;) {
