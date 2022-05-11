@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.0.1";
+        var versionNum = "v3.0.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1758,7 +1758,7 @@ ui.ok.click(function () {
             let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("通讯录").findOne(3000);
             if (topActivity == MAIN_PAGE && wBtn != null) {
                 log("进入v成功");
-                let wBtn = className("android.widget.TextView").text("我").findOne(3000);
+                /*let wBtn = className("android.widget.TextView").text("我").findOne(3000);
                 for (let i = 0; i < 8; i++) {
                     if (wBtn != null && wBtn.clickable()) {
                         wBtn.click();
@@ -1768,6 +1768,21 @@ ui.ok.click(function () {
                         };
                     } else {
                         wBtn = wBtn.parent();
+                    }
+                }*/
+                let wBtns = className("android.widget.TextView").text("我").find();
+                for (let i = 0; i < wBtns.length; i++) {
+                    let wBtn = wBtns[i];
+                    for (let i = 0; i < 4; i++) {
+                        if (wBtn != null && wBtn.clickable()) {
+                            wBtn.click();
+                            sleep(5000);
+                            if (className("android.widget.TextView").text("收藏").findOne(5000) != null) {
+                                break;
+                            };
+                        } else if (wBtn != null && wBtn.parent() != null) {
+                            wBtn = wBtn.parent();
+                        }
                     }
                 }
 
@@ -1904,7 +1919,7 @@ ui.ok.click(function () {
                 todayTxCount = 0;
                 初始化配置(settingPath);
                 console.clear();
-                toastLog("初始化配置");
+                toastLog("每天初始化配置");
                 if (storage.get("xianzhidays") > 0) {
                     xianzhidays = storage.get("xianzhidays") - 1;
                     storage.put("xianzhidays", xianzhidays);
@@ -1953,7 +1968,7 @@ ui.ok.click(function () {
                         sleep(10000)
                     }
                 }
-                
+
 
 
 
