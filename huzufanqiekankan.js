@@ -7,10 +7,10 @@ auto_tx = storage.get("auto_tx", false);
 //readurl = storage.get("readurl", "");
 readurl = "";
 //xianzhidate = storage.get("xianzhidate", "2022-03-20");//限制时间
-if(storage.get("xianzhidays")==undefined){//限制天数
+if (storage.get("xianzhidays") == undefined) {//限制天数
     storage.put("xianzhidays", 0);
 }
-xianzhidays=storage.get("xianzhidays");
+xianzhidays = storage.get("xianzhidays");
 ui.layout(
     <vertical padding="16">
         <Switch id="autoService" text="无障碍服务" checked="{{auto.service != null}}" padding="8 8 8 8" textSize="15sp" />
@@ -81,7 +81,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.0.0";
+        var versionNum = "v3.0.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -332,7 +332,7 @@ ui.ok.click(function () {
 
         }
         function fenxiangwenzhang(name) {
-            if(havejieshouren(2)==false){
+            if (havejieshouren(2) == false) {
                 return
             }
             sleep(random(2000, 3000));
@@ -1049,7 +1049,7 @@ ui.ok.click(function () {
                         log("点击开始阅读成功");
                         if (yuedu()) {
                             lunCount++;
-                            
+
                             配置["lunCount"] = lunCount;
                             配置["count"] = 1;
                             保存配置(settingPath, 配置);
@@ -1082,7 +1082,7 @@ ui.ok.click(function () {
             }
 
             if (textMatches(/(.*暂无任务可做)/).findOne(3000) != null) {
-                xianzhidays=storage.put("xianzhidays", 5);
+                xianzhidays = storage.put("xianzhidays", 5);
                 //xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                 //storage.put("xianzhidate", xianzhidate);
                 if (auto_tx) {
@@ -1279,18 +1279,18 @@ ui.ok.click(function () {
                                 sleep(8000);
                             } else {
                                 log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                                if(xianzhidays==0&&lunCount==1&&count<7){
-                                    xianzhidays=storage.put("xianzhidays", 5);
+                                if (xianzhidays == 0 && lunCount == 1 && count < 7) {
+                                    xianzhidays = storage.put("xianzhidays", 5);
                                 }
                                 count = 41;
                                 break
                             }
-                        }else if (packageName("com.tencent.mm").textMatches(/(.*无法打开网页.*|.*网页无法打开.*)/).findOne(5000)) {
+                        } else if (packageName("com.tencent.mm").textMatches(/(.*无法打开网页.*|.*网页无法打开.*)/).findOne(5000)) {
                             break
-                        }else{
+                        } else {
                             log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                            if(xianzhidays==0&&lunCount==1&&count<7){
-                                xianzhidays=storage.put("xianzhidays", 5);
+                            if (xianzhidays == 0 && lunCount == 1 && count < 7) {
+                                xianzhidays = storage.put("xianzhidays", 5);
                             }
                             count = 41;
                             break
@@ -1302,7 +1302,7 @@ ui.ok.click(function () {
                     return true;
                 }
                 //判断是否需要互助
-                if (count == wifiCount && xianzhidays >0) {
+                if (count == wifiCount && xianzhidays > 0) {
                     let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(8000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                         fenxiangwenzhang("大家庭");
@@ -1356,7 +1356,7 @@ ui.ok.click(function () {
 
             }
         }
-        
+
         //长时间睡眠保持唤醒，单位毫秒
         function sleepLongTime(sleepTime) {
             /*打开v();
@@ -1905,11 +1905,58 @@ ui.ok.click(function () {
                 初始化配置(settingPath);
                 console.clear();
                 toastLog("初始化配置");
-                if(storage.get("xianzhidays")>0){
-                    xianzhidays=storage.get("xianzhidays")-1;
+                if (storage.get("xianzhidays") > 0) {
+                    xianzhidays = storage.get("xianzhidays") - 1;
                     storage.put("xianzhidays", xianzhidays);
                 }
+                //重置接收人数
+                for (; ;) {
+                    let repData = getjieshouCount()
+                    if (repData != undefined && repData["jieshouCount"] != undefined && repData["jieshouCount"] > 0) {
+                        reducejieshouCount();
+                        sleep(1000)
+                    } else {
+                        break
+                    }
+                }
+                if (new Date().getDate() % 3 == 0) {
+                    app.launch("com.ss.android.ugc.aweme");
+                    sleep(60000)
+                    if (currentPackage() == "com.ss.android.ugc.aweme") {
+                        home();
+                        sleep(5000);
+                        关闭应用("com.ss.android.ugc.aweme");
+                        sleep(10000)
+                    }
+                    app.launch("com.smile.gifmaker");
+                    sleep(60000)
+                    if (currentPackage() == "com.smile.gifmaker") {
+                        home();
+                        sleep(5000);
+                        关闭应用("com.smile.gifmaker");
+                        sleep(10000)
+                    }
+                    app.launch("com.ss.android.ugc.live");
+                    sleep(60000)
+                    if (currentPackage() == "com.ss.android.ugc.live") {
+                        home();
+                        sleep(5000);
+                        关闭应用("com.ss.android.ugc.live");
+                        sleep(10000)
+                    }
+                    app.launch("com.ss.android.article.news");
+                    sleep(60000)
+                    if (currentPackage() == "com.ss.android.article.news") {
+                        home();
+                        sleep(5000);
+                        关闭应用("com.ss.android.article.news");
+                        sleep(10000)
+                    }
+                }
                 
+
+
+
                 if (new Date().getDate() % 5 == 0) {
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
@@ -1971,11 +2018,11 @@ ui.ok.click(function () {
             }
 
             if (zwifi.toString() != dlwifi.toString()) {
-                if(xianzhidays>0&&nowHour < 11){
+                if (xianzhidays > 0 && nowHour < 11) {
                     log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                     sleepLongTime(random(3600000, 5000000));
                     continue;
-                }else if(xianzhidays==0&&nowHour < 7){
+                } else if (xianzhidays == 0 && nowHour < 7) {
                     log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                     sleepLongTime(random(3600000, 5000000));
                     continue;
