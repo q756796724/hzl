@@ -97,7 +97,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.1.1";
+        var versionNum = "v3.1.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1034,6 +1034,7 @@ ui.ok.click(function () {
                 log("渠道匹配");
                 retryCount = 0;
                 kz();
+                sleep(5000)
                 let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                 if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
                     readNum = parseInt(readNumDiv.text());
@@ -2152,7 +2153,7 @@ ui.ok.click(function () {
             }*/
             let wBtn = className("android.widget.TextView").text("我").findOne(3000);
             if (topActivity == MAIN_PAGE && wBtn != null) {
-                log("第" + lunCount + "轮");
+                log("第" + lunCount + "轮,xianzhidays="+xianzhidays);
                 onMainPage();
             } else {
                 log(wBtn);
