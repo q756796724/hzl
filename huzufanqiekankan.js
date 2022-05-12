@@ -96,7 +96,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.1.4";
+        var versionNum = "v3.1.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1318,9 +1318,13 @@ ui.ok.click(function () {
                                 sleep(8000);
                             } else {
                                 log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
+                                if(count>7&&xianzhidays==5){
+                                    xianzhidays = storage.put("xianzhidays", 0);
+                                }
                                 if (xianzhidays == 0 && lunCount == 1 && count < 7) {
                                     xianzhidays = storage.put("xianzhidays", 5);
                                 }
+
                                 count = 41;
                                 break
                             }
@@ -1328,6 +1332,9 @@ ui.ok.click(function () {
                             break
                         } else {
                             log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
+                            if(count>7&&xianzhidays==5){
+                                xianzhidays = storage.put("xianzhidays", 0);
+                            }
                             if (xianzhidays == 0 && lunCount == 1 && count < 7) {
                                 xianzhidays = storage.put("xianzhidays", 5);
                             }
@@ -1341,7 +1348,7 @@ ui.ok.click(function () {
                     return true;
                 }
                 //判断是否需要互助
-                if (count == wifiCount && xianzhidays > 0) {
+                if (count == wifiCount && xianzhidays > 0&& xianzhidays < 5) {
                     let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(8000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                         fenxiangwenzhang("大家庭");
@@ -2129,7 +2136,7 @@ ui.ok.click(function () {
             }
 
             if (zwifi.toString() != dlwifi.toString()) {
-                if (xianzhidays > 0 && nowHour < 7) {
+                if (xianzhidays > 0 &&xianzhidays <5&& nowHour < 7) {
                     log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                     sleepLongTime(random(3600000, 5000000));
                     continue;
