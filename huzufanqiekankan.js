@@ -96,7 +96,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.1.6";
+        var versionNum = "v3.1.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -757,6 +757,7 @@ ui.ok.click(function () {
             }
             files.write(path, JSON.stringify(jsonContent));
             sleep(1000);
+            启动x5()
         }
 
         function 初始化配置2(path) {
@@ -2123,9 +2124,6 @@ ui.ok.click(function () {
                         }
                     }
                 }
-
-
-                启动x5()
 
             }
 
