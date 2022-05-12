@@ -97,7 +97,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.1.0";
+        var versionNum = "v3.1.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -756,6 +756,20 @@ ui.ok.click(function () {
                 "lunCount": 1,
                 "count": 1
             }
+            files.write(path, JSON.stringify(jsonContent));
+            sleep(1000);
+        }
+       
+        function 初始化配置2(path) {
+            files.createWithDirs(path)  //开始创建文件
+            let jsonContent = {
+                /*"date": new Date().toLocaleDateString(),
+                "lunCount": 1,
+                "count": 1,
+                "lunCountllb": 1,
+                "countllb": 1*/
+            }
+            jsonContent[device.serial] = new Date().getTime()
             files.write(path, JSON.stringify(jsonContent));
             sleep(1000);
         }
@@ -1924,25 +1938,29 @@ ui.ok.click(function () {
             sleep(5000);
             KeepAliveService.start("fanqie", "茄子云");
         }
-
-        var settingPath = files.join("/sdcard/fanqie/", "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
+        var settingPath = files.join(files.cwd(), "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
+        var settingPath2 = files.join("/sdcard/fanqie/", "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
         if (!files.exists(settingPath)) {
             初始化配置(settingPath);
             toastLog("初始化文件配置");
         }
+        if (!files.exists(settingPath2)) {
+            初始化配置2(settingPath2);
+            toastLog("初始化文件配置2");
+        }
 
         //app保活双进程守护
         function setAppAlive(name) {
-            配置 = 读取配置(settingPath);
-            配置[name] = new Date().getTime();
-            保存配置(settingPath, 配置);
+            配置2 = 读取配置(settingPath2);
+            配置2[name] = new Date().getTime();
+            保存配置(settingPath2, 配置2);
             //toolsStorage.put(name, new Date().getTime());
         }
         function getAppAlive(name) {
-            配置 = 读取配置(settingPath);
-            if (配置[name] != undefined) {
+            配置2 = 读取配置(settingPath2);
+            if (配置2[name] != undefined) {
                 setAppAlive(device.serial)
-                if (new Date().getTime() - 配置[name] < 60 * 1000) {
+                if (new Date().getTime() - 配置2[name] < 60 * 1000) {
                     return true
                 } else {
                     return false
@@ -2092,6 +2110,9 @@ ui.ok.click(function () {
 
             配置 = 读取配置(settingPath);
             lunCount = 配置["lunCount"];
+            if( 配置["lunCount"] == undefined){
+                
+            }
             if (lunCount > 12) {
                 if (联网验证(zwifi) != true) {
                     连接wifi(zwifi, 5000);
