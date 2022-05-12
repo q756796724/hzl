@@ -96,7 +96,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.1.3";
+        var versionNum = "v3.1.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1419,7 +1419,7 @@ ui.ok.click(function () {
                 }
             }*/
             toastLog("版本号:" + versionNum);
-            log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
+            log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays="+xianzhidays);
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                 kz();
                 //device.wakeUp();
@@ -1958,6 +1958,10 @@ ui.ok.click(function () {
         }
         function getAppAlive(name) {
             配置2 = 读取配置(settingPath2);
+            if( 配置2[device.serial] == undefined){
+                toastLog("重置文件配置2");
+                初始化配置2(settingPath2);
+            }
             if (配置2[name] != undefined) {
                 setAppAlive(device.serial)
                 if (new Date().getTime() - 配置2[name] < 60 * 1000) {
@@ -2111,7 +2115,7 @@ ui.ok.click(function () {
             配置 = 读取配置(settingPath);
             lunCount = 配置["lunCount"];
             if( 配置["lunCount"] == undefined){
-                
+                初始化配置(settingPath);
             }
             if (lunCount > 12) {
                 if (联网验证(zwifi) != true) {
