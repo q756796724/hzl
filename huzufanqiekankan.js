@@ -52,14 +52,18 @@ ui.emitter.on("resume", function () {
 });
 var thread1 = threads.start(function () {
     setTimeoutA = setTimeout(() => {
-        ui.run(()=>{
-            //这里写针对UI的操作
-            ui.ok.click()
-        });
-        sleep(8000)
-        let kbtn=textMatches(/(立即开始|.*立即开始.*)/).findOne(3000);
-        if (kbtn != null) {
-            kbtn.click()
+        refreshStateInfo();
+        if (topPackage == MAIN_PKG) {
+            toastLog("自动开始")
+            ui.run(() => {
+                //这里写针对UI的操作
+                ui.ok.click()
+            });
+            sleep(8000)
+            let kbtn = textMatches(/(立即开始|.*立即开始.*)/).findOne(3000);
+            if (kbtn != null) {
+                kbtn.click()
+            }
         }
     }, 30000);
 });
@@ -94,7 +98,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.0.8";
+        var versionNum = "v3.0.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
