@@ -52,8 +52,7 @@ ui.emitter.on("resume", function () {
 });
 var thread1 = threads.start(function () {
     setTimeoutA = setTimeout(() => {
-        refreshStateInfo();
-        if (topPackage == MAIN_PKG) {
+        if (currentPackage() == "com.fanqie.cloud") {
             toastLog("自动开始")
             ui.run(() => {
                 //这里写针对UI的操作
@@ -98,7 +97,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.0.9";
+        var versionNum = "v3.1.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -762,13 +761,29 @@ ui.ok.click(function () {
         }
 
         function 保存配置(path, jsonContent) {
-            files.createWithDirs(path)  //开始创建文件
-            files.write(path, JSON.stringify(jsonContent));
-            sleep(1000);
+            try {
+                files.createWithDirs(path)  //开始创建文件
+                files.write(path, JSON.stringify(jsonContent));
+                sleep(1000);
+            } catch (e) {
+                console.error(e);
+                sleep(1000);
+                return 保存配置(path, jsonContent);
+            }
+
         }
 
         function 读取配置(path) {
-            return JSON.parse(files.read(path));
+            try {
+                var rDate=JSON.parse(files.read(path));
+                sleep(1000);
+                return rDate
+            } catch (e) {
+                console.error(e);
+                sleep(1000);
+                return 读取配置(path);
+            }
+
         }
 
         //多线程demo
