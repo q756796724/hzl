@@ -4,8 +4,7 @@ storage = storages.create("fanqiekankan配置");
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
-//readurl = storage.get("readurl", "");
-readurl = "";
+readurl = storage.get("readurl", "");
 //xianzhidate = storage.get("xianzhidate", "2022-03-20");//限制时间
 if (storage.get("xianzhidays") == undefined) {//限制天数
     storage.put("xianzhidays", 0);
@@ -97,7 +96,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.1.2";
+        var versionNum = "v3.1.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
