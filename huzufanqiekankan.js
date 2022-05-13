@@ -5,11 +5,15 @@ zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
 readurl = storage.get("readurl", "");
-//xianzhidate = storage.get("xianzhidate", "2022-03-20");//限制时间
+xianzhidate = storage.get("xianzhidate", "2022-03-20");//限制时间
 if (storage.get("xianzhidays") == undefined) {//限制天数
     storage.put("xianzhidays", 0);
 }
 xianzhidays = storage.get("xianzhidays");
+if(calcDateDayDiff(xianzhidate,formatDate(new Date(), "yyyy-MM-dd")) >0){
+    xianzhidays = calcDateDayDiff(xianzhidate,formatDate(new Date(), "yyyy-MM-dd"))
+    storage.put("xianzhidays", xianzhidays);
+}
 ui.layout(
     <vertical padding="16">
         <Switch id="autoService" text="无障碍服务" checked="{{auto.service != null}}" padding="8 8 8 8" textSize="15sp" />
@@ -96,7 +100,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.1.7";
+        var versionNum = "v3.1.8";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1014,6 +1018,10 @@ ui.ok.click(function () {
                                 } else {
                                     back();
                                 }
+                                if (xianzhidays >5) {
+                                    返回v首页();
+                                    return;
+                                }
                                 for (var i = 0; i < 3; i++) {
                                     sleep(3000);
                                     let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
@@ -1122,8 +1130,19 @@ ui.ok.click(function () {
             }
 
             if (textMatches(/(.*暂无任务可做)/).findOne(3000) != null) {
-                xianzhidays = 5
-                storage.put("xianzhidays", 5);
+                if(xianzhidays==0){
+                    xianzhidays = 5
+                    storage.put("xianzhidays", 5);
+                }
+                if(xianzhidays<5){
+                    //休息17日
+                    if(calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) >0){
+                        xianzhidate = formatDate(new Date().setDate(new Date().getDate()+22), "yyyy-MM-dd")
+                        storage.put("xianzhidate", xianzhidate);
+                    }
+                }
+                
+                
                 //xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                 //storage.put("xianzhidate", xianzhidate);
                 if (auto_tx) {
@@ -1280,6 +1299,7 @@ ui.ok.click(function () {
                         let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
                         if (sBtn != null) {
                             sBtn.click();
+                            sleep(8000)
                         } else {
                             返回v首页();
                             return false;
@@ -1325,9 +1345,11 @@ ui.ok.click(function () {
                                 sleep(8000);
                             } else {
                                 log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                                if (count > 7 && xianzhidays == 5) {
+                                if (count > 7 && xianzhidays >=4&&xianzhidays<=5) {
                                     xianzhidays = 0
                                     storage.put("xianzhidays", 0);
+                                    xianzhidate = formatDate(new Date(), "yyyy-MM-dd")
+                                    storage.put("xianzhidate", xianzhidate);
                                 }
                                 if (xianzhidays == 0 && lunCount == 1 && count < 7) {
                                     xianzhidays = 5
@@ -1337,13 +1359,15 @@ ui.ok.click(function () {
                                 count = 41;
                                 break
                             }
-                        } else if (packageName("com.tencent.mm").textMatches(/(.*无法打开网页.*|.*网页无法打开.*)/).findOne(5000)) {
+                        } else if (packageName("com.tencent.mm").textMatches(/(.*无法打开网页.*|.*网页无法打开.*|.*加载中.*)/).findOne(5000)) {
                             break
                         } else {
                             log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                            if (count > 7 && xianzhidays == 5) {
+                            if (count > 7 && xianzhidays >=4&&xianzhidays <=5) {
                                 xianzhidays = 0
                                 storage.put("xianzhidays", 0);
+                                xianzhidate = formatDate(new Date(), "yyyy-MM-dd")
+                                storage.put("xianzhidate", xianzhidate);
                             }
                             if (xianzhidays == 0 && lunCount == 1 && count < 7) {
                                 xianzhidays = 5
@@ -1359,7 +1383,7 @@ ui.ok.click(function () {
                     return true;
                 }
                 //判断是否需要互助
-                if (count == wifiCount && xianzhidays > 0 && xianzhidays < 5) {
+                if (count == wifiCount && xianzhidays > 0 && xianzhidays < 4) {
                     let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(8000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                         fenxiangwenzhang("大家庭");
@@ -2132,6 +2156,14 @@ ui.ok.click(function () {
             if (配置["lunCount"] == undefined) {
                 初始化配置(settingPath);
             }
+            if(xianzhidays>5){
+                if (auto_tx) {
+                    sleepLongTime(random(3600000, 5000000));
+                } else{
+                    lunSleep(random(8640000, 13000000));
+                    continue;
+                }
+            }
             if (lunCount > 12) {
                 if (联网验证(zwifi) != true) {
                     连接wifi(zwifi, 5000);
@@ -2144,14 +2176,14 @@ ui.ok.click(function () {
             }
 
             if (zwifi.toString() != dlwifi.toString()) {
-                if (xianzhidays > 0 && xianzhidays < 5 && nowHour < 7) {
+                if (xianzhidays > 0 && xianzhidays < 4 && nowHour < 7) {
                     log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                     sleepLongTime(random(3600000, 5000000));
                     continue;
                 } else if (xianzhidays == 0) {
-                    if (lunCount > 1 && nowHour < 7) {
+                    if (lunCount == 1 && nowHour < 6) {
                         log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
-                        sleepLongTime(random(3600000, 5000000));
+                        sleepLongTime(random(1800000, 3600000));
                         continue;
                     }
                 }
