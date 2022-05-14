@@ -10,8 +10,8 @@ if (storage.get("xianzhidays") == undefined) {//限制天数
     storage.put("xianzhidays", 0);
 }
 xianzhidays = storage.get("xianzhidays");
-if(calcDateDayDiff(xianzhidate,formatDate(new Date(), "yyyy-MM-dd")) >0){
-    xianzhidays = calcDateDayDiff(xianzhidate,formatDate(new Date(), "yyyy-MM-dd"))
+if (calcDateDayDiff(xianzhidate, formatDate(new Date(), "yyyy-MM-dd")) > 0) {
+    xianzhidays = calcDateDayDiff(xianzhidate, formatDate(new Date(), "yyyy-MM-dd"))
     storage.put("xianzhidays", xianzhidays);
 }
 /**
@@ -20,7 +20,7 @@ if(calcDateDayDiff(xianzhidate,formatDate(new Date(), "yyyy-MM-dd")) >0){
  * @param date2 日期二 '2020-06-04'
  * @returns {string}
  */
- function calcDateDayDiff(date1Str, date2Str) {
+function calcDateDayDiff(date1Str, date2Str) {
     //异常返回内容
     var errorResult = "";
     //解析
@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.1.8";
+        var versionNum = "v3.1.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -489,31 +489,32 @@ ui.ok.click(function () {
                 连接wifi(zwifi, 5000);
                 app.launch(PKG_NAME);
             }
-
+            sleep(10000)
             返回v首页();
 
             refreshStateInfo();
             let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("通讯录").findOne(3000);
             if (topActivity == MAIN_PAGE && wBtn != null) {
                 log("返回首页成功");
-                wBtn = className("android.widget.TextView").text("微信").findOne(3000);
-                try {
-                    for (let i = 0; i < 8; i++) {
-                        if (wBtn != null && wBtn.clickable()) {
-                            wBtn.click();
-                            if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) != null) {
-                                break;
-                            };
-                        } else {
-                            wBtn = wBtn.parent();
-                        }
-                    }
-                } catch (e) {
-                    log(wBtn)
-                    if (wBtn != null) {
+            }else{
+                打开v()
+            }
+            wBtn = className("android.widget.TextView").text("微信").findOne(3000);
+            try {
+                for (let i = 0; i < 8; i++) {
+                    if (wBtn != null && wBtn.clickable()) {
                         wBtn.click();
+                        if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) != null) {
+                            break;
+                        };
+                    } else {
+                        wBtn = wBtn.parent();
                     }
-
+                }
+            } catch (e) {
+                log(wBtn)
+                if (wBtn != null) {
+                    wBtn.click();
                 }
 
             }
@@ -738,7 +739,7 @@ ui.ok.click(function () {
             等待未响应();
             back();
         }
-        
+
 
         function 页面异常处理() {
             if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOne(3000) != null) {
@@ -862,6 +863,23 @@ ui.ok.click(function () {
                     wBtn = wBtn.parent();
                 }
             }*/
+            if (readNum > 150 && auto_tx == false) {
+                lunCount++;
+                配置["lunCount"] = lunCount;
+                配置["count"] = 1;
+                保存配置(settingPath, 配置);
+                //判断是否接收文章
+                if (xianzhidays == 0) {
+                    log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
+                    jieshouwenzhang();
+                } else {
+                    返回v首页();
+                    sleep(1000);
+                    home();
+                    lunSleep();
+                }
+                return
+            }
             let wBtns = className("android.widget.TextView").text("我").find();
             for (let i = 0; i < wBtns.length; i++) {
                 let wBtn = wBtns[i];
@@ -1020,7 +1038,7 @@ ui.ok.click(function () {
                                 } else {
                                     back();
                                 }
-                                if (xianzhidays >5) {
+                                if (xianzhidays > 5) {
                                     返回v首页();
                                     return;
                                 }
@@ -1050,39 +1068,37 @@ ui.ok.click(function () {
                     readNum = parseInt(readNumDiv.text());
                 }
                 if (textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOne(3000) != null) {
-                    if (auto_tx) {
-                        lunCount++;
-                        配置["lunCount"] = lunCount;
-                        配置["count"] = 1;
-                        保存配置(settingPath, 配置);
+                    lunCount++;
+                    配置["lunCount"] = lunCount;
+                    配置["count"] = 1;
+                    保存配置(settingPath, 配置);
+                    //判断是否接收文章
+                    if (xianzhidays == 0) {
+                        log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
+                        jieshouwenzhang();
+                    } else {
                         返回v首页();
                         sleep(1000);
                         home();
                         lunSleep();
-                    } else {
-                        lunCount = 99;
-                        配置["lunCount"] = 99;
-                        保存配置(settingPath, 配置);
-                        返回v首页();
                     }
                     return;
                 }
 
                 if (readNum > 150) {
-                    if (auto_tx) {
-                        lunCount++;
-                        配置["lunCount"] = lunCount;
-                        配置["count"] = 1;
-                        保存配置(settingPath, 配置);
+                    lunCount++;
+                    配置["lunCount"] = lunCount;
+                    配置["count"] = 1;
+                    保存配置(settingPath, 配置);
+                    //判断是否接收文章
+                    if (xianzhidays == 0) {
+                        log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
+                        jieshouwenzhang();
+                    } else {
                         返回v首页();
                         sleep(1000);
                         home();
                         lunSleep();
-                    } else {
-                        lunCount = 99;
-                        配置["lunCount"] = 99;
-                        保存配置(settingPath, 配置);
-                        返回v首页();
                     }
                     return;
                 }
@@ -1090,6 +1106,11 @@ ui.ok.click(function () {
                 for (var i = 0; i < 5; i++) {
                     sleep(3000);
                     if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(3000) != null) {
+                        sleep(5000)
+                        let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
+                        if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
+                            readNum = parseInt(readNumDiv.text());
+                        }
                         log("重试点击开始阅读成功");
                         let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
                         if (sBtn != null) {
@@ -1104,7 +1125,8 @@ ui.ok.click(function () {
                             配置["count"] = 1;
                             保存配置(settingPath, 配置);
                             //判断是否接收文章
-                            if (xianzhidays == 0) {//昨天限制今天可以的话第一轮不接收，昨天没限制第一轮接收
+                            if (xianzhidays == 0) {
+                                log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
                                 jieshouwenzhang();
                             } else {
                                 lunSleep();
@@ -1132,19 +1154,21 @@ ui.ok.click(function () {
             }
 
             if (textMatches(/(.*暂无任务可做)/).findOne(3000) != null) {
-                if(xianzhidays==0){
+                if (xianzhidays == 0) {
                     xianzhidays = 5
                     storage.put("xianzhidays", 5);
                 }
-                if(xianzhidays<5){
+                if (xianzhidays < 5) {
                     //休息17日
-                    if(calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) >0){
-                        xianzhidate = formatDate(new Date().setDate(new Date().getDate()+22), "yyyy-MM-dd")
+                    if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
+                        xianzhidate = formatDate(new Date().setDate(new Date().getDate() + 22), "yyyy-MM-dd")
                         storage.put("xianzhidate", xianzhidate);
+                        xianzhidays = 22
+                        storage.put("xianzhidays", xianzhidays);
                     }
                 }
-                
-                
+
+
                 //xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                 //storage.put("xianzhidate", xianzhidate);
                 if (auto_tx) {
@@ -1298,6 +1322,11 @@ ui.ok.click(function () {
                 }*/
                 if (页面异常处理()) {
                     if (textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(5000) != null) {
+                        sleep(5000)
+                        let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
+                        if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
+                            readNum = parseInt(readNumDiv.text());
+                        }
                         let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
                         if (sBtn != null) {
                             sBtn.click();
@@ -1347,7 +1376,7 @@ ui.ok.click(function () {
                                 sleep(8000);
                             } else {
                                 log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                                if (count > 7 && xianzhidays >=4&&xianzhidays<=5) {
+                                if (count > 7 && xianzhidays >= 4 && xianzhidays <= 5) {
                                     xianzhidays = 0
                                     storage.put("xianzhidays", 0);
                                     xianzhidate = formatDate(new Date(), "yyyy-MM-dd")
@@ -1365,7 +1394,7 @@ ui.ok.click(function () {
                             break
                         } else {
                             log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                            if (count > 7 && xianzhidays >=4&&xianzhidays <=5) {
+                            if (count > 7 && xianzhidays >= 4 && xianzhidays <= 5) {
                                 xianzhidays = 0
                                 storage.put("xianzhidays", 0);
                                 xianzhidate = formatDate(new Date(), "yyyy-MM-dd")
@@ -1520,11 +1549,19 @@ ui.ok.click(function () {
                 kz();
                 refreshStateInfo();
                 if (topPackage != PKG_NAME) {
-                    关闭应用(PKG_NAME);
                     sleep(2000);
-                    home();
-                    sleep(1000);
-                    return;
+                    log("topPackage != PKG_NAME打开PKG_NAME" + PKG_NAME);
+                    app.launch(PKG_NAME);
+                    sleep(15000);
+                    refreshStateInfo();
+                    if (topPackage != PKG_NAME) {
+                        log("无法打开PKG_NAME" + PKG_NAME);
+                        关闭应用(PKG_NAME);
+                        sleep(2000);
+                        home();
+                        sleep(1000);
+                        return;
+                    }
                 }
                 /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(3000)!=null){
                     log(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(3000));
@@ -1564,7 +1601,7 @@ ui.ok.click(function () {
                 let wBtn = className("android.widget.TextView").text("通讯录").findOne(5000);
                 refreshStateInfo();
                 if (topActivity != MAIN_PAGE || wBtn == null) {
-                    log("按返回键" + wBtn);
+                    log("topActivity=" + topActivity + ",按返回键" + wBtn);
                     back();
                     sleep(5000);
                 } else {
@@ -2158,10 +2195,10 @@ ui.ok.click(function () {
             if (配置["lunCount"] == undefined) {
                 初始化配置(settingPath);
             }
-            if(xianzhidays>5){
+            if (xianzhidays > 5) {
                 if (auto_tx) {
                     sleepLongTime(random(3600000, 5000000));
-                } else{
+                } else {
                     lunSleep(random(8640000, 13000000));
                     continue;
                 }
@@ -2178,7 +2215,7 @@ ui.ok.click(function () {
             }
 
             if (zwifi.toString() != dlwifi.toString()) {
-                if (xianzhidays > 0 && xianzhidays < 4 && nowHour < 7) {
+                if (xianzhidays > 0 && nowHour < 7) {
                     log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                     sleepLongTime(random(3600000, 5000000));
                     continue;
