@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.2.4";
+        var versionNum = "v3.2.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -593,31 +593,25 @@ ui.ok.click(function () {
                                 }
                             }
     
-                            if (latestTalkName != "" && latestTalkName != lastTalkName) {
+                            if (latestTalkName != ""&&latestLinkTitle != ""  && latestTalkName != lastTalkName) {
                                 //log(new Date().toLocaleString() + "-" + "-----------------发言人变化,上一发言人:" + lastTalkName + ",当前发言人:" + latestTalkName);
     
                                 if (setConfig(latestTalkName, latestLinkTitle)) {
-                                    if (latestLinkTitle != "") {
-                                        //log(" <标题不为空点击>");
+                                    latestLink.click();
+                                    reducejieshouCount()
+                                    阅读到底();
+                                    addjieshouCount()
+                                }
+    
+                            } else {
+                                if (latestTalkName != ""&&latestLinkTitle != ""  && lastLinkTitle != latestLinkTitle) {
+                                    //log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
+    
+                                    if (setConfig(latestTalkName, latestLinkTitle)) {
                                         latestLink.click();
                                         reducejieshouCount()
                                         阅读到底();
                                         addjieshouCount()
-                                    }
-                                }
-    
-                            } else {
-                                if (lastLinkTitle != "" && lastLinkTitle != latestLinkTitle) {
-                                    //log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
-    
-                                    if (setConfig(latestTalkName, latestLinkTitle)) {
-                                        if (latestLinkTitle != "") {
-                                            //log(" <标题不为空点击>");
-                                            latestLink.click();
-                                            reducejieshouCount()
-                                            阅读到底();
-                                            addjieshouCount()
-                                        }
                                     }
                                 }
                             }
