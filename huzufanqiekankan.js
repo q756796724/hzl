@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.2.1";
+        var versionNum = "v3.2.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1143,7 +1143,7 @@ ui.ok.click(function () {
                 return;
             }
 
-            if (textMatches(/(.*暂无任务可做)/).findOne(3000) != null) {
+            if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(3000) != null) {
                 if (xianzhidays == 0) {
                     xianzhidays = 5
                     storage.put("xianzhidays", 5);
