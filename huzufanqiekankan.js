@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.2.2";
+        var versionNum = "v3.2.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -496,7 +496,7 @@ ui.ok.click(function () {
             let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("通讯录").findOne(3000);
             if (topActivity == MAIN_PAGE && wBtn != null) {
                 log("返回首页成功");
-            }else{
+            } else {
                 打开v()
             }
             wBtn = className("android.widget.TextView").text("微信").findOne(3000);
@@ -998,52 +998,55 @@ ui.ok.click(function () {
             }
             if (auto_tx) {
                 if ((nowHour > 13 && todayTxCount < 1) || (nowHour > 21 && todayTxCount < 2)) {
-                    let jfTxt = packageName("com.tencent.mm").className("android.view.View").textContains("积分:").findOnce()
-                    if (jfTxt) {
-                        if (jfTxt != null && parseInt(jfTxt.text().split("积分:")[1]).toString() != 'NaN' && parseInt(jfTxt.text().split("积分:")[1]) > 100) {
-                            todayTxCount++
-                            click("积分兑换")
-                            sleep(6000);
-                            cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
-                            if (cBtn != null) {
-                                sleep(500)
-                                cBtn.click();
-
-                            }
-                            sleep(1000);
-                            let txBtn = packageName("com.tencent.mm").id('doWithdraw').className("android.widget.Button").findOnce();
-                            if (txBtn) {
-                                txBtn.click();
-                            } else {
-                                txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("提现").findOne(3000);
+                    if (className("android.view.View").textMatches(/(积分兑换)/).findOne(20000) != null) {
+                        sleep(10000);
+                        let jfTxt = packageName("com.tencent.mm").className("android.view.View").textContains("积分:").findOnce()
+                        if (jfTxt) {
+                            if (jfTxt != null && parseInt(jfTxt.text().split("积分:")[1]).toString() != 'NaN' && parseInt(jfTxt.text().split("积分:")[1]) > 100) {
+                                todayTxCount++
+                                click("积分兑换")
+                                sleep(6000);
+                                cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
+                                if (cBtn != null) {
+                                    sleep(500)
+                                    cBtn.click();
+    
+                                }
+                                sleep(1000);
+                                let txBtn = packageName("com.tencent.mm").id('doWithdraw').className("android.widget.Button").findOnce();
                                 if (txBtn) {
                                     txBtn.click();
-                                }
-                            }
-                            sleep(8000);
-                            cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
-                            if (cBtn != null) {
-                                sleep(500)
-                                cBtn.click();
-                                sleep(1000);
-                            } else {
-                                back();
-                            }
-                            if (xianzhidays > 5) {
-                                返回v首页();
-                                return;
-                            }
-                            for (var i = 0; i < 3; i++) {
-                                sleep(3000);
-                                let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
-                                if (sBtn == null) {
-                                    back();
                                 } else {
-                                    break;
+                                    txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("提现").findOne(3000);
+                                    if (txBtn) {
+                                        txBtn.click();
+                                    }
                                 }
-
+                                sleep(8000);
+                                cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
+                                if (cBtn != null) {
+                                    sleep(500)
+                                    cBtn.click();
+                                    sleep(1000);
+                                } else {
+                                    back();
+                                }
+                                if (xianzhidays > 5) {
+                                    返回v首页();
+                                    return;
+                                }
+                                for (var i = 0; i < 3; i++) {
+                                    sleep(3000);
+                                    let sBtn = textMatches(/(积分兑换)/).findOne(3000);
+                                    if (sBtn == null) {
+                                        back();
+                                    } else {
+                                        break;
+                                    }
+    
+                                }
+    
                             }
-
                         }
                     }
                 }
@@ -1101,7 +1104,7 @@ ui.ok.click(function () {
                         if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
                             readNum = parseInt(readNumDiv.text());
                         }
-                        log("重试点击开始阅读成功");
+                        log("重试点击开始阅读");
                         let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
                         if (sBtn != null) {
                             sBtn.click();
@@ -1157,7 +1160,7 @@ ui.ok.click(function () {
                         storage.put("xianzhidays", xianzhidays);
                     }
                 }
-
+                log(new Date().toLocaleString() + "-" + "限制-----------xianzhidate:" + xianzhidate + ",xianzhidays=" + xianzhidays);
 
                 //xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                 //storage.put("xianzhidate", xianzhidate);
