@@ -10,7 +10,7 @@ var topActivity = "";
 var MAIN_PKG = "com.fanqie.cloud";
 var PKG_NAME = "com.tencent.mm";
 var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-var versionNum = "v1.1.7";
+var versionNum = "v1.1.8";
 var minliaotiancount = 100;//聊天列表最小数量
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 
@@ -387,7 +387,7 @@ function liaotianshanyou() {
             longclickx(cBtn[i].bounds().centerX(), cBtn[i].bounds().bottom)
 
             sleep(random(1000, 2000));
-            if (text("取消顶置").findOne(5000) != null) {
+            if (text("取消置顶").findOne(5000) != null) {
                 back();
                 sleep(1000)
                 if (cBtn.length < minliaotiancount) {
