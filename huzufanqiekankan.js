@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.2.9";
+        var versionNum = "v3.3.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1903,11 +1903,16 @@ ui.ok.click(function () {
                 sleep(500)
                 qBtn.click();
             } else {
-                qBtn = textMatches(/(取消)/).findOne(1000);
+                qBtn = textMatches(/(取消)/).findOnce();
                 if (qBtn != null) {
                     sleep(500)
                     qBtn.click();
                 }
+            }
+            qBtn = textMatches(/(.*保持连接.*)/).findOne(1000);
+            if (qBtn != null && qBtn.enabled()) {
+                sleep(500)
+                qBtn.click();
             }
         }
         function 启动x5() {
