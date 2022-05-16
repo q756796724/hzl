@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "萝卜v1.0.1";
+        var versionNum = "萝卜v1.0.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -787,8 +787,8 @@ ui.ok.click(function () {
 
 
         function 页面异常处理() {
-            if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOne(3000) != null) {
-                log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOne(3000));
+            if (className("android.widget.TextView").textMatches(/(.*请从微信正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOne(3000) != null) {
+                log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请从微信正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOne(3000));
                 let qBtn = textMatches(/(.*确定.*)/).findOne(3000);
                 if (qBtn != null) {
                     qBtn.click();
@@ -1075,7 +1075,7 @@ ui.ok.click(function () {
                     click("开始阅读");
                     sleep(8000)
                 }
-                if (textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOnce() != null) {
+                if (packageName("com.tencent.mm").className("android.widget.TextView").text("完成任务").findOnce()!=null||packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOnce() != null) {
                     lunCount++;
                     配置["lunCount"] = lunCount;
                     配置["count"] = 1;
@@ -1113,7 +1113,7 @@ ui.ok.click(function () {
                     lunSleep(random(21600000, 25200000));//睡6~7小时
                 }
                 if (className("android.view.View").textMatches(/(请从微信正常阅读|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOnce() != null) {
-                    log("异常回退：" + className("android.view.View").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOnce());
+                    log("异常回退：" + className("android.view.View").textMatches(/(.*请从微信正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOnce());
                     let qBtn = textMatches(/(.*返回首页.*)/).findOnce();
                     if (qBtn != null) {
                         sleep(500)
@@ -1327,7 +1327,7 @@ ui.ok.click(function () {
             let wifiCount = count;
             for (; ;) {
                 kz();
-                /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(3000)!=null){
+                /*if(className("android.widget.TextView").textContains("请从微信正常阅读").findOne(3000)!=null){
                     click("确定");
                     log("回退");
                     sleep(3000);
@@ -1336,8 +1336,8 @@ ui.ok.click(function () {
                     }
                 }*/
 
-                /*if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(3000) != null) {
-                    log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(3000));
+                /*if (className("android.widget.TextView").textMatches(/(.*请从微信正常阅读.*|.*异常.*|.*失败.*)/).findOne(3000) != null) {
+                    log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请从微信正常阅读.*|.*异常.*|.*失败.*)/).findOne(3000));
                     click("确定");
                     sleep(3000);
                     if (textContains("ZhaoLin").findOne(3000) != null || textMatches(/(.*开始阅读.*)/).findOne(3000) != null) {
@@ -1368,6 +1368,22 @@ ui.ok.click(function () {
                 //     }
                 // }
 
+                //完成任务
+                if (packageName("com.tencent.mm").className("android.widget.TextView").text("完成任务").findOnce()!=null||packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOnce() != null) {
+                    log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
+                    if (count > 7 && xianzhidays >= 4 && xianzhidays <= 5) {
+                        xianzhidays = 0
+                        storage.put("xianzhidays", 0);
+                        xianzhidate = formatDate(new Date(), "yyyy-MM-dd")
+                        storage.put("xianzhidate", xianzhidate);
+                    }
+                    if (xianzhidays == 0 && lunCount == 1 && count < 7) {
+                        xianzhidays = 5
+                        storage.put("xianzhidays", 5);
+                    }
+
+                    count = 41;
+                }
                 //判断阅读提前结束
                 /*if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(3000) != null) {
                     for (var i = 0; i < 5; i++) {
@@ -1586,14 +1602,14 @@ ui.ok.click(function () {
                         return;
                     }
                 }
-                /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(3000)!=null){
-                    log(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(3000));
+                /*if(className("android.widget.TextView").textContains("请从微信正常阅读").findOne(3000)!=null){
+                    log(className("android.widget.TextView").textContains("请从微信正常阅读").findOne(3000));
                     click("确定");
                     sleep(8000);
                     continue;
                 }*/
-                /*if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(3000) != null) {
-                    log("异常确定：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*)/).findOne(3000));
+                /*if (className("android.widget.TextView").textMatches(/(.*请从微信正常阅读.*|.*异常.*|.*失败.*)/).findOne(3000) != null) {
+                    log("异常确定：" + className("android.widget.TextView").textMatches(/(.*请从微信正常阅读.*|.*异常.*|.*失败.*)/).findOne(3000));
                     click("确定");
                     sleep(8000);
                     continue;
@@ -1883,11 +1899,16 @@ ui.ok.click(function () {
                 sleep(500)
                 qBtn.click();
             } else {
-                qBtn = textMatches(/(取消)/).findOne(1000);
+                qBtn = textMatches(/(取消)/).findOnce();
                 if (qBtn != null) {
                     sleep(500)
                     qBtn.click();
                 }
+            }
+            qBtn = textMatches(/(.*保持连接.*)/).findOne(1000);
+            if (qBtn != null && qBtn.enabled()) {
+                sleep(500)
+                qBtn.click();
             }
         }
         function 启动x5() {
