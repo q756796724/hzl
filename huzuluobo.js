@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "萝卜v1.0.2";
+        var versionNum = "萝卜v1.0.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -982,9 +982,14 @@ ui.ok.click(function () {
                                             if (child.className() == "android.widget.TextView") {
                                                 //log(child.text())
                                                 if (child.text().indexOf("萝卜") > -1 && child.text().indexOf("id=4824") > -1 && child.clickable()) {
-                                                    sleep(500)
-                                                    clickx(child.bounds().centerX(), child.bounds().centerY());
-                                                    log("点击萝卜成功")
+                                                    for(let i=0;i<10;i++){
+                                                        clickx(child.bounds().centerX(),child.bounds().centerY());
+                                                        sleep(random(5000,7000))
+                                                        if(packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce()==null){
+                                                            log("点击萝卜成功")
+                                                            break
+                                                        }
+                                                    }
                                                     throw Error()
                                                 }
                                             }
