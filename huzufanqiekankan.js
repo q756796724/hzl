@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.2.8";
+        var versionNum = "v3.2.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -209,6 +209,11 @@ ui.ok.click(function () {
             x = x + random(-5, -1)
             y = y + random(-5, -1)
             click(x < 0 ? 1 : x, y < 0 ? 1 : y)
+        }
+        function longclickx(x, y) {
+            x = x + random(-5, -1)
+            y = y + random(-5, -1)
+            press(x < 0 ? 1 : x, y < 0 ? 1 : y, random(2000, 2500));
         }
 
         var 悬浮窗 = floaty.window(
