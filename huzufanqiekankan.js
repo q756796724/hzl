@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.2.6";
+        var versionNum = "v3.2.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -538,15 +538,35 @@ ui.ok.click(function () {
                 }
 
             }
-            wBtn = packageName("com.tencent.mm").id('a4k').findOnce();//8.0.10
-            if (wBtn == null) {
-                wBtn = packageName("com.tencent.mm").id('bg1').findOnce();//8.0.1
+            let wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
+            if (wBtns.length == 0) {
+                wBtns = packageName("com.tencent.mm").id('bg1').find();//8.0.1
             }
-            if (wBtn != null) {
-                sleep(1000)
-                wBtn.click();
-                sleep(3000);
-                wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);//id=ipv
+            if (wBtns.length > 0) {
+                sleep(3000)
+                for (let i = 0; i < wBtns.length; i++) {
+                    longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                    sleep(random(1000, 2000));
+                    if (text("取消置顶").findOne(5000) != null) {
+                        back();
+                        sleep(2000)
+                        clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                        sleep(random(1500, 2000))
+                        if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) != null) {
+                            log("进入了大家庭");
+                            break
+                        } else {
+                            back();
+                            sleep(3000)
+                            continue;
+                        }
+                    } else {
+                        console.error("置顶not found 大家庭")
+                        jieshouwenzhang()
+                        return
+                    }
+                }
+                wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);
                 if (wBtn != null) {
                     addjieshouCount()
                     let icount = random(600, 840);
@@ -589,8 +609,8 @@ ui.ok.click(function () {
                             //log(repData)
                             let lastTalkName = repData["lastTalkName"] != undefined ? repData["lastTalkName"] : "";//上一发言人
                             let lastLinkTitle = repData["lastLinkTitle"] != undefined ? repData["lastLinkTitle"] : "";//上一文章的标题
-    
-    
+
+
                             news = packageName("com.tencent.mm").className("android.widget.ListView").findOne(5000);
                             if (news != null && news.children() != null) {
                                 newsList = news.children();
@@ -612,21 +632,21 @@ ui.ok.click(function () {
                                     }
                                 }
                             }
-    
-                            if (latestTalkName != ""&&latestLinkTitle != ""  && latestTalkName != lastTalkName) {
+
+                            if (latestTalkName != "" && latestLinkTitle != "" && latestTalkName != lastTalkName) {
                                 //log(new Date().toLocaleString() + "-" + "-----------------发言人变化,上一发言人:" + lastTalkName + ",当前发言人:" + latestTalkName);
-    
+
                                 if (setConfig(latestTalkName, latestLinkTitle)) {
                                     latestLink.click();
                                     reducejieshouCount()
                                     阅读到底();
                                     addjieshouCount()
                                 }
-    
+
                             } else {
-                                if (latestTalkName != ""&&latestLinkTitle != ""  && lastLinkTitle != latestLinkTitle) {
+                                if (latestTalkName != "" && latestLinkTitle != "" && lastLinkTitle != latestLinkTitle) {
                                     //log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
-    
+
                                     if (setConfig(latestTalkName, latestLinkTitle)) {
                                         latestLink.click();
                                         reducejieshouCount()
@@ -636,7 +656,7 @@ ui.ok.click(function () {
                                 }
                             }
                         }
-                        
+
                         sleep(10000)
                         if (i % 5 == 0) {
                             if (联网验证(zwifi) != true) {
@@ -653,8 +673,10 @@ ui.ok.click(function () {
                     sleep(random(300000, 600000));
                 } else {
                     console.error("not found 大家庭")
-                    lunSleep();
+                    jieshouwenzhang()
+                    return
                 }
+
             } else {
                 console.error("not found bg1")
                 lunSleep();
@@ -1028,7 +1050,7 @@ ui.ok.click(function () {
                                 if (cBtn != null) {
                                     sleep(500)
                                     cBtn.click();
-    
+
                                 }
                                 sleep(1000);
                                 let txBtn = packageName("com.tencent.mm").id('doWithdraw').className("android.widget.Button").findOnce();
@@ -1061,9 +1083,9 @@ ui.ok.click(function () {
                                     } else {
                                         break;
                                     }
-    
+
                                 }
-    
+
                             }
                         }
                     }
@@ -1185,7 +1207,7 @@ ui.ok.click(function () {
                 if (auto_tx) {
                     lunSleep();
                 } else {
-                    lunSleep(random(8640000, 13000000));
+                    lunSleep(random(21600000, 25200000));//睡6~7小时
                 }
             } else {
                 lunSleep();
@@ -1368,7 +1390,7 @@ ui.ok.click(function () {
                                 log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
                                 count = 41;
                             }
-
+ 
                         }
                     }
                 }*/
@@ -2210,7 +2232,7 @@ ui.ok.click(function () {
                 if (auto_tx) {
                     sleepLongTime(random(3600000, 5000000));
                 } else {
-                    lunSleep(random(8640000, 13000000));
+                    lunSleep(random(21600000, 25200000));//睡6~7小时
                     continue;
                 }
             }
