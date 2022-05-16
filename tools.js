@@ -3,7 +3,7 @@
  * 个人配置
  */
 var 仓库名 = "hzl"     //需要更换仓库名
-var versionNum = "v1.1.8";
+var versionNum = "v1.1.9";
 
 toolsStorage = storages.create("tools配置");
 
@@ -24,7 +24,7 @@ function main() {
         title: "请选择",
         positive: "确定",
         negative: "取消",
-        items: ["llb互助短", "互助番茄kk", "番茄kk", "微微fuzhu", "weiwei", "取guan", "更新app", "答题", "更新守护", "珊友", "多宝自提"],
+        items: ["互助萝卜", "互助番茄kk", "番茄kk", "微微fuzhu", "weiwei", "取guan", "更新app", "答题",  "珊友", "多宝自提"],
         itemsSelectMode: "singleChoice",
         itemsSelectedIndex: toolsStorage.get("toolsSelectIdx", 0)
     }).on("single_choice", (index, item, dialog) => {
@@ -52,7 +52,7 @@ function main() {
 function getSelect(runSelect) {
     //toastLog(runSelect)
     if (runSelect == 0) {
-        github下载的脚本 = 打开Github文件("llbhuzu.js");//这个方法返回的就是要运行的代码
+        github下载的脚本 = 打开Github文件("huzuluobo.js");//这个方法返回的就是要运行的代码
         //console.info("下载完成的代码为:"+'\n'+github下载的脚本);
 
     } else if (runSelect == 1) {
@@ -74,26 +74,26 @@ function getSelect(runSelect) {
         github下载的脚本 = 打开Github文件("updateapp.js");//这个方法返回的就是要运行的代码
     } else if (runSelect == 7) {
         github下载的脚本 = 打开Github文件("dati.js");//这个方法返回的就是要运行的代码
-    } else if (runSelect == 8) {
-        try {
-            var path = files.join(files.cwd(), "tools.zip")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
-            if (app.autojs.versionName == 'Pro 7.0.4-1') {
-                var r = 解压zip文件2(path, "") //解压zip文件
-            } else if (app.autojs.versionName == '4.1.1 Alpha2') {
-                var r = 解压zip文件(path, "") //解压zip文件
-            }
-            files.copy(r + "shouhu.js", "/sdcard/fanqie/shouhu.js")
-            files.copy(r + "xiangjiao.js", "/sdcard/fanqie/xiangjiao.js")
-        } catch (err) {
-            console.error(err)  //抛出异常
-        }
-        exit()
-    } else if (runSelect == 9) {
+    }else if (runSelect == 8) {
         github下载的脚本 = 打开Github文件("sanyou.js");//这个方法返回的就是要运行的代码
-    }else if (runSelect == 10) {
+    }else if (runSelect == 9) {
         github下载的脚本 = 打开Github文件("dbautotx.js");//这个方法返回的就是要运行的代码
     }
     //console.info("下载完成的代码为1:"+'\n'+github下载的脚本);
+
+    //更新守护
+    try {
+        var path = files.join(files.cwd(), "tools.zip")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
+        if (app.autojs.versionName == 'Pro 7.0.4-1') {
+            var r = 解压zip文件2(path, "") //解压zip文件
+        } else if (app.autojs.versionName == '4.1.1 Alpha2') {
+            var r = 解压zip文件(path, "") //解压zip文件
+        }
+        files.copy(r + "shouhu.js", "/sdcard/fanqie/shouhu.js")
+        files.copy(r + "xiangjiao.js", "/sdcard/fanqie/xiangjiao.js")
+    } catch (err) {
+        console.error(err)  //抛出异常
+    }
 }
 
 /**
@@ -107,7 +107,6 @@ function 打开Github文件(脚本名称) {
         } else if (app.autojs.versionName == '4.1.1 Alpha2') {
             var r = 解压zip文件(path, 脚本名称) //解压zip文件
         }
-
         return files.read(r)
     } catch (err) {
         console.error(err)  //抛出异常
