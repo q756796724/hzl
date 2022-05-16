@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "萝卜v1.0.0";
+        var versionNum = "萝卜v1.0.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -980,8 +980,9 @@ ui.ok.click(function () {
                                     try {
                                         latestNews.children().forEach(function (child) {
                                             if (child.className() == "android.widget.TextView") {
-                                                log(child.text())
-                                                if (child.text().indexOf("萝卜") > -1 &&child.text().indexOf("id=4824") > -1 && child.clickable()) {
+                                                //log(child.text())
+                                                if (child.text().indexOf("萝卜") > -1 && child.text().indexOf("id=4824") > -1 && child.clickable()) {
+                                                    sleep(500)
                                                     clickx(child.bounds().centerX(), child.bounds().centerY());
                                                     log("点击萝卜成功")
                                                     throw Error()
@@ -1006,7 +1007,7 @@ ui.ok.click(function () {
                 return
             }
 
-        
+
             sleep(10000);
             let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
             if (ntext != null) {
@@ -1024,15 +1025,16 @@ ui.ok.click(function () {
             if (结束未响应()) {
                 return;
             }
-            
+
             if (packageName("com.tencent.mm").className("android.widget.TextView").text("阅读任务").findOne(3000) != null) {
                 log("进入页面成功");
                 retryCount = 0;
                 kz();
                 sleep(5000)
-                let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
-                if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
-                    readNum = parseInt(readNumDiv.text());
+
+                let readNumDiv = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*次)/).findOne(5000)
+                if (readNumDiv != null && parseInt(readNumDiv.text().substring(0, readNumDiv.text().length - 1)).toString() != 'NaN' && parseInt(readNumDiv.text().substring(0, readNumDiv.text().length - 1)) > readNum) {
+                    readNum = parseInt(readNumDiv.text().substring(0, readNumDiv.text().length - 1));
                 }
                 // if (textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOne(3000) != null) {
                 //     lunCount++;
@@ -1069,7 +1071,7 @@ ui.ok.click(function () {
                     }
                     return;
                 }
-                if(packageName("com.tencent.mm").className("android.view.View").text("开始阅读").findOne(3000) != null){
+                if (packageName("com.tencent.mm").className("android.view.View").text("开始阅读").findOne(3000) != null) {
                     click("开始阅读");
                     sleep(8000)
                 }
@@ -1090,7 +1092,7 @@ ui.ok.click(function () {
                     }
                     return;
                 }
-                if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOnce() != null) {
+                if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*|.*当前已经被限制.*)/).findOnce() != null) {
                     if (xianzhidays == 0) {
                         xianzhidays = 5
                         storage.put("xianzhidays", 5);
@@ -1105,7 +1107,7 @@ ui.ok.click(function () {
                         }
                     }
                     log(new Date().toLocaleString() + "-" + "限制-----------xianzhidate:" + xianzhidate + ",xianzhidays=" + xianzhidays);
-    
+
                     //xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                     //storage.put("xianzhidate", xianzhidate);
                     lunSleep(random(21600000, 25200000));//睡6~7小时
@@ -1118,23 +1120,23 @@ ui.ok.click(function () {
                         qBtn.click();
                     }
                     sleep(3000);
-                } 
-                
+                }
+
                 for (var i = 0; i < 5; i++) {
-                    sleep(3000); 
+                    sleep(3000);
                     if (packageName("com.tencent.mm").className("android.widget.TextView").text("阅读任务").findOne(3000) != null) {
                         sleep(5000)
-                        let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
-                        if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
-                            readNum = parseInt(readNumDiv.text());
+                        let readNumDiv = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*次)/).findOne(5000)
+                        if (readNumDiv != null && parseInt(readNumDiv.text().substring(0, readNumDiv.text().length - 1)).toString() != 'NaN' && parseInt(readNumDiv.text().substring(0, readNumDiv.text().length - 1)) > readNum) {
+                            readNum = parseInt(readNumDiv.text().substring(0, readNumDiv.text().length - 1));
                         }
                         log("重试点击开始阅读");
                         let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
                         if (sBtn != null) {
                             sBtn.click();
                         }
-                    }else if (packageName("com.tencent.mm").className("android.widget.TextView").text("错误").findOnce() != null) {
-                       
+                    } else if (packageName("com.tencent.mm").className("android.widget.TextView").text("错误").findOnce() != null) {
+
                         log("重试点击返回首页");
                         let sBtn = textMatches(/(.*返回首页.*)/).findOne(3000);
                         if (sBtn != null) {
@@ -1166,6 +1168,7 @@ ui.ok.click(function () {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                 if (stopPage != null) {
                     lunSleep(random(21600000, 25200000));//睡6~7小时
+                    return;
                 }
                 if (retryCount > 3) {
                     retryCount = 0;
@@ -1177,7 +1180,7 @@ ui.ok.click(function () {
                 return;
             }
 
-            if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(3000) != null) {
+            if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*|.*当前已经被限制.*)/).findOne(3000) != null) {
                 if (xianzhidays == 0) {
                     xianzhidays = 5
                     storage.put("xianzhidays", 5);
@@ -1389,7 +1392,7 @@ ui.ok.click(function () {
                     for (var i = 0; i < 5; i++) {
                         kz();
                         if (packageName("com.tencent.mm").className("android.widget.TextView").text("错误").findOne(3000) != null) {
-                            
+
                             if (i < 3) {
                                 log("按返回尝试进入阅读");
                                 back()
