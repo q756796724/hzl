@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.3.0";
+        var versionNum = "v3.3.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -524,38 +524,36 @@ ui.ok.click(function () {
             } else {
                 打开v()
             }
-            wBtn = className("android.widget.TextView").text("微信").findOne(3000);
-            try {
-                for (let i = 0; i < 8; i++) {
+            let wBtns = className("android.widget.TextView").text("微信").find();
+            for (let i = 0; i < wBtns.length; i++) {
+                let wBtn = wBtns[i];
+                for (let i = 0; i < 4; i++) {
                     if (wBtn != null && wBtn.clickable()) {
                         wBtn.click();
-                        if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) != null) {
+                        sleep(5000);
+                        if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
                             break;
                         };
-                    } else {
+                    } else if (wBtn != null && wBtn.parent() != null) {
                         wBtn = wBtn.parent();
                     }
                 }
-            } catch (e) {
-                log(wBtn)
-                if (wBtn != null) {
-                    wBtn.click();
-                }
-
             }
-            let wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
+            wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
             if (wBtns.length == 0) {
                 wBtns = packageName("com.tencent.mm").id('bg1').find();//8.0.1
             }
             if (wBtns.length > 0) {
                 sleep(3000)
                 for (let i = 0; i < wBtns.length; i++) {
-                    longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                    //longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                    wBtns[i].longClick()
                     sleep(random(1000, 2000));
                     if (text("取消置顶").findOne(5000) != null) {
                         back();
                         sleep(2000)
-                        clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                        //clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                        wBtns[i].click();
                         sleep(random(1500, 2000))
                         if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) != null) {
                             log("进入了大家庭");
@@ -567,7 +565,6 @@ ui.ok.click(function () {
                         }
                     } else {
                         console.error("置顶not found 大家庭")
-                        jieshouwenzhang()
                         return
                     }
                 }
@@ -591,7 +588,7 @@ ui.ok.click(function () {
                                         latestTalkName = latestTalkName.TextFilter()
                                     }
                                     if (child.className() == "android.widget.FrameLayout") {
-                                        if(child.children()[0]!=undefined){
+                                        if (child.children()[0] != undefined) {
                                             latestLink = child;
                                             latestLinkTitle = child.children()[0].text();
                                             latestLinkTitle = latestLinkTitle.TextFilter()
@@ -631,7 +628,7 @@ ui.ok.click(function () {
                                                 latestTalkName = latestTalkName.TextFilter()
                                             }
                                             if (child.className() == "android.widget.FrameLayout") {
-                                                if(child.children()[0]!=undefined){
+                                                if (child.children()[0] != undefined) {
                                                     latestLink = child;
                                                     latestLinkTitle = child.children()[0].text();
                                                     latestLinkTitle = latestLinkTitle.TextFilter()
@@ -682,7 +679,6 @@ ui.ok.click(function () {
                     sleep(random(300000, 600000));
                 } else {
                     console.error("not found 大家庭")
-                    jieshouwenzhang()
                     return
                 }
 
@@ -698,16 +694,19 @@ ui.ok.click(function () {
             let wBtn = className("android.widget.TextView").text("我").findOne(3000);
             if (topActivity == MAIN_PAGE && wBtn != null) {
                 log("返回v首页成功！");
-                let wBtn = className("android.widget.TextView").text("我").findOne(3000);
-                for (let i = 0; i < 8; i++) {
-                    if (wBtn != null && wBtn.clickable()) {
-                        wBtn.click();
-                        sleep(3000);
-                        if (className("android.widget.TextView").text("收藏").findOne(5000) != null) {
-                            break;
-                        };
-                    } else {
-                        wBtn = wBtn.parent();
+                let wBtns = className("android.widget.TextView").text("我").find();
+                for (let i = 0; i < wBtns.length; i++) {
+                    let wBtn = wBtns[i];
+                    for (let i = 0; i < 4; i++) {
+                        if (wBtn != null && wBtn.clickable()) {
+                            wBtn.click();
+                            sleep(3000);
+                            if (className("android.widget.TextView").text("收藏").findOne(5000) != null) {
+                                break;
+                            };
+                        } else if (wBtn != null && wBtn.parent() != null) {
+                            wBtn = wBtn.parent();
+                        }
                     }
                 }
 
@@ -1227,17 +1226,19 @@ ui.ok.click(function () {
 
         function quGuan(sleepTime) {
             log("进入v成功");
-
-            let wBtn = className("android.widget.TextView").text("通讯录").findOne(3000);
-            for (let i = 0; i < 8; i++) {
-                if (wBtn != null && wBtn.clickable()) {
-                    wBtn.click();
-                    sleep(3000);
-                    if (className("android.widget.TextView").text("公众号").findOne(5000) != null) {
-                        break;
-                    };
-                } else {
-                    wBtn = wBtn.parent();
+            let wBtns = className("android.widget.TextView").text("通讯录").find();
+            for (let i = 0; i < wBtns.length; i++) {
+                let wBtn = wBtns[i];
+                for (let i = 0; i < 4; i++) {
+                    if (wBtn != null && wBtn.clickable()) {
+                        wBtn.click();
+                        sleep(3000);
+                        if (className("android.widget.TextView").text("公众号").findOne(5000) != null) {
+                            break;
+                        };
+                    } else if (wBtn != null && wBtn.parent() != null) {
+                        wBtn = wBtn.parent();
+                    }
                 }
             }
 
