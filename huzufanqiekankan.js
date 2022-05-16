@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.2.7";
+        var versionNum = "v3.2.8";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -586,9 +586,11 @@ ui.ok.click(function () {
                                         latestTalkName = latestTalkName.TextFilter()
                                     }
                                     if (child.className() == "android.widget.FrameLayout") {
-                                        latestLink = child;
-                                        latestLinkTitle = child.children()[0].text();
-                                        latestLinkTitle = latestLinkTitle.TextFilter()
+                                        if(child.children()[0]!=undefined){
+                                            latestLink = child;
+                                            latestLinkTitle = child.children()[0].text();
+                                            latestLinkTitle = latestLinkTitle.TextFilter()
+                                        }
                                     }
                                 })
                             }
@@ -624,9 +626,11 @@ ui.ok.click(function () {
                                                 latestTalkName = latestTalkName.TextFilter()
                                             }
                                             if (child.className() == "android.widget.FrameLayout") {
-                                                latestLink = child;
-                                                latestLinkTitle = child.children()[0].text();
-                                                latestLinkTitle = latestLinkTitle.TextFilter()
+                                                if(child.children()[0]!=undefined){
+                                                    latestLink = child;
+                                                    latestLinkTitle = child.children()[0].text();
+                                                    latestLinkTitle = latestLinkTitle.TextFilter()
+                                                }
                                             }
                                         })
                                     }
@@ -1174,7 +1178,8 @@ ui.ok.click(function () {
             } else {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                 if (stopPage != null) {
-                    exit();
+                    lunSleep(random(21600000, 25200000));//睡6~7小时
+                    return;
                 }
                 if (retryCount > 3) {
                     retryCount = 0;
