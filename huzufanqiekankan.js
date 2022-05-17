@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.3.4";
+        var versionNum = "v3.3.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -2161,6 +2161,11 @@ ui.ok.click(function () {
             toastLog("版本号:" + versionNum);
             配置 = 读取配置(settingPath);
             if (配置["date"] != new Date().toLocaleDateString()) {
+                sleep(3000);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                }
+                sleep(5000);
                 readNum = 0;
                 todayTxCount = 0;
                 初始化配置(settingPath);
