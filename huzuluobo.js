@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "萝卜v1.0.7";
+        var versionNum = "萝卜v1.0.8";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -555,7 +555,6 @@ ui.ok.click(function () {
                     wBtns[i].longClick()
                     sleep(random(1000, 2000));
                     if (text("取消置顶").findOne(5000) != null) {
-                        retryCount = 0;
                         back();
                         sleep(2000)
                         //clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
@@ -571,12 +570,8 @@ ui.ok.click(function () {
                         }
                     } else {
                         console.error("置顶not found 大家庭")
-                        if (retryCount > 3) {
-                            retryCount = 0;
-                            关闭应用(PKG_NAME);
-                        } else {
-                            retryCount++
-                        }
+                        关闭应用(PKG_NAME);
+                        lunSleep();
                         return
                     }
                 }
@@ -691,17 +686,13 @@ ui.ok.click(function () {
                     sleep(random(300000, 600000));
                 } else {
                     console.error("not found 大家庭")
-                    if (retryCount > 3) {
-                        retryCount = 0;
-                        关闭应用(PKG_NAME);
-                    } else {
-                        retryCount++
-                    }
-                    return
+                    关闭应用(PKG_NAME);
+                    lunSleep();
                 }
 
             } else {
                 console.error("not found bg1")
+                关闭应用(PKG_NAME);
                 lunSleep();
             }
         }
