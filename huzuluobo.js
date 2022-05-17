@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "萝卜v1.0.5";
+        var versionNum = "萝卜v1.0.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -529,9 +529,11 @@ ui.ok.click(function () {
                 let wBtn = wBtns[i];
                 for (let i = 0; i < 4; i++) {
                     if (wBtn != null && wBtn.clickable()) {
+                        sleep(1000);
                         wBtn.click();
                         sleep(5000);
                         if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
+                            log("进入列表成功")
                             break;
                         };
                     } else if (wBtn != null && wBtn.parent() != null) {
@@ -550,6 +552,7 @@ ui.ok.click(function () {
                     wBtns[i].longClick()
                     sleep(random(1000, 2000));
                     if (text("取消置顶").findOne(5000) != null) {
+                        retryCount = 0;
                         back();
                         sleep(2000)
                         //clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
@@ -565,6 +568,12 @@ ui.ok.click(function () {
                         }
                     } else {
                         console.error("置顶not found 大家庭")
+                        if (retryCount > 3) {
+                            retryCount = 0;
+                            关闭应用(PKG_NAME);
+                        } else {
+                            retryCount++
+                        }
                         return
                     }
                 }
@@ -679,6 +688,12 @@ ui.ok.click(function () {
                     sleep(random(300000, 600000));
                 } else {
                     console.error("not found 大家庭")
+                    if (retryCount > 3) {
+                        retryCount = 0;
+                        关闭应用(PKG_NAME);
+                    } else {
+                        retryCount++
+                    }
                     return
                 }
 
@@ -950,6 +965,7 @@ ui.ok.click(function () {
                     longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
                     sleep(random(1000, 2000));
                     if (text("取消置顶").findOne(5000) != null) {
+                        retryCount = 0;
                         back();
                         sleep(2000)
                         clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
@@ -964,7 +980,12 @@ ui.ok.click(function () {
                         }
                     } else {
                         console.error("置顶not found 家庭")
-                        关闭应用(PKG_NAME);
+                        if (retryCount > 3) {
+                            retryCount = 0;
+                            关闭应用(PKG_NAME);
+                        } else {
+                            retryCount++
+                        }
                         return
                     }
                 }
@@ -983,6 +1004,7 @@ ui.ok.click(function () {
                                             if (child.className() == "android.widget.TextView") {
                                                 //log(child.text())
                                                 if (child.text().indexOf("萝卜") > -1 && child.text().indexOf("id=4824") > -1 && child.clickable()) {
+                                                    retryCount = 0;
                                                     for (let i = 0; i < 10; i++) {
                                                         clickx(child.bounds().centerX(), child.bounds().centerY());
                                                         sleep(random(8000, 10000))
@@ -1006,10 +1028,23 @@ ui.ok.click(function () {
                     }
                 } else {
                     console.error("not found 家庭")
+
+                    if (retryCount > 3) {
+                        retryCount = 0;
+                        关闭应用(PKG_NAME);
+                    } else {
+                        retryCount++
+                    }
                     return
                 }
             } else {
                 console.error("not found bg1")
+                if (retryCount > 3) {
+                    retryCount = 0;
+                    关闭应用(PKG_NAME);
+                } else {
+                    retryCount++
+                }
                 return
             }
 
@@ -1662,6 +1697,7 @@ ui.ok.click(function () {
                     back();
                     sleep(5000);
                 } else {
+                    sleep(5000);
                     return;
                 }
             }
