@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "萝卜v1.0.3";
+        var versionNum = "萝卜v1.0.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -524,38 +524,36 @@ ui.ok.click(function () {
             } else {
                 打开v()
             }
-            wBtn = className("android.widget.TextView").text("微信").findOne(3000);
-            try {
-                for (let i = 0; i < 8; i++) {
+            let wBtns = className("android.widget.TextView").text("微信").find();
+            for (let i = 0; i < wBtns.length; i++) {
+                let wBtn = wBtns[i];
+                for (let i = 0; i < 4; i++) {
                     if (wBtn != null && wBtn.clickable()) {
                         wBtn.click();
-                        if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) != null) {
+                        sleep(5000);
+                        if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
                             break;
                         };
-                    } else {
+                    } else if (wBtn != null && wBtn.parent() != null) {
                         wBtn = wBtn.parent();
                     }
                 }
-            } catch (e) {
-                log(wBtn)
-                if (wBtn != null) {
-                    wBtn.click();
-                }
-
             }
-            let wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
+            wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
             if (wBtns.length == 0) {
                 wBtns = packageName("com.tencent.mm").id('bg1').find();//8.0.1
             }
             if (wBtns.length > 0) {
                 sleep(3000)
                 for (let i = 0; i < wBtns.length; i++) {
-                    longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                    //longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                    wBtns[i].longClick()
                     sleep(random(1000, 2000));
                     if (text("取消置顶").findOne(5000) != null) {
                         back();
                         sleep(2000)
-                        clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                        //clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                        wBtns[i].click();
                         sleep(random(1500, 2000))
                         if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) != null) {
                             log("进入了大家庭");
@@ -567,11 +565,9 @@ ui.ok.click(function () {
                         }
                     } else {
                         console.error("置顶not found 大家庭")
-                        jieshouwenzhang()
                         return
                     }
                 }
-
                 wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);
                 if (wBtn != null) {
                     addjieshouCount()
@@ -592,9 +588,11 @@ ui.ok.click(function () {
                                         latestTalkName = latestTalkName.TextFilter()
                                     }
                                     if (child.className() == "android.widget.FrameLayout") {
-                                        latestLink = child;
-                                        latestLinkTitle = child.children()[0].text();
-                                        latestLinkTitle = latestLinkTitle.TextFilter()
+                                        if (child.children()[0] != undefined) {
+                                            latestLink = child;
+                                            latestLinkTitle = child.children()[0].text();
+                                            latestLinkTitle = latestLinkTitle.TextFilter()
+                                        }
                                     }
                                 })
                             }
@@ -630,9 +628,11 @@ ui.ok.click(function () {
                                                 latestTalkName = latestTalkName.TextFilter()
                                             }
                                             if (child.className() == "android.widget.FrameLayout") {
-                                                latestLink = child;
-                                                latestLinkTitle = child.children()[0].text();
-                                                latestLinkTitle = latestLinkTitle.TextFilter()
+                                                if (child.children()[0] != undefined) {
+                                                    latestLink = child;
+                                                    latestLinkTitle = child.children()[0].text();
+                                                    latestLinkTitle = latestLinkTitle.TextFilter()
+                                                }
                                             }
                                         })
                                     }
@@ -679,9 +679,9 @@ ui.ok.click(function () {
                     sleep(random(300000, 600000));
                 } else {
                     console.error("not found 大家庭")
-                    jieshouwenzhang()
                     return
                 }
+
             } else {
                 console.error("not found bg1")
                 lunSleep();
@@ -694,16 +694,19 @@ ui.ok.click(function () {
             let wBtn = className("android.widget.TextView").text("我").findOne(3000);
             if (topActivity == MAIN_PAGE && wBtn != null) {
                 log("返回v首页成功！");
-                let wBtn = className("android.widget.TextView").text("我").findOne(3000);
-                for (let i = 0; i < 8; i++) {
-                    if (wBtn != null && wBtn.clickable()) {
-                        wBtn.click();
-                        sleep(3000);
-                        if (className("android.widget.TextView").text("收藏").findOne(5000) != null) {
-                            break;
-                        };
-                    } else {
-                        wBtn = wBtn.parent();
+                let wBtns = className("android.widget.TextView").text("我").find();
+                for (let i = 0; i < wBtns.length; i++) {
+                    let wBtn = wBtns[i];
+                    for (let i = 0; i < 4; i++) {
+                        if (wBtn != null && wBtn.clickable()) {
+                            wBtn.click();
+                            sleep(3000);
+                            if (className("android.widget.TextView").text("收藏").findOne(5000) != null) {
+                                break;
+                            };
+                        } else if (wBtn != null && wBtn.parent() != null) {
+                            wBtn = wBtn.parent();
+                        }
                     }
                 }
 
@@ -899,26 +902,23 @@ ui.ok.click(function () {
                 app.launch(PKG_NAME);
                 sleep(10000)
             }
-            let wBtn = className("android.widget.TextView").text("微信").findOne(3000);
-            try {
-                for (let i = 0; i < 8; i++) {
+            let wBtns = className("android.widget.TextView").text("微信").find();
+            for (let i = 0; i < wBtns.length; i++) {
+                let wBtn = wBtns[i];
+                for (let i = 0; i < 4; i++) {
                     if (wBtn != null && wBtn.clickable()) {
                         wBtn.click();
-                        if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOne(5000) != null) {
+                        sleep(5000);
+                        if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
                             log("进入聊天列表");
                             break;
                         };
-                    } else {
+                    } else if (wBtn != null && wBtn.parent() != null) {
                         wBtn = wBtn.parent();
                     }
                 }
-            } catch (e) {
-                log(wBtn)
-                if (wBtn != null) {
-                    wBtn.click();
-                }
-
             }
+
 
             if (readNum > 150 && auto_tx == false) {
                 lunCount++;
@@ -940,7 +940,7 @@ ui.ok.click(function () {
 
 
 
-            let wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
+            wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
             if (wBtns.length == 0) {
                 wBtns = packageName("com.tencent.mm").id('bg1').find();//8.0.1
             }
@@ -968,7 +968,7 @@ ui.ok.click(function () {
                     }
                 }
 
-                wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOne(5000);
+                let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOne(5000);
                 if (wBtn != null) {
                     let news = packageName("com.tencent.mm").className("android.widget.ListView").findOne(5000);
                     if (news != null && news.children() != null) {
@@ -982,10 +982,10 @@ ui.ok.click(function () {
                                             if (child.className() == "android.widget.TextView") {
                                                 //log(child.text())
                                                 if (child.text().indexOf("萝卜") > -1 && child.text().indexOf("id=4824") > -1 && child.clickable()) {
-                                                    for(let i=0;i<10;i++){
-                                                        clickx(child.bounds().centerX(),child.bounds().centerY());
-                                                        sleep(random(5000,7000))
-                                                        if(packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce()==null){
+                                                    for (let i = 0; i < 10; i++) {
+                                                        clickx(child.bounds().centerX(), child.bounds().centerY());
+                                                        sleep(random(8000, 10000))
+                                                        if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() == null) {
                                                             log("点击萝卜成功")
                                                             break
                                                         }
@@ -1080,7 +1080,7 @@ ui.ok.click(function () {
                     click("开始阅读");
                     sleep(8000)
                 }
-                if (packageName("com.tencent.mm").className("android.widget.TextView").text("完成任务").findOnce()!=null||packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOnce() != null) {
+                if (packageName("com.tencent.mm").className("android.widget.TextView").text("完成任务").findOnce() != null || packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOnce() != null) {
                     lunCount++;
                     配置["lunCount"] = lunCount;
                     配置["count"] = 1;
@@ -1216,17 +1216,19 @@ ui.ok.click(function () {
 
         function quGuan(sleepTime) {
             log("进入v成功");
-
-            let wBtn = className("android.widget.TextView").text("通讯录").findOne(3000);
-            for (let i = 0; i < 8; i++) {
-                if (wBtn != null && wBtn.clickable()) {
-                    wBtn.click();
-                    sleep(3000);
-                    if (className("android.widget.TextView").text("公众号").findOne(5000) != null) {
-                        break;
-                    };
-                } else {
-                    wBtn = wBtn.parent();
+            let wBtns = className("android.widget.TextView").text("通讯录").find();
+            for (let i = 0; i < wBtns.length; i++) {
+                let wBtn = wBtns[i];
+                for (let i = 0; i < 4; i++) {
+                    if (wBtn != null && wBtn.clickable()) {
+                        wBtn.click();
+                        sleep(3000);
+                        if (className("android.widget.TextView").text("公众号").findOne(5000) != null) {
+                            break;
+                        };
+                    } else if (wBtn != null && wBtn.parent() != null) {
+                        wBtn = wBtn.parent();
+                    }
                 }
             }
 
@@ -1374,8 +1376,18 @@ ui.ok.click(function () {
                 // }
 
                 //完成任务
-                if (packageName("com.tencent.mm").className("android.widget.TextView").text("完成任务").findOnce()!=null||packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOnce() != null) {
+                if (packageName("com.tencent.mm").className("android.widget.TextView").text("完成任务").findOnce() != null || packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOnce() != null) {
                     log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
+                    let qBtn = textMatches(/(.*返回首页.*)/).findOnce();
+                    if (qBtn != null) {
+                        sleep(500)
+                        qBtn.click();
+                    }
+                    sleep(5000)
+                    let readNumDiv = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*次)/).findOne(5000)
+                    if (readNumDiv != null && parseInt(readNumDiv.text().substring(0, readNumDiv.text().length - 1)).toString() != 'NaN' && parseInt(readNumDiv.text().substring(0, readNumDiv.text().length - 1)) > readNum) {
+                        readNum = parseInt(readNumDiv.text().substring(0, readNumDiv.text().length - 1));
+                    }
                     if (count > 7 && xianzhidays >= 4 && xianzhidays <= 5) {
                         xianzhidays = 0
                         storage.put("xianzhidays", 0);
