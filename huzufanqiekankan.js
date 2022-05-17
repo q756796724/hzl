@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.3.2";
+        var versionNum = "v3.3.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -526,6 +526,10 @@ ui.ok.click(function () {
             }
             let wBtns = className("android.widget.TextView").text("微信").find();
             for (let i = 0; i < wBtns.length; i++) {
+                if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
+                    log("进入列表成功")
+                    break;
+                };
                 let wBtn = wBtns[i];
                 for (let i = 0; i < 4; i++) {
                     if (wBtn != null && wBtn.clickable()) {
@@ -578,7 +582,7 @@ ui.ok.click(function () {
                 wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);
                 if (wBtn != null) {
                     addjieshouCount()
-                    let icount = random(600, 840);
+                    let icount = random(400, 840);
                     let latestTalkName = "";//当前发言人
                     let latestLinkTitle = "";//当前文章的标题
                     let latestLink;//当前文章
@@ -715,6 +719,9 @@ ui.ok.click(function () {
                 log("返回v首页成功！");
                 let wBtns = className("android.widget.TextView").text("我").find();
                 for (let i = 0; i < wBtns.length; i++) {
+                    if (className("android.widget.TextView").text("收藏").findOne(5000) != null) {
+                        break;
+                    };
                     let wBtn = wBtns[i];
                     for (let i = 0; i < 4; i++) {
                         if (wBtn != null && wBtn.clickable()) {
@@ -949,6 +956,9 @@ ui.ok.click(function () {
             }
             let wBtns = className("android.widget.TextView").text("我").find();
             for (let i = 0; i < wBtns.length; i++) {
+                if (className("android.widget.TextView").text("收藏").findOne(5000) != null) {
+                    break;
+                };
                 let wBtn = wBtns[i];
                 for (let i = 0; i < 4; i++) {
                     if (wBtn != null && wBtn.clickable()) {
@@ -1247,6 +1257,9 @@ ui.ok.click(function () {
             log("进入v成功");
             let wBtns = className("android.widget.TextView").text("通讯录").find();
             for (let i = 0; i < wBtns.length; i++) {
+                if (className("android.widget.TextView").text("公众号").findOne(5000) != null) {
+                    break;
+                };
                 let wBtn = wBtns[i];
                 for (let i = 0; i < 4; i++) {
                     if (wBtn != null && wBtn.clickable()) {
@@ -1330,7 +1343,7 @@ ui.ok.click(function () {
             sleep(random(300000, 600000));
             home();
             if (sleepTime == undefined) {
-                sleepTime = random(6000000, 8400000);
+                sleepTime = random(4000000, 8400000);
             }
             log(new Date().toLocaleString() + "-" + "-----------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息" + sleepTime / 1000 / 60 + "分钟");
             sleepLongTime(sleepTime);
@@ -1961,6 +1974,9 @@ ui.ok.click(function () {
                 }*/
                 let wBtns = className("android.widget.TextView").text("我").find();
                 for (let i = 0; i < wBtns.length; i++) {
+                    if (className("android.widget.TextView").text("收藏").findOne(5000) != null) {
+                        break;
+                    };
                     let wBtn = wBtns[i];
                     for (let i = 0; i < 4; i++) {
                         if (wBtn != null && wBtn.clickable()) {
@@ -2156,6 +2172,7 @@ ui.ok.click(function () {
             kz();
             var nowHour = new Date().getHours();
             log("当前时间:" + nowHour + "时");
+            toastLog("版本号:" + versionNum);
             配置 = 读取配置(settingPath);
             if (配置["date"] != new Date().toLocaleDateString()) {
                 readNum = 0;
@@ -2284,14 +2301,14 @@ ui.ok.click(function () {
             }
 
             if (zwifi.toString() != dlwifi.toString()) {
-                if (xianzhidays > 0 && nowHour < 7) {
+                if (xianzhidays > 0 && nowHour < 9) {
                     log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
-                    sleepLongTime(random(3600000, 5000000));
+                    sleepLongTime(random(1800000, 7200000));
                     continue;
                 } else if (xianzhidays == 0) {
-                    if (lunCount == 1 && nowHour < 6) {
+                    if (lunCount == 1 && nowHour < 7) {
                         log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
-                        sleepLongTime(random(1800000, 3600000));
+                        sleepLongTime(random(1800000, 7200000));
                         continue;
                     }
                 }
