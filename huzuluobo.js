@@ -4,6 +4,7 @@ storage = storages.create("fanqiekankan配置");
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
+clear_xianzhi = false;
 readurl = storage.get("readurl", "");
 xianzhidate = storage.get("xianzhidate", "2022-03-20");//限制时间
 if (storage.get("xianzhidays") == undefined) {//限制天数
@@ -103,6 +104,7 @@ ui.layout(
         <text textSize="16sp" textColor="black" text="url" />
         <input id="readurl" text="{{readurl}}" />
         <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
+        <checkbox text="重置限制" id="clear_xianzhi" checked="{{clear_xianzhi}}" textSize="18sp" />\
         <button id="ok" text="开始运行" />
     </vertical>
 
@@ -179,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "萝卜v1.0.9";
+        var versionNum = "萝卜v1.1.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -526,7 +528,7 @@ ui.ok.click(function () {
             }
             let wBtns = className("android.widget.TextView").text("微信").find();
             for (let i = 0; i < wBtns.length; i++) {
-                if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
+                if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce() != null && packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
                     log("进入列表成功")
                     break;
                 };
@@ -536,7 +538,7 @@ ui.ok.click(function () {
                         sleep(1000);
                         wBtn.click();
                         sleep(5000);
-                        if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
+                        if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce() != null && packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
                             break;
                         };
                     } else if (wBtn != null && wBtn.parent() != null) {
@@ -909,32 +911,12 @@ ui.ok.click(function () {
 
         function onMainPage() {
             log("进入v成功");
+            
             if (联网验证(zwifi) != true) {
                 连接wifi(zwifi, 5000);
                 app.launch(PKG_NAME);
                 sleep(10000)
             }
-            let wBtns = className("android.widget.TextView").text("微信").find();
-            for (let i = 0; i < wBtns.length; i++) {
-                if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
-                    log("进入聊天列表了");
-                    break;
-                };
-                let wBtn = wBtns[i];
-                for (let i = 0; i < 4; i++) {
-                    if (wBtn != null && wBtn.clickable()) {
-                        wBtn.click();
-                        sleep(5000);
-                        if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
-                            break;
-                        };
-                    } else if (wBtn != null && wBtn.parent() != null) {
-                        wBtn = wBtn.parent();
-                    }
-                }
-            }
-
-
             if (readNum > 150 && auto_tx == false) {
                 lunCount++;
                 配置["lunCount"] = lunCount;
@@ -952,6 +934,28 @@ ui.ok.click(function () {
                 }
                 return
             }
+            let wBtns = className("android.widget.TextView").text("微信").find();
+            for (let i = 0; i < wBtns.length; i++) {
+                if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce() != null && packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
+                    log("进入聊天列表了");
+                    break;
+                };
+                let wBtn = wBtns[i];
+                for (let i = 0; i < 4; i++) {
+                    if (wBtn != null && wBtn.clickable()) {
+                        wBtn.click();
+                        sleep(5000);
+                        if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce() != null && packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
+                            break;
+                        };
+                    } else if (wBtn != null && wBtn.parent() != null) {
+                        wBtn = wBtn.parent();
+                    }
+                }
+            }
+
+
+            
 
 
 
@@ -2070,6 +2074,15 @@ ui.ok.click(function () {
         log("readurl:" + readurl);
         auto_tx = ui.auto_tx.isChecked();
         log("tx:" + auto_tx);
+        clear_xianzhi = ui.clear_xianzhi.isChecked();
+        if (clear_xianzhi) {
+            log("重置限制");
+            xianzhidays = 0
+            storage.put("xianzhidays", 0);
+            xianzhidate = formatDate(new Date(), "yyyy-MM-dd")
+            storage.put("xianzhidate", xianzhidate);
+        }
+        
 
         storage.put("zwifi", ui.zwifi.text());
         storage.put("dlwifi", ui.dlwifi.text());
