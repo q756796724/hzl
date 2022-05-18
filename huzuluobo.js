@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "萝卜v1.1.0";
+        var versionNum = "萝卜v1.1.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -763,16 +763,22 @@ ui.ok.click(function () {
             sleep(5000);
             log("滑动");
             swapeToRead();
-            sleep(random(3000, 7000));
+            sleep(random(2000, 4000));
             swapeToRead();
-            sleep(random(3000, 7000));
-            swapeToRead()
-            sleep(random(3000, 7000));
+            sleep(random(2000, 4000));
+            swapeToRead();
+            sleep(random(2000, 4000));
+            swapeToRead();
+            sleep(random(2000, 4000));
+            swapeToRead();
+            sleep(random(2000, 4000));
+            swapeToRead();
+            sleep(random(2000, 4000));
             if (device.brand == "samsung") {
                 for (let i = 0; i < 7; i++) {
                     kz();
                     swapeToRead();
-                    sleep(random(4000, 5000));
+                    sleep(random(2000, 4000));
                     if (checkWatchFull()) {
                         log("到底了");
                         break;
@@ -911,7 +917,7 @@ ui.ok.click(function () {
 
         function onMainPage() {
             log("进入v成功");
-            
+
             if (联网验证(zwifi) != true) {
                 连接wifi(zwifi, 5000);
                 app.launch(PKG_NAME);
@@ -955,7 +961,7 @@ ui.ok.click(function () {
             }
 
 
-            
+
 
 
 
@@ -1155,7 +1161,15 @@ ui.ok.click(function () {
 
                     //xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
                     //storage.put("xianzhidate", xianzhidate);
-                    lunSleep(random(21600000, 25200000));//睡6~7小时
+                    for (; ;) {
+                        配置 = 读取配置(settingPath);
+                        if (配置["date"] == new Date().toLocaleDateString()) {
+                            lunSleep(random(21600000, 25200000));//睡6~7小时
+                        } else {
+                            return
+                        }
+                    }
+
                 }
                 if (className("android.view.View").textMatches(/(请从微信正常阅读|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOnce() != null) {
                     log("异常回退：" + className("android.view.View").textMatches(/(.*请从微信正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOnce());
@@ -1212,7 +1226,7 @@ ui.ok.click(function () {
             } else {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                 if (stopPage != null) {
-                    lunSleep(random(21600000, 25200000));//睡6~7小时
+                    lunSleep(random(10800000, 14400000));//睡3~4小时
                     return;
                 }
                 if (retryCount > 3) {
@@ -1246,7 +1260,14 @@ ui.ok.click(function () {
                 if (auto_tx) {
                     lunSleep();
                 } else {
-                    lunSleep(random(21600000, 25200000));//睡6~7小时
+                    for (; ;) {
+                        配置 = 读取配置(settingPath);
+                        if (配置["date"] == new Date().toLocaleDateString()) {
+                            lunSleep(random(21600000, 25200000));//睡6~7小时
+                        } else {
+                            return
+                        }
+                    }
                 }
             } else {
                 lunSleep();
@@ -1533,11 +1554,17 @@ ui.ok.click(function () {
                 //sml_move(400, 1000, 800, 600, 2000);
                 log("滑动");
                 swapeToRead();
-                sleep(random(3000, 7000));
+                sleep(random(2000, 4000));
                 swapeToRead();
-                sleep(random(3000, 7000));
+                sleep(random(2000, 4000));
                 swapeToRead();
-                sleep(random(3000, 5000));
+                sleep(random(2000, 4000));
+                swapeToRead();
+                sleep(random(2000, 4000));
+                swapeToRead();
+                sleep(random(2000, 4000));
+                swapeToRead();
+                sleep(random(2000, 4000));
                 swapeToRead();
                 sleep(random(2000, 4000));
                 if (count == wifiCount) {
@@ -1750,10 +1777,10 @@ ui.ok.click(function () {
 
         function swapeToRead() {
             if (currentPackage() != "com.miui.home") {
-                let x1 = device.width * random(200, 500) / 1000;
-                let y1 = device.height * random(700, 900) / 1000;
-                let x2 = device.width * random(300, 800) / 1000;
-                let y2 = device.height * random(200, 500) / 1000;
+                let x1 = device.width * random(300, 400) / 1000;
+                let y1 = device.height * random(700, 850) / 1000;
+                let x2 = device.width * random(400, 500) / 1000;
+                let y2 = device.height * random(450, 600) / 1000;
                 //swipe(x1, y1, x2, y2, random(1200, 1500));
                 sml_move(x1, y1, x2, y2, random(1200, 1500));
             }
@@ -2082,7 +2109,7 @@ ui.ok.click(function () {
             xianzhidate = formatDate(new Date(), "yyyy-MM-dd")
             storage.put("xianzhidate", xianzhidate);
         }
-        
+
 
         storage.put("zwifi", ui.zwifi.text());
         storage.put("dlwifi", ui.dlwifi.text());
@@ -2322,8 +2349,14 @@ ui.ok.click(function () {
                 if (auto_tx) {
                     sleepLongTime(random(3600000, 5000000));
                 } else {
-                    lunSleep(random(21600000, 25200000));//睡6~7小时
-                    continue;
+                    for (; ;) {
+                        配置 = 读取配置(settingPath);
+                        if (配置["date"] == new Date().toLocaleDateString()) {
+                            lunSleep(random(21600000, 25200000));//睡6~7小时
+                        } else {
+                            break
+                        }
+                    }
                 }
             }
             if (lunCount > 12) {
