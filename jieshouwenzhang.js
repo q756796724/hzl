@@ -1867,6 +1867,7 @@ ui.ok.click(function () {
         var thread = threads.start(function () {
             setInterval(进程守护(), 60000);
         });
+        配置 = 读取配置(settingPath);
         if (配置["date"] != new Date().toLocaleDateString()) {
             初始化配置(settingPath);
         }
