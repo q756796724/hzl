@@ -2224,6 +2224,7 @@ ui.ok.click(function () {
         });
 
         var lunCount = 1;//轮回次数
+        配置 = 读取配置(settingPath);
         if (配置["date"] != new Date().toLocaleDateString()) {
             初始化配置(settingPath);
         }
