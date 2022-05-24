@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "萝卜v1.1.1";
+        var versionNum = "萝卜v1.1.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -427,7 +427,6 @@ ui.ok.click(function () {
         }
         function setConfig(lastTalkName, lastLinkTitle) {
             let temp = null;
-            log(new Date().toLocaleString() + "-" + "-----------------发言人:" + lastTalkName + ",标题:" + lastLinkTitle);
             try {
                 temp = http.postJson("106.55.225.58:8081/fanqie/setConfig", {
                     "lastTalkName": lastTalkName,
@@ -438,11 +437,9 @@ ui.ok.click(function () {
                     let rep = JSON.parse(temp);
                     let repState = rep["state"];
                     if (repState == 1) {
+                        log(new Date().toLocaleString() + "-" + "-----------------发言人:" + lastTalkName + ",标题:" + lastLinkTitle);
                         return true
-                    } else {
-                        console.warn("setConfig失败" + temp);
-                        return false
-                    }
+                    } 
                 }
                 return false
             } catch (err) {
@@ -2225,7 +2222,9 @@ ui.ok.click(function () {
         var thread = threads.start(function () {
             setInterval(进程守护(), 60000);
         });
-
+        if (配置["date"] != new Date().toLocaleDateString()) {
+            初始化配置(settingPath);
+        }
         var lunCount = 1;//轮回次数
         for (; ;) {
             kz();
