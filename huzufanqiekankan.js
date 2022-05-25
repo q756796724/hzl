@@ -183,7 +183,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "v3.3.8";
+        var versionNum = "v3.3.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -988,7 +988,7 @@ ui.ok.click(function () {
                             sleep(2000)
                             clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
                             sleep(random(1500, 2000))
-                            if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOne(3000) != null) {
+                            if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) == null&&packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
                                 log("进入了家庭");
                                 break
                             } else {
@@ -1008,8 +1008,8 @@ ui.ok.click(function () {
                         }
                     }
     
-                    let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOne(5000);
-                    if (wBtn != null) {
+                    //let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOne(5000);
+                    if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000) == null&&packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
                         let news = packageName("com.tencent.mm").className("android.widget.ListView").findOne(5000);
                         if (news != null && news.children() != null) {
                             let newsList = news.children();
