@@ -183,7 +183,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v3.3.9";
+        var versionNum = "番茄分享v3.4.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1171,12 +1171,18 @@ ui.ok.click(function () {
                 log("点击链接成功");
             }
 
-            sleep(10000);
-            let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
-            if (ntext != null) {
-                click("允许");
-                sleep(3000);
+            let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(15000);
+            if (zBtn != null) {
+                sleep(500)
+                zBtn.click();
+            } else {
+                let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
+                if (ntext != null) {
+                    click("允许");
+                    sleep(3000);
+                }
             }
+
 
             /*if (textMatches(/(.*登陆超时.*|.*重试.*)/).findOne(3000) != null) {
                 let qBtn=textMatches(/(.*确定.*)/).findOne(3000);
@@ -1233,11 +1239,20 @@ ui.ok.click(function () {
                                     return;
                                 }
                                 for (var i = 0; i < 3; i++) {
-                                    sleep(3000);
+                                    let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(3000);
+                                    if (zBtn != null) {
+                                        sleep(500)
+                                        zBtn.click();
+                                    }
                                     let sBtn = textMatches(/(积分兑换)/).findOne(3000);
                                     if (sBtn == null) {
                                         back();
                                     } else {
+                                        let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(3000);
+                                        if (zBtn != null) {
+                                            sleep(500)
+                                            zBtn.click();
+                                        }
                                         break;
                                     }
 
