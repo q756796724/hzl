@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v1.0.1";
+        var versionNum = "接收v1.0.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -355,11 +355,12 @@ ui.ok.click(function () {
                         let repData = rep["data"];
                         return repData
                     } else {
-                        console.warn("addjieshouCount获取数据失败" + temp);
+                        console.error("addjieshouCount获取数据失败" + temp);
                     }
                 }
             } catch (err) {
-                console.error("addjieshouCount报错,原因:" + err);
+                sleep(60000)
+                addjieshouCount()
             }
 
         }
@@ -376,11 +377,14 @@ ui.ok.click(function () {
                         let repData = rep["data"];
                         return repData
                     } else {
-                        console.warn("reducejieshouCount获取数据失败" + temp);
+                        console.error("reducejieshouCount获取数据失败" + temp);
+                        sleep(60000)
+                        reducejieshouCount()
                     }
                 }
             } catch (err) {
-                console.error("reducejieshouCount报错,原因:" + err);
+                sleep(60000)
+                reducejieshouCount()
             }
 
         }
@@ -417,11 +421,15 @@ ui.ok.click(function () {
                         let repData = rep["data"];
                         return repData
                     } else {
-                        console.warn("getConfig获取数据失败" + temp);
+                        //console.warn("getConfig获取数据失败" + temp);
                     }
                 }
             } catch (err) {
-                console.error("getConfig报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                //console.error("getConfig报错,原因:" + err);
             }
 
         }
@@ -589,15 +597,17 @@ ui.ok.click(function () {
                             let latestNews = newsList[newsList.length - 1];
                             if (latestNews.className() == "android.widget.RelativeLayout") {
                                 latestNews.children().forEach(function (child) {
-                                    if (child.className() == "android.widget.ImageView" && child.desc()) {
-                                        latestTalkName = child.desc();
-                                        latestTalkName = latestTalkName.TextFilter()
-                                    }
-                                    if (child.className() == "android.widget.FrameLayout") {
-                                        if (child.children()[0] != undefined) {
-                                            latestLink = child;
-                                            latestLinkTitle = child.children()[0].text();
-                                            latestLinkTitle = latestLinkTitle.TextFilter()
+                                    if(child!=null){
+                                        if (child.className() == "android.widget.ImageView" && child.desc()) {
+                                            latestTalkName = child.desc();
+                                            latestTalkName = latestTalkName.TextFilter()
+                                        }
+                                        if (child.className() == "android.widget.FrameLayout") {
+                                            if (child.children()[0] != undefined) {
+                                                latestLink = child;
+                                                latestLinkTitle = child.children()[0].text();
+                                                latestLinkTitle = latestLinkTitle.TextFilter()
+                                            }
                                         }
                                     }
                                 })
@@ -629,15 +639,17 @@ ui.ok.click(function () {
                                     let latestNews = newsList[newsList.length - 1];
                                     if (latestNews.className() == "android.widget.RelativeLayout") {
                                         latestNews.children().forEach(function (child) {
-                                            if (child.className() == "android.widget.ImageView" && child.desc()) {
-                                                latestTalkName = child.desc();
-                                                latestTalkName = latestTalkName.TextFilter()
-                                            }
-                                            if (child.className() == "android.widget.FrameLayout") {
-                                                if (child.children()[0] != undefined) {
-                                                    latestLink = child;
-                                                    latestLinkTitle = child.children()[0].text();
-                                                    latestLinkTitle = latestLinkTitle.TextFilter()
+                                            if(child!=null){
+                                                if (child.className() == "android.widget.ImageView" && child.desc()) {
+                                                    latestTalkName = child.desc();
+                                                    latestTalkName = latestTalkName.TextFilter()
+                                                }
+                                                if (child.className() == "android.widget.FrameLayout") {
+                                                    if (child.children()[0] != undefined) {
+                                                        latestLink = child;
+                                                        latestLinkTitle = child.children()[0].text();
+                                                        latestLinkTitle = latestLinkTitle.TextFilter()
+                                                    }
                                                 }
                                             }
                                         })
@@ -1177,13 +1189,13 @@ ui.ok.click(function () {
                 }
                 //判断是否需要互助
                 if (count == wifiCount && xianzhidays > 0 && xianzhidays < 4) {
-                    let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(8000)
+                    let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                         fenxiangwenzhang("大家庭");
                     } else {
-                        console.error(标题识别失败);
-                        sleep(6000)
-                        fenxiangwenzhang("大家庭");
+                        console.error("标题识别失败");
+                        返回v首页();
+                        return false;
                     }
 
                     sleep(8000);
@@ -1994,7 +2006,7 @@ ui.ok.click(function () {
             
             if (nowHour < 6) {
                 log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
-                sleepLongTime(random(1800000, 3600000));
+                sleepLongTime(random(1800000, 3000000));
                 continue;
             }
 
