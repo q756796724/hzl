@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "萝卜v1.1.4";
+        var versionNum = "萝卜v1.1.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -2244,16 +2244,19 @@ ui.ok.click(function () {
                     xianzhidays = storage.get("xianzhidays") - 1;
                     storage.put("xianzhidays", xianzhidays);
                 }
-                //重置接收人数
-                for (; ;) {
-                    let repData = getjieshouCount()
-                    if (repData != undefined && repData["jieshouCount"] != undefined && repData["jieshouCount"] > 0) {
-                        reducejieshouCount();
-                        sleep(1000)
-                    } else {
-                        break
+                if (nowHour < 1) {
+                    //重置接收人数
+                    for (; ;) {
+                        let repData = getjieshouCount()
+                        if (repData != undefined && repData["jieshouCount"] != undefined && repData["jieshouCount"] > 0) {
+                            reducejieshouCount();
+                            sleep(1000)
+                        } else {
+                            break
+                        }
                     }
                 }
+
                 if (new Date().getDate() % 3 == 0) {
                     app.launch("com.ss.android.ugc.aweme");
                     sleep(60000)
