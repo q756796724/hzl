@@ -183,7 +183,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v3.4.0";
+        var versionNum = "番茄分享v3.4.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -2338,16 +2338,7 @@ ui.ok.click(function () {
                     xianzhidays = storage.get("xianzhidays") - 1;
                     storage.put("xianzhidays", xianzhidays);
                 }
-                //重置接收人数
-                for (; ;) {
-                    let repData = getjieshouCount()
-                    if (repData != undefined && repData["jieshouCount"] != undefined && repData["jieshouCount"] > 0) {
-                        reducejieshouCount();
-                        sleep(1000)
-                    } else {
-                        break
-                    }
-                }
+                
                 if (new Date().getDate() % 3 == 0) {
                     app.launch("com.ss.android.ugc.aweme");
                     sleep(60000)
@@ -2456,11 +2447,15 @@ ui.ok.click(function () {
             }
 
             if (zwifi.toString() != dlwifi.toString()) {
-                if (xianzhidays > 0 && nowHour < 7) {
-                    log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
-                    sleepLongTime(random(1800000, 7200000));
-                    continue;
-                } else if (xianzhidays == 0) {
+                if (xianzhidays > 0 && nowHour < 9) {
+                    if(random(0,1)==1&&nowHour >= 7){
+                        
+                    }else{
+                        log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
+                        sleepLongTime(random(1800000, 7200000));
+                        continue;
+                    }
+                }else if (xianzhidays == 0) {
                     if (lunCount == 1 && nowHour < 7) {
                         log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                         sleepLongTime(random(1800000, 7200000));
