@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v1.0.2";
+        var versionNum = "接收v1.0.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -447,7 +447,7 @@ ui.ok.click(function () {
                     if (repState == 1) {
                         log(new Date().toLocaleString() + "-" + "-----------------发言人:" + lastTalkName + ",标题:" + lastLinkTitle);
                         return true
-                    } 
+                    }
                 }
                 return false
             } catch (err) {
@@ -597,7 +597,7 @@ ui.ok.click(function () {
                             let latestNews = newsList[newsList.length - 1];
                             if (latestNews.className() == "android.widget.RelativeLayout") {
                                 latestNews.children().forEach(function (child) {
-                                    if(child!=null){
+                                    if (child != null) {
                                         if (child.className() == "android.widget.ImageView" && child.desc()) {
                                             latestTalkName = child.desc();
                                             latestTalkName = latestTalkName.TextFilter()
@@ -637,9 +637,9 @@ ui.ok.click(function () {
                                 if (newsList.length > 0) {
                                     //最新消息
                                     let latestNews = newsList[newsList.length - 1];
-                                    if (latestNews.className() == "android.widget.RelativeLayout") {
+                                    if (latestNews!=null&&latestNews.className() == "android.widget.RelativeLayout") {
                                         latestNews.children().forEach(function (child) {
-                                            if(child!=null){
+                                            if (child != null) {
                                                 if (child.className() == "android.widget.ImageView" && child.desc()) {
                                                     latestTalkName = child.desc();
                                                     latestTalkName = latestTalkName.TextFilter()
@@ -1906,16 +1906,19 @@ ui.ok.click(function () {
                     xianzhidays = storage.get("xianzhidays") - 1;
                     storage.put("xianzhidays", xianzhidays);
                 }
-                //重置接收人数
-                for (; ;) {
-                    let repData = getjieshouCount()
-                    if (repData != undefined && repData["jieshouCount"] != undefined && repData["jieshouCount"] > 0) {
-                        reducejieshouCount();
-                        sleep(1000)
-                    } else {
-                        break
+                if (nowHour < 1) {
+                    //重置接收人数
+                    for (; ;) {
+                        let repData = getjieshouCount()
+                        if (repData != undefined && repData["jieshouCount"] != undefined && repData["jieshouCount"] > 0) {
+                            reducejieshouCount();
+                            sleep(1000)
+                        } else {
+                            break
+                        }
                     }
                 }
+
                 if (new Date().getDate() % 3 == 0) {
                     app.launch("com.ss.android.ugc.aweme");
                     sleep(60000)
@@ -2003,7 +2006,7 @@ ui.ok.click(function () {
             if (配置["lunCount"] == undefined) {
                 初始化配置(settingPath);
             }
-            
+
             if (nowHour < 6) {
                 log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                 sleepLongTime(random(1800000, 3000000));
