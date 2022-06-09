@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v1.0.5";
+        var versionNum = "接收v1.0.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -602,7 +602,7 @@ ui.ok.click(function () {
                                             latestTalkName = latestTalkName.TextFilter()
                                         }
                                         if (child.className() == "android.widget.FrameLayout") {
-                                            if (child.children()[0] != null) {
+                                            if (child.children()!= null&&child.children()[0] != null) {
                                                 latestLink = child;
                                                 latestLinkTitle = child.children()[0].text();
                                                 latestLinkTitle = latestLinkTitle.TextFilter()
@@ -645,7 +645,7 @@ ui.ok.click(function () {
                                                     latestTalkName = latestTalkName.TextFilter()
                                                 }
                                                 if (child.className() == "android.widget.FrameLayout") {
-                                                    if (child.children()[0] != null) {
+                                                    if (child.children()!= null&&child.children()[0] != null) {
                                                         latestLink = child;
                                                         latestLinkTitle = child.children()[0].text();
                                                         latestLinkTitle = latestLinkTitle.TextFilter()
