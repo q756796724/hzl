@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "萝卜v1.1.5";
+        var versionNum = "萝卜互助v1.1.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -863,7 +863,8 @@ ui.ok.click(function () {
             } catch (e) {
                 console.error(e);
                 sleep(1000);
-                return 读取配置(path);
+                files.remove(path)
+                return undefined;
             }
 
         }
@@ -1612,7 +1613,11 @@ ui.ok.click(function () {
             }*/
             toastLog("版本号:" + versionNum);
             log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
+            配置 = 读取配置(settingPath);
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
+                if (i% 30 == 0&&配置["date"] != new Date().toLocaleDateString()) {
+                    break
+                }
                 kz();
                 //device.wakeUp();
                 //device.keepScreenOn(3600 * 1000)
@@ -2176,7 +2181,7 @@ ui.ok.click(function () {
         }
         function getAppAlive(name) {
             配置2 = 读取配置(settingPath2);
-            if (配置2[device.serial] == undefined) {
+            if (配置2==undefined||配置2[device.serial] == undefined) {
                 toastLog("重置文件配置2");
                 初始化配置2(settingPath2);
             }
@@ -2219,7 +2224,7 @@ ui.ok.click(function () {
             setInterval(进程守护(), 60000);
         });
         配置 = 读取配置(settingPath);
-        if (配置["date"] != new Date().toLocaleDateString()) {
+        if (配置==undefined||配置["date"] != new Date().toLocaleDateString()) {
             初始化配置(settingPath);
         }
         var lunCount = 1;//轮回次数
@@ -2340,10 +2345,11 @@ ui.ok.click(function () {
             }
 
             配置 = 读取配置(settingPath);
-            lunCount = 配置["lunCount"];
-            if (配置["lunCount"] == undefined) {
+            if (配置==undefined||配置["lunCount"] == undefined) {
                 初始化配置(settingPath);
+                continue
             }
+            lunCount = 配置["lunCount"];
             if (xianzhidays > 5) {
                 if (auto_tx) {
                     sleepLongTime(random(3600000, 5000000));
@@ -2398,6 +2404,7 @@ ui.ok.click(function () {
             let wBtn = className("android.widget.TextView").text("我").findOne(3000);
             if (topActivity == MAIN_PAGE && wBtn != null) {
                 log("第" + lunCount + "轮,xianzhidays=" + xianzhidays);
+                log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
                 onMainPage();
             } else {
                 log(wBtn);
