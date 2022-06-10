@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v1.0.7";
+        var versionNum = "接收v1.0.8";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -596,6 +596,7 @@ ui.ok.click(function () {
                 }
                 wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);
                 if (wBtn != null) {
+                    addjieshouCount()
                     let icount = random(400, 840);
                     let latestTalkName = "";//当前发言人
                     let latestLinkTitle = "";//当前文章的标题
@@ -614,7 +615,7 @@ ui.ok.click(function () {
                                             latestTalkName = latestTalkName.TextFilter()
                                         }
                                         if (child.className() == "android.widget.FrameLayout") {
-                                            if (child.children()!= null&&child.children()[0] != null) {
+                                            if (child.children() != null && child.children()[0] != null) {
                                                 latestLink = child;
                                                 latestLinkTitle = child.children()[0].text();
                                                 latestLinkTitle = latestLinkTitle.TextFilter()
@@ -632,7 +633,6 @@ ui.ok.click(function () {
                     for (let i = 0; i < icount; i++) {
                         wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);//id=ipv
                         if (wBtn != null) {
-                            addjieshouCount()
                             let repData = getConfig();
                             if (repData == undefined) {
                                 sleep(10000)
@@ -657,7 +657,7 @@ ui.ok.click(function () {
                                                     latestTalkName = latestTalkName.TextFilter()
                                                 }
                                                 if (child.className() == "android.widget.FrameLayout") {
-                                                    if (child.children()!= null&&child.children()[0] != null) {
+                                                    if (child.children() != null && child.children()[0] != null) {
                                                         latestLink = child;
                                                         latestLinkTitle = child.children()[0].text();
                                                         latestLinkTitle = latestLinkTitle.TextFilter()
@@ -676,7 +676,16 @@ ui.ok.click(function () {
                                     latestLink.click();
                                     reducejieshouCount()
                                     阅读到底();
-                                    addjieshouCount()
+                                    sleep(random(300000, 600000))
+                                    wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOnce();//id=ipv
+                                    if (wBtn != null) {
+                                        addjieshouCount()
+                                    }else {
+                                        back();
+                                        sleep(random(3000, 5000))
+                                        home();
+                                        return;
+                                    }
                                 }
 
                             } else {
@@ -688,6 +697,15 @@ ui.ok.click(function () {
                                         reducejieshouCount()
                                         阅读到底();
                                         sleep(random(300000, 600000))
+                                        wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOnce();//id=ipv
+                                        if (wBtn != null) {
+                                            addjieshouCount()
+                                        }else {
+                                            back();
+                                            sleep(random(3000, 5000))
+                                            home();
+                                            return;
+                                        }
                                     }
                                 }
                             }
