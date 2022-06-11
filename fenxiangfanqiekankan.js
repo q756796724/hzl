@@ -183,7 +183,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v3.4.3";
+        var versionNum = "番茄分享v3.4.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1017,7 +1017,17 @@ ui.ok.click(function () {
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
                                                                 clickx(child.bounds().centerX(), child.bounds().centerY());
-                                                                sleep(random(8000, 10000))
+                                                                let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(15000);
+                                                                if (zBtn != null) {
+                                                                    sleep(500)
+                                                                    zBtn.click();
+                                                                } else {
+                                                                    let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
+                                                                    if (ntext != null) {
+                                                                        click("允许");
+                                                                        sleep(3000);
+                                                                    }
+                                                                }
                                                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() == null) {
                                                                     log("点击番茄主成功")
                                                                     break
@@ -1030,7 +1040,17 @@ ui.ok.click(function () {
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
                                                                 clickx(child.bounds().centerX(), child.bounds().centerY());
-                                                                sleep(random(8000, 10000))
+                                                                let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(15000);
+                                                                if (zBtn != null) {
+                                                                    sleep(500)
+                                                                    zBtn.click();
+                                                                } else {
+                                                                    let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
+                                                                    if (ntext != null) {
+                                                                        click("允许");
+                                                                        sleep(3000);
+                                                                    }
+                                                                }
                                                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() == null) {
                                                                     log("点击番茄副成功")
                                                                     break
@@ -1712,7 +1732,7 @@ ui.ok.click(function () {
             log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                 配置 = 读取配置(settingPath);
-                if (i% 30 == 0&&配置["date"] != new Date().toLocaleDateString()) {
+                if (i % 30 == 0 && 配置["date"] != new Date().toLocaleDateString()) {
                     break
                 }
                 kz();
@@ -2280,7 +2300,7 @@ ui.ok.click(function () {
         }
         function getAppAlive(name) {
             配置2 = 读取配置(settingPath2);
-            if (配置2==undefined||配置2[device.serial] == undefined) {
+            if (配置2 == undefined || 配置2[device.serial] == undefined) {
                 toastLog("重置文件配置2");
                 初始化配置2(settingPath2);
             }
@@ -2323,7 +2343,7 @@ ui.ok.click(function () {
             setInterval(进程守护(), 60000);
         });
         配置 = 读取配置(settingPath);
-        if (配置==undefined||配置["date"] != new Date().toLocaleDateString()) {
+        if (配置 == undefined || 配置["date"] != new Date().toLocaleDateString()) {
             初始化配置(settingPath);
         }
         var lunCount = 1;//轮回次数
@@ -2348,7 +2368,7 @@ ui.ok.click(function () {
                     xianzhidays = storage.get("xianzhidays") - 1;
                     storage.put("xianzhidays", xianzhidays);
                 }
-                
+
                 if (new Date().getDate() % 3 == 0) {
                     app.launch("com.ss.android.ugc.aweme");
                     sleep(60000)
@@ -2432,7 +2452,7 @@ ui.ok.click(function () {
             }
 
             配置 = 读取配置(settingPath);
-            if (配置==undefined||配置["lunCount"] == undefined) {
+            if (配置 == undefined || 配置["lunCount"] == undefined) {
                 初始化配置(settingPath);
                 continue
             }
@@ -2459,14 +2479,14 @@ ui.ok.click(function () {
 
             if (zwifi.toString() != dlwifi.toString()) {
                 if (xianzhidays > 0 && nowHour < 9) {
-                    if(random(0,1)==1&&nowHour >= 7){
-                        
-                    }else{
+                    if (random(0, 1) == 1 && nowHour >= 7) {
+
+                    } else {
                         log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                         sleepLongTime(random(1800000, 7200000));
                         continue;
                     }
-                }else if (xianzhidays == 0) {
+                } else if (xianzhidays == 0) {
                     if (lunCount == 1 && nowHour < 7) {
                         log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                         sleepLongTime(random(1800000, 7200000));
