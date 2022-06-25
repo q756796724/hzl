@@ -2082,7 +2082,7 @@ ui.ok.click(function () {
             } else if (wifiName == dlwifi) {
                 try {
                     //let url = readurl;
-                    let url = "www.csdn.net";//mail.sina.com.cn
+                    let url = "mail.sina.com.cn"//"www.csdn.net";//mail.sina.com.cn
                     //log("url="+url)
                     let r = http.get(url.toString());
                     if (r.statusCode == "200") {
