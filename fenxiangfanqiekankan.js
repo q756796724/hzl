@@ -183,7 +183,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v3.4.4";
+        var versionNum = "番茄分享v3.4.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1017,7 +1017,7 @@ ui.ok.click(function () {
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
                                                                 clickx(child.bounds().centerX(), child.bounds().centerY());
-                                                                let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(15000);
+                                                                let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(20000);
                                                                 if (zBtn != null) {
                                                                     sleep(500)
                                                                     zBtn.click();
@@ -1040,7 +1040,7 @@ ui.ok.click(function () {
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
                                                                 clickx(child.bounds().centerX(), child.bounds().centerY());
-                                                                let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(15000);
+                                                                let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(20000);
                                                                 if (zBtn != null) {
                                                                     sleep(500)
                                                                     zBtn.click();
@@ -1197,7 +1197,7 @@ ui.ok.click(function () {
                 log("点击链接成功");
             }
 
-            let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(15000);
+            let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(20000);
             if (zBtn != null) {
                 sleep(500)
                 zBtn.click();
@@ -1226,8 +1226,8 @@ ui.ok.click(function () {
                 return;
             }
             if (auto_tx) {
-                if ((nowHour > 13 && todayTxCount < 1) || (nowHour > 21 && todayTxCount < 2)) {
-                    if (className("android.view.View").textMatches(/(积分兑换)/).findOne(20000) != null) {
+                if ((nowHour > 13 && todayTxCount < 1) || (nowHour > 19 && todayTxCount < 2)|| (nowHour > 20 && todayTxCount < 3)|| (nowHour > 21 && todayTxCount < 4)) {
+                    if (className("android.view.View").textMatches(/(积分兑换)/).findOnce() != null) {
                         sleep(10000);
                         let jfTxt = packageName("com.tencent.mm").className("android.view.View").textContains("积分:").findOnce()
                         if (jfTxt) {
@@ -1504,7 +1504,8 @@ ui.ok.click(function () {
             sleep(random(300000, 600000));
             home();
             if (sleepTime == undefined) {
-                sleepTime = random(4000000, 8400000);
+                //sleepTime = random(4000000, 8400000);
+                sleepTime = 3600000
             }
             log(new Date().toLocaleString() + "-" + "-----------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息" + sleepTime / 1000 / 60 + "分钟");
             sleepLongTime(sleepTime);
@@ -1536,6 +1537,9 @@ ui.ok.click(function () {
 
             let wifiCount = count;
             for (; ;) {
+                if(new Date().getHours()==23&&new Date().getMinutes()>55){
+                    return true;
+                }
                 kz();
                 /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(3000)!=null){
                     click("确定");
@@ -2025,6 +2029,11 @@ ui.ok.click(function () {
                 sleep(1000);
                 totificationlistenersetting()
                 sleep(2000);
+                if (device.brand == 'Meizu'){
+
+                }else if (device.brand == 'Xiaomi') {
+
+                }
                 let cBtn = text(wifiName).findOne(5000);
                 if (cBtn != null) {
                     let cBounds = cBtn.bounds();
@@ -2073,7 +2082,7 @@ ui.ok.click(function () {
             } else if (wifiName == dlwifi) {
                 try {
                     //let url = readurl;
-                    let url = "www.csdn.net";
+                    let url = "www.csdn.net";//mail.sina.com.cn
                     //log("url="+url)
                     let r = http.get(url.toString());
                     if (r.statusCode == "200") {
@@ -2081,6 +2090,7 @@ ui.ok.click(function () {
                             url = "www.baidu.com";
                             //log("url="+url)
                             r = http.get(url);
+                            log(r)
                             //if (r.statusCode == "200") {
                             return false
                             //}
@@ -2090,6 +2100,7 @@ ui.ok.click(function () {
                         }
                     }
                 } catch (err) {
+                    console.error("错误原因:" + err);
                     //log(err.name)
                     //if (err.name == "JavaException")
                     return false
