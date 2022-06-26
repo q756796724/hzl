@@ -183,7 +183,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v3.4.5";
+        var versionNum = "番茄分享v3.4.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1504,8 +1504,7 @@ ui.ok.click(function () {
             sleep(random(300000, 600000));
             home();
             if (sleepTime == undefined) {
-                //sleepTime = random(4000000, 8400000);
-                sleepTime = 3600000
+                sleepTime = random(4000000, 8400000);
             }
             log(new Date().toLocaleString() + "-" + "-----------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息" + sleepTime / 1000 / 60 + "分钟");
             sleepLongTime(sleepTime);
