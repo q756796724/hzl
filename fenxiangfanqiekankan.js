@@ -2089,12 +2089,12 @@ ui.ok.click(function () {
                             url = "www.baidu.com";
                             //log("url="+url)
                             r = http.get(url);
-                            log(r)
+                            //log(r)
                             //if (r.statusCode == "200") {
                             return false
                             //}
                         } catch (err) {
-                            log(err)
+                            //log(err)
                             return true
                         }
                     }
