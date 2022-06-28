@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "萝卜分享v1.1.7";
+        var versionNum = "萝卜分享v1.1.8";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1912,13 +1912,14 @@ ui.ok.click(function () {
                 ui.run(function () { 悬浮窗.jbkz.visibility = 8 });
                 sleep(1000);
                 totificationlistenersetting()
-                sleep(2000);
+                sleep(3000);
                 if (device.brand == 'Meizu'){
                     let wifiSwitch=id("wifi_switch").className("com.meizu.common.widget.Switch").findOne(3000);
                     if(wifiSwitch!=null){
                         if(!wifiSwitch.checked()){
+                            sleep(1000);
                             wifiSwitch.click();
-                            sleep(2000);
+                            sleep(5000);
                         }
                     }
                 }else if (device.brand == 'Xiaomi') {
@@ -1972,7 +1973,7 @@ ui.ok.click(function () {
             } else if (wifiName == dlwifi) {
                 try {
                     //let url = readurl;
-                    let url = "www.csdn.net";
+                    let url = "mail.sina.com.cn"//"www.csdn.net";//mail.sina.com.cn
                     //log("url="+url)
                     let r = http.get(url.toString());
                     if (r.statusCode == "200") {
@@ -1980,15 +1981,17 @@ ui.ok.click(function () {
                             url = "www.baidu.com";
                             //log("url="+url)
                             r = http.get(url);
+                            //log(r)
                             //if (r.statusCode == "200") {
                             return false
                             //}
                         } catch (err) {
-                            log(err)
+                            //log(err)
                             return true
                         }
                     }
                 } catch (err) {
+                    console.error("错误原因:" + err);
                     //log(err.name)
                     //if (err.name == "JavaException")
                     return false
