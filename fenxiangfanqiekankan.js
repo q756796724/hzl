@@ -183,7 +183,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v3.4.7";
+        var versionNum = "番茄分享v3.4.8";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -2027,13 +2027,14 @@ ui.ok.click(function () {
                 ui.run(function () { 悬浮窗.jbkz.visibility = 8 });
                 sleep(1000);
                 totificationlistenersetting()
-                sleep(2000);
+                sleep(3000);
                 if (device.brand == 'Meizu'){
                     let wifiSwitch=id("wifi_switch").className("com.meizu.common.widget.Switch").findOne(3000);
                     if(wifiSwitch!=null){
                         if(!wifiSwitch.checked()){
+                            sleep(1000);
                             wifiSwitch.click();
-                            sleep(2000);
+                            sleep(5000);
                         }
                     }
                 }else if (device.brand == 'Xiaomi') {
