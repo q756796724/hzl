@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "萝卜分享v1.1.6";
+        var versionNum = "萝卜分享v1.1.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1392,6 +1392,9 @@ ui.ok.click(function () {
 
             let wifiCount = count;
             for (; ;) {
+                if(new Date().getHours()<7||new Date().getHours()==23&&new Date().getMinutes()>55){
+                    return true;
+                }
                 kz();
                 /*if(className("android.widget.TextView").textContains("请从微信正常阅读").findOne(3000)!=null){
                     click("确定");
@@ -1539,7 +1542,7 @@ ui.ok.click(function () {
                         return false;
                     }
 
-                    sleep(8000);
+                    sleep(15000);
                 }
                 log("第" + lunCount + "轮,第" + count + "次");
 
@@ -1910,6 +1913,17 @@ ui.ok.click(function () {
                 sleep(1000);
                 totificationlistenersetting()
                 sleep(2000);
+                if (device.brand == 'Meizu'){
+                    let wifiSwitch=id("wifi_switch").className("com.meizu.common.widget.Switch").findOne(3000);
+                    if(wifiSwitch!=null){
+                        if(!wifiSwitch.checked()){
+                            wifiSwitch.click();
+                            sleep(2000);
+                        }
+                    }
+                }else if (device.brand == 'Xiaomi') {
+
+                }
                 let cBtn = text(wifiName).findOne(5000);
                 if (cBtn != null) {
                     let cBounds = cBtn.bounds();
