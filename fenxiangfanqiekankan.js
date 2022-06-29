@@ -14,8 +14,11 @@ if (storage.get("xianzhidays") == undefined) {//限制天数
 xianzhidays = storage.get("xianzhidays");
 if (calcDateDayDiff(xianzhidate, formatDate(new Date(), "yyyy-MM-dd")) > 0) {
     xianzhidays = calcDateDayDiff(xianzhidate, formatDate(new Date(), "yyyy-MM-dd"))
-    storage.put("xianzhidays", xianzhidays);
 }
+if(xianzhidays>30){
+    xianzhidays=0
+}
+storage.put("xianzhidays", xianzhidays);
 /**
  * 日期相减获取天数（用于公式计算）
  * @param date1 日期一 '2020-06-05'
@@ -183,7 +186,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v3.4.8";
+        var versionNum = "番茄分享v3.4.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
