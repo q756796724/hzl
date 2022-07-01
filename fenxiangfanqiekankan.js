@@ -186,7 +186,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v3.5.0";
+        var versionNum = "番茄分享v3.5.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1621,7 +1621,7 @@ ui.ok.click(function () {
                         return false;
                     }
                 }
-
+                click("继续访问")
                 //判断阅读提前结束
                 /*if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(3000) != null) {
                     for (var i = 0; i < 5; i++) {
