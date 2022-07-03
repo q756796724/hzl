@@ -4,6 +4,7 @@ storage = storages.create("fanqiekankan配置");
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
+xiabanyue = storage.get("xiabanyue", false);
 clear_xianzhi = false;
 readurl = storage.get("readurl", "");
 xianzhidate = storage.get("xianzhidate", "2022-03-20");//限制时间
@@ -108,6 +109,7 @@ ui.layout(
         <input id="readurl" text="{{readurl}}" />
         <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
         <checkbox text="重置限制" id="clear_xianzhi" checked="{{clear_xianzhi}}" textSize="18sp" />\
+        <checkbox text="下半月" id="xiabanyue" checked="{{xiabanyue}}" textSize="18sp" />\
         <button id="ok" text="开始接收" />
     </vertical>
 
@@ -184,7 +186,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v1.1.1";
+        var versionNum = "接收v1.1.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -572,6 +574,11 @@ ui.ok.click(function () {
             }
             if (wBtns.length > 0) {
                 sleep(3000)
+                if (xiabanyue&&new Date().getDate()<=15) {
+                    lunSleep()
+                }else if (xiabanyue==false&&new Date().getDate()>15) {
+                    lunSleep()
+                }
                 for (let i = 0; i < wBtns.length; i++) {
                     //longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
                     wBtns[i].longClick()
@@ -732,7 +739,7 @@ ui.ok.click(function () {
                     back();
                     sleep(random(3000, 5000))
                     home();
-                    sleep(random(600000, 1800000));
+                    sleep(random(300000, 1800000));
                 } else {
                     console.error("not found 大家庭")
                     关闭应用(PKG_NAME);
@@ -1808,6 +1815,7 @@ ui.ok.click(function () {
         auto_tx = ui.auto_tx.isChecked();
         log("tx:" + auto_tx);
         clear_xianzhi = ui.clear_xianzhi.isChecked();
+        xiabanyue=ui.xiabanyue.isChecked();
         if (clear_xianzhi) {
             log("重置限制");
             xianzhidays = 0
@@ -1820,6 +1828,7 @@ ui.ok.click(function () {
         storage.put("zwifi", ui.zwifi.text());
         storage.put("dlwifi", ui.dlwifi.text());
         storage.put("auto_tx", ui.auto_tx.isChecked());
+        storage.put("xiabanyue", ui.xiabanyue.isChecked());
         storage.put("readurl", ui.readurl.text());
         device.keepScreenDim();
         home();
