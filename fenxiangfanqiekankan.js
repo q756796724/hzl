@@ -186,7 +186,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v3.5.2";
+        var versionNum = "番茄分享v3.5.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1724,6 +1724,20 @@ ui.ok.click(function () {
                 swapeToRead();
                 sleep(random(2000, 4000));
                 if (count == wifiCount) {
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                }
+                if (count == wifiCount+1) {
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    swapeToRead();
+                    sleep(random(3000, 7000));
                     连接wifi(dlwifi, 5000);
                     app.launch(PKG_NAME);
                 }
