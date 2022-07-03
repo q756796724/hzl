@@ -186,7 +186,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v1.1.2";
+        var versionNum = "接收v1.1.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -575,8 +575,10 @@ ui.ok.click(function () {
             if (wBtns.length > 0) {
                 sleep(3000)
                 if (xiabanyue&&new Date().getDate()<=15) {
+                    log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "两班制休息中");
                     lunSleep()
                 }else if (xiabanyue==false&&new Date().getDate()>15) {
+                    log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "两班制休息中");
                     lunSleep()
                 }
                 for (let i = 0; i < wBtns.length; i++) {
