@@ -186,7 +186,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v1.1.3";
+        var versionNum = "接收v1.1.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -688,7 +688,7 @@ ui.ok.click(function () {
                                     latestLink.click();
                                     reducejieshouCount()
                                     阅读到底();
-                                    sleep(random(500000, 1000000))
+                                    sleep(random(1800000, 2000000))
                                     wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOnce();//id=ipv
                                     if (wBtn != null) {
                                         addjieshouCount()
@@ -708,7 +708,7 @@ ui.ok.click(function () {
                                         latestLink.click();
                                         reducejieshouCount()
                                         阅读到底();
-                                        sleep(random(500000, 1000000))
+                                        sleep(random(1800000, 2000000))
                                         wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOnce();//id=ipv
                                         if (wBtn != null) {
                                             addjieshouCount()
