@@ -186,7 +186,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v3.5.4";
+        var versionNum = "番茄分享v3.5.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -454,7 +454,7 @@ ui.ok.click(function () {
 
         }
         function fenxiangwenzhang(name) {
-            if (havejieshouren(2) == false) {
+            if (havejieshouren(1) == false) {
                 return
             }
             let cBtn = packageName("com.tencent.mm").id("js_bottom_share_btn").className("android.widget.Button").findOne(3000)
@@ -1374,6 +1374,14 @@ ui.ok.click(function () {
                     }
                     return;
                 }
+                for (var i = 0; i < 5; i++) {
+                    if (havejieshouren(2)) {
+                        break
+                    }
+                    toastLog(new Date().toLocaleString() + "-" + "-----------" +"等待中！");
+                    sleep(300000)
+                }
+                
                 click("开始阅读");
                 for (var i = 0; i < 5; i++) {
                     sleep(3000);
