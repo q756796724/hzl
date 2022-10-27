@@ -3,8 +3,9 @@
 storage = storages.create("fanqiekankan配置");
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
+sdate = storage.get("sdate", "");
+edate = storage.get("edate", "");
 auto_tx = storage.get("auto_tx", false);
-xiabanyue = storage.get("xiabanyue", false);
 clear_xianzhi = false;
 readurl = storage.get("readurl", "");
 xianzhidate = storage.get("xianzhidate", "2022-03-20");//限制时间
@@ -109,7 +110,10 @@ ui.layout(
         <input id="readurl" text="{{readurl}}" />
         <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
         <checkbox text="重置限制" id="clear_xianzhi" checked="{{clear_xianzhi}}" textSize="18sp" />\
-        <checkbox text="下半月" id="xiabanyue" checked="{{xiabanyue}}" textSize="18sp" />\
+        <text textSize="16sp" textColor="black" text="开始日期" />
+        <input id="sdate" text="{{sdate}}" />
+        <text textSize="16sp" textColor="black" text="结束日期" />
+        <input id="edate" text="{{edate}}" />
         <button id="ok" text="开始接收" />
     </vertical>
 
@@ -179,14 +183,14 @@ ui.ok.click(function () {
 
 
 
-
+        var readTitle= [];//当天已读文章标题
         var topPackage = "";
         var topActivity = "";
 
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v1.1.6";
+        var versionNum = "接收v2.0.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -574,11 +578,8 @@ ui.ok.click(function () {
             }
             if (wBtns.length > 0) {
                 sleep(3000)
-                if (xiabanyue&&new Date().getDate()<=15) {
-                    log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "两班制休息中");
-                    lunSleep()
-                }else if (xiabanyue==false&&new Date().getDate()>15) {
-                    log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "两班制休息中");
+                if (!(new Date().getDate()>=sdate&&new Date().getDate()<=edate)) {
+                    log(new Date().toLocaleString() + "-" + "---------" + "休息中------"+sdate+"~"+edate);
                     lunSleep()
                 }
                 for (let i = 0; i < wBtns.length; i++) {
@@ -602,14 +603,14 @@ ui.ok.click(function () {
                     } else {
                         console.error("置顶not found 大家庭")
                         关闭应用(PKG_NAME);
-                        lunSleep();
+                        lunSleep(300000);
                         return
                     }
                 }
                 wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);
                 if (wBtn != null) {
                     addjieshouCount()
-                    let icount = random(400, 840);
+                    let icount = random(10, 20);
                     let latestTalkName = "";//当前发言人
                     let latestLinkTitle = "";//当前文章的标题
                     let latestLink;//当前文章
@@ -680,38 +681,18 @@ ui.ok.click(function () {
                                     }
                                 }
                             }
-
-                            if (latestTalkName != "" && latestLinkTitle != "" && latestTalkName != lastTalkName) {
-                                //log(new Date().toLocaleString() + "-" + "-----------------发言人变化,上一发言人:" + lastTalkName + ",当前发言人:" + latestTalkName);
-                                if (random(0, 1) == 1){
-                                    if (setConfig(latestTalkName, latestLinkTitle)) {
-                                        latestLink.click();
-                                        reducejieshouCount()
-                                        阅读到底();
-                                        sleep(random(3000000, 3600000))
-                                        i=i+200
-                                        wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOnce();//id=ipv
-                                        if (wBtn != null) {
-                                            addjieshouCount()
-                                        }else {
-                                            back();
-                                            sleep(random(3000, 5000))
-                                            home();
-                                            return;
-                                        }
-                                    }
-                                }
-
-                            } else {
-                                if (latestTalkName != "" && latestLinkTitle != "" && lastLinkTitle != latestLinkTitle) {
-                                    //log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
-                                    if (random(0, 1) == 1){
+                            if(readTitle.indexOf(latestLinkTitle)==-1){
+                                if (latestTalkName != "" && latestLinkTitle != "" && latestTalkName != lastTalkName) {
+                                    //log(new Date().toLocaleString() + "-" + "-----------------发言人变化,上一发言人:" + lastTalkName + ",当前发言人:" + latestTalkName);
+                                    if (getjieshouCount()<3||random(0, 1) == 1){
                                         if (setConfig(latestTalkName, latestLinkTitle)) {
+                                            readTitle.push(latestLinkTitle)
                                             latestLink.click();
-                                            reducejieshouCount()
+                                            //接收文章进入阅读不用减1
+                                            //reducejieshouCount()
                                             阅读到底();
-                                            sleep(random(3000000, 3600000))
-                                            i=i+200
+                                            sleep(random(30000, 60000))
+                                            i=i+1
                                             wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOnce();//id=ipv
                                             if (wBtn != null) {
                                                 addjieshouCount()
@@ -720,6 +701,32 @@ ui.ok.click(function () {
                                                 sleep(random(3000, 5000))
                                                 home();
                                                 return;
+                                            }
+                                        }
+                                    }
+                                    
+                                } else {
+                                    if (latestTalkName != "" && latestLinkTitle != "" && lastLinkTitle != latestLinkTitle) {
+                                        //log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
+                                        
+                                        if (getjieshouCount()<3||random(0, 1) == 1){
+                                            if (setConfig(latestTalkName, latestLinkTitle)) {
+                                                readTitle.push(latestLinkTitle)
+                                                latestLink.click();
+                                                //接收文章进入阅读不用减1
+                                                //reducejieshouCount()
+                                                阅读到底();
+                                                sleep(random(30000, 60000))
+                                                i=i+1
+                                                wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOnce();//id=ipv
+                                                if (wBtn != null) {
+                                                    addjieshouCount()
+                                                }else {
+                                                    back();
+                                                    sleep(random(3000, 5000))
+                                                    home();
+                                                    return;
+                                                }
                                             }
                                         }
                                     }
@@ -745,7 +752,7 @@ ui.ok.click(function () {
                     back();
                     sleep(random(3000, 5000))
                     home();
-                    sleep(random(300000, 1800000));
+                    sleep(random(300000, 600000));
                 } else {
                     console.error("not found 大家庭")
                     关闭应用(PKG_NAME);
@@ -1817,12 +1824,15 @@ ui.ok.click(function () {
         log("主Wifi:" + zwifi);
         dlwifi = ui.dlwifi.getText();
         log("代理Wifi:" + dlwifi);
+        sdate = ui.sdate.getText();
+        log("sdate:" + sdate);
+        edate = ui.edate.getText();
+        log("edate:" + edate);
         readurl = ui.readurl.getText();
         log("readurl:" + readurl);
         auto_tx = ui.auto_tx.isChecked();
         log("tx:" + auto_tx);
         clear_xianzhi = ui.clear_xianzhi.isChecked();
-        xiabanyue=ui.xiabanyue.isChecked();
         if (clear_xianzhi) {
             log("重置限制");
             xianzhidays = 0
@@ -1834,8 +1844,9 @@ ui.ok.click(function () {
 
         storage.put("zwifi", ui.zwifi.text());
         storage.put("dlwifi", ui.dlwifi.text());
+        storage.put("sdate", ui.sdate.text());
+        storage.put("edate", ui.edate.text());
         storage.put("auto_tx", ui.auto_tx.isChecked());
-        storage.put("xiabanyue", ui.xiabanyue.isChecked());
         storage.put("readurl", ui.readurl.text());
         device.keepScreenDim();
         home();
@@ -1960,6 +1971,7 @@ ui.ok.click(function () {
             toastLog("版本号:" + versionNum);
             配置 = 读取配置(settingPath);
             if (配置["date"] != new Date().toLocaleDateString()) {
+                readTitle= [];
                 sleep(3000);
                 if (联网验证(zwifi) != true) {
                     连接wifi(zwifi, 5000);
@@ -1987,7 +1999,7 @@ ui.ok.click(function () {
                     }
                 }
 
-                if (new Date().getDate() % 3 == 0) {
+                /*if (new Date().getDate() % 3 == 0) {
                     app.launch("com.ss.android.ugc.aweme");
                     sleep(60000)
                     if (currentPackage() == "com.ss.android.ugc.aweme") {
@@ -1996,14 +2008,6 @@ ui.ok.click(function () {
                         关闭应用("com.ss.android.ugc.aweme");
                         sleep(10000)
                     }
-                    /*app.launch("com.smile.gifmaker");
-                    sleep(60000)
-                    if (currentPackage() == "com.smile.gifmaker") {
-                        home();
-                        sleep(5000);
-                        关闭应用("com.smile.gifmaker");
-                        sleep(10000)
-                    }*/
                     app.launch("com.ss.android.ugc.live");
                     sleep(60000)
                     if (currentPackage() == "com.ss.android.ugc.live") {
@@ -2020,12 +2024,12 @@ ui.ok.click(function () {
                         关闭应用("com.ss.android.article.news");
                         sleep(10000)
                     }
-                }
+                }*/
 
 
 
 
-                if (new Date().getDate() % 5 == 0) {
+                if (new Date().getDate() % 10 == 0) {
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
                     if (files.listDir("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/").length > 100) {
