@@ -1339,7 +1339,7 @@ ui.ok.click(function () {
             if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨|.*噜啦啦)/).findOne(5000) != null) {
                 log("渠道匹配");
                 retryCount = 0;
-                kz();zhaol
+                kz();
                 sleep(5000)
                 let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                 if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
