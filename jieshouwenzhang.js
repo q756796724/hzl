@@ -190,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v2.0.0";
+        var versionNum = "接收v2.0.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -581,6 +581,7 @@ ui.ok.click(function () {
                 if (!(new Date().getDate()>=sdate&&new Date().getDate()<=edate)) {
                     log(new Date().toLocaleString() + "-" + "---------" + "休息中------"+sdate+"~"+edate);
                     lunSleep()
+                    return;
                 }
                 for (let i = 0; i < wBtns.length; i++) {
                     //longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
@@ -1333,6 +1334,15 @@ ui.ok.click(function () {
             toastLog("版本号:" + versionNum);
             log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
+                配置 = 读取配置(settingPath);
+                if (i % 30 == 0 ) {
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                    }
+                    if(配置["date"] != new Date().toLocaleDateString()){
+                        break
+                    }
+                }
                 kz();
                 //device.wakeUp();
                 //device.keepScreenOn(3600 * 1000)
