@@ -7,6 +7,10 @@ auto_tx = storage.get("auto_tx", false);
 qun_into = storage.get("qun_into", true);
 clear_xianzhi = false;
 readurl = storage.get("readurl", "");
+if(readurl=="TiLAkkm"){
+    readurl="ckmokkm"
+    
+}
 xianzhidate = storage.get("xianzhidate", "2022-03-20");//限制时间
 if (storage.get("xianzhidays") == undefined) {//限制天数
     storage.put("xianzhidays", 0);
@@ -186,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v4.0.0";
+        var versionNum = "番茄分享v4.0.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1335,7 +1339,7 @@ ui.ok.click(function () {
             if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨|.*噜啦啦)/).findOne(5000) != null) {
                 log("渠道匹配");
                 retryCount = 0;
-                kz();
+                kz();zhaol
                 sleep(5000)
                 let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                 if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
@@ -1841,8 +1845,13 @@ ui.ok.click(function () {
             log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                 配置 = 读取配置(settingPath);
-                if (i % 30 == 0 && 配置["date"] != new Date().toLocaleDateString()) {
-                    break
+                if (i % 30 == 0 ) {
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                    }
+                    if(配置["date"] != new Date().toLocaleDateString()){
+                        break
+                    }
                 }
                 kz();
                 //device.wakeUp();
