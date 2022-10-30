@@ -190,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v2.0.1";
+        var versionNum = "接收v2.0.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -644,7 +644,8 @@ ui.ok.click(function () {
                         console.error(new Date().toLocaleString() + "-" + "-----------------当前发言人:" + latestTalkName + ",当前标题:" + latestLinkTitle);
                     }
 
-                    for (let i = 0; i < icount; i++) {
+                    //读10~20次才结束
+                    for (let i = 0; i < icount;) {
                         wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);//id=ipv
                         if (wBtn != null) {
                             let repData = getConfig();
@@ -694,6 +695,7 @@ ui.ok.click(function () {
                                             阅读到底();
                                             sleep(random(30000, 60000))
                                             i=i+1
+                                            console.log(new Date().toLocaleString() + "-" + "----------第"+i)
                                             wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOnce();//id=ipv
                                             if (wBtn != null) {
                                                 addjieshouCount()
@@ -719,6 +721,7 @@ ui.ok.click(function () {
                                                 阅读到底();
                                                 sleep(random(30000, 60000))
                                                 i=i+1
+                                                console.log(new Date().toLocaleString() + "-" + "----------第"+i)
                                                 wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOnce();//id=ipv
                                                 if (wBtn != null) {
                                                     addjieshouCount()
@@ -741,7 +744,7 @@ ui.ok.click(function () {
                         }
 
                         sleep(10000)
-                        if (i % 5 == 0) {
+                        if (new Date().getSeconds() % 30 == 0) {
                             if (联网验证(zwifi) != true) {
                                 连接wifi(zwifi, 5000);
                                 app.launch(PKG_NAME);
