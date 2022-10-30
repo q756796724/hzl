@@ -190,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v2.0.2";
+        var versionNum = "接收v2.0.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -578,11 +578,20 @@ ui.ok.click(function () {
             }
             if (wBtns.length > 0) {
                 sleep(3000)
-                if (!(new Date().getDate()>=sdate&&new Date().getDate()<=edate)) {
-                    log(new Date().toLocaleString() + "-" + "---------" + "休息中------"+sdate+"~"+edate);
-                    lunSleep()
-                    return;
+                if(sdate<=edate){
+                    if (!(new Date().getDate()>=sdate&&new Date().getDate()<=edate)) {
+                        log(new Date().toLocaleString() + "-" + "---------" + "休息中------"+sdate+"~"+edate);
+                        lunSleep()
+                        return;
+                    }
+                }else{
+                    if (!(new Date().getDate()>=sdate||new Date().getDate()<=edate)) {
+                        log(new Date().toLocaleString() + "-" + "---------" + "休息中------"+sdate+"~"+edate);
+                        lunSleep()
+                        return;
+                    }
                 }
+                
                 for (let i = 0; i < wBtns.length; i++) {
                     //longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
                     wBtns[i].longClick()
