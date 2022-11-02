@@ -190,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v4.0.1";
+        var versionNum = "番茄分享v4.0.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1274,13 +1274,13 @@ ui.ok.click(function () {
             }
             if (auto_tx) {
                 if ((nowHour > 13 && todayTxCount < 1) || (nowHour > 19 && todayTxCount < 2) || (nowHour > 20 && todayTxCount < 3) || (nowHour > 21 && todayTxCount < 4)) {
-                    if (className("android.view.View").textMatches(/(积分兑换)/).findOnce() != null) {
+                    if (className("android.view.View").textMatches(/(积分提现)/).findOnce() != null) {
                         sleep(10000);
                         let jfTxt = packageName("com.tencent.mm").className("android.view.View").textContains("积分:").findOnce()
                         if (jfTxt) {
                             if (jfTxt != null && parseInt(jfTxt.text().split("积分:")[1]).toString() != 'NaN' && parseInt(jfTxt.text().split("积分:")[1]) > 100) {
                                 todayTxCount++
-                                click("积分兑换")
+                                click("积分提现")
                                 sleep(6000);
                                 cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
                                 if (cBtn != null) {
@@ -1317,7 +1317,7 @@ ui.ok.click(function () {
                                         sleep(500)
                                         zBtn.click();
                                     }
-                                    let sBtn = textMatches(/(积分兑换)/).findOne(3000);
+                                    let sBtn = textMatches(/(积分提现)/).findOne(3000);
                                     if (sBtn == null) {
                                         back();
                                     } else {
