@@ -190,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v2.0.6";
+        var versionNum = "接收v2.0.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -371,6 +371,7 @@ ui.ok.click(function () {
                     let rep = JSON.parse(temp);
                     let repState = rep["state"];
                     if (repState == 1) {
+                        console.info("+1");
                         let repData = rep["data"];
                         return repData
                     } else {
@@ -399,6 +400,7 @@ ui.ok.click(function () {
                     let rep = JSON.parse(temp);
                     let repState = rep["state"];
                     if (repState == 1) {
+                        console.info("-1");
                         let repData = rep["data"];
                         return repData
                     } else {
@@ -661,10 +663,19 @@ ui.ok.click(function () {
                     }
 
                     //读10~20次才结束
+                    let loopCount=0;//循环次数
                     for (let i = 0; i < icount;) {
+                        loopCount++
+                        if (loopCount % 10 == 0) {
+                            if (联网验证(zwifi) != true) {
+                                连接wifi(zwifi, 5000);
+                                app.launch(PKG_NAME);
+                                sleep(10000)
+                            }
+                        }
                         wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);//id=ipv
                         if (wBtn != null) {
-                            if(列表到底()==false){
+                            if (loopCount % 10 == 0&&列表到底()==false) {
                                 continue;
                             }
                             let repData = getConfig();
@@ -764,12 +775,6 @@ ui.ok.click(function () {
                         }
 
                         sleep(10000)
-                        if (new Date().getSeconds() % 30 == 0) {
-                            if (联网验证(zwifi) != true) {
-                                连接wifi(zwifi, 5000);
-                                app.launch(PKG_NAME);
-                            }
-                        }
 
                     }
                     reducejieshouCount()
