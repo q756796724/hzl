@@ -190,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v4.0.5";
+        var versionNum = "番茄分享v4.0.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1455,11 +1455,13 @@ ui.ok.click(function () {
 
                         return;
                     }
-                    //点击阅读失败，数量加1
-                    if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨|.*噜啦啦)/).findOne(3000) != null) {
-                        addjieshouCount();
-                    }
                     
+                    
+                }
+                //点击阅读失败，数量加1
+                if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨|.*噜啦啦)/).findOne(3000) != null) {
+                    console.error("点击阅读失败，数量加1");
+                    addjieshouCount();
                 }
             } else {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
@@ -1631,7 +1633,7 @@ ui.ok.click(function () {
             for (; ;) {
                 if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 55) {
                     if(count == wifiCount){
-                        //未分享数量加1
+                        console.error("未分享数量加1");
                         addjieshouCount();
                     }
                    
@@ -1671,7 +1673,7 @@ ui.ok.click(function () {
                             sleep(8000)
                         } else {
                             if(count == wifiCount){
-                                //未分享数量加1
+                                console.error("未分享数量加1");
                                 addjieshouCount();
                             }
                             返回v首页();
@@ -1679,7 +1681,7 @@ ui.ok.click(function () {
                         }
                     } else {
                         if(count == wifiCount){
-                            //未分享数量加1
+                            console.error("未分享数量加1");
                             addjieshouCount();
                         }
                         返回v首页();
@@ -1735,7 +1737,7 @@ ui.ok.click(function () {
 
                                 
                                 if(count == wifiCount){
-                                  //未分享数量加1
+                                    console.error("未分享数量加1");
                                   addjieshouCount();
                                 }
 
@@ -1770,13 +1772,13 @@ ui.ok.click(function () {
                     let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                         if(fenxiangwenzhang("大家庭")==false){
-                             //分享失败数量加1
+                            console.error("分享失败数量加1");
                              addjieshouCount();
                         }
                     } else {
                         console.error("标题识别失败");
                         if(count == wifiCount){
-                            //未分享数量加1
+                            console.error("未分享数量加1");
                             addjieshouCount();
                         }
                         返回v首页();
