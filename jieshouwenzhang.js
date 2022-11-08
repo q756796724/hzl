@@ -190,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v2.0.7";
+        var versionNum = "接收v2.0.8";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -667,6 +667,14 @@ ui.ok.click(function () {
                     for (let i = 0; i < icount;) {
                         loopCount++
                         if (loopCount % 10 == 0) {
+                            配置 = 读取配置(settingPath);
+                            if (配置["date"] != new Date().toLocaleDateString()) {
+                                reducejieshouCount()
+                                返回v首页();
+                                sleep(random(3000, 5000))
+                                home();
+                                return;
+                            }
                             if (联网验证(zwifi) != true) {
                                 连接wifi(zwifi, 5000);
                                 app.launch(PKG_NAME);
@@ -730,7 +738,7 @@ ui.ok.click(function () {
                                             if (wBtn != null) {
                                                 addjieshouCount()
                                             }else {
-                                                back();
+                                                返回v首页();
                                                 sleep(random(3000, 5000))
                                                 home();
                                                 return;
@@ -756,7 +764,7 @@ ui.ok.click(function () {
                                                 if (wBtn != null) {
                                                     addjieshouCount()
                                                 }else {
-                                                    back();
+                                                    返回v首页();
                                                     sleep(random(3000, 5000))
                                                     home();
                                                     return;
@@ -768,7 +776,7 @@ ui.ok.click(function () {
                             }
                         } else {
                             reducejieshouCount()
-                            back();
+                            返回v首页();
                             sleep(random(3000, 5000))
                             home();
                             return;
@@ -778,7 +786,7 @@ ui.ok.click(function () {
 
                     }
                     reducejieshouCount()
-                    back();
+                    返回v首页();
                     sleep(random(3000, 5000))
                     home();
                     sleep(random(300000, 600000));
