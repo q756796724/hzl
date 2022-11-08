@@ -190,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v2.0.4";
+        var versionNum = "接收v2.0.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -657,6 +657,9 @@ ui.ok.click(function () {
                     for (let i = 0; i < icount;) {
                         wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);//id=ipv
                         if (wBtn != null) {
+                            if(列表到底()==false){
+                                continue;
+                            }
                             let repData = getConfig();
                             if (repData == undefined) {
                                 sleep(10000)
@@ -886,6 +889,31 @@ ui.ok.click(function () {
 
             等待未响应();
             back();
+        }
+
+        function 列表到底() {
+            for (let i = 0; i < 15; i++) {
+                等待未响应();
+                kz();
+                var img = captureScreen();
+                var imgH = img.height;
+                var clip = images.clip(img, 0, img.height - 200, 200, 20);
+                swapeToRead();
+                sleep(random(4000, 5000));
+                var p = findImage(captureScreen(), clip, {
+                    region: [0, imgH - 300, 220, 150],
+                    threshold: 1
+                });
+                img.recycle();//不再使用需要手动回收
+                if (p) {
+                    //log("到底了");
+                    return true
+                }else if(i==14){
+                    log("未到底");
+                    return false
+                }
+            }
+
         }
 
 
