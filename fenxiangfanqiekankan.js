@@ -190,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v4.0.2";
+        var versionNum = "番茄分享v4.0.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1014,6 +1014,7 @@ ui.ok.click(function () {
                         if (news != null && news.children() != null) {
                             let newsList = news.children();
                             if (newsList.length > 0) {
+                                log("newsListLength="+newsList.length)
                                 for (let i = newsList.length - 1; i > -1; i--) {
                                     let latestNews = newsList[i];
                                     if (latestNews.className() == "android.widget.RelativeLayout") {
@@ -1058,7 +1059,9 @@ ui.ok.click(function () {
                                                             throw Error()
                                                         }
                                                     } else {
-                                                        if (child.text().indexOf("番茄副") > -1 && child.text().indexOf(readurl) > -1 && child.clickable()) {
+                                                        //if (child.text().indexOf("番茄副") > -1 && child.text().indexOf(readurl) > -1 && child.clickable()) {
+                                                          if (child.text().indexOf("番茄副") > -1 && random(0, 2) == 1 && child.clickable()) {//随机点其中一个
+                                                            log(child.text())
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
                                                                 clickx(child.bounds().centerX(), child.bounds().centerY());
