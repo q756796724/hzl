@@ -190,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v2.0.5";
+        var versionNum = "接收v2.0.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -333,6 +333,7 @@ ui.ok.click(function () {
         //获取接收人数
         function getjieshouCount() {
             let temp = null;
+            let repData=0;
             try {
                 temp = http.get("106.55.225.58:8081/fanqie/getjieshouCount");
                 if (temp && temp.statusCode == 200) {
@@ -343,16 +344,21 @@ ui.ok.click(function () {
                         let repData = rep["data"];
                         return repData
                     } else {
-                        console.warn("getjieshouCount获取数据失败" + temp);
+                        //console.warn("getjieshouCount获取数据失败" + temp);
+                        throw Error("getjieshouCount获取数据失败" + temp)
                     }
                 }
             } catch (err) {
+                console.error("getjieshouCount报错,原因:" + err);
                 if (联网验证(zwifi) != true) {
                     连接wifi(zwifi, 5000);
                     app.launch(PKG_NAME);
                 }
-                console.error("getjieshouCount报错,原因:" + err);
+                sleep(8000)
+                repData=getjieshouCount();
+                
             }
+            return repData
 
         }
         //增加接收人数
@@ -368,15 +374,17 @@ ui.ok.click(function () {
                         let repData = rep["data"];
                         return repData
                     } else {
-                        console.error("addjieshouCount获取数据失败" + temp);
+                        //console.error("addjieshouCount获取数据失败" + temp);
+                        throw Error("addjieshouCount获取数据失败" + temp)
                     }
                 }
             } catch (err) {
+                console.error("getjieshouCount报错,原因:" + err);
                 if (联网验证(zwifi) != true) {
                     连接wifi(zwifi, 5000);
                     app.launch(PKG_NAME);
                 }
-                sleep(60000)
+                sleep(10000)
                 addjieshouCount()
             }
 
@@ -395,8 +403,7 @@ ui.ok.click(function () {
                         return repData
                     } else {
                         console.error("reducejieshouCount获取数据失败" + temp);
-                        sleep(60000)
-                        reducejieshouCount()
+                        throw Error("reducejieshouCount获取数据失败" + temp)
                     }
                 }
             } catch (err) {
@@ -404,7 +411,7 @@ ui.ok.click(function () {
                     连接wifi(zwifi, 5000);
                     app.launch(PKG_NAME);
                 }
-                sleep(60000)
+                sleep(10000)
                 reducejieshouCount()
             }
 
@@ -749,6 +756,7 @@ ui.ok.click(function () {
                                 }
                             }
                         } else {
+                            reducejieshouCount()
                             back();
                             sleep(random(3000, 5000))
                             home();
