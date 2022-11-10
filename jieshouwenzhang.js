@@ -190,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v2.1.0";
+        var versionNum = "接收v2.1.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -722,10 +722,11 @@ ui.ok.click(function () {
                                     }
                                 }
                             }
-                            if(readTitle.indexOf(latestLinkTitle)==-1){
+                            let jieshouc=getjieshouCount();
+                            if(jieshouc<3||readTitle.indexOf(latestLinkTitle)==-1){
                                 if (latestTalkName != "" && latestLinkTitle != "" && latestTalkName != lastTalkName) {
                                     //log(new Date().toLocaleString() + "-" + "-----------------发言人变化,上一发言人:" + lastTalkName + ",当前发言人:" + latestTalkName);
-                                    if (getjieshouCount()<3||random(0, 1) == 1){
+                                    if (jieshouc<3||random(0, 1) == 1){
                                         if (setConfig(latestTalkName, latestLinkTitle)) {
                                             readTitle.push(latestLinkTitle)
                                             latestLink.click();
@@ -751,7 +752,7 @@ ui.ok.click(function () {
                                     if (latestTalkName != "" && latestLinkTitle != "" && lastLinkTitle != latestLinkTitle) {
                                         //log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
                                         
-                                        if (getjieshouCount()<3||random(0, 1) == 1){
+                                        if (jieshouc<3||random(0, 1) == 1){
                                             if (setConfig(latestTalkName, latestLinkTitle)) {
                                                 readTitle.push(latestLinkTitle)
                                                 latestLink.click();
