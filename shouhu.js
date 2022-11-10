@@ -1,6 +1,6 @@
 //进程守护
 
-var versionNum = "v1.0.9";
+var versionNum = "v1.1.0";
 toolsStorage = storages.create("tools配置");
 
 
@@ -172,11 +172,19 @@ function getAppAlive(name) {
 for (; ;) {
     setAppAlive(device.serial+ "-1")
     if (getAppAlive(device.serial) == false) {
-        setAppAlive(device.serial)
+        //setAppAlive(device.serial)
         log("重启主应用")
         home();
         sleep(5000);
         app.launch("com.fanqie.cloud");
+        sleep(300000);
+        if (getAppAlive(device.serial) == false) {
+            back();
+            sleep(5000);
+            app.launch("com.fanqie.cloud");
+            sleep(300000);
+        }
+        
 
         // log("重启主应用")
         // home();
