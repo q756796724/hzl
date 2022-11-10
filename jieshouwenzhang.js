@@ -190,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v2.0.8";
+        var versionNum = "接收v2.1.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -666,7 +666,7 @@ ui.ok.click(function () {
                     let loopCount=0;//循环次数
                     for (let i = 0; i < icount;) {
                         loopCount++
-                        if (loopCount % 10 == 0) {
+                        if (loopCount % 25 == 0) {
                             配置 = 读取配置(settingPath);
                             if (配置["date"] != new Date().toLocaleDateString()) {
                                 reducejieshouCount()
@@ -683,7 +683,8 @@ ui.ok.click(function () {
                         }
                         wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);//id=ipv
                         if (wBtn != null) {
-                            if (loopCount % 10 == 0&&列表到底()==false) {
+                            if (loopCount % 30 == 0&&列表到底()==false) {
+                                home();
                                 continue;
                             }
                             let repData = getConfig();
@@ -898,7 +899,7 @@ ui.ok.click(function () {
                     sleep(random(4000, 5000));
                     var p = findImage(captureScreen(), clip, {
                         region: [0, imgH - 300, 220, 150],
-                        threshold: 1
+                        threshold: 0.9
                     });
                     img.recycle();//不再使用需要手动回收
                     if (p || checkWatchFull()) {
@@ -918,12 +919,12 @@ ui.ok.click(function () {
                 kz();
                 var img = captureScreen();
                 var imgH = img.height;
-                var clip = images.clip(img, 0, img.height - 200, 200, 20);
+                var clip = images.clip(img, 0, img.height - 300, 300, 200);
                 swapeToRead();
                 sleep(random(4000, 5000));
                 var p = findImage(captureScreen(), clip, {
-                    region: [0, imgH - 300, 220, 150],
-                    threshold: 1
+                    region: [0, imgH - 400, 350, 400],
+                    threshold: 0.9
                 });
                 img.recycle();//不再使用需要手动回收
                 if (p) {
