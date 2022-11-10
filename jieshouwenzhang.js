@@ -5,21 +5,8 @@ zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 sdate = storage.get("sdate", "");
 edate = storage.get("edate", "");
-auto_tx = storage.get("auto_tx", false);
-clear_xianzhi = false;
-readurl = storage.get("readurl", "");
-xianzhidate = storage.get("xianzhidate", "2022-03-20");//限制时间
-if (storage.get("xianzhidays") == undefined) {//限制天数
-    storage.put("xianzhidays", 0);
-}
-xianzhidays = storage.get("xianzhidays");
-if (calcDateDayDiff(xianzhidate, formatDate(new Date(), "yyyy-MM-dd")) > 0) {
-    xianzhidays = calcDateDayDiff(xianzhidate, formatDate(new Date(), "yyyy-MM-dd"))
-}
-if(xianzhidays>30){
-    xianzhidays=0
-}
-storage.put("xianzhidays", xianzhidays);
+
+
 /**
  * 日期相减获取天数（用于公式计算）
  * @param date1 日期一 '2020-06-05'
@@ -107,9 +94,6 @@ ui.layout(
         <text textSize="16sp" textColor="black" text="请输入代理Wifi" />
         <input id="dlwifi" text="{{dlwifi}}" />
         <text textSize="16sp" textColor="black" text="url" />
-        <input id="readurl" text="{{readurl}}" />
-        <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
-        <checkbox text="重置限制" id="clear_xianzhi" checked="{{clear_xianzhi}}" textSize="18sp" />\
         <text textSize="16sp" textColor="black" text="开始日期" />
         <input id="sdate" text="{{sdate}}" />
         <text textSize="16sp" textColor="black" text="结束日期" />
@@ -190,7 +174,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v2.1.4";
+        var versionNum = "接收v2.1.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -963,7 +947,7 @@ ui.ok.click(function () {
             }
             files.write(path, JSON.stringify(jsonContent));
             sleep(1000);
-            启动x5()
+            //启动x5()
         }
 
         function 初始化配置2(path) {
@@ -1168,210 +1152,6 @@ ui.ok.click(function () {
             return fileCount;
         }
 
-        function yuedu() {
-            配置 = 读取配置(settingPath);
-            var count = 配置["count"];//次数
-
-            let wifiCount = count;
-            for (; ;) {
-                kz();
-                /*if(className("android.widget.TextView").textContains("请从微信正常阅读").findOne(3000)!=null){
-                    click("确定");
-                    log("回退");
-                    sleep(3000);
-                    if(className("android.view.View").textContains("ZhaoLin").findOne(3000)!=null){
-                       click("开始阅读");
-                    }
-                }*/
-
-                /*if (className("android.widget.TextView").textMatches(/(.*请从微信正常阅读.*|.*异常.*|.*失败.*)/).findOne(3000) != null) {
-                    log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请从微信正常阅读.*|.*异常.*|.*失败.*)/).findOne(3000));
-                    click("确定");
-                    sleep(3000);
-                    if (textContains("ZhaoLin").findOne(3000) != null || textMatches(/(.*开始阅读.*)/).findOne(3000) != null) {
-                        let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
-                        if (sBtn != null) {
-                            sBtn.click();
-                        }
-                    }
-                }*/
-                // if (页面异常处理()) {
-                //     if (textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(5000) != null) {
-                //         sleep(5000)
-                //         let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
-                //         if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
-                //             readNum = parseInt(readNumDiv.text());
-                //         }
-                //         let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
-                //         if (sBtn != null) {
-                //             sBtn.click();
-                //             sleep(8000)
-                //         } else {
-                //             返回v首页();
-                //             return false;
-                //         }
-                //     } else {
-                //         返回v首页();
-                //         return false;
-                //     }
-                // }
-
-                //完成任务
-                if (packageName("com.tencent.mm").className("android.widget.TextView").text("完成任务").findOnce() != null || packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOnce() != null) {
-                    log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                    let qBtn = textMatches(/(.*返回首页.*)/).findOnce();
-                    if (qBtn != null) {
-                        sleep(500)
-                        qBtn.click();
-                    }
-                    sleep(5000)
-                    let readNumDiv = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*次)/).findOne(5000)
-                    if (readNumDiv != null && parseInt(readNumDiv.text().substring(0, readNumDiv.text().length - 1)).toString() != 'NaN' && parseInt(readNumDiv.text().substring(0, readNumDiv.text().length - 1)) > readNum) {
-                        readNum = parseInt(readNumDiv.text().substring(0, readNumDiv.text().length - 1));
-                    }
-                    if (count > 7 && xianzhidays >= 4 && xianzhidays <= 5) {
-                        xianzhidays = 0
-                        storage.put("xianzhidays", 0);
-                        xianzhidate = formatDate(new Date(), "yyyy-MM-dd")
-                        storage.put("xianzhidate", xianzhidate);
-                    }
-                    if (xianzhidays == 0 && lunCount == 1 && count < 7) {
-                        xianzhidays = 5
-                        storage.put("xianzhidays", 5);
-                    }
-
-                    count = 41;
-                }
-                //判断阅读提前结束
-                /*if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(3000) != null) {
-                    for (var i = 0; i < 5; i++) {
-                        kz();
-                        sleep(3000);
-                        if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(3000) != null) {
-                            if (i < 3) {
-                                log("重试点击开始阅读成功");
-                                let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
-                                if (sBtn != null) {
-                                    sBtn.click();
-                                }
-                            } else {
-                                log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                                count = 41;
-                            }
-
-                        }
-                    }
-                }*/
-                if (packageName("com.tencent.mm").className("android.widget.TextView").text("错误").findOne(3000) != null) {
-                    for (var i = 0; i < 5; i++) {
-                        kz();
-                        if (packageName("com.tencent.mm").className("android.widget.TextView").text("错误").findOne(3000) != null) {
-
-                            if (i < 3) {
-                                log("按返回尝试进入阅读");
-                                back()
-                                sleep(8000);
-                            } else {
-                                log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                                if (count > 7 && xianzhidays >= 4 && xianzhidays <= 5) {
-                                    xianzhidays = 0
-                                    storage.put("xianzhidays", 0);
-                                    xianzhidate = formatDate(new Date(), "yyyy-MM-dd")
-                                    storage.put("xianzhidate", xianzhidate);
-                                }
-                                if (xianzhidays == 0 && lunCount == 1 && count < 7) {
-                                    xianzhidays = 5
-                                    storage.put("xianzhidays", 5);
-                                }
-
-                                count = 41;
-                                break
-                            }
-                        } else if (packageName("com.tencent.mm").textMatches(/(.*无法打开网页.*|.*网页无法打开.*|.*加载中.*)/).findOne(5000)) {
-                            break
-                        } else {
-                            log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                            if (count > 7 && xianzhidays >= 4 && xianzhidays <= 5) {
-                                xianzhidays = 0
-                                storage.put("xianzhidays", 0);
-                                xianzhidate = formatDate(new Date(), "yyyy-MM-dd")
-                                storage.put("xianzhidate", xianzhidate);
-                            }
-                            if (xianzhidays == 0 && lunCount == 1 && count < 7) {
-                                xianzhidays = 5
-                                storage.put("xianzhidays", 5);
-                            }
-                            count = 41;
-                            break
-                        }
-                    }
-                }
-
-                if (count > 40) {
-                    return true;
-                }
-                //判断是否需要互助
-                if (count == wifiCount && xianzhidays > 0 && xianzhidays < 4) {
-                    let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
-                    if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
-                        fenxiangwenzhang("大家庭");
-                    } else {
-                        console.error("标题识别失败");
-                        返回v首页();
-                        return false;
-                    }
-
-                    sleep(8000);
-                }
-                log("第" + lunCount + "轮,第" + count + "次");
-
-                //长距离测试
-                //sml_move(400, 1800, 800, 230, 2000);
-                //短距离测试
-                //sml_move(400, 1000, 800, 600, 2000);
-                log("滑动");
-                swapeToRead();
-                sleep(random(2000, 4000));
-                swapeToRead();
-                sleep(random(2000, 4000));
-                swapeToRead();
-                sleep(random(2000, 4000));
-                swapeToRead();
-                sleep(random(2000, 4000));
-                swapeToRead();
-                sleep(random(2000, 4000));
-                swapeToRead();
-                sleep(random(2000, 4000));
-                swapeToRead();
-                sleep(random(2000, 4000));
-                if (count == wifiCount) {
-                    连接wifi(dlwifi, 5000);
-                    app.launch(PKG_NAME);
-                }
-                if (count % 5 == 0) {
-                    if (联网验证(dlwifi) != true) {
-                        连接wifi(dlwifi, 5000);
-                        app.launch(PKG_NAME);
-                    }
-                }
-
-                if (等待未响应() == 0) {
-                    if (结束未响应()) {
-                        配置["count"] = count;
-                        保存配置(settingPath, 配置);
-                        return false;
-                    }
-                }
-
-
-                back();
-                配置["count"] = count;
-                保存配置(settingPath, 配置);
-                count++;
-
-            }
-        }
-
         //长时间睡眠保持唤醒，单位毫秒
         function sleepLongTime(sleepTime) {
             /*打开v();
@@ -1395,7 +1175,7 @@ ui.ok.click(function () {
                 }
             }*/
             toastLog("版本号:" + versionNum);
-            log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
+            log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                 配置 = 读取配置(settingPath);
                 if (i % 30 == 0 ) {
@@ -1755,7 +1535,6 @@ ui.ok.click(function () {
                 }
             } else if (wifiName == dlwifi) {
                 try {
-                    //let url = readurl;
                     let url = "mail.sina.com.cn"//"www.csdn.net";//mail.sina.com.cn
                     //log("url="+url)
                     let r = http.get(url.toString());
@@ -1901,26 +1680,14 @@ ui.ok.click(function () {
         log("sdate:" + sdate);
         edate = ui.edate.getText();
         log("edate:" + edate);
-        readurl = ui.readurl.getText();
-        log("readurl:" + readurl);
-        auto_tx = ui.auto_tx.isChecked();
-        log("tx:" + auto_tx);
-        clear_xianzhi = ui.clear_xianzhi.isChecked();
-        if (clear_xianzhi) {
-            log("重置限制");
-            xianzhidays = 0
-            storage.put("xianzhidays", 0);
-            xianzhidate = formatDate(new Date(), "yyyy-MM-dd")
-            storage.put("xianzhidate", xianzhidate);
-        }
+       
+        
 
 
         storage.put("zwifi", ui.zwifi.text());
         storage.put("dlwifi", ui.dlwifi.text());
         storage.put("sdate", ui.sdate.text());
         storage.put("edate", ui.edate.text());
-        storage.put("auto_tx", ui.auto_tx.isChecked());
-        storage.put("readurl", ui.readurl.text());
         device.keepScreenDim();
         home();
         //定义
@@ -2055,10 +1822,7 @@ ui.ok.click(function () {
                 初始化配置(settingPath);
                 console.clear();
                 toastLog("每天初始化配置");
-                if (storage.get("xianzhidays") > 0) {
-                    xianzhidays = storage.get("xianzhidays") - 1;
-                    storage.put("xianzhidays", xianzhidays);
-                }
+                
                 if (nowHour < 1) {
                     //重置接收人数
                     for (; ;) {
