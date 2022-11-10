@@ -190,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v2.1.2";
+        var versionNum = "接收v2.1.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -442,7 +442,7 @@ ui.ok.click(function () {
         function getConfig() {
             let temp = null;
             try {
-                temp = http.post("106.55.225.58:8081/fanqie/getConfig", {});
+                temp = http.post("http://106.55.225.58:8081/fanqie/getConfig", {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -466,7 +466,7 @@ ui.ok.click(function () {
         function setConfig(lastTalkName, lastLinkTitle) {
             let temp = null;
             try {
-                temp = http.postJson("106.55.225.58:8081/fanqie/setConfig", {
+                temp = http.postJson("http://106.55.225.58:8081/fanqie/setConfig", {
                     "lastTalkName": lastTalkName,
                     "lastLinkTitle": lastLinkTitle
                 });
