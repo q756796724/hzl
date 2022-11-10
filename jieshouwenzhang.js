@@ -190,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v2.1.1";
+        var versionNum = "接收v2.1.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -335,7 +335,7 @@ ui.ok.click(function () {
             let temp = null;
             let repData=0;
             try {
-                temp = http.get("106.55.225.58:8081/fanqie/getjieshouCount");
+                temp = http.get("http://106.55.225.58:8081/fanqie/getjieshouCount");
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -362,10 +362,10 @@ ui.ok.click(function () {
 
         }
         //增加接收人数
-        function addjieshouCount() {
+        function addjieshouCount(txt) {
             let temp = null;
             try {
-                temp = http.get("106.55.225.58:8081/fanqie/addjieshouCount");
+                temp = http.get("http://106.55.225.58:8081/fanqie/addjieshouCount?txt="+device.serial+txt);
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -386,15 +386,15 @@ ui.ok.click(function () {
                     app.launch(PKG_NAME);
                 }
                 sleep(10000)
-                addjieshouCount()
+                addjieshouCount(txt)
             }
 
         }
         //减少接收人数
-        function reducejieshouCount() {
+        function reducejieshouCount(txt) {
             let temp = null;
             try {
-                temp = http.get("106.55.225.58:8081/fanqie/reducejieshouCount");
+                temp = http.get("http://106.55.225.58:8081/fanqie/reducejieshouCount?txt="+device.serial+txt);
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -414,7 +414,7 @@ ui.ok.click(function () {
                     app.launch(PKG_NAME);
                 }
                 sleep(10000)
-                reducejieshouCount()
+                reducejieshouCount(txt)
             }
 
         }
@@ -422,7 +422,7 @@ ui.ok.click(function () {
         /*function getConfig() {
             let temp = null;
             try {
-                temp = http.get("106.55.225.58:8081/fanqie/getConfig");
+                temp = http.get("http://106.55.225.58:8081/fanqie/getConfig");
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -628,7 +628,7 @@ ui.ok.click(function () {
                 }
                 wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);
                 if (wBtn != null) {
-                    addjieshouCount()
+                    addjieshouCount("进入大家庭+1")
                     let icount = random(10, 20);
                     let latestTalkName = "";//当前发言人
                     let latestLinkTitle = "";//当前文章的标题
@@ -669,7 +669,7 @@ ui.ok.click(function () {
                         if (loopCount % 25 == 0) {
                             配置 = 读取配置(settingPath);
                             if (配置["date"] != new Date().toLocaleDateString()) {
-                                reducejieshouCount()
+                                reducejieshouCount("跨日结束-1")
                                 返回v首页();
                                 sleep(random(3000, 5000))
                                 home();
@@ -738,7 +738,7 @@ ui.ok.click(function () {
                                             console.log(new Date().toLocaleString() + "-" + "----------第"+i)
                                             wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOnce();//id=ipv
                                             if (wBtn != null) {
-                                                addjieshouCount()
+                                                addjieshouCount("阅读完成正常返回+1")
                                             }else {
                                                 返回v首页();
                                                 sleep(random(3000, 5000))
@@ -764,7 +764,7 @@ ui.ok.click(function () {
                                                 console.log(new Date().toLocaleString() + "-" + "----------第"+i)
                                                 wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOnce();//id=ipv
                                                 if (wBtn != null) {
-                                                    addjieshouCount()
+                                                    addjieshouCount("阅读完成正常返回+1")
                                                 }else {
                                                     返回v首页();
                                                     sleep(random(3000, 5000))
@@ -777,7 +777,7 @@ ui.ok.click(function () {
                                 }
                             }
                         } else {
-                            reducejieshouCount()
+                            reducejieshouCount("找不到大家庭退出-1")
                             返回v首页();
                             sleep(random(3000, 5000))
                             home();
@@ -787,7 +787,7 @@ ui.ok.click(function () {
                         sleep(10000)
 
                     }
-                    reducejieshouCount()
+                    reducejieshouCount("阅读循环结束-1")
                     返回v首页();
                     sleep(random(3000, 5000))
                     home();
@@ -2064,7 +2064,7 @@ ui.ok.click(function () {
                     for (; ;) {
                         let repData = getjieshouCount()
                         if (repData != undefined && repData["jieshouCount"] != undefined && repData["jieshouCount"] > 0) {
-                            reducejieshouCount();
+                            reducejieshouCount("重置接收人数-1");
                             sleep(1000)
                         } else {
                             break
