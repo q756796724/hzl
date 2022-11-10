@@ -5,24 +5,12 @@ zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
 qun_into = storage.get("qun_into", true);
-clear_xianzhi = false;
 readurl = storage.get("readurl", "");
 if(readurl=="TiLAkkm"){
     readurl="ckmokkm"
     
 }
-xianzhidate = storage.get("xianzhidate", "2022-03-20");//限制时间
-if (storage.get("xianzhidays") == undefined) {//限制天数
-    storage.put("xianzhidays", 0);
-}
-xianzhidays = storage.get("xianzhidays");
-if (calcDateDayDiff(xianzhidate, formatDate(new Date(), "yyyy-MM-dd")) > 0) {
-    xianzhidays = calcDateDayDiff(xianzhidate, formatDate(new Date(), "yyyy-MM-dd"))
-}
-if (xianzhidays > 30) {
-    xianzhidays = 0
-}
-storage.put("xianzhidays", xianzhidays);
+
 /**
  * 日期相减获取天数（用于公式计算）
  * @param date1 日期一 '2020-06-05'
@@ -112,7 +100,6 @@ ui.layout(
         <text textSize="16sp" textColor="black" text="url" />
         <input id="readurl" text="{{readurl}}" />
         <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
-        <checkbox text="重置限制" id="clear_xianzhi" checked="{{clear_xianzhi}}" textSize="18sp" />\
         <checkbox text="群进入" id="qun_into" checked="{{qun_into}}" textSize="18sp" />\
         <button id="ok" text="开始运行" />
     </vertical>
@@ -190,7 +177,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v4.0.7";
+        var versionNum = "番茄分享v4.0.8";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -773,16 +760,11 @@ ui.ok.click(function () {
                 配置["lunCount"] = lunCount;
                 配置["count"] = 1;
                 保存配置(settingPath, 配置);
-                //判断是否接收文章
-                if (xianzhidays == 0) {
-                    log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
-                    //jieshouwenzhang();
-                } else {
-                    返回v首页();
-                    sleep(1000);
-                    home();
-                    lunSleep();
-                }
+                log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
+                返回v首页();
+                sleep(1000);
+                home();
+                lunSleep();
                 return
             }
             if (qun_into) {
@@ -1143,10 +1125,7 @@ ui.ok.click(function () {
                                 } else {
                                     back();
                                 }
-                                if (xianzhidays > 5) {
-                                    返回v首页();
-                                    return;
-                                }
+                                
                                 for (var i = 0; i < 3; i++) {
                                     let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(3000);
                                     if (zBtn != null) {
@@ -1186,16 +1165,11 @@ ui.ok.click(function () {
                     配置["lunCount"] = lunCount;
                     配置["count"] = 1;
                     保存配置(settingPath, 配置);
-                    //判断是否接收文章
-                    if (xianzhidays == 0) {
-                        log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
-                        //jieshouwenzhang();
-                    } else {
-                        返回v首页();
-                        sleep(1000);
-                        home();
-                        lunSleep();
-                    }
+                    log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
+                    返回v首页();
+                    sleep(1000);
+                    home();
+                    lunSleep();
                     return;
                 }
 
@@ -1204,16 +1178,11 @@ ui.ok.click(function () {
                     配置["lunCount"] = lunCount;
                     配置["count"] = 1;
                     保存配置(settingPath, 配置);
-                    //判断是否接收文章
-                    if (xianzhidays == 0) {
-                        log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
-                        //jieshouwenzhang();
-                    } else {
-                        返回v首页();
-                        sleep(1000);
-                        home();
-                        lunSleep();
-                    }
+                    log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
+                    返回v首页();
+                    sleep(1000);
+                    home();
+                    lunSleep();
                     return;
                 }
                 for (var i = 0; i < 5; i++) {
@@ -1254,15 +1223,8 @@ ui.ok.click(function () {
                             配置["lunCount"] = lunCount;
                             配置["count"] = 1;
                             保存配置(settingPath, 配置);
-                            //判断是否接收文章
-                            if (xianzhidays == 0) {
-                                log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
-                                //jieshouwenzhang();
-                            } else {
-                                lunSleep();
-                            }
-
-
+                            log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
+                            lunSleep();
                         }
 
                         return;
@@ -1290,33 +1252,7 @@ ui.ok.click(function () {
                 return;
             }
 
-            if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(3000) != null) {
-                if (xianzhidays == 0) {
-                    xianzhidays = 5
-                    storage.put("xianzhidays", 5);
-                }
-                if (xianzhidays < 5) {
-                    //休息17日
-                    if (calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) > 0) {
-                        xianzhidate = formatDate(new Date().setDate(new Date().getDate() + 22), "yyyy-MM-dd")
-                        storage.put("xianzhidate", xianzhidate);
-                        xianzhidays = 22
-                        storage.put("xianzhidays", xianzhidays);
-                    }
-                }
-                log(new Date().toLocaleString() + "-" + "限制-----------xianzhidate:" + xianzhidate + ",xianzhidays=" + xianzhidays);
-
-                //xianzhidate = formatDate(new Date(), "yyyy-MM-dd");
-                //storage.put("xianzhidate", xianzhidate);
-                if (auto_tx) {
-                    lunSleep();
-                } else {
-                    //lunSleep(random(21600000, 25200000));//睡6~7小时
-                    lunSleep();
-                }
-            } else {
-                lunSleep();
-            }
+            lunSleep();
 
         }
 
@@ -1532,17 +1468,6 @@ ui.ok.click(function () {
                                 sleep(8000);
                             } else {
                                 log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                                if (count > 7 && xianzhidays >= 4 && xianzhidays <= 5) {
-                                    xianzhidays = 0
-                                    storage.put("xianzhidays", 0);
-                                    xianzhidate = formatDate(new Date(), "yyyy-MM-dd")
-                                    storage.put("xianzhidate", xianzhidate);
-                                }
-                                if (xianzhidays == 0 && lunCount == 1 && count < 7) {
-                                    xianzhidays = 5
-                                    storage.put("xianzhidays", 5);
-                                }
-
                                 
                                 if(count == wifiCount){
                                   addjieshouCount("未分享数量加1");
@@ -1555,16 +1480,7 @@ ui.ok.click(function () {
                             break
                         } else {
                             log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                            if (count > 7 && xianzhidays >= 4 && xianzhidays <= 5) {
-                                xianzhidays = 0
-                                storage.put("xianzhidays", 0);
-                                xianzhidate = formatDate(new Date(), "yyyy-MM-dd")
-                                storage.put("xianzhidate", xianzhidate);
-                            }
-                            if (xianzhidays == 0 && lunCount == 1 && count < 7) {
-                                xianzhidays = 5
-                                storage.put("xianzhidays", 5);
-                            }
+                        
                             count = 41;
                             break
                         }
@@ -1575,7 +1491,7 @@ ui.ok.click(function () {
                     return true;
                 }
                 //判断是否需要互助
-                if (count == wifiCount && xianzhidays > 0 && xianzhidays < 4) {
+                if (count == wifiCount) {
                     let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                         if(fenxiangwenzhang("大家庭")==false){
@@ -1672,7 +1588,7 @@ ui.ok.click(function () {
                 }
             }*/
             toastLog("版本号:" + versionNum);
-            log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
+            log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                 配置 = 读取配置(settingPath);
                 if (i % 30 == 0 ) {
@@ -2179,14 +2095,7 @@ ui.ok.click(function () {
         auto_tx = ui.auto_tx.isChecked();
         log("tx:" + auto_tx);
         qun_into = ui.qun_into.isChecked();
-        clear_xianzhi = ui.clear_xianzhi.isChecked();
-        if (clear_xianzhi) {
-            log("重置限制");
-            xianzhidays = 0
-            storage.put("xianzhidays", 0);
-            xianzhidate = formatDate(new Date(), "yyyy-MM-dd")
-            storage.put("xianzhidate", xianzhidate);
-        }
+       
 
 
         storage.put("zwifi", ui.zwifi.text());
@@ -2326,10 +2235,7 @@ ui.ok.click(function () {
                 初始化配置(settingPath);
                 console.clear();
                 toastLog("每天初始化配置");
-                if (storage.get("xianzhidays") > 0) {
-                    xianzhidays = storage.get("xianzhidays") - 1;
-                    storage.put("xianzhidays", xianzhidays);
-                }
+               
 
                 /*if (new Date().getDate() % 3 == 0) {
                     app.launch("com.ss.android.ugc.aweme");
@@ -2411,15 +2317,7 @@ ui.ok.click(function () {
                 continue
             }
             lunCount = 配置["lunCount"];
-            xianzhidays = 3
-            if (xianzhidays > 5) {
-                if (auto_tx) {
-                    sleepLongTime(random(3600000, 5000000));
-                } else {
-                    lunSleep(random(21600000, 25200000));//睡6~7小时
-                    continue;
-                }
-            }
+           
             if (lunCount > 12) {
                 if (联网验证(zwifi) != true) {
                     连接wifi(zwifi, 5000);
@@ -2432,16 +2330,10 @@ ui.ok.click(function () {
             }
 
             if (zwifi.toString() != dlwifi.toString()) {
-                if (xianzhidays > 0 && nowHour < 9) {
+                if (nowHour < 9) {
                     if (random(0, 1) == 1 && nowHour >= 7) {
 
                     } else {
-                        log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
-                        sleepLongTime(random(1800000, 7200000));
-                        continue;
-                    }
-                } else if (xianzhidays == 0) {
-                    if (lunCount == 1 && nowHour < 7) {
                         log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                         sleepLongTime(random(1800000, 7200000));
                         continue;
@@ -2463,7 +2355,7 @@ ui.ok.click(function () {
             }*/
             let wBtn = className("android.widget.TextView").text("我").findOne(3000);
             if (topActivity == MAIN_PAGE && wBtn != null) {
-                log("第" + lunCount + "轮,xianzhidays=" + xianzhidays);
+                log("第" + lunCount + "轮");
                 log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
                 onMainPage();
             } else {
@@ -2471,18 +2363,6 @@ ui.ok.click(function () {
                 返回v首页();
                 continue;
             }
-
-            /*if (联网验证(zwifi) != true) {
-                连接wifi(zwifi, 5000);
-            }
-            打开v();
-            sleep(5000);
-            refreshStateInfo();
-            if (topPackage == PKG_NAME && calcDateDayDiff(formatDate(new Date(), "yyyy-MM-dd"), xianzhidate) < 4) {
-                sleep(random(600000, 1200000));
-            } else {
-                sleep(random(10000, 30000));
-            }*/
 
 
         }
