@@ -8,8 +8,8 @@ qun_into = storage.get("qun_into", true);
 readurl = storage.get("readurl", "");
 if(readurl=="TiLAkkm"){
     readurl="ckmokkm"
-    
 }
+phoneNum = storage.get("phoneNum", "");
 
 /**
  * 日期相减获取天数（用于公式计算）
@@ -99,6 +99,8 @@ ui.layout(
         <input id="dlwifi" text="{{dlwifi}}" />
         <text textSize="16sp" textColor="black" text="url" />
         <input id="readurl" text="{{readurl}}" />
+        <text textSize="16sp" textColor="black" text="编号" />
+        <input id="phoneNum" text="{{phoneNum}}" />
         <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
         <checkbox text="群进入" id="qun_into" checked="{{qun_into}}" textSize="18sp" />\
         <button id="ok" text="开始运行" />
@@ -177,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v4.0.8";
+        var versionNum = "番茄分享v5.0.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -318,11 +320,11 @@ ui.ok.click(function () {
         }
 
         //获取接收人数
-        function getjieshouCount() {
+        function getjieshouCount(type,phoneNum) {
             let temp = null;
             let repData=0;
             try {
-                temp = http.get("http://106.55.225.58:8081/fanqie/getjieshouCount");
+                temp = http.get("http://106.55.225.58:8081/fanqie/getjieshouCount?type="+type+"&phoneNum="+phoneNum);
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -342,14 +344,14 @@ ui.ok.click(function () {
                     app.launch(PKG_NAME);
                 }
                 sleep(8000)
-                repData=getjieshouCount();
+                repData=getjieshouCount(type,phoneNum);
                 
             }
             return repData
 
         }
         //增加接收人数
-        function addjieshouCount(txt) {
+        /*function addjieshouCount(txt) {
             let temp = null;
             try {
                 temp = http.get("http://106.55.225.58:8081/fanqie/addjieshouCount?txt="+device.serial+txt);
@@ -376,9 +378,9 @@ ui.ok.click(function () {
                 addjieshouCount(txt)
             }
 
-        }
+        }*/
         //减少接收人数
-        function reducejieshouCount(txt) {
+        /*function reducejieshouCount(txt) {
             let temp = null;
             try {
                 temp = http.get("http://106.55.225.58:8081/fanqie/reducejieshouCount?txt="+device.serial+txt);
@@ -404,7 +406,7 @@ ui.ok.click(function () {
                 reducejieshouCount(txt)
             }
 
-        }
+        }*/
 
         /*function getConfig() {
             let temp = null;
@@ -570,9 +572,9 @@ ui.ok.click(function () {
         }
         //判断是否有接收人
         function havejieshouren(peoplecCount) {
-            let repData = getjieshouCount()
+            let repData = getjieshouCount(1,phoneNum.toString())
             if (repData == undefined || repData["jieshouCount"] == undefined) {
-                return true
+                return false
             }
             if (repData != undefined && repData["jieshouCount"] != undefined && repData["jieshouCount"] >= peoplecCount) {
                 return true
@@ -1192,7 +1194,8 @@ ui.ok.click(function () {
                         sleep(10000)
                     }
                     if (havejieshouren(1)) {
-                        reducejieshouCount("开始阅读前数量减一");
+                        //逻辑后端处理了
+                        //reducejieshouCount("开始阅读前数量减一");
                         break
                     }else if(i==4){
                         return;
@@ -1234,7 +1237,7 @@ ui.ok.click(function () {
                 }
                 //点击阅读失败，数量加1
                 if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨|.*噜啦啦)/).findOne(3000) != null) {
-                    addjieshouCount("点击阅读失败，数量加1");
+                    //addjieshouCount("点击阅读失败，数量加1");
                 }
             } else {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
@@ -1380,7 +1383,7 @@ ui.ok.click(function () {
             for (; ;) {
                 if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 55) {
                     if(count == wifiCount){
-                        addjieshouCount("未分享数量加1");
+                        //addjieshouCount("未分享数量加1");
                     }
                    
                     return true;
@@ -1419,14 +1422,14 @@ ui.ok.click(function () {
                             sleep(8000)
                         } else {
                             if(count == wifiCount){
-                                addjieshouCount("未分享数量加1");
+                                //addjieshouCount("未分享数量加1");
                             }
                             返回v首页();
                             return false;
                         }
                     } else {
                         if(count == wifiCount){
-                            addjieshouCount("未分享数量加1");
+                            //addjieshouCount("未分享数量加1");
                         }
                         返回v首页();
                         return false;
@@ -1470,7 +1473,7 @@ ui.ok.click(function () {
                                 log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
                                 
                                 if(count == wifiCount){
-                                  addjieshouCount("未分享数量加1");
+                                  //addjieshouCount("未分享数量加1");
                                 }
 
                                 count = 41;
@@ -1495,12 +1498,12 @@ ui.ok.click(function () {
                     let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                         if(fenxiangwenzhang("大家庭")==false){
-                             addjieshouCount("分享失败数量加1");
+                             //addjieshouCount("分享失败数量加1");
                         }
                     } else {
                         console.error("标题识别失败");
                         if(count == wifiCount){
-                            addjieshouCount("未分享数量加1");
+                            //addjieshouCount("未分享数量加1");
                         }
                         返回v首页();
                         return false;
@@ -2092,6 +2095,8 @@ ui.ok.click(function () {
         log("代理Wifi:" + dlwifi);
         readurl = ui.readurl.getText();
         log("readurl:" + readurl);
+        phoneNum = ui.phoneNum.getText();
+        log("phoneNum:" + phoneNum);
         auto_tx = ui.auto_tx.isChecked();
         log("tx:" + auto_tx);
         qun_into = ui.qun_into.isChecked();
@@ -2103,6 +2108,7 @@ ui.ok.click(function () {
         storage.put("auto_tx", ui.auto_tx.isChecked());
         storage.put("qun_into", ui.qun_into.isChecked());
         storage.put("readurl", ui.readurl.text());
+        storage.put("phoneNum", ui.phoneNum.text());
         device.keepScreenDim();
         home();
         //定义
