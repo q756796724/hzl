@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v5.0.1";
+        var versionNum = "番茄分享v5.0.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -757,7 +757,7 @@ ui.ok.click(function () {
                 app.launch(PKG_NAME);
                 sleep(10000)
             }
-            if (readNum > 150 && auto_tx == false) {
+            if (readNum > 140 && auto_tx == false) {
                 lunCount++;
                 配置["lunCount"] = lunCount;
                 配置["count"] = 1;
@@ -1160,7 +1160,13 @@ ui.ok.click(function () {
                 sleep(5000)
                 let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                 if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
-                    readNum = parseInt(readNumDiv.text());
+                    if(parseInt(readNumDiv.text())==20){
+                        sleep(5000)
+                        readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
+                    }
+                    if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
+                        readNum = parseInt(readNumDiv.text());
+                    }
                 }
                 if (textMatches(/(.*任务上限.*|.*阅读限制.*)/).findOne(3000) != null) {
                     lunCount++;
@@ -1175,7 +1181,7 @@ ui.ok.click(function () {
                     return;
                 }
 
-                if (readNum > 150) {
+                if (readNum > 140) {
                     lunCount++;
                     配置["lunCount"] = lunCount;
                     配置["count"] = 1;
@@ -1211,7 +1217,29 @@ ui.ok.click(function () {
                         sleep(5000)
                         let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                         if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
-                            readNum = parseInt(readNumDiv.text());
+                            if(parseInt(readNumDiv.text())==20){
+                                sleep(5000)
+                                readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
+                            }
+                            if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
+                                readNum = parseInt(readNumDiv.text());
+                            }
+                        }
+                        if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(3000) != null) {
+                            log(new Date().toLocaleString() + "-----------" + "限制");
+                            if (auto_tx) {
+                                lunSleep(random(10800000, 14400000));//睡3~4小时
+                                return
+                            } else {
+                                for (; ;) {
+                                    配置 = 读取配置(settingPath);
+                                    if (配置["date"] == new Date().toLocaleDateString()) {
+                                        lunSleep(random(21600000, 25200000));//睡6~7小时
+                                    } else {
+                                        return
+                                    }
+                                }
+                            }
                         }
                         log("重试点击开始阅读");
                         let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
