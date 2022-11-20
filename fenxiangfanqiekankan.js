@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v5.0.0";
+        var versionNum = "番茄分享v5.0.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1131,7 +1131,7 @@ ui.ok.click(function () {
                                 for (var i = 0; i < 3; i++) {
                                     let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(3000);
                                     if (zBtn != null) {
-                                        sleep(500)
+                                        sleep(100)
                                         zBtn.click();
                                     }
                                     let sBtn = textMatches(/(积分提现)/).findOne(3000);
@@ -1140,7 +1140,7 @@ ui.ok.click(function () {
                                     } else {
                                         let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(3000);
                                         if (zBtn != null) {
-                                            sleep(500)
+                                            sleep(100)
                                             zBtn.click();
                                         }
                                         break;
@@ -1236,9 +1236,9 @@ ui.ok.click(function () {
                     
                 }
                 //点击阅读失败，数量加1
-                if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨|.*噜啦啦)/).findOne(3000) != null) {
-                    //addjieshouCount("点击阅读失败，数量加1");
-                }
+                /*if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨|.*噜啦啦)/).findOne(3000) != null) {
+                    addjieshouCount("点击阅读失败，数量加1");
+                }*/
             } else {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                 if (stopPage != null) {
@@ -1255,7 +1255,25 @@ ui.ok.click(function () {
                 return;
             }
 
-            lunSleep();
+            if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(3000) != null) {
+                
+                log(new Date().toLocaleString() + "-----------" + "限制");
+
+                if (auto_tx) {
+                    lunSleep(random(10800000, 14400000));//睡3~4小时
+                } else {
+                    for (; ;) {
+                        配置 = 读取配置(settingPath);
+                        if (配置["date"] == new Date().toLocaleDateString()) {
+                            lunSleep(random(21600000, 25200000));//睡6~7小时
+                        } else {
+                            return
+                        }
+                    }
+                }
+            } else {
+                lunSleep();
+            }
 
         }
 
@@ -1465,6 +1483,22 @@ ui.ok.click(function () {
                             if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
                                 readNum = parseInt(readNumDiv.text());
                             }
+                            if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(8000) != null) {
+                                log(new Date().toLocaleString() + "-----------" + "限制");
+                                if (auto_tx) {
+                                    lunSleep(random(10800000, 14400000));//睡3~4小时
+                                    return false
+                                } else {
+                                    for (; ;) {
+                                        配置 = 读取配置(settingPath);
+                                        if (配置["date"] == new Date().toLocaleDateString()) {
+                                            lunSleep(random(21600000, 25200000));//睡6~7小时
+                                        } else {
+                                            return false
+                                        }
+                                    }
+                                }
+                            } 
                             if (i < 3) {
                                 log("按返回尝试进入阅读");
                                 back()
