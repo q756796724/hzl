@@ -6,8 +6,8 @@ dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
 qun_into = storage.get("qun_into", true);
 readurl = storage.get("readurl", "");
-if(readurl=="TiLAkkm"){
-    readurl="ckmokkm"
+if (readurl == "TiLAkkm") {
+    readurl = "ckmokkm"
 }
 phoneNum = storage.get("phoneNum", "");
 
@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v5.0.2";
+        var versionNum = "番茄分享v5.0.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -320,11 +320,11 @@ ui.ok.click(function () {
         }
 
         //获取接收人数
-        function getjieshouCount(type,phoneNum) {
+        function getjieshouCount(type, phoneNum) {
             let temp = null;
-            let repData=0;
+            let repData = 0;
             try {
-                temp = http.get("http://106.55.225.58:8081/fanqie/getjieshouCount?type="+type+"&phoneNum="+phoneNum);
+                temp = http.get("http://106.55.225.58:8081/fanqie/getjieshouCount?type=" + type + "&phoneNum=" + phoneNum);
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -344,8 +344,8 @@ ui.ok.click(function () {
                     app.launch(PKG_NAME);
                 }
                 sleep(8000)
-                repData=getjieshouCount(type,phoneNum);
-                
+                repData = getjieshouCount(type, phoneNum);
+
             }
             return repData
 
@@ -520,7 +520,7 @@ ui.ok.click(function () {
                 return false
             }
         }
-        
+
         function 进入收藏() {
             打开v();
             返回v首页();
@@ -572,7 +572,7 @@ ui.ok.click(function () {
         }
         //判断是否有接收人
         function havejieshouren(peoplecCount) {
-            let repData = getjieshouCount(1,phoneNum.toString())
+            let repData = getjieshouCount(1, phoneNum.toString())
             if (repData == undefined || repData["jieshouCount"] == undefined) {
                 return false
             }
@@ -831,7 +831,7 @@ ui.ok.click(function () {
                         if (news != null && news.children() != null) {
                             let newsList = news.children();
                             if (newsList.length > 0) {
-                                log("newsListLength="+newsList.length)
+                                log("newsListLength=" + newsList.length)
                                 for (let i = newsList.length - 1; i > -1; i--) {
                                     let latestNews = newsList[i];
                                     if (latestNews.className() == "android.widget.RelativeLayout") {
@@ -877,7 +877,7 @@ ui.ok.click(function () {
                                                         }
                                                     } else {
                                                         //if (child.text().indexOf("番茄副") > -1 && child.text().indexOf(readurl) > -1 && child.clickable()) {
-                                                          if (child.text().indexOf("番茄副") > -1 && random(0, 2) == 1 && child.clickable()) {//随机点其中一个
+                                                        if (child.text().indexOf("番茄副") > -1 && random(0, 2) == 1 && child.clickable()) {//随机点其中一个
                                                             log(child.text())
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
@@ -1127,7 +1127,7 @@ ui.ok.click(function () {
                                 } else {
                                     back();
                                 }
-                                
+
                                 for (var i = 0; i < 3; i++) {
                                     let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(3000);
                                     if (zBtn != null) {
@@ -1160,7 +1160,7 @@ ui.ok.click(function () {
                 sleep(5000)
                 let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                 if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
-                    if(parseInt(readNumDiv.text())==20){
+                    if (parseInt(readNumDiv.text()) == 20) {
                         sleep(5000)
                         readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                     }
@@ -1203,13 +1203,13 @@ ui.ok.click(function () {
                         //逻辑后端处理了
                         //reducejieshouCount("开始阅读前数量减一");
                         break
-                    }else if(i==4){
+                    } else if (i == 4) {
                         return;
                     }
-                    toastLog(new Date().toLocaleString() + "-" + "-----------" +"等待中！");
+                    toastLog(new Date().toLocaleString() + "-" + "-----------" + "等待中！");
                     sleep(300000)
                 }
-                
+
                 click("开始阅读");
                 for (var i = 0; i < 5; i++) {
                     sleep(3000);
@@ -1217,7 +1217,7 @@ ui.ok.click(function () {
                         sleep(5000)
                         let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                         if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
-                            if(parseInt(readNumDiv.text())==20){
+                            if (parseInt(readNumDiv.text()) == 20) {
                                 sleep(5000)
                                 readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                             }
@@ -1247,6 +1247,11 @@ ui.ok.click(function () {
                             sBtn.click();
                         }
                     } else {
+                        let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOne(5000);
+                        if (ntext != null) {
+                            click("允许");
+                            sleep(3000);
+                        }
                         log("点击开始阅读成功");
                         if (yuedu()) {
                             lunCount++;
@@ -1260,8 +1265,8 @@ ui.ok.click(function () {
 
                         return;
                     }
-                    
-                    
+
+
                 }
                 //点击阅读失败，数量加1
                 /*if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨|.*噜啦啦)/).findOne(3000) != null) {
@@ -1284,7 +1289,7 @@ ui.ok.click(function () {
             }
 
             if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(3000) != null) {
-                
+
                 log(new Date().toLocaleString() + "-----------" + "限制");
 
                 if (auto_tx) {
@@ -1428,10 +1433,10 @@ ui.ok.click(function () {
             let wifiCount = count;
             for (; ;) {
                 if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 55) {
-                    if(count == wifiCount){
+                    if (count == wifiCount) {
                         //addjieshouCount("未分享数量加1");
                     }
-                   
+
                     return true;
                 }
                 kz();
@@ -1467,14 +1472,14 @@ ui.ok.click(function () {
                             sBtn.click();
                             sleep(8000)
                         } else {
-                            if(count == wifiCount){
+                            if (count == wifiCount) {
                                 //addjieshouCount("未分享数量加1");
                             }
                             返回v首页();
                             return false;
                         }
                     } else {
-                        if(count == wifiCount){
+                        if (count == wifiCount) {
                             //addjieshouCount("未分享数量加1");
                         }
                         返回v首页();
@@ -1526,16 +1531,16 @@ ui.ok.click(function () {
                                         }
                                     }
                                 }
-                            } 
+                            }
                             if (i < 3) {
                                 log("按返回尝试进入阅读");
                                 back()
                                 sleep(8000);
                             } else {
                                 log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                                
-                                if(count == wifiCount){
-                                  //addjieshouCount("未分享数量加1");
+
+                                if (count == wifiCount) {
+                                    //addjieshouCount("未分享数量加1");
                                 }
 
                                 count = 41;
@@ -1545,7 +1550,7 @@ ui.ok.click(function () {
                             break
                         } else {
                             log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                        
+
                             count = 41;
                             break
                         }
@@ -1559,12 +1564,12 @@ ui.ok.click(function () {
                 if (count == wifiCount) {
                     let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
-                        if(fenxiangwenzhang("大家庭")==false){
-                             //addjieshouCount("分享失败数量加1");
+                        if (fenxiangwenzhang("大家庭") == false) {
+                            //addjieshouCount("分享失败数量加1");
                         }
                     } else {
                         console.error("标题识别失败");
-                        if(count == wifiCount){
+                        if (count == wifiCount) {
                             //addjieshouCount("未分享数量加1");
                         }
                         返回v首页();
@@ -1596,7 +1601,7 @@ ui.ok.click(function () {
                     swapeToRead();
                     sleep(random(3000, 7000));
                 }
-                if (count == wifiCount+1) {
+                if (count == wifiCount + 1) {
                     swapeToRead();
                     sleep(random(3000, 7000));
                     swapeToRead();
@@ -1656,11 +1661,11 @@ ui.ok.click(function () {
             log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                 配置 = 读取配置(settingPath);
-                if (i % 30 == 0 ) {
+                if (i % 30 == 0) {
                     if (联网验证(zwifi) != true) {
                         连接wifi(zwifi, 5000);
                     }
-                    if(配置["date"] != new Date().toLocaleDateString()){
+                    if (配置["date"] != new Date().toLocaleDateString()) {
                         break
                     }
                 }
@@ -2162,7 +2167,7 @@ ui.ok.click(function () {
         auto_tx = ui.auto_tx.isChecked();
         log("tx:" + auto_tx);
         qun_into = ui.qun_into.isChecked();
-       
+
 
 
         storage.put("zwifi", ui.zwifi.text());
@@ -2303,7 +2308,7 @@ ui.ok.click(function () {
                 初始化配置(settingPath);
                 console.clear();
                 toastLog("每天初始化配置");
-               
+
 
                 /*if (new Date().getDate() % 3 == 0) {
                     app.launch("com.ss.android.ugc.aweme");
@@ -2385,7 +2390,7 @@ ui.ok.click(function () {
                 continue
             }
             lunCount = 配置["lunCount"];
-           
+
             if (lunCount > 12) {
                 if (联网验证(zwifi) != true) {
                     连接wifi(zwifi, 5000);
