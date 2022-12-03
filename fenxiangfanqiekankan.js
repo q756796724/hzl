@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v5.0.6";
+        var versionNum = "番茄分享v5.0.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -816,7 +816,7 @@ ui.ok.click(function () {
                     wBtns = packageName("com.tencent.mm").id('bg1').find();//8.0.1
                 }
                 if (wBtns.length > 0) {
-                    sleep(3000)
+                    sleep(random(8000,10000))
                     for (let i = 0; i < wBtns.length; i++) {
                         longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
                         sleep(random(1000, 2000));
