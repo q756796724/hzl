@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v5.0.3";
+        var versionNum = "番茄分享v5.0.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -428,6 +428,16 @@ ui.ok.click(function () {
             }
 
         }*/
+        //发送提醒
+        function sendTx(url) {
+            let temp = null;
+            let repData = 0;
+            try {
+                temp = http.get(url);
+            } catch (err) {
+                console.error(new Date().toLocaleString()  + "----------sendTx报错,原因:" + err);
+            }
+        }
         function getConfig() {
             let temp = null;
             try {
@@ -630,8 +640,8 @@ ui.ok.click(function () {
 
 
         function 页面异常处理() {
-            if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOne(3000) != null) {
-                log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*)/).findOne(3000));
+            if (className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*|.*频繁.*)/).findOne(3000) != null) {
+                log("异常回退：" + className("android.widget.TextView").textMatches(/(.*请在微信上正常阅读.*|.*异常.*|.*失败.*|.*登陆超时.*|.*重试.*|.*频繁.*)/).findOne(3000));
                 let qBtn = textMatches(/(.*确定.*)/).findOne(3000);
                 if (qBtn != null) {
                     qBtn.click();
@@ -1275,7 +1285,8 @@ ui.ok.click(function () {
             } else {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                 if (stopPage != null) {
-                    lunSleep(random(21600000, 25200000));//睡6~7小时
+                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH");
+                    lunSleep(random(3600000, 4000000));//睡1个多小时
                     return;
                 }
                 if (retryCount > 3) {
