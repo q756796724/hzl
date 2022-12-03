@@ -178,7 +178,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v5.0.3";
+        var versionNum = "接收v5.0.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -567,6 +567,7 @@ ui.ok.click(function () {
                                 }
                             } else {
                                 console.error("遍历置顶完成")
+                                break
                             }
                         }
                         log(new Date().toLocaleString() + "-" + "---------" + "休息中------"+sdate+"~"+edate);
