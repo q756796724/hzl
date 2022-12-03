@@ -178,7 +178,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v5.0.1";
+        var versionNum = "接收v5.0.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -519,12 +519,56 @@ ui.ok.click(function () {
                 sleep(3000)
                 if(parseInt(sdate)<=parseInt(edate)){
                     if (!(new Date().getDate()>=parseInt(sdate)&&new Date().getDate()<=parseInt(edate))) {
+                        for (let i = 0; i < wBtns.length; i++) {
+                            //longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                            wBtns[i].longClick()
+                            sleep(random(1000, 2000));
+                            if (text("取消置顶").findOne(5000) != null) {
+                                back();
+                                sleep(2000)
+                                //clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                                wBtns[i].click();
+                                sleep(random(30000, 60000))
+                                if (!(packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce() != null && packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0)) {
+                                    back();
+                                    sleep(random(8000,10000))
+                                    continue;
+                                }else{
+                                    //仍在列表中
+                                    continue;
+                                }
+                            } else {
+                                console.error("遍历置顶完成")
+                            }
+                        }
                         log(new Date().toLocaleString() + "-" + "---------" + "休息中------"+sdate+"~"+edate);
                         lunSleep()
                         return;
                     }
                 }else{
                     if (!(new Date().getDate()>=parseInt(sdate)||new Date().getDate()<=parseInt(edate))) {
+                        for (let i = 0; i < wBtns.length; i++) {
+                            //longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                            wBtns[i].longClick()
+                            sleep(random(1000, 2000));
+                            if (text("取消置顶").findOne(5000) != null) {
+                                back();
+                                sleep(2000)
+                                //clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                                wBtns[i].click();
+                                sleep(random(30000, 60000))
+                                if (!(packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce() != null && packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0)) {
+                                    back();
+                                    sleep(random(8000,10000))
+                                    continue;
+                                }else{
+                                    //仍在列表中
+                                    continue;
+                                }
+                            } else {
+                                console.error("遍历置顶完成")
+                            }
+                        }
                         log(new Date().toLocaleString() + "-" + "---------" + "休息中------"+sdate+"~"+edate);
                         lunSleep()
                         return;
