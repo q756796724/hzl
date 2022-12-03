@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v5.0.5";
+        var versionNum = "番茄分享v5.0.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -666,13 +666,14 @@ ui.ok.click(function () {
                 "count": 1
             }
             files.write(path, JSON.stringify(jsonContent));
-            sleep(random(600000,3600000));
-            if (联网验证(zwifi) != true) {
-                连接wifi(zwifi, 5000);
-                app.launch(PKG_NAME);
-                sleep(10000)
+            if(random(0,1)==0){
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                    sleep(10000)
+                }
+                启动x5()
             }
-            启动x5()
         }
 
         function 初始化配置2(path) {
@@ -2319,6 +2320,7 @@ ui.ok.click(function () {
             toastLog("版本号:" + versionNum);
             配置 = 读取配置(settingPath);
             if (配置["date"] != new Date().toLocaleDateString()) {
+                lunSleep(random(600000,3600000));
                 readNum = 0;
                 todayTxCount = 0;
                 初始化配置(settingPath);
@@ -2357,7 +2359,7 @@ ui.ok.click(function () {
 
 
                 if (random(0,7) == 5) {
-                    sleep(random(1800000,7200000));
+                    lunSleep(random(1800000,7200000));
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
                     if (files.listDir("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/").length > 100) {
