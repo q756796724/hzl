@@ -178,7 +178,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v5.0.6";
+        var versionNum = "接收v5.0.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -576,6 +576,14 @@ ui.ok.click(function () {
                         return;
                     }
                 }
+                
+                if(storage.get("lundong", false)==false&&new Date().getDate()==parseInt(edate)){
+                    storage.put("lundongtime", new Date().getTime());
+                    storage.put("lundongsdate", new Date(new Date().setDate(new Date().getDate() + 32)).getDate().toString());
+                    storage.put("lundongedate", new Date(new Date().setDate(new Date().getDate() + 33)).getDate().toString());
+                    storage.put("lundong", true);
+                }
+                
                 
                 for (let i = 0; i < wBtns.length; i++) {
                     //longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
@@ -1806,6 +1814,14 @@ ui.ok.click(function () {
             toastLog("版本号:" + versionNum);
             配置 = 读取配置(settingPath);
             if (配置["date"] != new Date().toLocaleDateString()) {
+                if(storage.get("lundong", false)==true&&new Date().getTime()-storage.get("lundongtime", new Date().getTime())>10*24*60*60*1000){
+                    storage.put("lundong", false);
+                    storage.put("sdate", storage.get("lundongsdate"));
+                    storage.put("edate", storage.get("lundongedate"));
+                    sdate = storage.get("sdate");
+                    edate = storage.get("edate");
+                }
+
                 readTitle= [];
                 lunSleep(random(600000,3600000));
                 readNum = 0;
