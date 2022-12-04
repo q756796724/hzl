@@ -3125,7 +3125,7 @@ function randomx(n) {
 
 function 检测更新() {
     var temp = null;
-    temp = http.get("http://106.55.225.58/fanqie/gg.txt");
+    temp = http.get("http://175.178.60.114/fanqie/gg.txt");
     if (temp && temp.statusCode == 200) {
         temp = temp.body.json();
         主页关注ID = temp["index_guanzhu_id"];
@@ -3165,7 +3165,7 @@ function 检测更新() {
             data._app = temp["_app"]
             age.put("data", data);
             setClip(temp["apk_url"])
-            var r = http.get("http://106.55.225.58/fanqie/window_download.js")  //开始请求
+            var r = http.get("http://175.178.60.114/fanqie/window_download.js")  //开始请求
             console.log('请求状态码Code:', r.statusCode) //请求状态码
             var downloadFile = r.body.bytes() //这里下载的是二进制数据 
             if (downloadFile) {

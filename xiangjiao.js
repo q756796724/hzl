@@ -109,7 +109,7 @@ function 查询目录下文件个数(path) {
 function setAppAlive(name) {
     let temp = null;
     try {
-        temp = http.post("106.55.225.58:8081/fanqie/setAppAlive", {
+        temp = http.post("175.178.60.114:8081/fanqie/setAppAlive", {
             "serial": name
         });
         if (temp && temp.statusCode == 200) {
@@ -133,7 +133,7 @@ function setAppAlive(name) {
 function getAppAlive(name) {
     let temp = null;
     try {
-        temp = http.post("106.55.225.58:8081/fanqie/getAppAlive", {
+        temp = http.post("175.178.60.114:8081/fanqie/getAppAlive", {
             "serial": name
         });
         if (temp && temp.statusCode == 200) {

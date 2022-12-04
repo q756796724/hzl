@@ -323,7 +323,7 @@ ui.ok.click(function () {
             let temp = null;
             let repData=0;
             try {
-                temp = http.get("http://106.55.225.58:8081/fanqie/getjieshouCount?type="+type);
+                temp = http.get("http://175.178.60.114:8081/fanqie/getjieshouCount?type="+type);
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -353,7 +353,7 @@ ui.ok.click(function () {
         function addjieshouCount(txt) {
             let temp = null;
             try {
-                temp = http.get("http://106.55.225.58:8081/fanqie/addjieshouCount?phoneNum="+txt);
+                temp = http.get("http://175.178.60.114:8081/fanqie/addjieshouCount?phoneNum="+txt);
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -382,7 +382,7 @@ ui.ok.click(function () {
         function reducejieshouCount(txt) {
             let temp = null;
             try {
-                temp = http.get("http://106.55.225.58:8081/fanqie/reducejieshouCount?phoneNum="+txt);
+                temp = http.get("http://175.178.60.114:8081/fanqie/reducejieshouCount?phoneNum="+txt);
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -410,7 +410,7 @@ ui.ok.click(function () {
         /*function getConfig() {
             let temp = null;
             try {
-                temp = http.get("http://106.55.225.58:8081/fanqie/getConfig");
+                temp = http.get("http://175.178.60.114:8081/fanqie/getConfig");
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -430,7 +430,7 @@ ui.ok.click(function () {
         function getConfig() {
             let temp = null;
             try {
-                temp = http.post("http://106.55.225.58:8081/fanqie/getConfig", {});
+                temp = http.post("http://175.178.60.114:8081/fanqie/getConfig", {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -454,7 +454,7 @@ ui.ok.click(function () {
         function setConfig(lastTalkName, lastLinkTitle) {
             let temp = null;
             try {
-                temp = http.postJson("http://106.55.225.58:8081/fanqie/setConfig", {
+                temp = http.postJson("http://175.178.60.114:8081/fanqie/setConfig", {
                     "lastTalkName": lastTalkName,
                     "lastLinkTitle": lastLinkTitle
                 });
