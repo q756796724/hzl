@@ -179,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v5.0.9";
+        var versionNum = "接收v5.1.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1680,9 +1680,7 @@ ui.ok.click(function () {
         dlwifi = ui.dlwifi.getText();
         log("代理Wifi:" + dlwifi);
         sdate = ui.sdate.getText();
-        log("sdate:" + sdate);
         edate = ui.edate.getText();
-        log("edate:" + edate);
         phoneNum = ui.phoneNum.getText();
         log("phoneNum:" + phoneNum);
        
@@ -1815,6 +1813,13 @@ ui.ok.click(function () {
             var nowHour = new Date().getHours();
             log("当前时间:" + nowHour + "时");
             toastLog("版本号:" + versionNum);
+            if(storage.get("lundong", false)==true){
+                log("sdate:" + sdate+" lundongsdate:"+storage.get("lundongsdate"));
+                log("edate:" + edate+" lundongedate:"+storage.get("lundongedate"));
+            }else{
+                log("sdate:" + sdate);
+                log("edate:" + edate);
+            }
             配置 = 读取配置(settingPath);
             if (配置["date"] != new Date().toLocaleDateString()) {
                 if(storage.get("lundong", false)==true&&new Date().getTime()-storage.get("lundongtime", new Date().getTime())>10*24*60*60*1000){
