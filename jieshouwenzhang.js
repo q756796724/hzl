@@ -3,6 +3,7 @@
 storage = storages.create("fanqiekankan配置");
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
+storage.put("sdate", storage.get("edate", ""));
 sdate = storage.get("sdate", "");
 edate = storage.get("edate", "");
 phoneNum = storage.get("phoneNum", "");
@@ -178,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v5.0.7";
+        var versionNum = "接收v5.0.8";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -777,7 +778,9 @@ ui.ok.click(function () {
                     返回v首页();
                     sleep(random(3000, 5000))
                     home();
-                    sleep(random(300000, 600000));
+                    sleep(random(150000, 300000));
+                    关闭应用(PKG_NAME);
+                    sleep(random(150000, 300000));
                 } else {
                     console.error("not found 大家庭")
                     关闭应用(PKG_NAME);
@@ -1818,6 +1821,7 @@ ui.ok.click(function () {
                     storage.put("lundong", false);
                     storage.put("sdate", storage.get("lundongsdate"));
                     storage.put("edate", storage.get("lundongedate"));
+                    storage.put("sdate", storage.get("edate"));
                     sdate = storage.get("sdate");
                     edate = storage.get("edate");
                 }
@@ -1858,7 +1862,9 @@ ui.ok.click(function () {
                 }*/
 
                 if (random(0,7) == 5) {
+                    home()
                     lunSleep(random(1800000,7200000));
+                    关闭应用(PKG_NAME);
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
                     清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
                     if (files.listDir("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/").length > 100) {
@@ -1909,8 +1915,10 @@ ui.ok.click(function () {
             }
 
             if (nowHour < 6) {
+                home()
                 log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                 sleepLongTime(random(1800000, 3000000));
+                关闭应用(PKG_NAME);
                 continue;
             }
 
