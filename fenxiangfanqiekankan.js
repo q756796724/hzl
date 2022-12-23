@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v5.1.1";
+        var versionNum = "番茄分享v5.1.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -857,10 +857,6 @@ ui.ok.click(function () {
                                 log("newsListLength=" + newsList.length)
                                 let fanqiefuCount = 0
                                 for (let i = newsList.length - 1; i > -1; i--) {
-                                    if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() == null) {
-                                        log("进入番茄成功!")
-                                        break
-                                    }
                                     let latestNews = newsList[i];
                                     if (latestNews.className() == "android.widget.RelativeLayout") {
                                         try {
@@ -943,9 +939,8 @@ ui.ok.click(function () {
                                                                         break
                                                                     }
                                                                 }
+                                                                throw Error()
                                                             }
-
-                                                            throw Error()
                                                         }
                                                     }
 
