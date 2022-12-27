@@ -3,9 +3,6 @@
 storage = storages.create("fanqiekankan配置");
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
-storage.put("sdate", storage.get("edate", ""));
-sdate = storage.get("sdate", "");
-edate = storage.get("edate", "");
 phoneNum = storage.get("phoneNum", "");
 
 
@@ -96,10 +93,6 @@ ui.layout(
         <text textSize="16sp" textColor="black" text="请输入代理Wifi" />
         <input id="dlwifi" text="{{dlwifi}}" />
         <text textSize="16sp" textColor="black" text="url" />
-        <text textSize="16sp" textColor="black" text="开始日期" />
-        <input id="sdate" text="{{sdate}}" />
-        <text textSize="16sp" textColor="black" text="结束日期" />
-        <input id="edate" text="{{edate}}" />
         <text textSize="16sp" textColor="black" text="编号" />
         <input id="phoneNum" text="{{phoneNum}}" />
         
@@ -179,7 +172,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v5.1.0";
+        var versionNum = "接收v6.0.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -363,7 +356,9 @@ ui.ok.click(function () {
                         //console.info(new Date().toLocaleString() + "-------"+txt);
                         let repData = rep["data"];
                         return repData
-                    } else {
+                    }else if(repState == 0){
+                        return false
+                    }else {
                         //console.error("addjieshouCount获取数据失败" + temp);
                         throw Error("addjieshouCount获取数据失败" + temp)
                     }
@@ -375,7 +370,7 @@ ui.ok.click(function () {
                     app.launch(PKG_NAME);
                 }
                 sleep(10000)
-                addjieshouCount(txt)
+                return addjieshouCount(txt)
             }
 
         }
@@ -403,7 +398,7 @@ ui.ok.click(function () {
                     app.launch(PKG_NAME);
                 }
                 sleep(10000)
-                reducejieshouCount(txt)
+                return reducejieshouCount(txt)
             }
 
         }
@@ -475,6 +470,37 @@ ui.ok.click(function () {
             }
 
         }
+
+        //获取当前接收号码
+        function getjieshouNum() {
+            let temp = null;
+            let repData="0";
+            try {
+                temp = http.get("http://175.178.60.114:8081/fanqie/getJieShouNum");
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                        let repData = rep["data"];
+                        return repData
+                    } else {
+                        throw Error("getJieShouNum获取数据失败" + temp)
+                    }
+                }
+            } catch (err) {
+                console.error("getJieShouNum报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                repData=getjieshouNum();
+                
+            }
+            return repData
+
+        }
         
         function jieshouwenzhang() {
             //进入指定群，接收文章
@@ -518,72 +544,8 @@ ui.ok.click(function () {
             }
             if (wBtns.length > 0) {
                 sleep(random(8000,10000))
-                if(parseInt(sdate)<=parseInt(edate)){
-                    if (!(new Date().getDate()>=parseInt(sdate)&&new Date().getDate()<=parseInt(edate))) {
-                        /*for (let i = 0; i < wBtns.length; i++) {
-                            //longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
-                            wBtns[i].longClick()
-                            sleep(random(1000, 2000));
-                            if (text("取消置顶").findOne(5000) != null) {
-                                back();
-                                sleep(2000)
-                                //clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
-                                wBtns[i].click();
-                                sleep(random(30000, 60000))
-                                if (!(packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce() != null && packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0)) {
-                                    back();
-                                    sleep(random(8000,10000))
-                                    continue;
-                                }else{
-                                    //仍在列表中
-                                    continue;
-                                }
-                            } else {
-                                console.error("遍历置顶完成")
-                                break
-                            }
-                        }*/
-                        log(new Date().toLocaleString() + "-" + "---------" + "休息中------"+sdate+"~"+edate);
-                        lunSleep()
-                        return;
-                    }
-                }else{
-                    if (!(new Date().getDate()>=parseInt(sdate)||new Date().getDate()<=parseInt(edate))) {
-                        /*for (let i = 0; i < wBtns.length; i++) {
-                            //longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
-                            wBtns[i].longClick()
-                            sleep(random(1000, 2000));
-                            if (text("取消置顶").findOne(5000) != null) {
-                                back();
-                                sleep(2000)
-                                //clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
-                                wBtns[i].click();
-                                sleep(random(30000, 60000))
-                                if (!(packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce() != null && packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0)) {
-                                    back();
-                                    sleep(random(8000,10000))
-                                    continue;
-                                }else{
-                                    //仍在列表中
-                                    continue;
-                                }
-                            } else {
-                                console.error("遍历置顶完成")
-                                break
-                            }
-                        }*/
-                        log(new Date().toLocaleString() + "-" + "---------" + "休息中------"+sdate+"~"+edate);
-                        lunSleep()
-                        return;
-                    }
-                }
                 
-                if(storage.get("lundong", false)==false&&new Date().getDate()==parseInt(edate)){
-                    storage.put("lundongtime", new Date().getTime());
-                    storage.put("lundongsdate", new Date(new Date().setDate(new Date().getDate() + 32)).getDate().toString());
-                    storage.put("lundongedate", new Date(new Date().setDate(new Date().getDate() + 33)).getDate().toString());
-                    storage.put("lundong", true);
-                }
+                
                 
                 
                 for (let i = 0; i < wBtns.length; i++) {
@@ -600,6 +562,7 @@ ui.ok.click(function () {
                             log("进入了大家庭");
                             break
                         } else {
+                            sleep(random(180000,250000))
                             back();
                             sleep(3000)
                             continue;
@@ -614,7 +577,7 @@ ui.ok.click(function () {
                 wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000);
                 if (wBtn != null) {
                     //addjieshouCount("进入大家庭+1")
-                    let icount = random(10, 20);
+                    let icount = random(10, 20); //读10~20次才结束
                     let latestTalkName = "";//当前发言人
                     let latestLinkTitle = "";//当前文章的标题
                     let latestLink;//当前文章
@@ -647,10 +610,22 @@ ui.ok.click(function () {
                         console.error(new Date().toLocaleString() + "-" + "-----------------当前发言人:" + latestTalkName + ",当前标题:" + latestLinkTitle);
                     }
 
-                    //读10~20次才结束
+                   
                     let loopCount=0;//循环次数
+                    let starttime=new Date().getTime();
+                    let readluntime=random(3000000,4000000)
                     for (let i = 0; i < icount;) {
-                        addjieshouCount(phoneNum.toString())
+                        //3000~4000秒休息一次
+                        if(new Date().getTime()-starttime>readluntime){
+                            break;
+                        }
+                        if(addjieshouCount(phoneNum.toString())==false){
+                            console.error(new Date().toLocaleString() + "-" + "-----------------接收失败---休整");
+                            reducejieshouCount(phoneNum.toString())
+                            返回v首页();
+                            sleep(random(7200000, 14400000));
+                            return
+                        }
                         loopCount++
                         if (loopCount % 25 == 0) {
                             配置 = 读取配置(settingPath);
@@ -1131,7 +1106,7 @@ ui.ok.click(function () {
             if (sleepTime == undefined) {
                 sleepTime = random(4000000, 8400000);
             }
-            log(new Date().toLocaleString() + "-" + "-----------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息" + sleepTime / 1000 / 60 + "分钟");
+            log(new Date().toLocaleString() + "-" + "-----------" + "休息" + sleepTime / 1000 / 60 + "分钟");
             sleepLongTime(sleepTime);
         }
         function 清空文件夹(path) {
@@ -1679,8 +1654,6 @@ ui.ok.click(function () {
         log("主Wifi:" + zwifi);
         dlwifi = ui.dlwifi.getText();
         log("代理Wifi:" + dlwifi);
-        sdate = ui.sdate.getText();
-        edate = ui.edate.getText();
         phoneNum = ui.phoneNum.getText();
         log("phoneNum:" + phoneNum);
        
@@ -1689,8 +1662,6 @@ ui.ok.click(function () {
 
         storage.put("zwifi", ui.zwifi.text());
         storage.put("dlwifi", ui.dlwifi.text());
-        storage.put("sdate", ui.sdate.text());
-        storage.put("edate", ui.edate.text());
         storage.put("phoneNum", ui.phoneNum.text());
         device.keepScreenDim();
         home();
@@ -1813,23 +1784,10 @@ ui.ok.click(function () {
             var nowHour = new Date().getHours();
             log("当前时间:" + nowHour + "时");
             toastLog("版本号:" + versionNum);
-            if(storage.get("lundong", false)==true){
-                log("sdate:" + sdate+" lundongsdate:"+storage.get("lundongsdate"));
-                log("edate:" + edate+" lundongedate:"+storage.get("lundongedate"));
-            }else{
-                log("sdate:" + sdate);
-                log("edate:" + edate);
-            }
+            
             配置 = 读取配置(settingPath);
             if (配置["date"] != new Date().toLocaleDateString()) {
-                if(storage.get("lundong", false)==true&&new Date().getTime()-storage.get("lundongtime", new Date().getTime())>10*24*60*60*1000){
-                    storage.put("lundong", false);
-                    storage.put("sdate", storage.get("lundongsdate"));
-                    storage.put("edate", storage.get("lundongedate"));
-                    storage.put("sdate", storage.get("edate"));
-                    sdate = storage.get("sdate");
-                    edate = storage.get("edate");
-                }
+               
 
                 readTitle= [];
                 lunSleep(random(600000,3600000));
@@ -1932,6 +1890,17 @@ ui.ok.click(function () {
             if (联网验证(zwifi) != true) {
                 连接wifi(zwifi, 5000);
             }
+            if(getjieshouNum()!=phoneNum.toString()){
+                if(random(0,10==8)){
+                    打开v();
+                }else if(random(0,1==1)){
+                    home();
+                } 
+                lunSleep(1200000);
+                
+                return;
+            }
+
             打开v();
 
 

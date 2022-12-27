@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v5.1.2";
+        var versionNum = "番茄分享v5.1.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -832,6 +832,7 @@ ui.ok.click(function () {
                                 log("进入了家庭");
                                 break
                             } else {
+                                sleep(random(180000,250000))
                                 back();
                                 sleep(3000)
                                 continue;
@@ -1261,8 +1262,10 @@ ui.ok.click(function () {
                         }
                         if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(3000) != null) {
                             log(new Date().toLocaleString() + "-----------" + "限制");
-                            if (auto_tx) {
-                                lunSleep(random(10800000, 14400000));//睡3~4小时
+                            lunSleep(random(7200000, 10800000));//睡2~3小时
+                            return
+                            /*if (auto_tx) {
+                                lunSleep(random(7200000, 10800000));//睡2~3小时
                                 return
                             } else {
                                 for (; ;) {
@@ -1273,7 +1276,7 @@ ui.ok.click(function () {
                                         return
                                     }
                                 }
-                            }
+                            }*/
                         }
                         log("重试点击开始阅读");
                         let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
@@ -1327,7 +1330,7 @@ ui.ok.click(function () {
 
                 log(new Date().toLocaleString() + "-----------" + "限制");
 
-                if (auto_tx) {
+                /*if (auto_tx) {
                     lunSleep(random(10800000, 14400000));//睡3~4小时
                 } else {
                     for (; ;) {
@@ -1338,7 +1341,9 @@ ui.ok.click(function () {
                             return
                         }
                     }
-                }
+                }*/
+                lunSleep(random(7200000, 10800000));//睡2~3小时
+                return
             } else {
                 lunSleep();
             }
@@ -1467,7 +1472,7 @@ ui.ok.click(function () {
 
             let wifiCount = count;
             for (; ;) {
-                if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 55) {
+                if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 50) {
                     if (count == wifiCount) {
                         //addjieshouCount("未分享数量加1");
                     }
@@ -1557,7 +1562,7 @@ ui.ok.click(function () {
                             }
                             if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(8000) != null) {
                                 log(new Date().toLocaleString() + "-----------" + "限制");
-                                if (auto_tx) {
+                                /*if (auto_tx) {
                                     lunSleep(random(10800000, 14400000));//睡3~4小时
                                     return false
                                 } else {
@@ -1569,7 +1574,9 @@ ui.ok.click(function () {
                                             return false
                                         }
                                     }
-                                }
+                                }*/
+                                lunSleep(random(7200000, 10800000));//睡2~3小时
+                                return false
                             }
                             if (i < 3) {
                                 log("按返回尝试进入阅读");
@@ -1634,7 +1641,7 @@ ui.ok.click(function () {
                 sleep(random(3000, 5000));
                 swapeToRead();
                 sleep(random(2000, 4000));
-                if (count == wifiCount) {
+                /*if (count == wifiCount) {
                     swapeToRead();
                     sleep(random(3000, 7000));
                     swapeToRead();
@@ -1651,7 +1658,18 @@ ui.ok.click(function () {
                     sleep(random(3000, 7000));
                     连接wifi(dlwifi, 5000);
                     app.launch(PKG_NAME);
+                }*/
+                if (count == wifiCount) {
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    连接wifi(dlwifi, 5000);
+                    app.launch(PKG_NAME);
                 }
+
                 if (count % 5 == 0) {
                     if (联网验证(dlwifi) != true) {
                         连接wifi(dlwifi, 5000);
