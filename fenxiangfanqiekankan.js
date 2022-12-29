@@ -6,10 +6,12 @@ dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
 qun_into = storage.get("qun_into", true);
 readurl = storage.get("readurl", "");
-if (readurl == "TiLAkkm") {
-    readurl = "ckmokkm"
-}else if (readurl == "") {
-    readurl = "RHtWWJm"
+if (readurl == "RHtWWJm") {
+    readurl = "siNLtCo"
+}else if (readurl == "ckmokkm") {
+    readurl = "eAJHtCo"
+}if (readurl == "FkCHgkm") {
+    readurl = "JtggtCo"
 }
 phoneNum = storage.get("phoneNum", "");
 
@@ -181,7 +183,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v5.1.3";
+        var versionNum = "番茄分享v5.2.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1019,32 +1021,20 @@ ui.ok.click(function () {
                 log("进入收藏成功");
                 sleep(3000);
 
-                if (className("android.widget.TextView").textContains("RHtWWJm").findOne(5000) == null
-                    && className("android.widget.TextView").textContains("migokkm").findOnce() == null
-                    && className("android.widget.TextView").textContains("ckmokkm").findOnce() == null
-                    && className("android.widget.TextView").textContains("gPmokkm").findOnce() == null
-                    && className("android.widget.TextView").textContains("JVJAkkm").findOnce() == null
-                    && className("android.widget.TextView").textContains("TiLAkkm").findOnce() == null
-                    && className("android.widget.TextView").textContains("FkCHgkm").findOnce() == null) {
+                if (className("android.widget.TextView").textContains("siNLtCo").findOne(5000) == null
+                    && className("android.widget.TextView").textContains("eAJHtCo").findOnce() == null
+                    && className("android.widget.TextView").textContains("JtggtCo").findOnce() == null) {
                     toastLog("未添加到收藏夹");
                     exit();
                 }
 
                 let 阅读;
-                if (className("android.widget.TextView").textContains("RHtWWJm").findOne(5000) != null) {
-                    阅读 = className("android.widget.TextView").textContains("RHtWWJm").findOnce().bounds();
-                } else if (className("android.widget.TextView").textContains("migokkm").findOnce() != null) {
-                    阅读 = className("android.widget.TextView").textContains("migokkm").findOnce().bounds();
-                } else if (className("android.widget.TextView").textContains("ckmokkm").findOnce() != null) {
-                    阅读 = className("android.widget.TextView").textContains("ckmokkm").findOnce().bounds();
-                } else if (className("android.widget.TextView").textContains("gPmokkm").findOnce() != null) {
-                    阅读 = className("android.widget.TextView").textContains("gPmokkm").findOnce().bounds();
-                } else if (className("android.widget.TextView").textContains("JVJAkkm").findOnce() != null) {
-                    阅读 = className("android.widget.TextView").textContains("JVJAkkm").findOnce().bounds();
-                } else if (className("android.widget.TextView").textContains("TiLAkkm").findOnce() != null) {
-                    阅读 = className("android.widget.TextView").textContains("TiLAkkm").findOnce().bounds();
-                } else if (className("android.widget.TextView").textContains("FkCHgkm").findOnce() != null) {
-                    阅读 = className("android.widget.TextView").textContains("FkCHgkm").findOnce().bounds();
+                if (className("android.widget.TextView").textContains("siNLtCo").findOne(5000) != null) {
+                    阅读 = className("android.widget.TextView").textContains("siNLtCo").findOnce().bounds();
+                } else if (className("android.widget.TextView").textContains("eAJHtCo").findOnce() != null) {
+                    阅读 = className("android.widget.TextView").textContains("eAJHtCo").findOnce().bounds();
+                } else if (className("android.widget.TextView").textContains("JtggtCo").findOnce() != null) {
+                    阅读 = className("android.widget.TextView").textContains("JtggtCo").findOnce().bounds();
                 } else {
                     return;
                 }
@@ -1059,20 +1049,12 @@ ui.ok.click(function () {
                         return;
                     }
                 } else {
-                    if (className("android.widget.TextView").textContains("RHtWWJm").findOne(5000) != null) {
-                        阅读 = className("android.widget.TextView").textContains("RHtWWJm").findOnce().bounds();
-                    } else if (className("android.widget.TextView").textContains("migokkm").findOnce() != null) {
-                        阅读 = className("android.widget.TextView").textContains("migokkm").findOnce().bounds();
-                    } else if (className("android.widget.TextView").textContains("ckmokkm").findOnce() != null) {
-                        阅读 = className("android.widget.TextView").textContains("ckmokkm").findOnce().bounds();
-                    } else if (className("android.widget.TextView").textContains("gPmokkm").findOnce() != null) {
-                        阅读 = className("android.widget.TextView").textContains("gPmokkm").findOnce().bounds();
-                    } else if (className("android.widget.TextView").textContains("JVJAkkm").findOnce() != null) {
-                        阅读 = className("android.widget.TextView").textContains("JVJAkkm").findOnce().bounds();
-                    } else if (className("android.widget.TextView").textContains("TiLAkkm").findOnce() != null) {
-                        阅读 = className("android.widget.TextView").textContains("TiLAkkm").findOnce().bounds();
-                    } else if (className("android.widget.TextView").textContains("FkCHgkm").findOnce() != null) {
-                        阅读 = className("android.widget.TextView").textContains("FkCHgkm").findOnce().bounds();
+                    if (className("android.widget.TextView").textContains("siNLtCo").findOne(5000) != null) {
+                        阅读 = className("android.widget.TextView").textContains("siNLtCo").findOnce().bounds();
+                    } else if (className("android.widget.TextView").textContains("eAJHtCo").findOnce() != null) {
+                        阅读 = className("android.widget.TextView").textContains("eAJHtCo").findOnce().bounds();
+                    } else if (className("android.widget.TextView").textContains("JtggtCo").findOnce() != null) {
+                        阅读 = className("android.widget.TextView").textContains("JtggtCo").findOnce().bounds();
                     } else {
                         return;
                     }
@@ -1183,7 +1165,7 @@ ui.ok.click(function () {
                     }
                 }
             }
-            if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨|.*噜啦啦)/).findOne(5000) != null) {
+            if (className("android.view.View").textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(5000) != null) {
                 log("渠道匹配");
                 if (!auto_tx && className("android.view.View").textMatches(/(积分提现)/).findOnce() != null) {
                     console.error("进入错误");
@@ -1248,7 +1230,7 @@ ui.ok.click(function () {
                 click("开始阅读");
                 for (var i = 0; i < 5; i++) {
                     sleep(3000);
-                    if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨|.*噜啦啦)/).findOne(3000) != null) {
+                    if (className("android.view.View").textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(3000) != null) {
                         sleep(5000)
                         let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                         if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
@@ -1306,7 +1288,7 @@ ui.ok.click(function () {
 
                 }
                 //点击阅读失败，数量加1
-                /*if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨|.*噜啦啦)/).findOne(3000) != null) {
+                /*if (className("android.view.View").textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(3000) != null) {
                     addjieshouCount("点击阅读失败，数量加1");
                 }*/
             } else {
@@ -1501,7 +1483,7 @@ ui.ok.click(function () {
                     }
                 }*/
                 if (页面异常处理()) {
-                    if (textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨|.*噜啦啦)/).findOne(5000) != null) {
+                    if (textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(5000) != null) {
                         sleep(5000)
                         let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                         if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
@@ -1528,11 +1510,11 @@ ui.ok.click(function () {
                 }
                 click("继续访问")
                 //判断阅读提前结束
-                /*if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(3000) != null) {
+                /*if (className("android.view.View").textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(3000) != null) {
                     for (var i = 0; i < 5; i++) {
                         kz();
                         sleep(3000);
-                        if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨)/).findOne(3000) != null) {
+                        if (className("android.view.View").textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(3000) != null) {
                             if (i < 3) {
                                 log("重试点击开始阅读成功");
                                 let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
@@ -1551,10 +1533,10 @@ ui.ok.click(function () {
                     console.error("进入错误");
                     return false
                 }
-                if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨|.*噜啦啦)/).findOne(3000) != null) {
+                if (className("android.view.View").textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(3000) != null) {
                     for (var i = 0; i < 5; i++) {
                         kz();
-                        if (className("android.view.View").textMatches(/(.*ZhaoLin|.*小青|.*miu|.*平和|.*韩玥|.*云雨|.*噜啦啦)/).findOne(3000) != null) {
+                        if (className("android.view.View").textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(3000) != null) {
                             sleep(5000)
                             let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                             if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
