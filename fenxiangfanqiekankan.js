@@ -183,7 +183,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v5.2.0";
+        var versionNum = "番茄分享v5.2.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -350,6 +350,78 @@ ui.ok.click(function () {
                 sleep(8000)
                 repData = getjieshouCount(type, phoneNum);
 
+            }
+            return repData
+
+        }
+        //限制次数+1
+        function addXianZhi() {
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                app.launch(PKG_NAME);
+            }
+            sleep(8000)
+            
+            let temp = null;
+            let repData="0";
+            try {
+                temp = http.get("http://175.178.60.114:8081/fanqie/addXianZhi");
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                        let repData = rep["data"];
+                        return repData
+                    } else {
+                        throw Error("addXianZhi获取数据失败" + temp)
+                    }
+                }
+            } catch (err) {
+                console.error("addXianZhi报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                repData=addXianZhi();
+                
+            }
+            return repData
+
+        }
+        //限制次数-1
+        function reduceXianZhi() {
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                app.launch(PKG_NAME);
+            }
+            sleep(8000)
+
+            let temp = null;
+            let repData="0";
+            try {
+                temp = http.get("http://175.178.60.114:8081/fanqie/reduceXianZhi");
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                        let repData = rep["data"];
+                        return repData
+                    } else {
+                        throw Error("reduceXianZhi获取数据失败" + temp)
+                    }
+                }
+            } catch (err) {
+                console.error("reduceXianZhi报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                repData=reduceXianZhi();
+                
             }
             return repData
 
@@ -1208,6 +1280,16 @@ ui.ok.click(function () {
                     lunSleep();
                     return;
                 }
+
+                if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(3000) != null) {
+                    log(new Date().toLocaleString() + "-----------" + "限制");
+                    配置["lunCount"] = 1;
+                    配置["count"] = 1;
+                    保存配置(settingPath, 配置);
+                    lunSleep(random(7200000, 10800000));//睡2~3小时
+                    return
+                }
+
                 if (lunCount == 1) {
                     for (var i = 0; i < 5; i++) {
                         if (联网验证(zwifi) != true) {
@@ -1244,6 +1326,9 @@ ui.ok.click(function () {
                         }
                         if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(3000) != null) {
                             log(new Date().toLocaleString() + "-----------" + "限制");
+                            配置["lunCount"] = 1;
+                            配置["count"] = 1;
+                            保存配置(settingPath, 配置);
                             lunSleep(random(7200000, 10800000));//睡2~3小时
                             return
                             /*if (auto_tx) {
@@ -1311,7 +1396,9 @@ ui.ok.click(function () {
             if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(3000) != null) {
 
                 log(new Date().toLocaleString() + "-----------" + "限制");
-
+                配置["lunCount"] = 1;
+                配置["count"] = 1;
+                保存配置(settingPath, 配置);
                 /*if (auto_tx) {
                     lunSleep(random(10800000, 14400000));//睡3~4小时
                 } else {
@@ -1544,6 +1631,11 @@ ui.ok.click(function () {
                             }
                             if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(8000) != null) {
                                 log(new Date().toLocaleString() + "-----------" + "限制");
+                                if (lunCount == 1) {
+                                    配置["count"] = 1;
+                                    保存配置(settingPath, 配置);
+                                    addXianZhi() 
+                                }
                                 /*if (auto_tx) {
                                     lunSleep(random(10800000, 14400000));//睡3~4小时
                                     return false
@@ -1565,6 +1657,12 @@ ui.ok.click(function () {
                                 back()
                                 sleep(8000);
                             } else {
+                                if (lunCount == 1&&count-wifiCount<5) {
+                                    配置["count"] = 1;
+                                    保存配置(settingPath, 配置);
+                                    addXianZhi() 
+                                    log(new Date().toLocaleString() + "-----------" + "应该限制");
+                                }
                                 log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
 
                                 if (count == wifiCount) {
@@ -1641,6 +1739,7 @@ ui.ok.click(function () {
                     连接wifi(dlwifi, 5000);
                     app.launch(PKG_NAME);
                 }*/
+                
                 if (count == wifiCount) {
                     swapeToRead();
                     sleep(random(3000, 7000));
@@ -1651,11 +1750,15 @@ ui.ok.click(function () {
                     连接wifi(dlwifi, 5000);
                     app.launch(PKG_NAME);
                 }
-
+                if (lunCount == 1&&count==5) {
+                    reduceXianZhi() 
+                    log(new Date().toLocaleString() + "-----------" + "限制-1");
+                }
                 if (count % 5 == 0) {
                     if (联网验证(dlwifi) != true) {
                         连接wifi(dlwifi, 5000);
                         app.launch(PKG_NAME);
+                        sleep(2000)
                     }
                 }
 

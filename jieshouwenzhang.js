@@ -172,10 +172,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.0.0";
-        var readNum = 0;//最近获取到的阅读次数
-        var retryCount = 0;//进入页面重试次数
-        var todayTxCount = 0;
+        var versionNum = "接收v6.0.1";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -1153,7 +1150,7 @@ ui.ok.click(function () {
                 }
             }*/
             toastLog("版本号:" + versionNum);
-            log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
+            log(new Date().toLocaleString() + "-" + "-----------");
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                 配置 = 读取配置(settingPath);
                 if (i % 30 == 0 ) {
@@ -1791,8 +1788,6 @@ ui.ok.click(function () {
 
                 readTitle= [];
                 lunSleep(random(600000,3600000));
-                readNum = 0;
-                todayTxCount = 0;
                 初始化配置(settingPath);
                 console.clear();
                 toastLog("每天初始化配置");
@@ -1891,14 +1886,14 @@ ui.ok.click(function () {
                 连接wifi(zwifi, 5000);
             }
             if(getjieshouNum()!=phoneNum.toString()){
-                if(random(0,10==8)){
+                if(random(0,8==8)){
                     打开v();
                 }else if(random(0,1==1)){
                     home();
                 } 
                 lunSleep(1200000);
                 
-                return;
+                continue;
             }
 
             打开v();
