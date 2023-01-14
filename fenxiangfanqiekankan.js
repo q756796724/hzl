@@ -6,12 +6,12 @@ dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
 qun_into = storage.get("qun_into", true);
 readurl = storage.get("readurl", "");
-if (readurl == "RHtWWJm") {
-    readurl = "siNLtCo"
-}else if (readurl == "ckmokkm") {
-    readurl = "eAJHtCo"
-}if (readurl == "FkCHgkm") {
-    readurl = "JtggtCo"
+if (readurl == "RHtWWJm"||readurl == "siNLtCo") {
+    readurl = "PLogmHP"
+}else if (readurl == "ckmokkm"||readurl == "eAJHtCo") {
+    readurl = "XtPxPHP"
+}if (readurl == "FkCHgkm"||readurl == "JtggtCo") {
+    readurl = "RCWgmHP"
 }
 phoneNum = storage.get("phoneNum", "");
 
@@ -183,7 +183,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v5.2.1";
+        var versionNum = "番茄分享v5.2.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -937,6 +937,10 @@ ui.ok.click(function () {
                                         try {
                                             latestNews.children().forEach(function (child) {
                                                 if (child.className() == "android.widget.TextView") {
+                                                    if (child.text().indexOf("休息") > -1 ) {
+                                                        lunSleep(random(3600000, 4000000));//睡1个多小时
+                                                        return;
+                                                    }
                                                     //log(child.text())
                                                     if (auto_tx) {
                                                         if (child.text().indexOf("番茄主") > -1 && child.clickable()) {
@@ -1093,20 +1097,20 @@ ui.ok.click(function () {
                 log("进入收藏成功");
                 sleep(3000);
 
-                if (className("android.widget.TextView").textContains("siNLtCo").findOne(5000) == null
-                    && className("android.widget.TextView").textContains("eAJHtCo").findOnce() == null
-                    && className("android.widget.TextView").textContains("JtggtCo").findOnce() == null) {
+                if (className("android.widget.TextView").textContains("PLogmHP").findOne(5000) == null
+                    && className("android.widget.TextView").textContains("XtPxPHP").findOnce() == null
+                    && className("android.widget.TextView").textContains("RCWgmHP").findOnce() == null) {
                     toastLog("未添加到收藏夹");
                     exit();
                 }
 
                 let 阅读;
-                if (className("android.widget.TextView").textContains("siNLtCo").findOne(5000) != null) {
-                    阅读 = className("android.widget.TextView").textContains("siNLtCo").findOnce().bounds();
-                } else if (className("android.widget.TextView").textContains("eAJHtCo").findOnce() != null) {
-                    阅读 = className("android.widget.TextView").textContains("eAJHtCo").findOnce().bounds();
-                } else if (className("android.widget.TextView").textContains("JtggtCo").findOnce() != null) {
-                    阅读 = className("android.widget.TextView").textContains("JtggtCo").findOnce().bounds();
+                if (className("android.widget.TextView").textContains("PLogmHP").findOne(5000) != null) {
+                    阅读 = className("android.widget.TextView").textContains("PLogmHP").findOnce().bounds();
+                } else if (className("android.widget.TextView").textContains("XtPxPHP").findOnce() != null) {
+                    阅读 = className("android.widget.TextView").textContains("XtPxPHP").findOnce().bounds();
+                } else if (className("android.widget.TextView").textContains("RCWgmHP").findOnce() != null) {
+                    阅读 = className("android.widget.TextView").textContains("RCWgmHP").findOnce().bounds();
                 } else {
                     return;
                 }
@@ -1121,12 +1125,12 @@ ui.ok.click(function () {
                         return;
                     }
                 } else {
-                    if (className("android.widget.TextView").textContains("siNLtCo").findOne(5000) != null) {
-                        阅读 = className("android.widget.TextView").textContains("siNLtCo").findOnce().bounds();
-                    } else if (className("android.widget.TextView").textContains("eAJHtCo").findOnce() != null) {
-                        阅读 = className("android.widget.TextView").textContains("eAJHtCo").findOnce().bounds();
-                    } else if (className("android.widget.TextView").textContains("JtggtCo").findOnce() != null) {
-                        阅读 = className("android.widget.TextView").textContains("JtggtCo").findOnce().bounds();
+                    if (className("android.widget.TextView").textContains("PLogmHP").findOne(5000) != null) {
+                        阅读 = className("android.widget.TextView").textContains("PLogmHP").findOnce().bounds();
+                    } else if (className("android.widget.TextView").textContains("XtPxPHP").findOnce() != null) {
+                        阅读 = className("android.widget.TextView").textContains("XtPxPHP").findOnce().bounds();
+                    } else if (className("android.widget.TextView").textContains("RCWgmHP").findOnce() != null) {
+                        阅读 = className("android.widget.TextView").textContains("RCWgmHP").findOnce().bounds();
                     } else {
                         return;
                     }
@@ -1237,7 +1241,7 @@ ui.ok.click(function () {
                     }
                 }
             }
-            if (className("android.view.View").textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(5000) != null) {
+            if (className("android.view.View").textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(5000) != null) {
                 log("渠道匹配");
                 if (!auto_tx && className("android.view.View").textMatches(/(积分提现)/).findOnce() != null) {
                     console.error("进入错误");
@@ -1312,7 +1316,7 @@ ui.ok.click(function () {
                 click("开始阅读");
                 for (var i = 0; i < 5; i++) {
                     sleep(3000);
-                    if (className("android.view.View").textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(3000) != null) {
+                    if (className("android.view.View").textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(3000) != null) {
                         sleep(5000)
                         let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                         if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
@@ -1373,7 +1377,7 @@ ui.ok.click(function () {
 
                 }
                 //点击阅读失败，数量加1
-                /*if (className("android.view.View").textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(3000) != null) {
+                /*if (className("android.view.View").textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(3000) != null) {
                     addjieshouCount("点击阅读失败，数量加1");
                 }*/
             } else {
@@ -1570,7 +1574,7 @@ ui.ok.click(function () {
                     }
                 }*/
                 if (页面异常处理()) {
-                    if (textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(5000) != null) {
+                    if (textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(5000) != null) {
                         sleep(5000)
                         let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                         if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
@@ -1597,11 +1601,11 @@ ui.ok.click(function () {
                 }
                 click("继续访问")
                 //判断阅读提前结束
-                /*if (className("android.view.View").textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(3000) != null) {
+                /*if (className("android.view.View").textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(3000) != null) {
                     for (var i = 0; i < 5; i++) {
                         kz();
                         sleep(3000);
-                        if (className("android.view.View").textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(3000) != null) {
+                        if (className("android.view.View").textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(3000) != null) {
                             if (i < 3) {
                                 log("重试点击开始阅读成功");
                                 let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
@@ -1620,10 +1624,10 @@ ui.ok.click(function () {
                     console.error("进入错误");
                     return false
                 }
-                if (className("android.view.View").textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(3000) != null) {
+                if (className("android.view.View").textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(3000) != null) {
                     for (var i = 0; i < 5; i++) {
                         kz();
-                        if (className("android.view.View").textMatches(/(.*abYWuL0l4Gb13MK2HWai|.*RBCQZcUjSU2UFHXfu5Pv|.*bDOpK8tKw1nMtfjVxRKQ)/).findOne(3000) != null) {
+                        if (className("android.view.View").textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(3000) != null) {
                             sleep(5000)
                             let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                             if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
