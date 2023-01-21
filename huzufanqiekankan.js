@@ -183,7 +183,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄互助v3.5.1";
+        var versionNum = "番茄互助v3.5.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1311,7 +1311,19 @@ ui.ok.click(function () {
                                 log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
                                 jieshouwenzhang();
                             } else {
-                                lunSleep();
+                                if(new Date().getHours() >14&&new Date().getHours() <=16&&(lunCount<3||readNum<48)){
+                                    lunSleep(random(3600000, 4000000));
+                                }else if(new Date().getHours() >16&&new Date().getHours() <=18&&(lunCount<4||readNum<72)){
+                                    lunSleep(random(3600000, 4000000));
+                                }else if(new Date().getHours() >18&&new Date().getHours() <=20&&(lunCount<5||readNum<96)){
+                                    lunSleep(random(3600000, 4000000));
+                                }else if(new Date().getHours() >20&&new Date().getHours() <=22&&(lunCount<6||readNum<120)){
+                                    lunSleep(random(3600000, 4000000));
+                                }else if(new Date().getHours() >22&&(lunCount<7||readNum<144)){
+                                    lunSleep(random(3600000, 4000000));
+                                }else{
+                                    lunSleep();
+                                }
                             }
 
 
@@ -1550,7 +1562,7 @@ ui.ok.click(function () {
                                 }
                             } else {
                                 log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                                count = 41;
+                                count = 50;
                             }
  
                         }
@@ -1582,7 +1594,7 @@ ui.ok.click(function () {
                                     storage.put("xianzhidays", 5);
                                 }
 
-                                count = 41;
+                                count = 50;
                                 break
                             }
                         } else if (packageName("com.tencent.mm").textMatches(/(.*无法打开网页.*|.*网页无法打开.*|.*加载中.*)/).findOne(5000)) {
@@ -1599,13 +1611,17 @@ ui.ok.click(function () {
                                 xianzhidays = 5
                                 storage.put("xianzhidays", 5);
                             }
-                            count = 41;
+                            count = 50;
                             break
                         }
                     }
                 }
 
                 if (count > 40) {
+                    refreshStateInfo();
+                    if(count==41&&topPackage != PKG_NAME){
+                        启动x5();
+                    }
                     return true;
                 }
                 //判断是否需要互助
