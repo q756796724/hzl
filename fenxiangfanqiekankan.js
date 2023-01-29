@@ -183,7 +183,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v5.2.4";
+        var versionNum = "番茄分享v5.2.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -321,6 +321,37 @@ ui.ok.click(function () {
                 rs += this.substr(i, 1).replace(pattern, '');
             }
             return rs;
+        }
+
+        //获取当前接收号码
+        function getjieshouNum() {
+            let temp = null;
+            let repData="0";
+            try {
+                temp = http.get("http://175.178.60.114:8081/fanqie/getJieShouNum");
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                        let repData = rep["data"];
+                        return repData
+                    } else {
+                        throw Error("getJieShouNum获取数据失败" + temp)
+                    }
+                }
+            } catch (err) {
+                console.error("getJieShouNum报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                repData=getjieshouNum();
+                
+            }
+            return repData
+
         }
 
         //获取接收人数
@@ -1306,6 +1337,11 @@ ui.ok.click(function () {
                             //reducejieshouCount("开始阅读前数量减一");
                             break
                         } else if (i == 4) {
+                            return;
+                        }
+                        if(getjieshouNum()=="0"){
+                            sendTx("http://miaotixing.com/trigger?id=tzbrDO8");
+                            lunSleep(random(3600000, 4000000));//睡1个多小时
                             return;
                         }
                         toastLog(new Date().toLocaleString() + "-" + "-----------" + "等待中！");
