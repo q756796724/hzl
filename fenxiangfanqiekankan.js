@@ -7,11 +7,11 @@ auto_tx = storage.get("auto_tx", false);
 qun_into = storage.get("qun_into", true);
 readurl = storage.get("readurl", "");
 if (readurl == "RHtWWJm"||readurl == "siNLtCo") {
-    readurl = "PLogmHP"
+    readurl = "FxWAkNP"
 }else if (readurl == "ckmokkm"||readurl == "eAJHtCo") {
-    readurl = "XtPxPHP"
+    readurl = "iLNxkNP"
 }if (readurl == "FkCHgkm"||readurl == "JtggtCo") {
-    readurl = "RCWgmHP"
+    readurl = "HVWxkNP"
 }
 phoneNum = storage.get("phoneNum", "");
 
@@ -183,7 +183,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v5.2.5";
+        var versionNum = "番茄分享v6.0.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -885,7 +885,7 @@ ui.ok.click(function () {
                 app.launch(PKG_NAME);
                 sleep(10000)
             }
-            if (readNum > 140 && auto_tx == false) {
+            if (readNum > 170 && auto_tx == false) {
                 lunCount++;
                 配置["lunCount"] = lunCount;
                 配置["count"] = 1;
@@ -978,7 +978,7 @@ ui.ok.click(function () {
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
                                                                 clickx(child.bounds().centerX(), child.bounds().centerY());
-                                                                let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(10000);
+                                                                let zBtn = textMatches(/(.*停止阅读.*)/).findOne(10000);
                                                                 if (zBtn != null) {
                                                                     sleep(500)
                                                                     zBtn.click();
@@ -991,7 +991,7 @@ ui.ok.click(function () {
                                                                 }
                                                                 sleep(1000)
                                                                 click("继续访问")
-                                                                zBtn = textMatches(/(.*暂停阅读.*)/).findOne(10000);
+                                                                zBtn = textMatches(/(.*停止阅读.*)/).findOne(10000);
                                                                 if (zBtn != null) {
                                                                     sleep(500)
                                                                     zBtn.click();
@@ -1020,7 +1020,7 @@ ui.ok.click(function () {
                                                                 retryCount = 0;
                                                                 for (let i = 0; i < 10; i++) {
                                                                     clickx(child.bounds().centerX(), child.bounds().centerY());
-                                                                    let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(10000);
+                                                                    let zBtn = textMatches(/(.*停止阅读.*)/).findOne(10000);
                                                                     if (zBtn != null) {
                                                                         sleep(500)
                                                                         zBtn.click();
@@ -1033,7 +1033,7 @@ ui.ok.click(function () {
                                                                     }
                                                                     sleep(1000)
                                                                     click("继续访问")
-                                                                    zBtn = textMatches(/(.*暂停阅读.*)/).findOne(10000);
+                                                                    zBtn = textMatches(/(.*停止阅读.*)/).findOne(10000);
                                                                     if (zBtn != null) {
                                                                         sleep(500)
                                                                         zBtn.click();
@@ -1128,20 +1128,20 @@ ui.ok.click(function () {
                 log("进入收藏成功");
                 sleep(3000);
 
-                if (className("android.widget.TextView").textContains("PLogmHP").findOne(5000) == null
-                    && className("android.widget.TextView").textContains("XtPxPHP").findOnce() == null
-                    && className("android.widget.TextView").textContains("RCWgmHP").findOnce() == null) {
+                if (className("android.widget.TextView").textContains("FxWAkNP").findOne(5000) == null
+                    && className("android.widget.TextView").textContains("iLNxkNP").findOnce() == null
+                    && className("android.widget.TextView").textContains("HVWxkNP").findOnce() == null) {
                     toastLog("未添加到收藏夹");
                     exit();
                 }
 
                 let 阅读;
-                if (className("android.widget.TextView").textContains("PLogmHP").findOne(5000) != null) {
-                    阅读 = className("android.widget.TextView").textContains("PLogmHP").findOnce().bounds();
-                } else if (className("android.widget.TextView").textContains("XtPxPHP").findOnce() != null) {
-                    阅读 = className("android.widget.TextView").textContains("XtPxPHP").findOnce().bounds();
-                } else if (className("android.widget.TextView").textContains("RCWgmHP").findOnce() != null) {
-                    阅读 = className("android.widget.TextView").textContains("RCWgmHP").findOnce().bounds();
+                if (className("android.widget.TextView").textContains("FxWAkNP").findOne(5000) != null) {
+                    阅读 = className("android.widget.TextView").textContains("FxWAkNP").findOnce().bounds();
+                } else if (className("android.widget.TextView").textContains("iLNxkNP").findOnce() != null) {
+                    阅读 = className("android.widget.TextView").textContains("iLNxkNP").findOnce().bounds();
+                } else if (className("android.widget.TextView").textContains("HVWxkNP").findOnce() != null) {
+                    阅读 = className("android.widget.TextView").textContains("HVWxkNP").findOnce().bounds();
                 } else {
                     return;
                 }
@@ -1156,12 +1156,12 @@ ui.ok.click(function () {
                         return;
                     }
                 } else {
-                    if (className("android.widget.TextView").textContains("PLogmHP").findOne(5000) != null) {
-                        阅读 = className("android.widget.TextView").textContains("PLogmHP").findOnce().bounds();
-                    } else if (className("android.widget.TextView").textContains("XtPxPHP").findOnce() != null) {
-                        阅读 = className("android.widget.TextView").textContains("XtPxPHP").findOnce().bounds();
-                    } else if (className("android.widget.TextView").textContains("RCWgmHP").findOnce() != null) {
-                        阅读 = className("android.widget.TextView").textContains("RCWgmHP").findOnce().bounds();
+                    if (className("android.widget.TextView").textContains("FxWAkNP").findOne(5000) != null) {
+                        阅读 = className("android.widget.TextView").textContains("FxWAkNP").findOnce().bounds();
+                    } else if (className("android.widget.TextView").textContains("iLNxkNP").findOnce() != null) {
+                        阅读 = className("android.widget.TextView").textContains("iLNxkNP").findOnce().bounds();
+                    } else if (className("android.widget.TextView").textContains("HVWxkNP").findOnce() != null) {
+                        阅读 = className("android.widget.TextView").textContains("HVWxkNP").findOnce().bounds();
                     } else {
                         return;
                     }
@@ -1171,7 +1171,7 @@ ui.ok.click(function () {
                 log("点击链接成功");
             }
 
-            let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(10000);
+            let zBtn = textMatches(/(.*停止阅读.*)/).findOne(10000);
             if (zBtn != null) {
                 sleep(500)
                 zBtn.click();
@@ -1184,7 +1184,7 @@ ui.ok.click(function () {
             }
             sleep(1000)
             click("继续访问")
-            zBtn = textMatches(/(.*暂停阅读.*)/).findOne(10000);
+            zBtn = textMatches(/(.*停止阅读.*)/).findOne(10000);
             if (zBtn != null) {
                 sleep(500)
                 zBtn.click();
@@ -1213,13 +1213,13 @@ ui.ok.click(function () {
             }
             if (auto_tx) {
                 if ((nowHour > 13 && todayTxCount < 1) || (nowHour > 19 && todayTxCount < 2) || (nowHour > 20 && todayTxCount < 3) || (nowHour > 21 && todayTxCount < 4)) {
-                    if (className("android.view.View").textMatches(/(积分提现)/).findOnce() != null) {
+                    if (className("android.view.View").textMatches(/(注册时间:)/).findOnce() != null) {
                         sleep(10000);
-                        let jfTxt = packageName("com.tencent.mm").className("android.view.View").textContains("积分:").findOnce()
+                        let jfTxt = packageName("com.tencent.mm").className("android.view.View").textContains("余额:").findOnce()
                         if (jfTxt) {
-                            if (jfTxt != null && parseInt(jfTxt.text().split("积分:")[1]).toString() != 'NaN' && parseInt(jfTxt.text().split("积分:")[1]) > 100) {
+                            if (jfTxt != null && parseInt(jfTxt.text().split("余额:")[1]).toString() != 'NaN' && parseInt(jfTxt.text().split("余额:")[1]) > 10000) {
                                 todayTxCount++
-                                click("积分提现")
+                                click("提现")
                                 sleep(6000);
                                 cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
                                 if (cBtn != null) {
@@ -1248,16 +1248,16 @@ ui.ok.click(function () {
                                 }
 
                                 for (var i = 0; i < 3; i++) {
-                                    let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(3000);
+                                    let zBtn = textMatches(/(.*停止阅读.*)/).findOne(3000);
                                     if (zBtn != null) {
                                         sleep(100)
                                         zBtn.click();
                                     }
-                                    let sBtn = textMatches(/(积分提现)/).findOne(3000);
+                                    let sBtn = className("android.view.View").textMatches(/(注册时间:)/).findOne(3000);
                                     if (sBtn == null) {
                                         back();
                                     } else {
-                                        let zBtn = textMatches(/(.*暂停阅读.*)/).findOne(3000);
+                                        let zBtn = textMatches(/(.*停止阅读.*)/).findOne(3000);
                                         if (zBtn != null) {
                                             sleep(100)
                                             zBtn.click();
@@ -1272,9 +1272,9 @@ ui.ok.click(function () {
                     }
                 }
             }
-            if (className("android.view.View").textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(5000) != null) {
+            if (className("android.view.View").textMatches(/(.*eIxtH3JAl5f8cA06jB0T|.*SXtLtSK9iRvIJHF2ELPz|.*egz1ISw5-9zJiqB2LgKT)/).findOne(5000) != null) {
                 log("渠道匹配");
-                if (!auto_tx && className("android.view.View").textMatches(/(积分提现)/).findOnce() != null) {
+                if (!auto_tx && className("android.view.View").textMatches(/(注册时间:)/).findOnce() != null) {
                     console.error("进入错误");
                 }
                 retryCount = 0;
@@ -1303,7 +1303,7 @@ ui.ok.click(function () {
                     return;
                 }
 
-                if (readNum > 140) {
+                if (readNum > 170) {
                     lunCount++;
                     配置["lunCount"] = lunCount;
                     配置["count"] = 1;
@@ -1352,7 +1352,7 @@ ui.ok.click(function () {
                 click("开始阅读");
                 for (var i = 0; i < 5; i++) {
                     sleep(3000);
-                    if (className("android.view.View").textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(3000) != null) {
+                    if (className("android.view.View").textMatches(/(.*eIxtH3JAl5f8cA06jB0T|.*SXtLtSK9iRvIJHF2ELPz|.*egz1ISw5-9zJiqB2LgKT)/).findOne(3000) != null) {
                         sleep(5000)
                         let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                         if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
@@ -1404,15 +1404,15 @@ ui.ok.click(function () {
                             配置["count"] = 1;
                             保存配置(settingPath, 配置);
                             log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
-                            if(new Date().getHours() >14&&new Date().getHours() <=16&&(lunCount<3||readNum<48)){
+                            if(new Date().getHours() >14&&new Date().getHours() <=16&&(lunCount<3||readNum<60)){
                                 lunSleep(random(3600000, 4000000));
-                            }else if(new Date().getHours() >16&&new Date().getHours() <=18&&(lunCount<4||readNum<72)){
+                            }else if(new Date().getHours() >16&&new Date().getHours() <=18&&(lunCount<4||readNum<90)){
                                 lunSleep(random(3600000, 4000000));
-                            }else if(new Date().getHours() >18&&new Date().getHours() <=20&&(lunCount<5||readNum<96)){
+                            }else if(new Date().getHours() >18&&new Date().getHours() <=20&&(lunCount<5||readNum<120)){
                                 lunSleep(random(3600000, 4000000));
-                            }else if(new Date().getHours() >20&&new Date().getHours() <=22&&(lunCount<6||readNum<120)){
+                            }else if(new Date().getHours() >20&&new Date().getHours() <=22&&(lunCount<6||readNum<150)){
                                 lunSleep(random(3600000, 4000000));
-                            }else if(new Date().getHours() >22&&(lunCount<7||readNum<144)){
+                            }else if(new Date().getHours() >22&&(lunCount<7||readNum<180)){
                                 lunSleep(random(3600000, 4000000));
                             }else{
                                 lunSleep();
@@ -1426,7 +1426,7 @@ ui.ok.click(function () {
 
                 }
                 //点击阅读失败，数量加1
-                /*if (className("android.view.View").textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(3000) != null) {
+                /*if (className("android.view.View").textMatches(/(.*eIxtH3JAl5f8cA06jB0T|.*SXtLtSK9iRvIJHF2ELPz|.*egz1ISw5-9zJiqB2LgKT)/).findOne(3000) != null) {
                     addjieshouCount("点击阅读失败，数量加1");
                 }*/
             } else {
@@ -1623,7 +1623,7 @@ ui.ok.click(function () {
                     }
                 }*/
                 if (页面异常处理()) {
-                    if (textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(5000) != null) {
+                    if (textMatches(/(.*eIxtH3JAl5f8cA06jB0T|.*SXtLtSK9iRvIJHF2ELPz|.*egz1ISw5-9zJiqB2LgKT)/).findOne(5000) != null) {
                         sleep(5000)
                         let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                         if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
@@ -1650,11 +1650,11 @@ ui.ok.click(function () {
                 }
                 click("继续访问")
                 //判断阅读提前结束
-                /*if (className("android.view.View").textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(3000) != null) {
+                /*if (className("android.view.View").textMatches(/(.*eIxtH3JAl5f8cA06jB0T|.*SXtLtSK9iRvIJHF2ELPz|.*egz1ISw5-9zJiqB2LgKT)/).findOne(3000) != null) {
                     for (var i = 0; i < 5; i++) {
                         kz();
                         sleep(3000);
-                        if (className("android.view.View").textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(3000) != null) {
+                        if (className("android.view.View").textMatches(/(.*eIxtH3JAl5f8cA06jB0T|.*SXtLtSK9iRvIJHF2ELPz|.*egz1ISw5-9zJiqB2LgKT)/).findOne(3000) != null) {
                             if (i < 3) {
                                 log("重试点击开始阅读成功");
                                 let sBtn = textMatches(/(.*开始阅读.*)/).findOne(3000);
@@ -1669,14 +1669,14 @@ ui.ok.click(function () {
                         }
                     }
                 }*/
-                if (!auto_tx && className("android.view.View").textMatches(/(积分提现)/).findOnce() != null) {
+                if (!auto_tx && className("android.view.View").textMatches(/(注册时间:)/).findOnce() != null) {
                     console.error("进入错误");
                     return false
                 }
-                if (className("android.view.View").textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(3000) != null) {
+                if (className("android.view.View").textMatches(/(.*eIxtH3JAl5f8cA06jB0T|.*SXtLtSK9iRvIJHF2ELPz|.*egz1ISw5-9zJiqB2LgKT)/).findOne(3000) != null) {
                     for (var i = 0; i < 5; i++) {
                         kz();
-                        if (className("android.view.View").textMatches(/(.*77PAzv2vXpVbjCc1xKa|.*2C1OOu08NNhticwWj8pU|.*zCrVtstSagL0XDDtBEp9)/).findOne(3000) != null) {
+                        if (className("android.view.View").textMatches(/(.*eIxtH3JAl5f8cA06jB0T|.*SXtLtSK9iRvIJHF2ELPz|.*egz1ISw5-9zJiqB2LgKT)/).findOne(3000) != null) {
                             sleep(5000)
                             let readNumDiv = packageName("com.tencent.mm").id("todayReadNum").findOne(5000)
                             if (readNumDiv != null && parseInt(readNumDiv.text()).toString() != 'NaN' && parseInt(readNumDiv.text()) > readNum) {
