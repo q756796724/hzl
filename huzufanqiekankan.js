@@ -183,7 +183,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄互助v4.0.0";
+        var versionNum = "番茄互助v4.0.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1248,6 +1248,11 @@ ui.ok.click(function () {
             }
             if (className("android.view.View").textMatches(/(.*eIxtH3JAl5f8cA06jB0T|.*SXtLtSK9iRvIJHF2ELPz|.*egz1ISw5-9zJiqB2LgKT)/).findOne(5000) != null) {
                 log("渠道匹配");
+                if (!auto_tx && className("android.view.View").textMatches(/(注册时间:)/).findOnce() != null) {
+                    console.error("进入错误");
+                    返回v首页();
+                    return
+                }
                 retryCount = 0;
                 kz();
                 sleep(5000)
