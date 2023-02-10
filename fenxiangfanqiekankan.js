@@ -6,14 +6,15 @@ dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
 qun_into = storage.get("qun_into", true);
 readurl = storage.get("readurl", "");
-if (readurl == "RHtWWJm"||readurl == "siNLtCo") {
+if (readurl == "RHtWWJm" || readurl == "siNLtCo") {
     readurl = "FxWAkNP"
-}else if (readurl == "ckmokkm"||readurl == "eAJHtCo") {
+} else if (readurl == "ckmokkm" || readurl == "eAJHtCo") {
     readurl = "iLNxkNP"
-}if (readurl == "FkCHgkm"||readurl == "JtggtCo") {
+} if (readurl == "FkCHgkm" || readurl == "JtggtCo") {
     readurl = "HVWxkNP"
 }
 phoneNum = storage.get("phoneNum", "");
+checkFlag = false
 
 /**
  * 日期相减获取天数（用于公式计算）
@@ -183,7 +184,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.0.1";
+        var versionNum = "番茄分享v6.1.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -326,7 +327,7 @@ ui.ok.click(function () {
         //获取当前接收号码
         function getjieshouNum() {
             let temp = null;
-            let repData="0";
+            let repData = "0";
             try {
                 temp = http.get("http://175.178.60.114:8081/fanqie/getJieShouNum");
                 if (temp && temp.statusCode == 200) {
@@ -347,8 +348,8 @@ ui.ok.click(function () {
                     app.launch(PKG_NAME);
                 }
                 sleep(8000)
-                repData=getjieshouNum();
-                
+                repData = getjieshouNum();
+
             }
             return repData
 
@@ -392,9 +393,9 @@ ui.ok.click(function () {
                 app.launch(PKG_NAME);
             }
             sleep(8000)
-            
+
             let temp = null;
-            let repData="0";
+            let repData = "0";
             try {
                 temp = http.get("http://175.178.60.114:8081/fanqie/addXianZhi");
                 if (temp && temp.statusCode == 200) {
@@ -415,8 +416,8 @@ ui.ok.click(function () {
                     app.launch(PKG_NAME);
                 }
                 sleep(8000)
-                repData=addXianZhi();
-                
+                repData = addXianZhi();
+
             }
             return repData
 
@@ -430,7 +431,7 @@ ui.ok.click(function () {
             sleep(8000)
 
             let temp = null;
-            let repData="0";
+            let repData = "0";
             try {
                 temp = http.get("http://175.178.60.114:8081/fanqie/reduceXianZhi");
                 if (temp && temp.statusCode == 200) {
@@ -451,8 +452,8 @@ ui.ok.click(function () {
                     app.launch(PKG_NAME);
                 }
                 sleep(8000)
-                repData=reduceXianZhi();
-                
+                repData = reduceXianZhi();
+
             }
             return repData
 
@@ -937,7 +938,7 @@ ui.ok.click(function () {
                                 log("进入了家庭");
                                 break
                             } else {
-                                sleep(random(180000,250000))
+                                sleep(random(180000, 250000))
                                 back();
                                 sleep(3000)
                                 continue;
@@ -968,61 +969,20 @@ ui.ok.click(function () {
                                         try {
                                             latestNews.children().forEach(function (child) {
                                                 if (child.className() == "android.widget.TextView") {
-                                                    if (child.text().indexOf("休息") > -1 ) {
+                                                    if (child.text().indexOf("休息") > -1) {
                                                         lunSleep(random(3600000, 4000000));//睡1个多小时
                                                         return;
                                                     }
                                                     //log(child.text())
-                                                    if (auto_tx) {
-                                                        if (child.text().indexOf("番茄主") > -1 && child.clickable()) {
-                                                            retryCount = 0;
-                                                            for (let i = 0; i < 10; i++) {
-                                                                clickx(child.bounds().centerX(), child.bounds().centerY());
-                                                                let zBtn = textMatches(/(.*停止阅读.*)/).findOne(10000);
-                                                                if (zBtn != null) {
-                                                                    sleep(500)
-                                                                    zBtn.click();
-                                                                } else {
-                                                                    let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
-                                                                    if (ntext != null) {
-                                                                        click("允许");
-                                                                        sleep(3000);
-                                                                    }
-                                                                }
-                                                                sleep(1000)
-                                                                click("继续访问")
-                                                                zBtn = textMatches(/(.*停止阅读.*)/).findOne(10000);
-                                                                if (zBtn != null) {
-                                                                    sleep(500)
-                                                                    zBtn.click();
-                                                                } else {
-                                                                    let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
-                                                                    if (ntext != null) {
-                                                                        click("允许");
-                                                                        sleep(3000);
-                                                                    }
-                                                                }
-                                                                if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() == null) {
-                                                                    log("点击番茄主成功")
-                                                                    break
-                                                                }
-                                                            }
-                                                            throw Error()
-                                                        }
-                                                    } else {
-                                                        //if (child.text().indexOf("番茄副") > -1 && child.text().indexOf(readurl) > -1 && child.clickable()) {
-                                                        if (child.text().indexOf("番茄副") > -1 && child.clickable()) {//随机点其中一个
-                                                            fanqiefuCount++
-                                                            if (fanqiefuCount == 1 && random(0, 2) < 2) {
-                                                            } else if (fanqiefuCount == 2 && random(0, 1) < 1) {
-                                                            } else {
-                                                                log(child.text())
+                                                    if (checkFlag == false) {
+                                                        if (auto_tx) {
+                                                            if (child.text().indexOf("番茄主") > -1 && child.clickable()) {
                                                                 retryCount = 0;
                                                                 for (let i = 0; i < 10; i++) {
                                                                     clickx(child.bounds().centerX(), child.bounds().centerY());
-                                                                    let zBtn = textMatches(/(.*停止阅读.*)/).findOne(10000);
+                                                                    let zBtn = textMatches(/(.*停止阅读.*)/).findOne(15000);
                                                                     if (zBtn != null) {
-                                                                        sleep(500)
+                                                                        sleep(100)
                                                                         zBtn.click();
                                                                     } else {
                                                                         let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
@@ -1033,9 +993,9 @@ ui.ok.click(function () {
                                                                     }
                                                                     sleep(1000)
                                                                     click("继续访问")
-                                                                    zBtn = textMatches(/(.*停止阅读.*)/).findOne(10000);
+                                                                    zBtn = textMatches(/(.*停止阅读.*)/).findOne(15000);
                                                                     if (zBtn != null) {
-                                                                        sleep(500)
+                                                                        sleep(100)
                                                                         zBtn.click();
                                                                     } else {
                                                                         let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
@@ -1045,15 +1005,104 @@ ui.ok.click(function () {
                                                                         }
                                                                     }
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() == null) {
-                                                                        log("点击番茄副成功")
+                                                                        log("点击番茄主成功")
                                                                         break
                                                                     }
                                                                 }
                                                                 throw Error()
                                                             }
+                                                        } else {
+                                                            //if (child.text().indexOf("番茄副") > -1 && child.text().indexOf(readurl) > -1 && child.clickable()) {
+                                                            if (child.text().indexOf("番茄副") > -1 && child.clickable()) {//随机点其中一个
+                                                                fanqiefuCount++
+                                                                if (fanqiefuCount == 1 && random(0, 2) < 2) {
+                                                                } else if (fanqiefuCount == 2 && random(0, 1) < 1) {
+                                                                } else {
+                                                                    log(child.text())
+                                                                    retryCount = 0;
+                                                                    for (let i = 0; i < 10; i++) {
+                                                                        clickx(child.bounds().centerX(), child.bounds().centerY());
+                                                                        let zBtn = textMatches(/(.*停止阅读.*|.*注册时间:.*)/).findOne(15000);
+                                                                        if (zBtn != null) {
+                                                                            let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                                                                            if (rBtn != null && rBtn.parent() != null) {
+                                                                                rBtn.parent().click();
+                                                                                log("非番茄副按左上角返回");
+                                                                            }
+                                                                            返回v首页();
+                                                                            return
+                                                                        } else {
+                                                                            let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
+                                                                            if (ntext != null) {
+                                                                                click("允许");
+                                                                                sleep(3000);
+                                                                            }
+                                                                        }
+                                                                        sleep(1000)
+                                                                        click("继续访问")
+
+                                                                        zBtn = textMatches(/(.*停止阅读.*|.*注册时间:.*)/).findOne(15000);
+                                                                        if (zBtn != null) {
+                                                                            let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                                                                            if (rBtn != null && rBtn.parent() != null) {
+                                                                                rBtn.parent().click();
+                                                                                log("非番茄副按左上角返回");
+                                                                            }
+                                                                            返回v首页();
+                                                                            return
+                                                                        } else {
+                                                                            let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
+                                                                            if (ntext != null) {
+                                                                                click("允许");
+                                                                                sleep(3000);
+                                                                            }
+                                                                        }
+                                                                        if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() == null) {
+                                                                            log("点击番茄副成功")
+                                                                            break
+                                                                        }
+                                                                    }
+                                                                    throw Error()
+                                                                }
+                                                            }
+                                                        }
+                                                    } else {
+                                                        if (联网验证(zwifi) != true) {
+                                                            连接wifi(zwifi, 5000);
+                                                            app.launch(PKG_NAME);
+                                                            sleep(10000)
+                                                        }
+                                                        if (child.text().indexOf("番茄状态") > -1 && child.clickable()) {
+                                                            retryCount = 0;
+                                                            for (let i = 0; i < 10; i++) {
+                                                                clickx(child.bounds().centerX(), child.bounds().centerY());
+                                                                let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOne(10000);
+                                                                if (ntext != null) {
+                                                                    click("允许");
+                                                                    sleep(3000);
+                                                                }
+                                                                sleep(1000)
+                                                                click("继续访问")
+                                                                if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() == null) {
+                                                                    log("点击状态成功")
+                                                                    checkFlag = false
+                                                                    if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(10000) != null) {
+                                                                        log(new Date().toLocaleString() + "-----------" + "限制");
+                                                                        配置 = 读取配置(settingPath);
+                                                                        配置["lunCount"] = 1;
+                                                                        配置["count"] = 1;
+                                                                        保存配置(settingPath, 配置);
+                                                                        lunSleep(random(7200000, 10800000));//睡2~3小时
+                                                                    } else {
+                                                                        lunSleep(random(3600000, 4000000));//睡1个多小时
+
+                                                                    }
+                                                                    return
+                                                                }
+                                                            }
+                                                            throw Error()
                                                         }
                                                     }
-
                                                 }
                                             })
                                         } catch (e) {
@@ -1062,6 +1111,7 @@ ui.ok.click(function () {
                                     }
 
                                 }
+                                checkFlag = false
 
                             }
                         }
@@ -1127,35 +1177,15 @@ ui.ok.click(function () {
                 }
                 log("进入收藏成功");
                 sleep(3000);
-
-                if (className("android.widget.TextView").textContains("FxWAkNP").findOne(5000) == null
-                    && className("android.widget.TextView").textContains("iLNxkNP").findOnce() == null
-                    && className("android.widget.TextView").textContains("HVWxkNP").findOnce() == null) {
-                    toastLog("未添加到收藏夹");
-                    exit();
-                }
-
-                let 阅读;
-                if (className("android.widget.TextView").textContains("FxWAkNP").findOne(5000) != null) {
-                    阅读 = className("android.widget.TextView").textContains("FxWAkNP").findOnce().bounds();
-                } else if (className("android.widget.TextView").textContains("iLNxkNP").findOnce() != null) {
-                    阅读 = className("android.widget.TextView").textContains("iLNxkNP").findOnce().bounds();
-                } else if (className("android.widget.TextView").textContains("HVWxkNP").findOnce() != null) {
-                    阅读 = className("android.widget.TextView").textContains("HVWxkNP").findOnce().bounds();
-                } else {
-                    return;
-                }
-
-                clickx(阅读.right, 阅读.bottom);
-                sleep(3000);
-
-                if (auto_tx) {
-                    if (className("android.widget.TextView").textContains(readurl).findOne(5000) != null) {
-                        阅读 = className("android.widget.TextView").textContains(readurl).findOnce().bounds();
-                    } else {
-                        return;
+                if (checkFlag == false) {
+                    if (className("android.widget.TextView").textContains("FxWAkNP").findOne(5000) == null
+                        && className("android.widget.TextView").textContains("iLNxkNP").findOnce() == null
+                        && className("android.widget.TextView").textContains("HVWxkNP").findOnce() == null) {
+                        toastLog("未添加到收藏夹");
+                        exit();
                     }
-                } else {
+
+                    let 阅读;
                     if (className("android.widget.TextView").textContains("FxWAkNP").findOne(5000) != null) {
                         阅读 = className("android.widget.TextView").textContains("FxWAkNP").findOnce().bounds();
                     } else if (className("android.widget.TextView").textContains("iLNxkNP").findOnce() != null) {
@@ -1165,36 +1195,139 @@ ui.ok.click(function () {
                     } else {
                         return;
                     }
+
+                    clickx(阅读.right, 阅读.bottom);
+                    sleep(3000);
+
+                    if (auto_tx) {
+                        if (className("android.widget.TextView").textContains(readurl).findOne(5000) != null) {
+                            阅读 = className("android.widget.TextView").textContains(readurl).findOnce().bounds();
+                        } else {
+                            return;
+                        }
+                    } else {
+                        if (className("android.widget.TextView").textContains("FxWAkNP").findOne(5000) != null) {
+                            阅读 = className("android.widget.TextView").textContains("FxWAkNP").findOnce().bounds();
+                        } else if (className("android.widget.TextView").textContains("iLNxkNP").findOnce() != null) {
+                            阅读 = className("android.widget.TextView").textContains("iLNxkNP").findOnce().bounds();
+                        } else if (className("android.widget.TextView").textContains("HVWxkNP").findOnce() != null) {
+                            阅读 = className("android.widget.TextView").textContains("HVWxkNP").findOnce().bounds();
+                        } else {
+                            return;
+                        }
+                    }
+
+                    clickx(阅读.right, 阅读.bottom);
+                    log("点击链接成功");
+                } else {
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        app.launch(PKG_NAME);
+                        sleep(10000)
+                    }
+                    checkFlag = false
+                    let 阅读;
+                    if (className("android.widget.TextView").textContains("番茄状态").findOne(5000) != null) {
+                        阅读 = className("android.widget.TextView").textContains("番茄状态").findOnce().bounds();
+                    } else {
+                        return;
+                    }
+
+                    clickx(阅读.right, 阅读.bottom);
+                    sleep(3000);
+
+                    if (className("android.widget.TextView").textContains("FxWAkNP").findOne(5000) != null) {
+                        阅读 = className("android.widget.TextView").textContains("FxWAkNP").findOnce().bounds();
+                    } else if (className("android.widget.TextView").textContains("iLNxkNP").findOnce() != null) {
+                        阅读 = className("android.widget.TextView").textContains("iLNxkNP").findOnce().bounds();
+                    } else if (className("android.widget.TextView").textContains("HVWxkNP").findOnce() != null) {
+                        阅读 = className("android.widget.TextView").textContains("HVWxkNP").findOnce().bounds();
+                    } else {
+                        return;
+                    }
+                    clickx(阅读.right, 阅读.bottom);
+                    log("点击状态成功");
+                    if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(10000) != null) {
+                        log(new Date().toLocaleString() + "-----------" + "限制");
+                        配置 = 读取配置(settingPath);
+                        配置["lunCount"] = 1;
+                        配置["count"] = 1;
+                        保存配置(settingPath, 配置);
+                        lunSleep(random(7200000, 10800000));//睡2~3小时
+                    } else {
+                        lunSleep(random(3600000, 4000000));//睡1个多小时
+
+                    }
+                    return
+
                 }
 
-                clickx(阅读.right, 阅读.bottom);
-                log("点击链接成功");
+
             }
 
-            let zBtn = textMatches(/(.*停止阅读.*)/).findOne(10000);
-            if (zBtn != null) {
-                sleep(500)
-                zBtn.click();
-            } else {
-                let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
-                if (ntext != null) {
-                    click("允许");
-                    sleep(3000);
+            if (!auto_tx) {
+                let zBtn = textMatches(/(.*停止阅读.*|.*注册时间:.*)/).findOne(15000);
+                if (zBtn != null) {
+                    let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                    if (rBtn != null && rBtn.parent() != null) {
+                        rBtn.parent().click();
+                        log("非番茄副按左上角返回");
+                    }
+                    返回v首页();
+                    return
+                } else {
+                    let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
+                    if (ntext != null) {
+                        click("允许");
+                        sleep(3000);
+                    }
+                }
+                sleep(1000)
+                click("继续访问")
+
+                zBtn = textMatches(/(.*停止阅读.*|.*注册时间:.*)/).findOne(15000);
+                if (zBtn != null) {
+                    let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                    if (rBtn != null && rBtn.parent() != null) {
+                        rBtn.parent().click();
+                        log("非番茄副按左上角返回");
+                    }
+                    返回v首页();
+                    return
+                } else {
+                    let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
+                    if (ntext != null) {
+                        click("允许");
+                        sleep(3000);
+                    }
+                }
+            }else{
+                let zBtn = textMatches(/(.*停止阅读.*)/).findOne(15000);
+                if (zBtn != null) {
+                    sleep(100)
+                    zBtn.click();
+                } else {
+                    let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
+                    if (ntext != null) {
+                        click("允许");
+                        sleep(3000);
+                    }
+                }
+                sleep(1000)
+                click("继续访问")
+                zBtn = textMatches(/(.*停止阅读.*)/).findOne(15000);
+                if (zBtn != null) {
+                    sleep(100)
+                    zBtn.click();
+                } else {
+                    let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
+                    if (ntext != null) {
+                        click("允许");
+                        sleep(3000);
+                    }
                 }
             }
-            sleep(1000)
-            click("继续访问")
-            zBtn = textMatches(/(.*停止阅读.*)/).findOne(10000);
-            if (zBtn != null) {
-                sleep(500)
-                zBtn.click();
-            } else {
-                let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
-                if (ntext != null) {
-                    click("允许");
-                    sleep(3000);
-                }
-            }
+            
 
             /*if (textMatches(/(.*登陆超时.*|.*重试.*)/).findOne(3000) != null) {
                 let qBtn=textMatches(/(.*确定.*)/).findOne(3000);
@@ -1341,7 +1474,7 @@ ui.ok.click(function () {
                         } else if (i == 4) {
                             return;
                         }
-                        if(getjieshouNum()=="0"){
+                        if (getjieshouNum() == "0") {
                             sendTx("http://miaotixing.com/trigger?id=tzbrDO8");
                             lunSleep(random(3600000, 4000000));//睡1个多小时
                             return;
@@ -1406,20 +1539,20 @@ ui.ok.click(function () {
                             配置["count"] = 1;
                             保存配置(settingPath, 配置);
                             log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
-                            if(new Date().getHours() >14&&new Date().getHours() <=16&&(lunCount<3||readNum<60)){
+                            if (new Date().getHours() > 14 && new Date().getHours() <= 16 && (lunCount < 3 || readNum < 60)) {
                                 lunSleep(random(3600000, 4000000));
-                            }else if(new Date().getHours() >16&&new Date().getHours() <=18&&(lunCount<4||readNum<90)){
+                            } else if (new Date().getHours() > 16 && new Date().getHours() <= 18 && (lunCount < 4 || readNum < 90)) {
                                 lunSleep(random(3600000, 4000000));
-                            }else if(new Date().getHours() >18&&new Date().getHours() <=20&&(lunCount<5||readNum<120)){
+                            } else if (new Date().getHours() > 18 && new Date().getHours() <= 20 && (lunCount < 5 || readNum < 120)) {
                                 lunSleep(random(3600000, 4000000));
-                            }else if(new Date().getHours() >20&&new Date().getHours() <=22&&(lunCount<6||readNum<150)){
+                            } else if (new Date().getHours() > 20 && new Date().getHours() <= 22 && (lunCount < 6 || readNum < 150)) {
                                 lunSleep(random(3600000, 4000000));
-                            }else if(new Date().getHours() >22&&(lunCount<7||readNum<180)){
+                            } else if (new Date().getHours() > 22 && (lunCount < 7 || readNum < 180)) {
                                 lunSleep(random(3600000, 4000000));
-                            }else{
+                            } else {
                                 lunSleep();
                             }
-                            
+
                         }
                         关闭应用(PKG_NAME);
                         return;
@@ -1466,11 +1599,9 @@ ui.ok.click(function () {
                         }
                     }
                 }*/
-                lunSleep(random(7200000, 10800000));//睡2~3小时
-                return
-            } else {
-                lunSleep();
             }
+            lunSleep(random(7200000, 10800000));//睡2~3小时
+            return
 
         }
 
@@ -1665,7 +1796,7 @@ ui.ok.click(function () {
                                 }
                             } else {
                                 log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
-                                count = 50;
+                                count = 55;
                             }
  
                         }
@@ -1689,7 +1820,7 @@ ui.ok.click(function () {
                                 if (lunCount == 1) {
                                     配置["count"] = 1;
                                     保存配置(settingPath, 配置);
-                                    addXianZhi() 
+                                    addXianZhi()
                                 }
                                 /*if (auto_tx) {
                                     lunSleep(random(10800000, 14400000));//睡3~4小时
@@ -1712,19 +1843,23 @@ ui.ok.click(function () {
                                 back()
                                 sleep(8000);
                             } else {
-                                if (lunCount == 1&&count-wifiCount<5) {
-                                    配置["count"] = 1;
-                                    保存配置(settingPath, 配置);
-                                    addXianZhi() 
+                                if (lunCount == 1 && count - wifiCount < 5) {
+                                    checkFlag = true
+                                    /*配置["count"] = 1;
+                                    保存配置(settingPath, 配置);*/
+                                    addXianZhi()
                                     log(new Date().toLocaleString() + "-----------" + "应该限制");
-                                }
-                                log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
+                                    count = 60;
+                                } else {
+                                    log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
 
-                                if (count == wifiCount) {
-                                    //addjieshouCount("未分享数量加1");
+                                    if (count == wifiCount) {
+                                        //addjieshouCount("未分享数量加1");
+                                    }
+
+                                    count = 55;
                                 }
 
-                                count = 50;
                                 break
                             }
                         } else if (packageName("com.tencent.mm").textMatches(/(.*无法打开网页.*|.*网页无法打开.*|.*加载中.*)/).findOne(5000)) {
@@ -1732,18 +1867,22 @@ ui.ok.click(function () {
                         } else {
                             log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
 
-                            count = 50;
+                            count = 55;
                             break
                         }
                     }
                 }
 
-                if (count > 40) {
+                if (count > 45) {
                     refreshStateInfo();
-                    if(count==41&&topPackage != PKG_NAME){
+                    if (count == 46 && topPackage != PKG_NAME) {
                         启动x5();
+                        return false;
+                    } else if (count == 55) {
+                        return true;
+                    } else if (count == 60) {
+                        return false;
                     }
-                    return true;
                 }
                 //判断是否需要互助
                 if (count == wifiCount) {
@@ -1798,7 +1937,7 @@ ui.ok.click(function () {
                     连接wifi(dlwifi, 5000);
                     app.launch(PKG_NAME);
                 }*/
-                
+
                 if (count == wifiCount) {
                     swapeToRead();
                     sleep(random(3000, 7000));
@@ -1809,8 +1948,8 @@ ui.ok.click(function () {
                     连接wifi(dlwifi, 5000);
                     app.launch(PKG_NAME);
                 }
-                if (lunCount == 1&&count==5) {
-                    reduceXianZhi() 
+                if (lunCount == 1 && count == 5) {
+                    reduceXianZhi()
                     log(new Date().toLocaleString() + "-----------" + "限制-1");
                 }
                 if (count % 5 == 0) {
