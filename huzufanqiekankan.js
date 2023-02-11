@@ -184,7 +184,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄互助v4.1.0";
+        var versionNum = "番茄互助v4.2.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1074,7 +1074,7 @@ ui.ok.click(function () {
                                                                     retryCount = 0;
                                                                     for (let i = 0; i < 10; i++) {
                                                                         clickx(child.bounds().centerX(), child.bounds().centerY());
-                                                                        let zBtn = textMatches(/(.*停止阅读.*|.*注册时间:.*)/).findOne(15000);
+                                                                        let zBtn = textMatches(/(.*停止阅读.*|.*注册时间.*)/).findOne(15000);
                                                                         if (zBtn != null) {
                                                                             let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                                                                             if (rBtn != null && rBtn.parent() != null) {
@@ -1092,7 +1092,7 @@ ui.ok.click(function () {
                                                                         }
                                                                         sleep(1000)
                                                                         click("继续访问")
-                                                                        zBtn = textMatches(/(.*停止阅读.*|.*注册时间:.*)/).findOne(15000);
+                                                                        zBtn = textMatches(/(.*停止阅读.*|.*注册时间.*)/).findOne(15000);
                                                                         if (zBtn != null) {
                                                                             let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                                                                             if (rBtn != null && rBtn.parent() != null) {
@@ -1363,7 +1363,7 @@ ui.ok.click(function () {
             }
 
             if (!auto_tx) {
-                let zBtn = textMatches(/(.*停止阅读.*|.*注册时间:.*)/).findOne(15000);
+                let zBtn = textMatches(/(.*停止阅读.*|.*注册时间.*)/).findOne(15000);
                 if (zBtn != null) {
                     let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                     if (rBtn != null && rBtn.parent() != null) {
@@ -1382,7 +1382,7 @@ ui.ok.click(function () {
                 sleep(1000)
                 click("继续访问")
 
-                zBtn = textMatches(/(.*停止阅读.*|.*注册时间:.*)/).findOne(15000);
+                zBtn = textMatches(/(.*停止阅读.*|.*注册时间.*)/).findOne(15000);
                 if (zBtn != null) {
                     let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                     if (rBtn != null && rBtn.parent() != null) {
@@ -1442,13 +1442,16 @@ ui.ok.click(function () {
             }
             if (auto_tx) {
                 if ((nowHour > 13 && todayTxCount < 1) || (nowHour > 19 && todayTxCount < 2) || (nowHour > 20 && todayTxCount < 3) || (nowHour > 21 && todayTxCount < 4)) {
-                    if (className("android.view.View").textMatches(/(注册时间:)/).findOnce() != null) {
+                    if (className("android.view.View").textMatches(/(.*注册时间.*)/).findOnce() != null) {
                         sleep(10000);
                         let jfTxt = packageName("com.tencent.mm").className("android.view.View").textContains("余额:").findOnce()
                         if (jfTxt) {
-                            if (jfTxt != null && parseInt(jfTxt.text().split("余额:")[1]).toString() != 'NaN' && parseInt(jfTxt.text().split("余额:")[1]) > 10000) {
+                            if (jfTxt != null && parseInt(jfTxt.text().replace(/[^\d]/g, " ")).toString() != 'NaN' && parseInt(jfTxt.text().replace(/[^\d]/g, " ")) > 10000) {
                                 todayTxCount++
-                                click("提现")
+                                let txBtn1 = packageName("com.tencent.mm").text("提现").findOne(3000)
+                                if (txBtn1 != null) {
+                                    zBtn.click();
+                                }
                                 sleep(6000);
                                 cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
                                 if (cBtn != null) {
@@ -1482,7 +1485,7 @@ ui.ok.click(function () {
                                         sleep(100)
                                         zBtn.click();
                                     }
-                                    let sBtn = className("android.view.View").textMatches(/(注册时间:)/).findOne(3000);
+                                    let sBtn = className("android.view.View").textMatches(/(.*注册时间.*)/).findOne(3000);
                                     if (sBtn == null) {
                                         back();
                                     } else {
@@ -1503,7 +1506,7 @@ ui.ok.click(function () {
             }
             if (className("android.view.View").textMatches(/(.*eIxtH3JAl5f8cA06jB0T|.*SXtLtSK9iRvIJHF2ELPz|.*egz1ISw5-9zJiqB2LgKT)/).findOne(5000) != null) {
                 log("渠道匹配");
-                if (!auto_tx && className("android.view.View").textMatches(/(注册时间:)/).findOnce() != null) {
+                if (!auto_tx && className("android.view.View").textMatches(/(.*注册时间.*)/).findOnce() != null) {
                     console.error("进入错误");
                     返回v首页();
                     return
