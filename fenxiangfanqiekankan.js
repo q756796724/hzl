@@ -184,7 +184,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.2.0";
+        var versionNum = "番茄分享v6.2.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1258,54 +1258,62 @@ ui.ok.click(function () {
                 if (className("android.view.View").textMatches(/(.*注册时间.*)/).findOne(10000) != null) {
                     let jfTxt = packageName("com.tencent.mm").className("android.view.View").textContains("余额:").findOnce()
                     if (jfTxt) {
-                        if (jfTxt != null && parseInt(jfTxt.text().replace(/[^\d]/g, " ")).toString() != 'NaN' && parseInt(jfTxt.text().replace(/[^\d]/g, " ")) > 10000) {
+                        if (jfTxt != null && parseInt(jfTxt.text().replace(/[^\d]/g, " ")).toString() != 'NaN' ) {
                             todayTxCount++
-                            let txBtn1 = packageName("com.tencent.mm").text("提现").findOne(3000)
-                            if (txBtn1 != null) {
-                                zBtn.click();
-                            }
-                            sleep(6000);
-                            cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
-                            if (cBtn != null) {
-                                sleep(500)
-                                cBtn.click();
-
-                            }
-                            sleep(1000);
-                            let txBtn = packageName("com.tencent.mm").id('doWithdraw').className("android.widget.Button").findOnce();
-                            if (txBtn) {
-                                txBtn.click();
-                            } else {
-                                txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("提现").findOne(3000);
+                            if(parseInt(jfTxt.text().replace(/[^\d]/g, " ")) > 10000){
+                                let txBtn1 = packageName("com.tencent.mm").text("提现").findOne(3000)
+                                if (txBtn1 != null) {
+                                    zBtn.click();
+                                }
+                                sleep(6000);
+                                cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
+                                if (cBtn != null) {
+                                    sleep(500)
+                                    cBtn.click();
+    
+                                }
+                                sleep(1000);
+                                let txBtn = packageName("com.tencent.mm").id('doWithdraw').className("android.widget.Button").findOnce();
                                 if (txBtn) {
                                     txBtn.click();
-                                }
-                            }
-                            sleep(8000);
-                            cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
-                            if (cBtn != null) {
-                                sleep(500)
-                                cBtn.click();
-                                sleep(1000);
-                            } else {
-                                back();
-                            }
-
-                            for (var i = 0; i < 3; i++) {
-                                let sBtn = className("android.view.View").textMatches(/(.*注册时间.*)/).findOne(3000);
-                                if (sBtn == null) {
-                                    back();
                                 } else {
-                                    let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
-                                    if (rBtn != null && rBtn.parent() != null) {
-                                        rBtn.parent().click();
+                                    txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("提现").findOne(3000);
+                                    if (txBtn) {
+                                        txBtn.click();
                                     }
-                                    返回v首页();
-                                    return;
                                 }
-
+                                sleep(8000);
+                                cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
+                                if (cBtn != null) {
+                                    sleep(500)
+                                    cBtn.click();
+                                    sleep(1000);
+                                } else {
+                                    back();
+                                }
+    
+                                for (var i = 0; i < 3; i++) {
+                                    let sBtn = className("android.view.View").textMatches(/(.*注册时间.*)/).findOne(3000);
+                                    if (sBtn == null) {
+                                        back();
+                                    } else {
+                                        let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                                        if (rBtn != null && rBtn.parent() != null) {
+                                            rBtn.parent().click();
+                                        }
+                                        返回v首页();
+                                        return;
+                                    }
+    
+                                }
+                            }else {
+                                let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                                if (rBtn != null && rBtn.parent() != null) {
+                                    rBtn.parent().click();
+                                }
+                                返回v首页();
+                                return;
                             }
-
                         } else {
                             let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                             if (rBtn != null && rBtn.parent() != null) {
