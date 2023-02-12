@@ -184,7 +184,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.2.5";
+        var versionNum = "番茄分享v6.2.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -886,7 +886,7 @@ ui.ok.click(function () {
                 app.launch(PKG_NAME);
                 sleep(10000)
             }
-            if (readNum > 170 && auto_tx == false) {
+            if (readNum > 150 && auto_tx == false) {
                 lunCount++;
                 配置["lunCount"] = lunCount;
                 配置["count"] = 1;
@@ -1408,7 +1408,7 @@ ui.ok.click(function () {
                     return;
                 }
 
-                if (readNum > 170) {
+                if (readNum > 150) {
                     lunCount++;
                     配置["lunCount"] = lunCount;
                     配置["count"] = 1;
@@ -1515,9 +1515,7 @@ ui.ok.click(function () {
                                 lunSleep(random(3600000, 4000000));
                             } else if (new Date().getHours() > 16 && new Date().getHours() <= 18 && (lunCount < 4 || readNum < 120)) {
                                 lunSleep(random(3600000, 4000000));
-                            } else if (new Date().getHours() > 18 && new Date().getHours() <= 20 && (lunCount < 5 || readNum < 150)) {
-                                lunSleep(random(3600000, 4000000));
-                            } else if (new Date().getHours() > 20 && (lunCount < 6 || readNum < 170)) {
+                            }else if (new Date().getHours() > 18 && (lunCount < 5 || readNum < 150)) {
                                 lunSleep(random(3600000, 4000000));
                             } else {
                                 lunSleep();
@@ -2720,7 +2718,7 @@ ui.ok.click(function () {
 
             if (zwifi.toString() != dlwifi.toString()) {
                 if (nowHour < 9) {
-                    if (random(0, 1) == 1 && nowHour >= 7) {
+                    if (random(0, 1) == 0 && nowHour >= 7) {
 
                     } else {
                         log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
