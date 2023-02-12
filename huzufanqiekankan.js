@@ -184,7 +184,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄互助v4.2.1";
+        var versionNum = "番茄互助v4.2.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1440,14 +1440,13 @@ ui.ok.click(function () {
             if (结束未响应()) {
                 return;
             }
-            if (auto_tx) {
-                if ((nowHour > 13 && todayTxCount < 1) || (nowHour > 19 && todayTxCount < 2) || (nowHour > 20 && todayTxCount < 3) || (nowHour > 21 && todayTxCount < 4)) {
-                    if (className("android.view.View").textMatches(/(.*注册时间.*)/).findOnce() != null) {
-                        sleep(10000);
-                        let jfTxt = packageName("com.tencent.mm").className("android.view.View").textContains("余额:").findOnce()
-                        if (jfTxt) {
-                            if (jfTxt != null && parseInt(jfTxt.text().replace(/[^\d]/g, " ")).toString() != 'NaN' && parseInt(jfTxt.text().replace(/[^\d]/g, " ")) > 10000) {
-                                todayTxCount++
+            if (auto_tx && ((nowHour > 13 && todayTxCount < 1) || (nowHour > 19 && todayTxCount < 2) || (nowHour > 20 && todayTxCount < 3) || (nowHour > 21 && todayTxCount < 4))) {
+                if (className("android.view.View").textMatches(/(.*注册时间.*)/).findOne(10000) != null) {
+                    let jfTxt = packageName("com.tencent.mm").className("android.view.View").textContains("余额:").findOnce()
+                    if (jfTxt) {
+                        if (jfTxt != null && parseInt(jfTxt.text().replace(/[^\d]/g, " ")).toString() != 'NaN') {
+                            todayTxCount++
+                            if (parseInt(jfTxt.text().replace(/[^\d]/g, " ")) > 10000) {
                                 let txBtn = packageName("com.tencent.mm").text("提现").findOne(3000)
                                 if (txBtn != null) {
                                     txBtn.click();
@@ -1455,54 +1454,75 @@ ui.ok.click(function () {
                                 sleep(6000);
                                 txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
                                 if (txBtn != null) {
-                                    sleep(500)
-                                    txBtn.click();
-
-                                }
-                                sleep(1000);
-                                txBtn = packageName("com.tencent.mm").id('doWithdraw').className("android.widget.Button").findOnce();
-                                if (txBtn) {
-                                    txBtn.click();
+                                    关闭应用(PKG_NAME);
                                 } else {
-                                    txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("提现").findOne(3000);
+                                    txBtn = packageName("com.tencent.mm").id('doWithdraw').className("android.widget.Button").findOnce();
                                     if (txBtn) {
                                         txBtn.click();
-                                    }
-                                }
-                                sleep(8000);
-                                txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
-                                if (txBtn != null) {
-                                    sleep(500)
-                                    txBtn.click();
-                                    sleep(1000);
-                                } else {
-                                    back();
-                                }
-
-                                for (var i = 0; i < 3; i++) {
-                                    let zBtn = textMatches(/(.*停止阅读.*)/).findOne(3000);
-                                    if (zBtn != null) {
-                                        sleep(100)
-                                        zBtn.click();
-                                    }
-                                    let sBtn = className("android.view.View").textMatches(/(.*注册时间.*)/).findOne(3000);
-                                    if (sBtn == null) {
-                                        back();
                                     } else {
-                                        let zBtn = textMatches(/(.*停止阅读.*)/).findOne(3000);
-                                        if (zBtn != null) {
-                                            sleep(100)
-                                            zBtn.click();
+                                        txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("提现").findOne(3000);
+                                        if (txBtn) {
+                                            txBtn.click();
                                         }
-                                        break;
+                                    }
+                                    sleep(8000);
+                                    txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
+                                    if (txBtn != null) {
+                                        sleep(500)
+                                        txBtn.click();
+                                        sleep(1000);
+                                    } else {
+                                        back();
                                     }
 
-                                }
 
+                                    for (var i = 0; i < 3; i++) {
+                                        let sBtn = className("android.view.View").textMatches(/(.*注册时间.*)/).findOne(3000);
+                                        if (sBtn == null) {
+                                            txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
+                                            if (txBtn != null) {
+                                                sleep(500)
+                                                txBtn.click();
+                                            } else {
+                                                back();
+                                            }
+                                        } else {
+                                            let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                                            if (rBtn != null && rBtn.parent() != null) {
+                                                rBtn.parent().click();
+                                            }
+                                            返回v首页();
+                                            return;
+                                        }
+
+                                    }
+                                }
+                            } else {
+                                let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                                if (rBtn != null && rBtn.parent() != null) {
+                                    rBtn.parent().click();
+                                }
+                                返回v首页();
+                                return;
                             }
+                        } else {
+                            let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                            if (rBtn != null && rBtn.parent() != null) {
+                                rBtn.parent().click();
+                            }
+                            返回v首页();
+                            return;
                         }
+                    } else {
+                        let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                        if (rBtn != null && rBtn.parent() != null) {
+                            rBtn.parent().click();
+                        }
+                        返回v首页();
+                        return;
                     }
                 }
+
             }
             if (className("android.view.View").textMatches(/(.*eIxtH3JAl5f8cA06jB0T|.*SXtLtSK9iRvIJHF2ELPz|.*egz1ISw5-9zJiqB2LgKT)/).findOne(5000) != null) {
                 log("渠道匹配");
@@ -1580,17 +1600,17 @@ ui.ok.click(function () {
                                 log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次,xianzhidays=" + xianzhidays);
                                 jieshouwenzhang();
                             } else {
-                                if(new Date().getHours() >14&&new Date().getHours() <=16&&(lunCount<3||readNum<48)){
+                                if (new Date().getHours() > 12 && new Date().getHours() <= 14 && (lunCount < 2 || readNum < 60)) {
                                     lunSleep(random(3600000, 4000000));
-                                }else if(new Date().getHours() >16&&new Date().getHours() <=18&&(lunCount<4||readNum<72)){
+                                } else if (new Date().getHours() > 14 && new Date().getHours() <= 16 && (lunCount < 3 || readNum < 90)) {
                                     lunSleep(random(3600000, 4000000));
-                                }else if(new Date().getHours() >18&&new Date().getHours() <=20&&(lunCount<5||readNum<96)){
+                                } else if (new Date().getHours() > 16 && new Date().getHours() <= 18 && (lunCount < 4 || readNum < 120)) {
                                     lunSleep(random(3600000, 4000000));
-                                }else if(new Date().getHours() >20&&new Date().getHours() <=22&&(lunCount<6||readNum<120)){
+                                } else if (new Date().getHours() > 18 && new Date().getHours() <= 20 && (lunCount < 5 || readNum < 150)) {
                                     lunSleep(random(3600000, 4000000));
-                                }else if(new Date().getHours() >22&&(lunCount<7||readNum<144)){
+                                } else if (new Date().getHours() > 20 && (lunCount < 6 || readNum < 170)) {
                                     lunSleep(random(3600000, 4000000));
-                                }else{
+                                } else {
                                     lunSleep();
                                 }
                             }
