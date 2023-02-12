@@ -184,7 +184,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.2.1";
+        var versionNum = "番茄分享v6.2.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1242,7 +1242,7 @@ ui.ok.click(function () {
 
             }
 
-            
+
 
 
             /*if (textMatches(/(.*登陆超时.*|.*重试.*)/).findOne(3000) != null) {
@@ -1258,22 +1258,22 @@ ui.ok.click(function () {
                 if (className("android.view.View").textMatches(/(.*注册时间.*)/).findOne(10000) != null) {
                     let jfTxt = packageName("com.tencent.mm").className("android.view.View").textContains("余额:").findOnce()
                     if (jfTxt) {
-                        if (jfTxt != null && parseInt(jfTxt.text().replace(/[^\d]/g, " ")).toString() != 'NaN' ) {
+                        if (jfTxt != null && parseInt(jfTxt.text().replace(/[^\d]/g, " ")).toString() != 'NaN') {
                             todayTxCount++
-                            if(parseInt(jfTxt.text().replace(/[^\d]/g, " ")) > 10000){
-                                let txBtn1 = packageName("com.tencent.mm").text("提现").findOne(3000)
-                                if (txBtn1 != null) {
-                                    zBtn.click();
+                            if (parseInt(jfTxt.text().replace(/[^\d]/g, " ")) > 10000) {
+                                let txBtn = packageName("com.tencent.mm").text("提现").findOne(3000)
+                                if (txBtn != null) {
+                                    txBtn.click();
                                 }
                                 sleep(6000);
-                                cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
-                                if (cBtn != null) {
+                                txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
+                                if (txBtn != null) {
                                     sleep(500)
-                                    cBtn.click();
-    
+                                    txBtn.click();
+
                                 }
                                 sleep(1000);
-                                let txBtn = packageName("com.tencent.mm").id('doWithdraw').className("android.widget.Button").findOnce();
+                                txBtn = packageName("com.tencent.mm").id('doWithdraw').className("android.widget.Button").findOnce();
                                 if (txBtn) {
                                     txBtn.click();
                                 } else {
@@ -1283,15 +1283,15 @@ ui.ok.click(function () {
                                     }
                                 }
                                 sleep(8000);
-                                cBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
-                                if (cBtn != null) {
+                                txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
+                                if (txBtn != null) {
                                     sleep(500)
-                                    cBtn.click();
+                                    txBtn.click();
                                     sleep(1000);
                                 } else {
                                     back();
                                 }
-    
+
                                 for (var i = 0; i < 3; i++) {
                                     let sBtn = className("android.view.View").textMatches(/(.*注册时间.*)/).findOne(3000);
                                     if (sBtn == null) {
@@ -1304,9 +1304,9 @@ ui.ok.click(function () {
                                         返回v首页();
                                         return;
                                     }
-    
+
                                 }
-                            }else {
+                            } else {
                                 let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                                 if (rBtn != null && rBtn.parent() != null) {
                                     rBtn.parent().click();
@@ -1332,7 +1332,7 @@ ui.ok.click(function () {
                     }
                 }
 
-            }else {
+            } else {
                 let zBtn = textMatches(/(.*注册时间.*)/).findOne(15000);
                 if (zBtn != null) {
                     let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
@@ -1523,7 +1523,6 @@ ui.ok.click(function () {
                             } else {
                                 lunSleep();
                             }
-
                         }
                         关闭应用(PKG_NAME);
                         return;
@@ -1844,12 +1843,17 @@ ui.ok.click(function () {
                     }
                 }
 
+                refreshStateInfo();
+                if (count % 7 == 0 & topPackage != PKG_NAME) {
+                    启动x5();
+                    lunCount++;
+                    配置["lunCount"] = lunCount;
+                    配置["count"] = 1;
+                    保存配置(settingPath, 配置);
+                    return false;
+                }
                 if (count > 45) {
-                    refreshStateInfo();
-                    if (count == 46 && topPackage != PKG_NAME) {
-                        启动x5();
-                        return false;
-                    } else if (count == 55) {
+                    if (count == 55) {
                         return true;
                     } else if (count == 60) {
                         return false;
