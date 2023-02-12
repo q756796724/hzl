@@ -184,7 +184,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄互助v4.2.2";
+        var versionNum = "番茄互助v4.2.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1907,7 +1907,7 @@ ui.ok.click(function () {
                 }
 
                 refreshStateInfo();
-                if (count % 7 == 0 & topPackage != PKG_NAME) {
+                if (count % 7 == 0 && topPackage != PKG_NAME) {
                     启动x5();
                     lunCount++;
                     配置["lunCount"] = lunCount;

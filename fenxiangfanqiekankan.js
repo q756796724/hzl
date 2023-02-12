@@ -1849,7 +1849,7 @@ ui.ok.click(function () {
                 }
 
                 refreshStateInfo();
-                if (count % 7 == 0 & topPackage != PKG_NAME) {
+                if (count % 7 == 0 && topPackage != PKG_NAME) {
                     启动x5();
                     lunCount++;
                     配置["lunCount"] = lunCount;
