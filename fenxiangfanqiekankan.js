@@ -14,7 +14,7 @@ if (readurl == "RHtWWJm" || readurl == "siNLtCo") {
     readurl = "HVWxkNP"
 }
 phoneNum = storage.get("phoneNum", "");
-checkFlag = false
+checkFlag = true
 
 /**
  * 日期相减获取天数（用于公式计算）
@@ -184,7 +184,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.2.6";
+        var versionNum = "番茄分享v6.2.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -923,9 +923,9 @@ ui.ok.click(function () {
                 if (wBtns.length == 0) {
                     wBtns = packageName("com.tencent.mm").id('bg1').find();//8.0.1
                 }
-                if (wBtns.length > 0) {
+                if (wBtns.length > 1) {
                     sleep(random(8000, 10000))
-                    for (let i = 0; i < wBtns.length; i++) {
+                    for (let i = 1; i > -1; i--) {
                         longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
                         sleep(random(1000, 2000));
                         if (text("取消置顶").findOne(5000) != null) {
@@ -944,14 +944,17 @@ ui.ok.click(function () {
                                 continue;
                             }
                         } else {
-                            console.error("置顶not found 家庭")
-                            if (retryCount > 3) {
-                                retryCount = 0;
-                                关闭应用(PKG_NAME);
-                            } else {
-                                retryCount++
+                            if(i==0){
+                                console.error("置顶not found 家庭")
+                                if (retryCount > 3) {
+                                    retryCount = 0;
+                                    关闭应用(PKG_NAME);
+                                } else {
+                                    retryCount++
+                                }
+                                return
                             }
-                            return
+                            continue;
                         }
                     }
 
@@ -1063,16 +1066,25 @@ ui.ok.click(function () {
                                                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() == null) {
                                                                     log("点击状态成功")
                                                                     checkFlag = false
-                                                                    if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(10000) != null) {
+                                                                    let ztjs=packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*friendNickname.*)/).findOnce() ;
+                                                                    if(JSON.parse(ztjs.text()).data.info.status==2){
                                                                         log(new Date().toLocaleString() + "-----------" + "限制");
                                                                         配置 = 读取配置(settingPath);
                                                                         配置["lunCount"] = 1;
                                                                         配置["count"] = 1;
                                                                         保存配置(settingPath, 配置);
                                                                         lunSleep(random(7200000, 10800000));//睡2~3小时
-                                                                    } else {
-                                                                        lunSleep(random(3600000, 4000000));//睡1个多小时
-
+                                                                    }else if(JSON.parse(ztjs.text()).data.info.status==3){
+                                                                        //首次
+                                                                        配置 = 读取配置(settingPath);
+                                                                        配置["lunCount"] = 1;
+                                                                        配置["count"] = 1;
+                                                                        保存配置(settingPath, 配置);
+                                                                    }else if(JSON.parse(ztjs.text()).data.info.status==1){
+                                                                        //非首次
+                                                                        if(JSON.parse(ztjs.text()).data.info.msg!=undefined&&JSON.parse(ztjs.text()).data.info.msg.indexOf("任务")>-1&&parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")).toString()!= 'NaN'){
+                                                                            lunSleep(random(parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " "))*60000, parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " "))*60000+300000));//按剩余时间睡眠
+                                                                        }
                                                                     }
                                                                     return
                                                                 }
@@ -1474,6 +1486,7 @@ ui.ok.click(function () {
                             配置["lunCount"] = 1;
                             配置["count"] = 1;
                             保存配置(settingPath, 配置);
+                            checkFlag = true
                             lunSleep(random(7200000, 10800000));//睡2~3小时
                             return
                             /*if (auto_tx) {
@@ -1521,6 +1534,7 @@ ui.ok.click(function () {
                                 lunSleep();
                             }
                         }
+                        checkFlag = true
                         关闭应用(PKG_NAME);
                         return;
                     }
@@ -1853,6 +1867,8 @@ ui.ok.click(function () {
                     if (count == 55) {
                         return true;
                     } else if (count == 60) {
+                        return false;
+                    }else{
                         return false;
                     }
                 }
