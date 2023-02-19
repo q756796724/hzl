@@ -184,7 +184,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.2.7";
+        var versionNum = "番茄分享v6.2.8";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1082,9 +1082,16 @@ ui.ok.click(function () {
                                                                         保存配置(settingPath, 配置);
                                                                     }else if(JSON.parse(ztjs.text()).data.info.status==1){
                                                                         //非首次
-                                                                        if(JSON.parse(ztjs.text()).data.info.msg!=undefined&&JSON.parse(ztjs.text()).data.info.msg.indexOf("任务")>-1&&parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")).toString()!= 'NaN'){
+                                                                        if(JSON.parse(ztjs.text()).data.info.msg!=undefined&&JSON.parse(ztjs.text()).data.info.msg.indexOf("分钟后")>-1&&parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")).toString()!= 'NaN'){
                                                                             lunSleep(random(parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " "))*60000, parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " "))*60000+300000));//按剩余时间睡眠
                                                                         }
+                                                                    }else if(JSON.parse(ztjs.text()).data.info.status==4){
+                                                                        log(new Date().toLocaleString() + "-----------" + "上限");
+                                                                        配置 = 读取配置(settingPath);
+                                                                        配置["lunCount"] = 20;
+                                                                        配置["count"] = 1;
+                                                                        保存配置(settingPath, 配置);
+                                                                        lunSleep(random(7200000, 10800000));//睡2~3小时
                                                                     }
                                                                     return
                                                                 }
@@ -1582,6 +1589,7 @@ ui.ok.click(function () {
                 }*/
             }
             lunSleep(random(7200000, 10800000));//睡2~3小时
+            checkFlag = true
             return
 
         }
@@ -2727,7 +2735,14 @@ ui.ok.click(function () {
                 }
                 sleep(5000);
                 home();
-                log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息中");
+                if(lunCount>=20){
+                    log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "上限,休息中");
+
+                }else{
+                    log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息中");
+
+                }
+                log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
                 sleepLongTime(random(3600000, 5000000));
                 continue;
             }
