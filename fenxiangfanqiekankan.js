@@ -1955,7 +1955,7 @@ ui.ok.click(function () {
                                     rBtn.parent().click();
                                 }
                                 返回v首页();
-                                lunSleep(random(3600000, 4000000));
+                                lunSleep(random(1800000, 2000000));
                                 return false;
                             }
                             if (fenxiangwenzhang("大家庭") == false) {
