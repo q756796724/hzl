@@ -4,6 +4,10 @@ storage = storages.create("fanqiekankan配置");
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 phoneNum = storage.get("phoneNum", "");
+if (storage.get("readdays") == undefined) {
+    storage.put("readdays", 0);
+}
+readdays = storage.get("readdays");//阅读天数
 
 
 /**
@@ -494,6 +498,43 @@ ui.ok.click(function () {
                 sleep(8000)
                 repData=getjieshouNum();
                 
+            }
+            return repData
+
+        }
+
+        //限制次数+1
+        function addXianZhi() {
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                app.launch(PKG_NAME);
+            }
+            sleep(8000)
+
+            let temp = null;
+            let repData = "0";
+            try {
+                temp = http.get("http://175.178.60.114:8081/fanqie/addXianZhi");
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                        let repData = rep["data"];
+                        return repData
+                    } else {
+                        throw Error("addXianZhi获取数据失败" + temp)
+                    }
+                }
+            } catch (err) {
+                console.error("addXianZhi报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                repData = addXianZhi();
+
             }
             return repData
 
@@ -1788,6 +1829,10 @@ ui.ok.click(function () {
 
                 readTitle= [];
                 lunSleep(random(600000,3600000));
+                if(getjieshouNum()==phoneNum.toString()){
+                    readdays++;
+                    storage.put("readdays", readdays);
+                }
                 初始化配置(settingPath);
                 console.clear();
                 toastLog("每天初始化配置");
