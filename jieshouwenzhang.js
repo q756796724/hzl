@@ -176,7 +176,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.0.1";
+        var versionNum = "接收v6.0.2";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -1825,14 +1825,31 @@ ui.ok.click(function () {
             
             配置 = 读取配置(settingPath);
             if (配置["date"] != new Date().toLocaleDateString()) {
-               
-
                 readTitle= [];
                 lunSleep(random(600000,3600000));
-                if(getjieshouNum()==phoneNum.toString()){
-                    readdays++;
-                    storage.put("readdays", readdays);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    sleep(10000);
                 }
+                if(getjieshouNum()==phoneNum.toString()){
+                    if(readdays>5){
+                        while (1) {
+                            addXianZhi()
+                            sleep(3000)
+                            if(getjieshouNum()!=phoneNum.toString()){
+                                readdays=0
+                                //跳出死循环
+                                break
+                            }
+                        }
+                    }else{
+                        readdays++;
+                    }
+                }else{
+                    readdays=0
+                }
+                storage.put("readdays", readdays);
+
                 初始化配置(settingPath);
                 console.clear();
                 toastLog("每天初始化配置");
