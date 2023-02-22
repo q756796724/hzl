@@ -184,7 +184,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.2.9";
+        var versionNum = "番茄分享v6.3.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -453,6 +453,35 @@ ui.ok.click(function () {
                 }
                 sleep(8000)
                 repData = reduceXianZhi();
+
+            }
+            return repData
+
+        }
+        //是否重复阅读
+        function sfcfyd(txt) {
+            let temp = null;
+            let repData = true;
+            try {
+                temp = http.get("http://175.178.60.114:8081/fanqie/sfcfyd?txt=" + txt);
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            } catch (err) {
+                console.error("sfcfyd报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                repData = sfcfyd(txt);
 
             }
             return repData
@@ -944,7 +973,7 @@ ui.ok.click(function () {
                                 continue;
                             }
                         } else {
-                            if(i==0){
+                            if (i == 0) {
                                 console.error("置顶not found 家庭")
                                 if (retryCount > 3) {
                                     retryCount = 0;
@@ -1066,26 +1095,27 @@ ui.ok.click(function () {
                                                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() == null) {
                                                                     log("点击状态成功")
                                                                     checkFlag = false
-                                                                    let ztjs=packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*friendNickname.*)/).findOnce() ;
-                                                                    if(JSON.parse(ztjs.text()).data.info.status==2){
+                                                                    let ztjs = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*friendNickname.*)/).findOnce();
+                                                                    readNum = parseInt(JSON.parse(ztjs.text()).data.info.num);
+                                                                    if (JSON.parse(ztjs.text()).data.info.status == 2) {
                                                                         log(new Date().toLocaleString() + "-----------" + "限制");
                                                                         配置 = 读取配置(settingPath);
                                                                         配置["lunCount"] = 1;
                                                                         配置["count"] = 1;
                                                                         保存配置(settingPath, 配置);
                                                                         lunSleep(random(7200000, 10800000));//睡2~3小时
-                                                                    }else if(JSON.parse(ztjs.text()).data.info.status==3){
+                                                                    } else if (JSON.parse(ztjs.text()).data.info.status == 3) {
                                                                         //首次
                                                                         配置 = 读取配置(settingPath);
                                                                         配置["lunCount"] = 1;
                                                                         配置["count"] = 1;
                                                                         保存配置(settingPath, 配置);
-                                                                    }else if(JSON.parse(ztjs.text()).data.info.status==1){
+                                                                    } else if (JSON.parse(ztjs.text()).data.info.status == 1) {
                                                                         //非首次
-                                                                        if(JSON.parse(ztjs.text()).data.info.msg!=undefined&&JSON.parse(ztjs.text()).data.info.msg.indexOf("分钟后")>-1&&parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")).toString()!= 'NaN'){
-                                                                            lunSleep(random(parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " "))*60000, parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " "))*60000+300000));//按剩余时间睡眠
+                                                                        if (JSON.parse(ztjs.text()).data.info.msg != undefined && JSON.parse(ztjs.text()).data.info.msg.indexOf("分钟后") > -1 && parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")).toString() != 'NaN') {
+                                                                            lunSleep(random(parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")) * 60000, parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")) * 60000 + 300000));//按剩余时间睡眠
                                                                         }
-                                                                    }else if(JSON.parse(ztjs.text()).data.info.status==4){
+                                                                    } else if (JSON.parse(ztjs.text()).data.info.status == 4) {
                                                                         log(new Date().toLocaleString() + "-----------" + "上限");
                                                                         配置 = 读取配置(settingPath);
                                                                         配置["lunCount"] = 20;
@@ -1243,18 +1273,45 @@ ui.ok.click(function () {
                     }
                     clickx(阅读.right, 阅读.bottom);
                     log("点击状态成功");
-                    if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(10000) != null) {
+                    let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOne(10000);
+                    if (ntext != null) {
+                        click("允许");
+                        sleep(3000);
+                    }
+                    sleep(1000)
+                    click("继续访问")
+                    log("点击状态成功")
+                    checkFlag = false
+                    let ztjs = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*friendNickname.*)/).findOnce();
+                    readNum = parseInt(JSON.parse(ztjs.text()).data.info.num);
+                    if (JSON.parse(ztjs.text()).data.info.status == 2) {
                         log(new Date().toLocaleString() + "-----------" + "限制");
                         配置 = 读取配置(settingPath);
                         配置["lunCount"] = 1;
                         配置["count"] = 1;
                         保存配置(settingPath, 配置);
                         lunSleep(random(7200000, 10800000));//睡2~3小时
-                    } else {
-                        lunSleep(random(3600000, 4000000));//睡1个多小时
-
+                    } else if (JSON.parse(ztjs.text()).data.info.status == 3) {
+                        //首次
+                        配置 = 读取配置(settingPath);
+                        配置["lunCount"] = 1;
+                        配置["count"] = 1;
+                        保存配置(settingPath, 配置);
+                    } else if (JSON.parse(ztjs.text()).data.info.status == 1) {
+                        //非首次
+                        if (JSON.parse(ztjs.text()).data.info.msg != undefined && JSON.parse(ztjs.text()).data.info.msg.indexOf("分钟后") > -1 && parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")).toString() != 'NaN') {
+                            lunSleep(random(parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")) * 60000, parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")) * 60000 + 300000));//按剩余时间睡眠
+                        }
+                    } else if (JSON.parse(ztjs.text()).data.info.status == 4) {
+                        log(new Date().toLocaleString() + "-----------" + "上限");
+                        配置 = 读取配置(settingPath);
+                        配置["lunCount"] = 20;
+                        配置["count"] = 1;
+                        保存配置(settingPath, 配置);
+                        lunSleep(random(7200000, 10800000));//睡2~3小时
                     }
                     return
+
 
                 }
 
@@ -1535,7 +1592,7 @@ ui.ok.click(function () {
                                 lunSleep(random(3600000, 4000000));
                             } else if (new Date().getHours() > 16 && new Date().getHours() <= 18 && (lunCount < 4 || readNum < 120)) {
                                 lunSleep(random(3600000, 4000000));
-                            }else if (new Date().getHours() > 18 && (lunCount < 5 || readNum < 150)) {
+                            } else if (new Date().getHours() > 18 && (lunCount < 5 || readNum < 150)) {
                                 lunSleep(random(3600000, 4000000));
                             } else {
                                 lunSleep();
@@ -1878,7 +1935,7 @@ ui.ok.click(function () {
                         配置["count"] = 1;
                         保存配置(settingPath, 配置);
                         return false;
-                    }else{
+                    } else {
                         配置["count"] = 1;
                         保存配置(settingPath, 配置);
                         return false;
@@ -1887,8 +1944,20 @@ ui.ok.click(function () {
                 //判断是否需要互助
                 if (count == wifiCount) {
                     let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                    sleep(5000)
+                    cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                         if (lunCount == 1) {
+                            if (sfcfyd(cBtn.text().TextFilter()) == false) {
+                                console.error("cfyd："+cBtn.text().TextFilter());
+                                let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                                if (rBtn != null && rBtn.parent() != null) {
+                                    rBtn.parent().click();
+                                }
+                                返回v首页();
+                                lunSleep(random(3600000, 4000000));
+                                return false;
+                            }
                             if (fenxiangwenzhang("大家庭") == false) {
                                 //addjieshouCount("分享失败数量加1");
                             }
@@ -1915,10 +1984,6 @@ ui.ok.click(function () {
                 sleep(random(3000, 7000));
                 swapeToRead();
                 sleep(random(3000, 7000));
-                swapeToRead();
-                sleep(random(3000, 5000));
-                swapeToRead();
-                sleep(random(2000, 4000));
                 /*if (count == wifiCount) {
                     swapeToRead();
                     sleep(random(3000, 7000));
@@ -1939,6 +2004,10 @@ ui.ok.click(function () {
                 }*/
 
                 if (count == wifiCount) {
+                    swapeToRead();
+                    sleep(random(3000, 5000));
+                    swapeToRead();
+                    sleep(random(2000, 4000));
                     swapeToRead();
                     sleep(random(3000, 7000));
                     swapeToRead();
@@ -2739,10 +2808,10 @@ ui.ok.click(function () {
                 }
                 sleep(5000);
                 home();
-                if(lunCount>=20){
+                if (lunCount >= 20) {
                     log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "上限,休息中");
 
-                }else{
+                } else {
                     log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息中");
 
                 }
