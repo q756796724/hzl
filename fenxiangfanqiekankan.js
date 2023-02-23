@@ -15,6 +15,7 @@ if (readurl == "RHtWWJm" || readurl == "siNLtCo") {
 }
 phoneNum = storage.get("phoneNum", "");
 checkFlag = true
+fanxiangFlag=false;
 
 /**
  * 日期相减获取天数（用于公式计算）
@@ -184,7 +185,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.3.0";
+        var versionNum = "番茄分享v6.3.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1103,13 +1104,22 @@ ui.ok.click(function () {
                                                                         配置["lunCount"] = 1;
                                                                         配置["count"] = 1;
                                                                         保存配置(settingPath, 配置);
-                                                                        lunSleep(random(7200000, 10800000));//睡2~3小时
+                                                                        //lunSleep(random(7200000, 10800000));//睡2~3小时
+                                                                        for (; ;) {
+                                                                            配置 = 读取配置(settingPath);
+                                                                            if (配置["date"] == new Date().toLocaleDateString()) {
+                                                                                lunSleep(random(21600000, 25200000));//睡6~7小时
+                                                                            } else {
+                                                                                return
+                                                                            }
+                                                                        }
                                                                     } else if (JSON.parse(ztjs.text()).data.info.status == 3) {
                                                                         //首次
                                                                         配置 = 读取配置(settingPath);
                                                                         配置["lunCount"] = 1;
                                                                         配置["count"] = 1;
                                                                         保存配置(settingPath, 配置);
+                                                                        fanxiangFlag=true;
                                                                     } else if (JSON.parse(ztjs.text()).data.info.status == 1) {
                                                                         //非首次
                                                                         if (JSON.parse(ztjs.text()).data.info.msg != undefined && JSON.parse(ztjs.text()).data.info.msg.indexOf("分钟后") > -1 && parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")).toString() != 'NaN') {
@@ -1290,13 +1300,22 @@ ui.ok.click(function () {
                         配置["lunCount"] = 1;
                         配置["count"] = 1;
                         保存配置(settingPath, 配置);
-                        lunSleep(random(7200000, 10800000));//睡2~3小时
+                        //lunSleep(random(7200000, 10800000));//睡2~3小时
+                        for (; ;) {
+                            配置 = 读取配置(settingPath);
+                            if (配置["date"] == new Date().toLocaleDateString()) {
+                                lunSleep(random(21600000, 25200000));//睡6~7小时
+                            } else {
+                                return
+                            }
+                        }
                     } else if (JSON.parse(ztjs.text()).data.info.status == 3) {
                         //首次
                         配置 = 读取配置(settingPath);
                         配置["lunCount"] = 1;
                         配置["count"] = 1;
                         保存配置(settingPath, 配置);
+                        fanxiangFlag=true
                     } else if (JSON.parse(ztjs.text()).data.info.status == 1) {
                         //非首次
                         if (JSON.parse(ztjs.text()).data.info.msg != undefined && JSON.parse(ztjs.text()).data.info.msg.indexOf("分钟后") > -1 && parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")).toString() != 'NaN') {
@@ -1595,7 +1614,7 @@ ui.ok.click(function () {
                             } else if (new Date().getHours() > 18 && (lunCount < 5 || readNum < 150)) {
                                 lunSleep(random(3600000, 4000000));
                             } else {
-                                lunSleep();
+                                lunSleep(random(3600000, 5000000));
                             }
                         }
                         checkFlag = true
@@ -1947,7 +1966,7 @@ ui.ok.click(function () {
                     sleep(5000)
                     cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
-                        if (lunCount == 1) {
+                        if (lunCount == 1&&fanxiangFlag==true) {
                             if (sfcfyd(cBtn.text().TextFilter()) == false) {
                                 console.error("cfyd："+cBtn.text().TextFilter());
                                 let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
@@ -1960,6 +1979,8 @@ ui.ok.click(function () {
                             }
                             if (fenxiangwenzhang("大家庭") == false) {
                                 //addjieshouCount("分享失败数量加1");
+                            }else{
+                                fanxiangFlag=false;
                             }
                         }
                     } else {
