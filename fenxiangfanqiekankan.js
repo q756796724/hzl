@@ -955,7 +955,7 @@ ui.ok.click(function () {
                 }
                 if (wBtns.length > 1) {
                     sleep(random(8000, 10000))
-                    for (let i = 1; i > -1; i--) {
+                    for (let i = 0; i < wBtns.length; i++) {
                         longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
                         sleep(random(1000, 2000));
                         if (text("取消置顶").findOne(5000) != null) {
@@ -968,7 +968,7 @@ ui.ok.click(function () {
                                 log("进入了家庭");
                                 break
                             } else {
-                                sleep(random(180000, 250000))
+                                sleep(random(30000, 120000))
                                 back();
                                 sleep(3000)
                                 continue;
@@ -1540,7 +1540,7 @@ ui.ok.click(function () {
                             return;
                         }
                         if (getjieshouNum() == "0") {
-                            sendTx("http://miaotixing.com/trigger?id=tzbrDO8");
+                            sendTx("http://miaotixing.com/trigger?id=tzbrDO8");//phoneNum=0
                             lunSleep(random(3600000, 4000000));//睡1个多小时
                             return;
                         }
@@ -1631,7 +1631,7 @@ ui.ok.click(function () {
             } else {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                 if (stopPage != null) {
-                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH");
+                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH");//出错请处理
                     lunSleep(random(3600000, 4000000));//睡1个多小时
                     return;
                 }
@@ -1957,6 +1957,7 @@ ui.ok.click(function () {
                     } else {
                         配置["count"] = 1;
                         保存配置(settingPath, 配置);
+                        sendTx("http://miaotixing.com/trigger?id=tn9efbL");//代理异常
                         return false;
                     }
                 }
