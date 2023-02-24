@@ -185,7 +185,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.3.2";
+        var versionNum = "番茄分享v6.3.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1524,8 +1524,8 @@ ui.ok.click(function () {
                     lunSleep(random(7200000, 10800000));//睡2~3小时
                     return
                 }
-
-                if (lunCount == 1) {
+                
+                if (lunCount == 1&&fanxiangFlag==true) {
                     for (var i = 0; i < 5; i++) {
                         if (联网验证(zwifi) != true) {
                             连接wifi(zwifi, 5000);
