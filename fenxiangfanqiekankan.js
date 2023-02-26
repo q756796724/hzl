@@ -185,7 +185,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.3.4";
+        var versionNum = "番茄分享v6.3.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1914,7 +1914,7 @@ ui.ok.click(function () {
                                 back()
                                 sleep(8000);
                             } else {
-                                if (lunCount == 1 && count - wifiCount < 5) {
+                                if (lunCount == 1 && count - wifiCount < 5 && wifiCount<10) {
                                     checkFlag = true
                                     /*配置["count"] = 1;
                                     保存配置(settingPath, 配置);*/
