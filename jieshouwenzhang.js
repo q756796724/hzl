@@ -176,7 +176,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.0.3";
+        var versionNum = "接收v6.0.5";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -1969,7 +1969,11 @@ ui.ok.click(function () {
                     home();
                 } 
                 lunSleep(1200000);
-                
+                if(readdays>-1){
+                    sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:"+phoneNum+"提前休息，已任天数"+(readdays+1));//切换
+                    readdays=-1
+                    storage.put("readdays", readdays);
+                }
                 continue;
             }else{
                 if(readdays==-1){
