@@ -5,7 +5,7 @@ zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 phoneNum = storage.get("phoneNum", "");
 if (storage.get("readdays") == undefined) {
-    storage.put("readdays", 0);
+    storage.put("readdays", -1);
 }
 readdays = storage.get("readdays");//阅读天数
 
@@ -176,7 +176,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.0.2";
+        var versionNum = "接收v6.0.3";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -533,13 +533,27 @@ ui.ok.click(function () {
                     app.launch(PKG_NAME);
                 }
                 sleep(8000)
-                repData = addXianZhi();
+                //repData = addXianZhi();
 
             }
             return repData
 
         }
-        
+        //发送提醒
+        function sendTx(url) {
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                app.launch(PKG_NAME);
+                sleep(10000);
+            }
+            let temp = null;
+            let repData = 0;
+            try {
+                temp = http.get(url);
+            } catch (err) {
+                console.error(new Date().toLocaleString() + "----------sendTx报错,原因:" + err);
+            }
+        }
         function jieshouwenzhang() {
             //进入指定群，接收文章
             if (联网验证(zwifi) != true) {
@@ -1838,6 +1852,7 @@ ui.ok.click(function () {
                             sleep(3000)
                             if(getjieshouNum()!=phoneNum.toString()){
                                 readdays=0
+                                sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:"+phoneNum+"期满");//切换
                                 //跳出死循环
                                 break
                             }
@@ -1846,7 +1861,7 @@ ui.ok.click(function () {
                         readdays++;
                     }
                 }else{
-                    readdays=0
+                    readdays=-1
                 }
                 storage.put("readdays", readdays);
 
@@ -1956,6 +1971,12 @@ ui.ok.click(function () {
                 lunSleep(1200000);
                 
                 continue;
+            }else{
+                if(readdays==-1){
+                    readdays=0
+                    storage.put("readdays", readdays);
+                    sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:"+phoneNum+"上任");//切换
+                }
             }
 
             打开v();
