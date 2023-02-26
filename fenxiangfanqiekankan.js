@@ -186,7 +186,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.3.6";
+        var versionNum = "番茄分享v6.3.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -389,7 +389,7 @@ ui.ok.click(function () {
 
         }
         //限制次数+1
-        function addXianZhi() {
+        function addXianZhi(num) {
             if (联网验证(zwifi) != true) {
                 连接wifi(zwifi, 5000);
                 app.launch(PKG_NAME);
@@ -399,7 +399,7 @@ ui.ok.click(function () {
             let temp = null;
             let repData = "0";
             try {
-                temp = http.get("http://175.178.60.114:8081/fanqie/addXianZhi");
+                temp = http.get("http://175.178.60.114:8081/fanqie/addXianZhi?phoneNum=" + num);
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -418,7 +418,7 @@ ui.ok.click(function () {
                     app.launch(PKG_NAME);
                 }
                 sleep(8000)
-                repData = addXianZhi();
+                repData = addXianZhi(num);
 
             }
             return repData
@@ -1894,7 +1894,7 @@ ui.ok.click(function () {
                                     配置["count"] = 1;
                                     保存配置(settingPath, 配置);
                                     sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:"+phoneNum);//限制+1
-                                    addXianZhi()
+                                    addXianZhi(phoneNum.toString())
                                 }
                                 /*if (auto_tx) {
                                     lunSleep(random(10800000, 14400000));//睡3~4小时
@@ -1923,7 +1923,7 @@ ui.ok.click(function () {
                                     /*配置["count"] = 1;
                                     保存配置(settingPath, 配置);*/
                                     sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:"+phoneNum);//限制+1
-                                    addXianZhi()
+                                    addXianZhi(phoneNum.toString())
                                     log(new Date().toLocaleString() + "-----------" + "应该限制");
                                     count = 60;
                                 } else {
