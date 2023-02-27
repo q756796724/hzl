@@ -176,7 +176,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.0.5";
+        var versionNum = "接收v6.0.6";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -505,11 +505,20 @@ ui.ok.click(function () {
 
         //限制次数+1
         function addXianZhi() {
-            if (联网验证(zwifi) != true) {
-                连接wifi(zwifi, 5000);
-                app.launch(PKG_NAME);
+            while (1) {
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    sleep(8000)
+                } else {
+                    refreshStateInfo();
+                    if (topPackage != PKG_NAME) {
+                        app.launch(PKG_NAME);
+                        sleep(5000)
+                    }
+                    //跳出死循环
+                    break
+                }
             }
-            sleep(8000)
 
             let temp = null;
             let repData = "0";
