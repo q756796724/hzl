@@ -1393,6 +1393,8 @@ ui.ok.click(function () {
                                         sendTx("http://miaotixing.com/trigger?id=tn90yT0&text=" + jfTxt.text().replace(/[^\d]/g, " ") + "num:" + phoneNum);//tx
                                     }
                                 }
+                                checkFlag=true
+
                                 txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(8000);
                                 if (txBtn != null) {
                                     sleep(500)
@@ -1633,16 +1635,21 @@ ui.ok.click(function () {
                             配置["count"] = 1;
                             保存配置(settingPath, 配置);
                             log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
-                            if (new Date().getHours() > 12 && new Date().getHours() <= 14 && (lunCount < 2 || readNum < 60)) {
-                                lunSleep(random(3600000, 4000000));
-                            } else if (new Date().getHours() > 14 && new Date().getHours() <= 16 && (lunCount < 3 || readNum < 90)) {
-                                lunSleep(random(3600000, 4000000));
-                            } else if (new Date().getHours() > 16 && new Date().getHours() <= 18 && (lunCount < 4 || readNum < 120)) {
-                                lunSleep(random(3600000, 4000000));
-                            } else if (new Date().getHours() > 18 && (lunCount < 5 || readNum < 150)) {
-                                lunSleep(random(3600000, 4000000));
-                            } else {
-                                lunSleep(random(3600000, 5000000));
+                            if (fanxiangFlag == false&&auto_tx==true && ((nowHour > 13 && todayTxCount < 1) || (nowHour > 19 && todayTxCount < 2) || (nowHour > 20 && todayTxCount < 3) || (nowHour > 21 && todayTxCount < 4))) {
+                                返回v首页();
+                                return;
+                            }else{
+                                if (new Date().getHours() > 12 && new Date().getHours() <= 14 && (lunCount < 2 || readNum < 60)) {
+                                    lunSleep(random(3600000, 4000000));
+                                } else if (new Date().getHours() > 14 && new Date().getHours() <= 16 && (lunCount < 3 || readNum < 90)) {
+                                    lunSleep(random(3600000, 4000000));
+                                } else if (new Date().getHours() > 16 && new Date().getHours() <= 18 && (lunCount < 4 || readNum < 120)) {
+                                    lunSleep(random(3600000, 4000000));
+                                } else if (new Date().getHours() > 18 && (lunCount < 5 || readNum < 150)) {
+                                    lunSleep(random(3600000, 4000000));
+                                } else {
+                                    lunSleep(random(3600000, 5000000));
+                                }
                             }
                         }
                         checkFlag = true
