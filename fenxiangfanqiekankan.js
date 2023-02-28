@@ -187,7 +187,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.3.9";
+        var versionNum = "番茄分享v6.4.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -970,38 +970,75 @@ ui.ok.click(function () {
                 }
                 if (wBtns.length > 1) {
                     sleep(random(8000, 10000))
-                    for (let i = 0; i < wBtns.length; i++) {
-                        longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
-                        sleep(random(1000, 2000));
-                        if (text("取消置顶").findOne(5000) != null) {
-                            retryCount = 0;
-                            back();
-                            sleep(2000)
-                            clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
-                            sleep(random(1500, 2000))
-                            if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) == null && packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
-                                log("进入了家庭");
-                                break
-                            } else {
-                                sleep(random(30000, 120000))
+                    if (random(0, 1) == 0 ){
+                        for (let i = 1; i > -1; i--) {
+                            longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                            sleep(random(1000, 2000));
+                            if (text("取消置顶").findOne(5000) != null) {
+                                retryCount = 0;
                                 back();
-                                sleep(3000)
+                                sleep(2000)
+                                clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                                sleep(random(1500, 2000))
+                                if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) == null && packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
+                                    log("进入了家庭");
+                                    break
+                                } else {
+                                    sleep(random(30000, 120000))
+                                    back();
+                                    sleep(3000)
+                                    continue;
+                                }
+                            } else {
+                                if (i == 0) {
+                                    console.error("置顶not found 家庭")
+                                    if (retryCount > 3) {
+                                        retryCount = 0;
+                                        关闭应用(PKG_NAME);
+                                    } else {
+                                        retryCount++
+                                    }
+                                    return
+                                }
                                 continue;
                             }
-                        } else {
-                            if (i == 0) {
-                                console.error("置顶not found 家庭")
-                                if (retryCount > 3) {
-                                    retryCount = 0;
-                                    关闭应用(PKG_NAME);
+                        }
+                    }else{
+                        for (let i = 0; i < wBtns.length; i++) {
+                            longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                            sleep(random(1000, 2000));
+                            if (text("取消置顶").findOne(5000) != null) {
+                                retryCount = 0;
+                                back();
+                                sleep(2000)
+                                clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                                sleep(random(1500, 2000))
+                                if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) == null && packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
+                                    log("进入了家庭");
+                                    break
                                 } else {
-                                    retryCount++
+                                    sleep(random(30000, 120000))
+                                    back();
+                                    sleep(3000)
+                                    continue;
                                 }
-                                return
+                            } else {
+                                if (i == 0) {
+                                    console.error("置顶not found 家庭")
+                                    if (retryCount > 3) {
+                                        retryCount = 0;
+                                        关闭应用(PKG_NAME);
+                                    } else {
+                                        retryCount++
+                                    }
+                                    return
+                                }
+                                continue;
                             }
-                            continue;
                         }
                     }
+                    
+                    
 
                     //let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOne(5000);
                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000) == null && packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
