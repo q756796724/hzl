@@ -187,7 +187,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.3.8";
+        var versionNum = "番茄分享v6.3.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1023,7 +1023,7 @@ ui.ok.click(function () {
                                                     }
                                                     //log(child.text())
                                                     if (checkFlag == false) {
-                                                        if (auto_tx && ((nowHour > 13 && todayTxCount < 1) || (nowHour > 19 && todayTxCount < 2) || (nowHour > 20 && todayTxCount < 3) || (nowHour > 21 && todayTxCount < 4))) {
+                                                        if (fanxiangFlag == false&&auto_tx==true && ((nowHour > 13 && todayTxCount < 1) || (nowHour > 19 && todayTxCount < 2) || (nowHour > 20 && todayTxCount < 3) || (nowHour > 21 && todayTxCount < 4))) {
                                                             if (child.text().indexOf("番茄主") > -1 && child.clickable()) {
                                                                 retryCount = 0;
                                                                 for (let i = 0; i < 10; i++) {
@@ -1119,7 +1119,8 @@ ui.ok.click(function () {
                                                                         配置["lunCount"] = 1;
                                                                         配置["count"] = 1;
                                                                         保存配置(settingPath, 配置);
-                                                                        lunSleep(21600000);//睡6小时
+                                                                        lunSleep(random(10800000, 14400000));//睡3~4小时
+                                                                        checkFlag = true
                                                                         /*for (; ;) {
                                                                             配置 = 读取配置(settingPath);
                                                                             if (配置["date"] == new Date().toLocaleDateString()) {
@@ -1316,7 +1317,8 @@ ui.ok.click(function () {
                         配置["lunCount"] = 1;
                         配置["count"] = 1;
                         保存配置(settingPath, 配置);
-                        lunSleep(21600000);//睡6小时
+                        lunSleep(random(10800000, 14400000));//睡3~4小时
+                        checkFlag = true
                         /*for (; ;) {
                             配置 = 读取配置(settingPath);
                             if (配置["date"] == new Date().toLocaleDateString()) {
@@ -1367,7 +1369,7 @@ ui.ok.click(function () {
                 
             }*/
 
-            if (auto_tx && ((nowHour > 13 && todayTxCount < 1) || (nowHour > 19 && todayTxCount < 2) || (nowHour > 20 && todayTxCount < 3) || (nowHour > 21 && todayTxCount < 4))) {
+            if (fanxiangFlag == false&&auto_tx==true && ((nowHour > 13 && todayTxCount < 1) || (nowHour > 19 && todayTxCount < 2) || (nowHour > 20 && todayTxCount < 3) || (nowHour > 21 && todayTxCount < 4))) {
                 if (className("android.view.View").textMatches(/(.*注册时间.*)/).findOne(10000) != null) {
                     let jfTxt = packageName("com.tencent.mm").className("android.view.View").textContains("余额:").findOnce()
                     if (jfTxt) {
@@ -1382,6 +1384,7 @@ ui.ok.click(function () {
                                 if (txBtn) {
                                     sleep(500)
                                     txBtn.click();
+                                    sendTx("http://miaotixing.com/trigger?id=tn90yT0&text=" + jfTxt.text().replace(/[^\d]/g, " ") + "num:" + phoneNum);//tx
                                 } else {
                                     txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("提现").findOne(2000);
                                     if (txBtn) {
@@ -1399,8 +1402,8 @@ ui.ok.click(function () {
                                     back();
                                 }
 
-                                for (var i = 0; i < 3; i++) {
-                                    let sBtn = className("android.view.View").textMatches(/(.*注册时间.*)/).findOne(3000);
+                                for (var i = 0; i < 5; i++) {
+                                    let sBtn = className("android.view.View").textMatches(/(.*注册时间.*)/).findOne(5000);
                                     if (sBtn == null) {
                                         txBtn = packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(3000);
                                         if (txBtn != null) {
@@ -1419,6 +1422,8 @@ ui.ok.click(function () {
                                     }
 
                                 }
+                                返回v首页();
+                                return;
                             } else {
                                 let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                                 if (rBtn != null && rBtn.parent() != null) {
@@ -1544,7 +1549,7 @@ ui.ok.click(function () {
                     配置["lunCount"] = 1;
                     配置["count"] = 1;
                     保存配置(settingPath, 配置);
-                    lunSleep(random(7200000, 10800000));//睡2~3小时
+                    lunSleep(random(10800000, 14400000));//睡3~4小时
                     return
                 }
 
@@ -1593,7 +1598,7 @@ ui.ok.click(function () {
                             配置["count"] = 1;
                             保存配置(settingPath, 配置);
                             checkFlag = true
-                            lunSleep(random(7200000, 10800000));//睡2~3小时
+                            lunSleep(random(10800000, 14400000));//睡3~4小时
                             return
                             /*if (auto_tx) {
                                 lunSleep(random(7200000, 10800000));//睡2~3小时
@@ -1687,7 +1692,7 @@ ui.ok.click(function () {
                     }
                 }*/
             }
-            lunSleep(random(7200000, 10800000));//睡2~3小时
+            lunSleep(random(10800000, 14400000));//睡3~4小时
             checkFlag = true
             return
 
@@ -1908,8 +1913,8 @@ ui.ok.click(function () {
                                 if (lunCount == 1) {
                                     配置["count"] = 1;
                                     保存配置(settingPath, 配置);
-                                    sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:" + phoneNum);//限制+1
-                                    addXianZhi(phoneNum.toString())
+                                    //sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:" + phoneNum);//限制+1
+                                    //addXianZhi(phoneNum.toString())
                                 }
                                 /*if (auto_tx) {
                                     lunSleep(random(10800000, 14400000));//睡3~4小时
@@ -1924,7 +1929,7 @@ ui.ok.click(function () {
                                         }
                                     }
                                 }*/
-                                lunSleep(random(7200000, 10800000));//睡2~3小时
+                                lunSleep(random(10800000, 14400000));//睡3~4小时
                                 return false
                             }
                             if (i < 3) {
@@ -1956,9 +1961,21 @@ ui.ok.click(function () {
                         } else if (packageName("com.tencent.mm").textMatches(/(.*无法打开网页.*|.*网页无法打开.*|.*加载中.*)/).findOne(5000)) {
                             break
                         } else {
-                            log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
+                            if (lunCount == 1 && count - wifiCount < 5 && xianzhiFlag == true) {
+                                xianzhiFlag = false
+                                checkFlag = true
+                                /*配置["count"] = 1;
+                                保存配置(settingPath, 配置);*/
+                                sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:" + phoneNum);//限制+1
+                                addXianZhi(phoneNum.toString())
+                                log(new Date().toLocaleString() + "-----------" + "应该限制！");
+                                count = 60;
+                            } else {
+                                log("本轮结束，完成第" + lunCount + "轮,第" + count + "次！");
 
-                            count = 55;
+                                count = 55;
+                            }
+                            
                             break
                         }
                     }
@@ -2018,6 +2035,8 @@ ui.ok.click(function () {
                             } else {
                                 fanxiangFlag = false;
                             }
+                        }else if(fanxiangFlag == false){
+                            xianzhiFlag = false
                         }
                     } else {
                         console.error("标题识别失败");
