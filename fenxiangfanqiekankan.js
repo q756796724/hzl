@@ -187,7 +187,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.4.0";
+        var versionNum = "番茄分享v6.4.0.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -393,6 +393,7 @@ ui.ok.click(function () {
         function addXianZhi(num) {
             while (1) {
                 if (联网验证(zwifi) != true) {
+                    log("连接wifi")
                     连接wifi(zwifi, 5000);
                     sleep(8000)
                 } else {
@@ -401,6 +402,7 @@ ui.ok.click(function () {
                         app.launch(PKG_NAME);
                         sleep(5000)
                     }
+                    log("跳出死循环")
                     //跳出死循环
                     break
                 }
@@ -409,6 +411,7 @@ ui.ok.click(function () {
             let temp = null;
             let repData = "0";
             try {
+                log("请求")
                 temp = http.get("http://175.178.60.114:8081/fanqie/addXianZhi?phoneNum=" + num);
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
@@ -2826,6 +2829,8 @@ ui.ok.click(function () {
         配置["count"] = 1;
         保存配置(settingPath, 配置);
         for (; ;) {
+            addXianZhi(1);
+            lunSleep(1000000000000)
             kz();
             var nowHour = new Date().getHours();
             log("当前时间:" + nowHour + "时");
