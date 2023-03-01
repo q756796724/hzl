@@ -18,6 +18,7 @@ checkFlag = true
 fanxiangFlag = false;
 xianzhiFlag = false;
 readErrCount = storage.get("readErrCount", 0);//读不上次数
+var lunCount=0
 
 /**
  * 日期相减获取天数（用于公式计算）
