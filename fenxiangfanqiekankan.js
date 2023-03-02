@@ -188,7 +188,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.4.1";
+        var versionNum = "番茄分享v6.4.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -583,15 +583,22 @@ ui.ok.click(function () {
         }*/
         //发送提醒
         function sendTx(url) {
+            let temp = null;
             if (联网验证(zwifi) != true) {
                 连接wifi(zwifi, 5000);
                 app.launch(PKG_NAME);
                 sleep(10000);
             }
             try {
-                http.get(url);
+                temp = http.get(url);
+                if (temp && temp.statusCode == 200) {
+                    return true
+                }else{
+                    return false
+                }
             } catch (err) {
                 console.error(new Date().toLocaleString() + "----------sendTx报错,原因:" + err);
+                return false
             }
         }
         function getConfig() {
