@@ -188,7 +188,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.4.2.1";
+        var versionNum = "番茄分享v6.4.2.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -2854,7 +2854,7 @@ ui.ok.click(function () {
         for (; ;) {
             addXianZhi(phoneNum.toString())
                                     sleep(30000)
-                                    sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:" + phoneNum);//限制+1
+                                    //sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:" + phoneNum);//限制+1
                                     sleep(36000000)
             kz();
             var nowHour = new Date().getHours();
