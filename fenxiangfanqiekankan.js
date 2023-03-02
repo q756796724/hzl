@@ -188,7 +188,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.4.3.1";
+        var versionNum = "番茄分享v6.4.3.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -420,7 +420,7 @@ ui.ok.click(function () {
                     let repState = rep["state"];
                     if (repState == 1) {
                         let repData = rep["data"];
-                        
+                        return repData
                     } else {
                         throw Error("addXianZhi获取数据失败" + temp)
                     }
@@ -433,10 +433,10 @@ ui.ok.click(function () {
                 }
                 sleep(8000)
                 //repData = addXianZhi(num);
-
             }
-
+            return repData
         }
+        
         //限制次数-1
         function reduceXianZhi() {
             if (联网验证(zwifi) != true) {
@@ -2850,11 +2850,9 @@ ui.ok.click(function () {
         配置["count"] = 1;
         保存配置(settingPath, 配置);
         for (; ;) {
-            //sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:" + phoneNum);//限制+1
-                                    //sleep(30000)
-                                    http.post("http://175.178.60.114:8081/fanqie/addXianZhi?phoneNum=" + phoneNum, {});
-                                    //addXianZhi(phoneNum.toString())
-                                    //getjieshouNum()
+            sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:" + phoneNum);//限制+1
+                                    sleep(1000)
+                                    addXianZhi(phoneNum.toString())
                                     sleep(36000000)
                                     
             kz();
