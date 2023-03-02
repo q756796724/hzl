@@ -2847,12 +2847,7 @@ ui.ok.click(function () {
         配置 = 读取配置(settingPath);
         配置["count"] = 1;
         保存配置(settingPath, 配置);
-        for (; ;) {
-            sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:" + phoneNum);//限制+1
-                                    sleep(1000)
-                                    addXianZhi(phoneNum.toString())
-                                    sleep(36000000)
-                                    
+        for (; ;) {                   
             kz();
             var nowHour = new Date().getHours();
             log("当前时间:" + nowHour + "时");
