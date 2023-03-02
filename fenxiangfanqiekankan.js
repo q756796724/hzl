@@ -2851,11 +2851,11 @@ ui.ok.click(function () {
         保存配置(settingPath, 配置);
         for (; ;) {
             //sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:" + phoneNum);//限制+1
-                                    sleep(30000)
-                                    http.post("http://175.178.60.114:8081/fanqie/addXianZhi?phoneNum=" + phoneNum, {});
+                                    //sleep(30000)
+                                    //http.post("http://175.178.60.114:8081/fanqie/addXianZhi?phoneNum=" + phoneNum, {});
                                     //addXianZhi(phoneNum.toString())
                                     //getjieshouNum()
-                                    sleep(36000000)
+                                    //sleep(36000000)
                                     
             kz();
             var nowHour = new Date().getHours();
