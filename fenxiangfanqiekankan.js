@@ -188,7 +188,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.4.3.2";
+        var versionNum = "番茄分享v6.5.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -394,7 +394,6 @@ ui.ok.click(function () {
         function addXianZhi(num) {
             while (1) {
                 if (联网验证(zwifi) != true) {
-                    log("连接wifi")
                     连接wifi(zwifi, 5000);
                     sleep(8000)
                 } else {
@@ -403,7 +402,6 @@ ui.ok.click(function () {
                         app.launch(PKG_NAME);
                         sleep(5000)
                     }
-                    log("跳出死循环")
                     //跳出死循环
                     break
                 }
@@ -436,7 +434,7 @@ ui.ok.click(function () {
             }
             return repData
         }
-        
+
         //限制次数-1
         function reduceXianZhi() {
             if (联网验证(zwifi) != true) {

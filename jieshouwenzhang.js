@@ -176,7 +176,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.1.0";
+        var versionNum = "接收v6.1.1";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -788,7 +788,7 @@ ui.ok.click(function () {
                                             readTitle.push(latestLinkTitle)
                                             latestLink.click();
                                             //接收文章进入阅读
-                                            sleep(3000)
+                                            sleep(1000)
                                             reducejieshouCount(phoneNum.toString())
                                             阅读到底();
                                             sleep(random(30000, 60000))
@@ -815,7 +815,7 @@ ui.ok.click(function () {
                                                 readTitle.push(latestLinkTitle)
                                                 latestLink.click();
                                                 //接收文章进入阅读
-                                                sleep(3000)
+                                                sleep(1000)
                                                 reducejieshouCount(phoneNum.toString())
                                                 阅读到底();
                                                 sleep(random(30000, 60000))
