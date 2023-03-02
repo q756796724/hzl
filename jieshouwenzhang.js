@@ -176,7 +176,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.0.9";
+        var versionNum = "接收v6.1.0";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -318,7 +318,7 @@ ui.ok.click(function () {
             let temp = null;
             let repData = 0;
             try {
-                temp = http.get("http://175.178.60.114:8081/fanqie/getjieshouCount?type=" + type);
+                temp = http.post("http://175.178.60.114:8081/fanqie/getjieshouCount?type=" + type, {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -348,7 +348,7 @@ ui.ok.click(function () {
         function addjieshouCount(txt) {
             let temp = null;
             try {
-                temp = http.get("http://175.178.60.114:8081/fanqie/addjieshouCount?phoneNum=" + txt);
+                temp = http.post("http://175.178.60.114:8081/fanqie/addjieshouCount?phoneNum=" + txt, {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -379,7 +379,7 @@ ui.ok.click(function () {
         function reducejieshouCount(txt) {
             let temp = null;
             try {
-                temp = http.get("http://175.178.60.114:8081/fanqie/reducejieshouCount?phoneNum=" + txt);
+                temp = http.post("http://175.178.60.114:8081/fanqie/reducejieshouCount?phoneNum=" + txt, {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -477,7 +477,7 @@ ui.ok.click(function () {
             let temp = null;
             let repData = "0";
             try {
-                temp = http.get("http://175.178.60.114:8081/fanqie/getJieShouNum");
+                temp = http.post("http://175.178.60.114:8081/fanqie/getJieShouNum", {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -523,7 +523,7 @@ ui.ok.click(function () {
             let temp = null;
             let repData = "0";
             try {
-                temp = http.get("http://175.178.60.114:8081/fanqie/addXianZhi");
+                temp = http.post("http://175.178.60.114:8081/fanqie/addXianZhi", {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -555,12 +555,16 @@ ui.ok.click(function () {
                 app.launch(PKG_NAME);
                 sleep(10000);
             }
-            let temp = null;
-            let repData = 0;
             try {
-                temp = http.get(url);
+                let temp = http.get(url);
+                if (temp && temp.statusCode == 200) {
+                    return true
+                }else{
+                    return false
+                }
             } catch (err) {
                 console.error(new Date().toLocaleString() + "----------sendTx报错,原因:" + err);
+                return false
             }
         }
         function jieshouwenzhang() {

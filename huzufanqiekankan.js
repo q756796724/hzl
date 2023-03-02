@@ -184,7 +184,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄互助v4.2.6";
+        var versionNum = "番茄互助v4.2.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -328,7 +328,7 @@ ui.ok.click(function () {
         function getjieshouCount() {
             let temp = null;
             try {
-                temp = http.get("175.178.60.114:8081/fanqie/getjieshouCount");
+                temp = http.post("175.178.60.114:8081/fanqie/getjieshouCount", {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -349,7 +349,7 @@ ui.ok.click(function () {
         function addjieshouCount() {
             let temp = null;
             try {
-                temp = http.get("175.178.60.114:8081/fanqie/addjieshouCount");
+                temp = http.post("175.178.60.114:8081/fanqie/addjieshouCount", {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -370,7 +370,7 @@ ui.ok.click(function () {
         function reducejieshouCount() {
             let temp = null;
             try {
-                temp = http.get("175.178.60.114:8081/fanqie/reducejieshouCount");
+                temp = http.post("175.178.60.114:8081/fanqie/reducejieshouCount", {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);

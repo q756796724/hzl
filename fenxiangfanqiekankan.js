@@ -188,7 +188,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.4.2.8";
+        var versionNum = "番茄分享v6.4.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -333,7 +333,7 @@ ui.ok.click(function () {
             let temp = null;
             let repData = "0";
             try {
-                temp = http.get("http://175.178.60.114:8081/fanqie/getJieShouNum");
+                temp = http.post("http://175.178.60.114:8081/fanqie/getJieShouNum", {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -364,7 +364,7 @@ ui.ok.click(function () {
             let temp = null;
             let repData = 0;
             try {
-                temp = http.get("http://175.178.60.114:8081/fanqie/getjieshouCount?type=" + type + "&phoneNum=" + phoneNum);
+                temp = http.post("http://175.178.60.114:8081/fanqie/getjieshouCount?type=" + type + "&phoneNum=" + phoneNum, {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -413,7 +413,7 @@ ui.ok.click(function () {
             let repData = "0";
             try {
                 log("请求")
-                temp = http.get("http://175.178.60.114:8081/fanqie/addXianZhi?phoneNum=" + num);
+                temp = http.post("http://175.178.60.114:8081/fanqie/addXianZhi?phoneNum=" + num, {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -448,7 +448,7 @@ ui.ok.click(function () {
             let temp = null;
             let repData = "0";
             try {
-                temp = http.get("http://175.178.60.114:8081/fanqie/reduceXianZhi");
+                temp = http.post("http://175.178.60.114:8081/fanqie/reduceXianZhi", {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -478,7 +478,7 @@ ui.ok.click(function () {
             let temp = null;
             let repData = true;
             try {
-                temp = http.get("http://175.178.60.114:8081/fanqie/sfcfyd?txt=" + txt);
+                temp = http.post("http://175.178.60.114:8081/fanqie/sfcfyd?txt=" + txt, {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -579,14 +579,13 @@ ui.ok.click(function () {
         }*/
         //发送提醒
         function sendTx(url) {
-            let temp = null;
             if (联网验证(zwifi) != true) {
                 连接wifi(zwifi, 5000);
                 app.launch(PKG_NAME);
                 sleep(10000);
             }
             try {
-                temp = http.get(url);
+                let temp = http.get(url);
                 if (temp && temp.statusCode == 200) {
                     return true
                 }else{
