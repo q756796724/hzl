@@ -188,7 +188,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.5.1";
+        var versionNum = "番茄分享v6.5.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1151,6 +1151,7 @@ ui.ok.click(function () {
                                                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() == null) {
                                                                     log("点击状态成功")
                                                                     let ztjs = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*friendNickname.*)/).findOnce();
+                                                                    log(ztjs.text())
                                                                     if(ztjs!=null){
                                                                         readNum = parseInt(JSON.parse(ztjs.text()).data.info.num);
                                                                         if (JSON.parse(ztjs.text()).data.info.status == 2) {
@@ -1355,6 +1356,7 @@ ui.ok.click(function () {
                     log("点击状态成功")
                     checkFlag = false
                     let ztjs = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*friendNickname.*)/).findOnce();
+                    log(ztjs.text())
                     if(ztjs!=null){
                         readNum = parseInt(JSON.parse(ztjs.text()).data.info.num);
                         if (JSON.parse(ztjs.text()).data.info.status == 2) {
@@ -2062,7 +2064,9 @@ ui.ok.click(function () {
                         保存配置(settingPath, 配置);
                         readErrCount++
                         storage.put("readErrCount", readErrCount);//读不上次数
-                        sendTx("http://miaotixing.com/trigger?id=tn9efbL&text=num:" + phoneNum + "--readNum:" + readNum + "--读不上次数:" + readErrCount);//读不上
+                        if(readErrCount>=3){
+                            sendTx("http://miaotixing.com/trigger?id=tn9efbL&text=num:" + phoneNum + "--readNum:" + readNum + "--读不上次数:" + readErrCount);//读不上
+                        }
                         return false;
                     }
                 }
@@ -2160,7 +2164,7 @@ ui.ok.click(function () {
                     app.launch(PKG_NAME);
                 }
                 if (lunCount == 1 && count == 5) {
-                    reduceXianZhi()
+                    //reduceXianZhi()
                     log(new Date().toLocaleString() + "-----------" + "限制-1");
                 }
                 if (count % 5 == 0) {
@@ -2964,7 +2968,7 @@ ui.ok.click(function () {
             }
 
             if (zwifi.toString() != dlwifi.toString()) {
-                if (nowHour < 9) {
+                if (nowHour < 8) {
                     if (random(0, 1) == 0 && nowHour >= 7) {
 
                     } else {
