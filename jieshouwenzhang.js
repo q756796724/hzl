@@ -5,7 +5,7 @@ zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 phoneNum = storage.get("phoneNum", "");
 if (storage.get("readdays") == undefined) {
-    storage.put("readdays", -1);
+    storage.put("readdays", 0);
 }
 readdays = storage.get("readdays");//阅读天数
 
@@ -176,7 +176,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.1.2";
+        var versionNum = "接收v6.1.3";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -1891,13 +1891,13 @@ ui.ok.click(function () {
                     sleep(10000);
                 }
                 if (getjieshouNum() == phoneNum.toString()) {
-                    if (readdays > 5) {
+                    if (readdays >=3 ) {
                         while (1) {
                             addXianZhi()
-                            sleep(3000)
+                            sleep(5000)
                             if (getjieshouNum() != phoneNum.toString()) {
-                                readdays = 0
-                                sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满");//切换
+                                readdays = 1//新上任的天数
+                                sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期"+readdays+"天");//切换
                                 //跳出死循环
                                 break
                             }
@@ -1906,7 +1906,7 @@ ui.ok.click(function () {
                         readdays++;
                     }
                 } else {
-                    readdays = -1
+                    readdays = 0
                 }
                 storage.put("readdays", readdays);
 
@@ -2008,9 +2008,9 @@ ui.ok.click(function () {
                 连接wifi(zwifi, 5000);
             }
             if (getjieshouNum() != phoneNum.toString()) {
-                if (readdays > -1) {
-                    sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "提前休息，已任天数" + (readdays + 1));//切换
-                    readdays = -1
+                if (readdays > 0) {
+                    sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "提前休息，已任天数" + (readdays));//切换
+                    readdays = 0
                     storage.put("readdays", readdays);
                 }
 
@@ -2033,8 +2033,8 @@ ui.ok.click(function () {
                 }
                 continue;
             } else {
-                if (readdays == -1) {
-                    readdays = 0
+                if (readdays == 0) {
+                    readdays = 1
                     storage.put("readdays", readdays);
                     sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "上任");//切换
                 }
