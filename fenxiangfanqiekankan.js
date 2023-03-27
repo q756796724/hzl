@@ -188,7 +188,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.5.2";
+        var versionNum = "番茄分享v6.6.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1969,13 +1969,19 @@ ui.ok.click(function () {
                                 readNum = parseInt(readNumDiv.text());
                             }
                             if (textMatches(/(.*暂无任务可做|.*阅读暂时失效.*)/).findOne(8000) != null) {
-                                log(new Date().toLocaleString() + "-----------" + "限制");
-                                if (lunCount == 1) {
+                                log(new Date().toLocaleString() + "-----------" + "限制~");
+                                if (lunCount == 1&& xianzhiFlag == true) {
+                                    checkFlag = true
+                                    xianzhiFlag = false
+                                    //sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:" + phoneNum);//限制+1
+                                    addXianZhi(phoneNum.toString())
+                                    log(new Date().toLocaleString() + "-----------" + "限制~addXianZhi");
+                                    配置["lunCount"] = 1;
                                     配置["count"] = 1;
                                     保存配置(settingPath, 配置);
-                                    //sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:" + phoneNum);//限制+1
-                                    //addXianZhi(phoneNum.toString())
+                                    
                                 }
+
                                 /*if (auto_tx) {
                                     lunSleep(random(10800000, 14400000));//睡3~4小时
                                     return false
@@ -2005,7 +2011,7 @@ ui.ok.click(function () {
                                     //sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:" + phoneNum);//限制+1
                                     //sleep(30000)
                                     addXianZhi(phoneNum.toString())
-                                    log(new Date().toLocaleString() + "-----------" + "应该限制");
+                                    log(new Date().toLocaleString() + "-----------" + "应该限制addXianZhi");
                                     count = 60;
                                 } else {
                                     log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
@@ -2030,7 +2036,7 @@ ui.ok.click(function () {
                                 //sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:" + phoneNum);//限制+1
                                 //sleep(30000)
                                 addXianZhi(phoneNum.toString())
-                                log(new Date().toLocaleString() + "-----------" + "应该限制！");
+                                log(new Date().toLocaleString() + "-----------" + "应该限制！addXianZhi");
                                 count = 60;
                             } else {
                                 log("本轮结束，完成第" + lunCount + "轮,第" + count + "次！");
