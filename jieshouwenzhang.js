@@ -176,7 +176,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.1.4";
+        var versionNum = "接收v6.1.5";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -776,8 +776,17 @@ ui.ok.click(function () {
                                                 }
                                             }
                                         })
+                                    }else{
+                                        latestTalkName=""
+                                        latestLinkTitle=""
                                     }
+                                }else{
+                                    latestTalkName=""
+                                    latestLinkTitle=""
                                 }
+                            }else{
+                                latestTalkName=""
+                                latestLinkTitle=""
                             }
 
                             if (readTitle.indexOf(latestLinkTitle) == -1) {
