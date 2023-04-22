@@ -188,7 +188,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.6.0";
+        var versionNum = "番茄分享v6.6.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -2081,10 +2081,13 @@ ui.ok.click(function () {
                     let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
                     sleep(5000)
                     cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
-                    if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
+                    let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
+                    let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
+                    if (cBtn != null && cBtn.text() != undefined && cBtn.text() != ""&&js_name != null && js_name.desc() != undefined && js_name.desc() != ""&&publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                         if (lunCount == 1 && fanxiangFlag == true) {
-                            if (sfcfyd(cBtn.text().TextFilter()) == false) {
-                                console.error("cfyd：" + cBtn.text().TextFilter());
+                            let yuducontent=(cBtn.text()+js_name.desc()+new Date(Date.parse(publish_time.text().replace(/-/g,  "/"))).getTime()).TextFilter();
+                            if (sfcfyd(yuducontent) == false) {
+                                console.error("cfyd：" + yuducontent);
                                 let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                                 if (rBtn != null && rBtn.parent() != null) {
                                     rBtn.parent().click();
