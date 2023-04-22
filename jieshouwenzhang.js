@@ -176,7 +176,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.1.3";
+        var versionNum = "接收v6.1.4";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -559,7 +559,7 @@ ui.ok.click(function () {
                 let temp = http.get(url);
                 if (temp && temp.statusCode == 200) {
                     return true
-                }else{
+                } else {
                     return false
                 }
             } catch (err) {
@@ -691,7 +691,7 @@ ui.ok.click(function () {
                                         if (child.className() == "android.widget.FrameLayout") {
                                             if (child.children() != null && child.children()[0] != null) {
                                                 latestLink = child;
-                                                latestLinkTitle = child.children()[0].text();
+                                                latestLinkTitle = child.children()[0].text() + child.children()[2].text();
                                                 latestLinkTitle = latestLinkTitle.TextFilter()
                                             }
                                         }
@@ -751,6 +751,7 @@ ui.ok.click(function () {
                             //log(repData)
                             let lastTalkName = repData["lastTalkName"] != undefined ? repData["lastTalkName"] : "";//上一发言人
                             let lastLinkTitle = repData["lastLinkTitle"] != undefined ? repData["lastLinkTitle"] : "";//上一文章的标题
+                            lastLinkTitle = lastLinkTitle.split("&&")[0];
 
 
                             news = packageName("com.tencent.mm").className("android.widget.ListView").findOne(5000);
@@ -769,7 +770,7 @@ ui.ok.click(function () {
                                                 if (child.className() == "android.widget.FrameLayout") {
                                                     if (child.children() != null && child.children()[0] != null) {
                                                         latestLink = child;
-                                                        latestLinkTitle = child.children()[0].text();
+                                                        latestLinkTitle = child.children()[0].text() + child.children()[2].text();
                                                         latestLinkTitle = latestLinkTitle.TextFilter()
                                                     }
                                                 }
@@ -784,12 +785,56 @@ ui.ok.click(function () {
                                 if (latestTalkName != "" && latestLinkTitle != "" && latestTalkName != lastTalkName) {
                                     //log(new Date().toLocaleString() + "-" + "-----------------发言人变化,上一发言人:" + lastTalkName + ",当前发言人:" + latestTalkName);
                                     if (jieshouc < 3 || random(0, 1) == 1) {
-                                        if (setConfig(latestTalkName, latestLinkTitle)) {
+                                        readTitle.push(latestLinkTitle)
+                                        latestLink.click();
+                                        //接收文章进入阅读
+                                        sleep(1000)
+                                        reducejieshouCount(phoneNum.toString())
+                                        let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                                        sleep(5000)
+                                        cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
+                                        let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
+                                        let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
+                                        if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
+                                            latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
+                                            setConfig(latestTalkName, latestLinkTitle)
+                                        }
+
+                                        阅读到底();
+                                        sleep(random(30000, 60000))
+                                        i = i + 1
+                                        console.log(new Date().toLocaleString() + "-" + "----------第" + i)
+                                        wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOnce();//id=ipv
+                                        if (wBtn != null) {
+                                            //addjieshouCount("阅读完成正常返回+1")
+                                        } else {
+                                            返回v首页();
+                                            sleep(random(3000, 5000))
+                                            home();
+                                            return;
+                                        }
+                                    }
+
+                                } else {
+                                    if (latestTalkName != "" && latestLinkTitle != "" && lastLinkTitle != latestLinkTitle) {
+                                        //log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
+
+                                        if (jieshouc < 3 || random(0, 1) == 1) {
                                             readTitle.push(latestLinkTitle)
                                             latestLink.click();
                                             //接收文章进入阅读
                                             sleep(1000)
                                             reducejieshouCount(phoneNum.toString())
+                                            let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                                            sleep(5000)
+                                            cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
+                                            let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
+                                            let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
+                                            if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
+                                                latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
+                                                setConfig(latestTalkName, latestLinkTitle)
+                                            }
+
                                             阅读到底();
                                             sleep(random(30000, 60000))
                                             i = i + 1
@@ -802,34 +847,6 @@ ui.ok.click(function () {
                                                 sleep(random(3000, 5000))
                                                 home();
                                                 return;
-                                            }
-                                        }
-                                    }
-
-                                } else {
-                                    if (latestTalkName != "" && latestLinkTitle != "" && lastLinkTitle != latestLinkTitle) {
-                                        //log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
-
-                                        if (jieshouc < 3 || random(0, 1) == 1) {
-                                            if (setConfig(latestTalkName, latestLinkTitle)) {
-                                                readTitle.push(latestLinkTitle)
-                                                latestLink.click();
-                                                //接收文章进入阅读
-                                                sleep(1000)
-                                                reducejieshouCount(phoneNum.toString())
-                                                阅读到底();
-                                                sleep(random(30000, 60000))
-                                                i = i + 1
-                                                console.log(new Date().toLocaleString() + "-" + "----------第" + i)
-                                                wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOnce();//id=ipv
-                                                if (wBtn != null) {
-                                                    //addjieshouCount("阅读完成正常返回+1")
-                                                } else {
-                                                    返回v首页();
-                                                    sleep(random(3000, 5000))
-                                                    home();
-                                                    return;
-                                                }
                                             }
                                         }
                                     }
@@ -1891,13 +1908,13 @@ ui.ok.click(function () {
                     sleep(10000);
                 }
                 if (getjieshouNum() == phoneNum.toString()) {
-                    if (readdays >=3 ) {
+                    if (readdays >= 3) {
                         while (1) {
                             addXianZhi()
                             sleep(5000)
                             if (getjieshouNum() != phoneNum.toString()) {
                                 readdays = 1//新上任的天数
-                                sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期"+readdays+"天");//切换
+                                sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期" + readdays + "天");//切换
                                 //跳出死循环
                                 break
                             }
