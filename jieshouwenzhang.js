@@ -169,14 +169,13 @@ ui.ok.click(function () {
 
 
 
-        var readTitle = [];//当天已读文章标题
         var topPackage = "";
         var topActivity = "";
 
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.1.5";
+        var versionNum = "接收v6.1.6";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -789,12 +788,10 @@ ui.ok.click(function () {
                                 latestLinkTitle=""
                             }
 
-                            if (readTitle.indexOf(latestLinkTitle) == -1) {
-                                let jieshouc = getjieshouCount(2);
+                            let jieshouc = getjieshouCount(2);
                                 if (latestTalkName != "" && latestLinkTitle != "" && latestTalkName != lastTalkName) {
                                     //log(new Date().toLocaleString() + "-" + "-----------------发言人变化,上一发言人:" + lastTalkName + ",当前发言人:" + latestTalkName);
                                     if (jieshouc < 3 || random(0, 1) == 1) {
-                                        readTitle.push(latestLinkTitle)
                                         latestLink.click();
                                         //接收文章进入阅读
                                         sleep(1000)
@@ -829,7 +826,6 @@ ui.ok.click(function () {
                                         //log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
 
                                         if (jieshouc < 3 || random(0, 1) == 1) {
-                                            readTitle.push(latestLinkTitle)
                                             latestLink.click();
                                             //接收文章进入阅读
                                             sleep(1000)
@@ -860,7 +856,6 @@ ui.ok.click(function () {
                                         }
                                     }
                                 }
-                            }
                         } else {
                             //reducejieshouCount("找不到大家庭退出-1")
                             返回v首页();
@@ -1910,7 +1905,6 @@ ui.ok.click(function () {
 
             配置 = 读取配置(settingPath);
             if (配置["date"] != new Date().toLocaleDateString()) {
-                readTitle = [];
                 lunSleep(random(600000, 3600000));
                 if (联网验证(zwifi) != true) {
                     连接wifi(zwifi, 5000);
