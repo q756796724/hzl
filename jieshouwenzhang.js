@@ -175,7 +175,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.1.6";
+        var versionNum = "接收v6.1.7";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -1911,7 +1911,7 @@ ui.ok.click(function () {
                     sleep(10000);
                 }
                 if (getjieshouNum() == phoneNum.toString()) {
-                    if (readdays >= 3) {
+                    if (readdays >= 4) {
                         while (1) {
                             addXianZhi()
                             sleep(5000)
