@@ -188,7 +188,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v6.6.2";
+        var versionNum = "番茄分享v6.6.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -473,6 +473,7 @@ ui.ok.click(function () {
         }
         //是否重复阅读
         function sfcfyd(txt) {
+            txt=encodeURIComponent(txt)
             let temp = null;
             let repData = true;
             try {
@@ -2085,7 +2086,7 @@ ui.ok.click(function () {
                     let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != ""&&js_name != null && js_name.desc() != undefined && js_name.desc() != ""&&publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                         if (lunCount == 1 && fanxiangFlag == true) {
-                            let yuducontent=(cBtn.text()+js_name.desc()+"&&"+new Date(Date.parse(publish_time.text().replace(/-/g,  "/"))).getTime()).TextFilter();
+                            let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
                             if (sfcfyd(yuducontent) == false) {
                                 console.error("cfyd：" + yuducontent);
                                 let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
