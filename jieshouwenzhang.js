@@ -175,7 +175,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.1.7";
+        var versionNum = "接收v6.1.8";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -459,7 +459,7 @@ ui.ok.click(function () {
                     let rep = JSON.parse(temp);
                     let repState = rep["state"];
                     if (repState == 1) {
-                        log(new Date().toLocaleString() + "-" + "-----------------发言人:" + lastTalkName + ",标题:" + lastLinkTitle);
+                        //log(new Date().toLocaleString() + "-" + "-----------------发言人:" + lastTalkName + ",标题:" + lastLinkTitle);
                         return true
                     }
                 }
@@ -790,7 +790,7 @@ ui.ok.click(function () {
 
                             let jieshouc = getjieshouCount(2);
                                 if (latestTalkName != "" && latestLinkTitle != "" && latestTalkName != lastTalkName) {
-                                    //log(new Date().toLocaleString() + "-" + "-----------------发言人变化,上一发言人:" + lastTalkName + ",当前发言人:" + latestTalkName);
+                                    log(new Date().toLocaleString() + "-" + "-----------------发言人变化,上一发言人:" + lastTalkName + ",当前发言人:" + latestTalkName);
                                     if (jieshouc < 3 || random(0, 1) == 1) {
                                         latestLink.click();
                                         //接收文章进入阅读
@@ -823,7 +823,7 @@ ui.ok.click(function () {
 
                                 } else {
                                     if (latestTalkName != "" && latestLinkTitle != "" && lastLinkTitle != latestLinkTitle) {
-                                        //log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
+                                        log(new Date().toLocaleString() + "-" + "-----------------发言内容变化,上一标题:" + lastLinkTitle + ",当前标题:" + latestLinkTitle);
 
                                         if (jieshouc < 3 || random(0, 1) == 1) {
                                             latestLink.click();
