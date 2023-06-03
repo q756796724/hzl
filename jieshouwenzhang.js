@@ -175,7 +175,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.1.8";
+        var versionNum = "接收v6.1.9";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -1911,13 +1911,13 @@ ui.ok.click(function () {
                     sleep(10000);
                 }
                 if (getjieshouNum() == phoneNum.toString()) {
-                    if (readdays >= 4) {
+                    if (readdays >= 3) {
+                        sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期" + readdays + "天");//切换
                         while (1) {
                             addXianZhi()
                             sleep(5000)
                             if (getjieshouNum() != phoneNum.toString()) {
                                 readdays = 1//新上任的天数
-                                sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期" + readdays + "天");//切换
                                 //跳出死循环
                                 break
                             }
