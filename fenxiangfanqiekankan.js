@@ -193,7 +193,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v8.0.1";
+        var versionNum = "番茄分享v8.0.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -2829,7 +2829,7 @@ ui.ok.click(function () {
         /*sleep(1000);
         console.setSize(device.width -100, device.height / 4);
         sleep(2000);*/
-        if (!requestScreenCapture()) {
+        if (!requestScreenCapture(true)) {
             toastLog("请求截图失败");
             exit();
         } else {

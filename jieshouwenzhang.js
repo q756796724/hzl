@@ -182,7 +182,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.0.1";
+        var versionNum = "接收v7.0.2";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -1863,7 +1863,7 @@ ui.ok.click(function () {
         /*sleep(1000);
         console.setSize(device.width -100, device.height / 4);
         sleep(2000);*/
-        if (!requestScreenCapture()) {
+        if (!requestScreenCapture(true)) {
             toastLog("请求截图失败");
             exit();
         } else {
