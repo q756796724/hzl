@@ -3,6 +3,8 @@
 storage = storages.create("fanqiekankan配置");
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
+qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
+
 phoneNum = storage.get("phoneNum", "");
 if (storage.get("readdays") == undefined) {
     storage.put("readdays", 0);
@@ -99,7 +101,7 @@ ui.layout(
         <text textSize="16sp" textColor="black" text="url" />
         <text textSize="16sp" textColor="black" text="编号" />
         <input id="phoneNum" text="{{phoneNum}}" />
-
+        <checkbox text="是否切换" id="qiehuanjiaoben" checked="{{qiehuanjiaoben}}" textSize="18sp" />\
         <button id="ok" text="开始接收" />
     </vertical>
 
@@ -175,7 +177,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v6.1.9";
+        var versionNum = "接收v7.0.0";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -1674,6 +1676,37 @@ ui.ok.click(function () {
                 qBtn.click();
             }
         }
+        //回滚回接收
+        function rollbackJieshou(phoneNum) {
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                app.launch(PKG_NAME);
+            }
+            let temp = null;
+            try {
+                temp = http.post("http://175.178.60.114:8081/fanqie/rollbackJieshou?phoneNum=" + phoneNum, {});
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                    } else {
+                        throw Error("rollbackJieshou失败" + temp)
+                    }
+                }else {
+                    throw Error("rollbackJieshou失败" + temp)
+                }
+            } catch (err) {
+                console.error("rollbackJieshou报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                rollbackJieshou(phoneNum);
+
+            }
+        }
         function 启动x5() {
             if (联网验证(zwifi) != true) {
                 连接wifi(zwifi, 5000);
@@ -1774,13 +1807,14 @@ ui.ok.click(function () {
         log("代理Wifi:" + dlwifi);
         phoneNum = ui.phoneNum.getText();
         log("phoneNum:" + phoneNum);
-
+        qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
 
 
 
         storage.put("zwifi", ui.zwifi.text());
         storage.put("dlwifi", ui.dlwifi.text());
         storage.put("phoneNum", ui.phoneNum.text());
+        storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
         device.keepScreenDim();
         home();
         //定义
@@ -1911,17 +1945,28 @@ ui.ok.click(function () {
                     sleep(10000);
                 }
                 if (getjieshouNum() == phoneNum.toString()) {
-                    if (readdays >= 3) {
+                    if (readdays >= 2) {
                         sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期" + readdays + "天");//切换
                         while (1) {
                             addXianZhi()
                             sleep(5000)
                             if (getjieshouNum() != phoneNum.toString()) {
-                                readdays = 1//新上任的天数
+                                readdays = 0
                                 //跳出死循环
                                 break
                             }
                         }
+                       
+                        if(qiehuanjiaoben){
+                             //转yuedu
+                            toolsStorage.put("toolsSelectIdx", 0);
+                            engines.execScriptFile(toolsStorage.get("脚本路径")+"fenxiangfanqiekankan.js");
+                            exit();
+                        }else{
+                            //回滚回接收
+                            rollbackJieshou(phoneNum.toString());
+                        }
+                        
                     } else {
                         readdays++;
                     }
@@ -2032,6 +2077,15 @@ ui.ok.click(function () {
                     sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "提前休息，已任天数" + (readdays));//切换
                     readdays = 0
                     storage.put("readdays", readdays);
+                    if(qiehuanjiaoben){
+                        //转yuedu
+                       toolsStorage.put("toolsSelectIdx", 0);
+                       engines.execScriptFile(toolsStorage.get("脚本路径")+"fenxiangfanqiekankan.js");
+                       exit();
+                   }else{
+                       //回滚回接收
+                       rollbackJieshou(phoneNum.toString());
+                   }
                 }
 
                 if (random(0, 8 == 8)) {

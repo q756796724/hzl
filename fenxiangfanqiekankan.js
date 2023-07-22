@@ -6,6 +6,7 @@ zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
 qun_into = storage.get("qun_into", true);
+qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
 readurl = storage.get("readurl", "");
 if (readurl == "RHtWWJm" || readurl == "siNLtCo") {
     readurl = "FxWAkNP"
@@ -113,6 +114,7 @@ ui.layout(
         <input id="phoneNum" text="{{phoneNum}}" />
         <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
         <checkbox text="群进入" id="qun_into" checked="{{qun_into}}" textSize="18sp" />\
+        <checkbox text="是否切换" id="qiehuanjiaoben" checked="{{qiehuanjiaoben}}" textSize="18sp" />\
         <button id="ok" text="开始运行" />
     </vertical>
 
@@ -189,7 +191,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v7.0.2";
+        var versionNum = "番茄分享v8.0.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -403,6 +405,68 @@ ui.ok.click(function () {
             return repData
 
         }
+
+        //插入yuedu列表
+        function addYuedu(phoneNum) {
+            if(qiehuanjiaoben){
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                let temp = null;
+                try {
+                    temp = http.post("http://175.178.60.114:8081/fanqie/addYuedu?phoneNum=" + phoneNum, {});
+                    if (temp && temp.statusCode == 200) {
+                        temp = temp.body.string();
+                        let rep = JSON.parse(temp);
+                        let repState = rep["state"];
+                        if (repState == 1) {
+                        } else {
+                            throw Error("addYuedu失败" + temp)
+                        }
+                    }else {
+                        throw Error("addYuedu失败" + temp)
+                    }
+                } catch (err) {
+                    console.error("addYuedu报错,原因:" + err);
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        app.launch(PKG_NAME);
+                    }
+                    sleep(8000)
+                    addYuedu(phoneNum);
+    
+                }
+            }
+        }
+
+        //是否在接收列表
+        function isInJieshou(phoneNum) {
+            let temp = null;
+            let repData= 0;;
+            try {
+                temp = http.post("http://175.178.60.114:8081/fanqie/isInJieshou?phoneNum=" + phoneNum, {});
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    repData= repState;
+                }else {
+                    throw Error("isInJieshou失败" + temp)
+                }
+            } catch (err) {
+                console.error("isInJieshou报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                repData = isInJieshou(type, phoneNum);
+            }
+            return repData
+
+        }
+
         //限制次数+1
         function addXianZhi(num) {
             while (1) {
@@ -2750,6 +2814,8 @@ ui.ok.click(function () {
         auto_tx = ui.auto_tx.isChecked();
         log("tx:" + auto_tx);
         qun_into = ui.qun_into.isChecked();
+        qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
+
 
 
 
@@ -2757,6 +2823,7 @@ ui.ok.click(function () {
         storage.put("dlwifi", ui.dlwifi.text());
         storage.put("auto_tx", ui.auto_tx.isChecked());
         storage.put("qun_into", ui.qun_into.isChecked());
+        storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
         storage.put("readurl", ui.readurl.text());
         storage.put("phoneNum", ui.phoneNum.text());
         device.keepScreenDim();
@@ -2877,6 +2944,7 @@ ui.ok.click(function () {
         配置 = 读取配置(settingPath);
         配置["count"] = 1;
         保存配置(settingPath, 配置);
+        addYuedu(phoneNum.toString());
         for (; ;) {
             kz();
             var nowHour = new Date().getHours();
@@ -2884,6 +2952,14 @@ ui.ok.click(function () {
             toastLog("版本号:" + versionNum);
             配置 = 读取配置(settingPath);
             if (配置["date"] != new Date().toLocaleDateString()) {
+                addYuedu(phoneNum.toString());
+                if(isInJieshou(phoneNum.toString())==1){
+                    //转jieshou
+                    toolsStorage.put("toolsSelectIdx", 1);
+                    engines.execScriptFile(toolsStorage.get("脚本路径")+"jieshouwenzhang.js");
+                    exit();
+                }
+
                 readErrCount = 0
                 storage.put("readErrCount", readErrCount);
 
@@ -3021,9 +3097,6 @@ ui.ok.click(function () {
             if (topActivity == MAIN_PAGE && wBtn != null) {
                 log("第" + lunCount + "轮");
                 log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
-                toolsStorage.put("toolsSelectIdx", 1);
-engines.execScriptFile(toolsStorage.get("脚本路径")+"jieshouwenzhang.js");
-exit();
                 onMainPage();
             } else {
                 log(wBtn);
