@@ -3022,8 +3022,8 @@ ui.ok.click(function () {
                 log("第" + lunCount + "轮");
                 log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
                 toolsStorage.put("toolsSelectIdx", 1);
-threads.shutDownAll();
 engines.execScriptFile(toolsStorage.get("脚本路径")+"jieshouwenzhang.js");
+exit();
                 onMainPage();
             } else {
                 log(wBtn);
