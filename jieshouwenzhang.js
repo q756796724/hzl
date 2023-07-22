@@ -1863,12 +1863,21 @@ ui.ok.click(function () {
         /*sleep(1000);
         console.setSize(device.width -100, device.height / 4);
         sleep(2000);*/
-        if (!requestScreenCapture(true)) {
-            toastLog("请求截图失败");
-            exit();
-        } else {
-            toastLog("请求截图成功");
+        threads.start(function() {
+            // 请求屏幕截图权限
+            if (!requestScreenCapture(true)) {
+                toastLog("请求截图失败");
+                exit();
+            } else {
+                toastLog("请求截图成功");
+            }
+        });
+        sleep(3000);
+        let scbtn = textMatches(/(允许|确定)/).findOne(3000);
+        if (scbtn != null) {
+            scbtn.click()
         }
+       
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
         zwifi = ui.zwifi.getText();
