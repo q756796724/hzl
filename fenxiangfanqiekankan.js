@@ -1,6 +1,8 @@
 "ui";
 
 storage = storages.create("fanqiekankan配置");
+toolsStorage = storages.create("tools配置");
+toastLog("toolsStorage:" + toolsStorage.get("toolsSelectIdx", 999));
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
@@ -188,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v7.0.0";
+        var versionNum = "番茄分享v7.0.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
