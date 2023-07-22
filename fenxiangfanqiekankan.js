@@ -4,7 +4,7 @@ storage = storages.create("fanqiekankan配置");
 toolsStorage = storages.create("tools配置");
 toolsStorage.put("toolsSelectIdx", 1);
 threads.shutDownAll();
-engines.execScriptFile("/sdcard/fanqie/jieshouwenzhang.js");
+engines.execScriptFile(toolsStorage.get("脚本路径")+"jieshouwenzhang.js");
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);

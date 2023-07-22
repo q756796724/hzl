@@ -3,7 +3,7 @@
  * 个人配置
  */
 var 仓库名 = "hzl"     //需要更换仓库名
-var versionNum = "v1.2.1";
+var versionNum = "v1.2.2";
 
 toolsStorage = storages.create("tools配置");
 
@@ -118,6 +118,7 @@ function 解压zip文件(文件路径, 脚本名称) {
 function 解压zip文件2(文件路径, 脚本名称) {
     var 解压后的文件夹路径 = 文件路径.replace(".zip", "") + "/"  //利用replace方法将.zip去掉  
     $zip.unzip(文件路径, 解压后的文件夹路径);
+    toolsStorage.put("脚本路径", 解压后的文件夹路径 + 仓库名 + "-main" + "/");
     return 解压后的文件夹路径 + 仓库名 + "-main" + "/" + 脚本名称   //返回解压后的目录   返回对象：r
 }
 
