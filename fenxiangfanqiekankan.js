@@ -2,9 +2,6 @@
 
 storage = storages.create("fanqiekankan配置");
 toolsStorage = storages.create("tools配置");
-toolsStorage.put("toolsSelectIdx", 1);
-threads.shutDownAll();
-engines.execScriptFile(toolsStorage.get("脚本路径")+"jieshouwenzhang.js");
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
@@ -3024,6 +3021,9 @@ ui.ok.click(function () {
             if (topActivity == MAIN_PAGE && wBtn != null) {
                 log("第" + lunCount + "轮");
                 log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
+                toolsStorage.put("toolsSelectIdx", 1);
+threads.shutDownAll();
+engines.execScriptFile(toolsStorage.get("脚本路径")+"jieshouwenzhang.js");
                 onMainPage();
             } else {
                 log(wBtn);
