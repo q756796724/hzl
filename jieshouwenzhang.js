@@ -182,7 +182,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.0.2";
+        var versionNum = "接收v7.0.3";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
