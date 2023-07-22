@@ -7,6 +7,7 @@ dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 auto_tx = storage.get("auto_tx", false);
 qun_into = storage.get("qun_into", true);
 qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
+removePhoneNum = storage.get("removePhoneNum", false);
 readurl = storage.get("readurl", "");
 if (readurl == "RHtWWJm" || readurl == "siNLtCo") {
     readurl = "FxWAkNP"
@@ -115,6 +116,7 @@ ui.layout(
         <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
         <checkbox text="群进入" id="qun_into" checked="{{qun_into}}" textSize="18sp" />\
         <checkbox text="是否切换" id="qiehuanjiaoben" checked="{{qiehuanjiaoben}}" textSize="18sp" />\
+        <checkbox text="清除号码" id="removePhoneNum" checked="{{removePhoneNum}}" textSize="18sp" />\
         <button id="ok" text="开始运行" />
     </vertical>
 
@@ -191,7 +193,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v8.0.0";
+        var versionNum = "番茄分享v8.0.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -437,6 +439,38 @@ ui.ok.click(function () {
                     addYuedu(phoneNum);
     
                 }
+            }
+        }
+
+        //清除号码
+        function removePhone(phoneNum) {
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                app.launch(PKG_NAME);
+            }
+            let temp = null;
+            try {
+                temp = http.post("http://175.178.60.114:8081/fanqie/removePhoneNum?phoneNum=" + phoneNum, {});
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                    } else {
+                        throw Error("removePhoneNum失败" + temp)
+                    }
+                }else {
+                    throw Error("removePhoneNum失败" + temp)
+                }
+            } catch (err) {
+                console.error("removePhoneNum报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                removePhone(phoneNum);
+
             }
         }
 
@@ -2815,7 +2849,7 @@ ui.ok.click(function () {
         log("tx:" + auto_tx);
         qun_into = ui.qun_into.isChecked();
         qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
-
+        removePhoneNum = ui.removePhoneNum.isChecked();
 
 
 
@@ -2824,6 +2858,7 @@ ui.ok.click(function () {
         storage.put("auto_tx", ui.auto_tx.isChecked());
         storage.put("qun_into", ui.qun_into.isChecked());
         storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
+        storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
         storage.put("readurl", ui.readurl.text());
         storage.put("phoneNum", ui.phoneNum.text());
         device.keepScreenDim();
@@ -2944,6 +2979,11 @@ ui.ok.click(function () {
         配置 = 读取配置(settingPath);
         配置["count"] = 1;
         保存配置(settingPath, 配置);
+        if(removePhoneNum){
+            removePhone(phoneNum.toString());
+            storage.put("removePhoneNum", fslae);
+            exit();
+        }
         addYuedu(phoneNum.toString());
         for (; ;) {
             kz();

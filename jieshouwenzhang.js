@@ -4,6 +4,9 @@ storage = storages.create("fanqiekankan配置");
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
+removePhoneNum = storage.get("removePhoneNum", false);
+addJieshou = storage.get("addJieshou", false);
+
 
 phoneNum = storage.get("phoneNum", "");
 if (storage.get("readdays") == undefined) {
@@ -102,6 +105,8 @@ ui.layout(
         <text textSize="16sp" textColor="black" text="编号" />
         <input id="phoneNum" text="{{phoneNum}}" />
         <checkbox text="是否切换" id="qiehuanjiaoben" checked="{{qiehuanjiaoben}}" textSize="18sp" />\
+        <checkbox text="清除号码" id="removePhoneNum" checked="{{removePhoneNum}}" textSize="18sp" />\
+        <checkbox text="添加到接收" id="addJieshou" checked="{{addJieshou}}" textSize="18sp" />\
         <button id="ok" text="开始接收" />
     </vertical>
 
@@ -177,7 +182,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.0.0";
+        var versionNum = "接收v7.0.1";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -1707,6 +1712,71 @@ ui.ok.click(function () {
 
             }
         }
+
+        //清除号码
+        function removePhone(phoneNum) {
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                app.launch(PKG_NAME);
+            }
+            let temp = null;
+            try {
+                temp = http.post("http://175.178.60.114:8081/fanqie/removePhoneNum?phoneNum=" + phoneNum, {});
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                    } else {
+                        throw Error("removePhoneNum失败" + temp)
+                    }
+                }else {
+                    throw Error("removePhoneNum失败" + temp)
+                }
+            } catch (err) {
+                console.error("removePhoneNum报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                removePhone(phoneNum);
+
+            }
+        }
+
+        //添加到接收列表
+        function addJieshouList(phoneNum) {
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                app.launch(PKG_NAME);
+            }
+            let temp = null;
+            try {
+                temp = http.post("http://175.178.60.114:8081/fanqie/addJieshou?phoneNum=" + phoneNum, {});
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                    } else {
+                        throw Error("addJieshou失败" + temp)
+                    }
+                }else {
+                    throw Error("addJieshou失败" + temp)
+                }
+            } catch (err) {
+                console.error("addJieshou报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                addJieshouList(phoneNum);
+
+            }
+        }
+
         function 启动x5() {
             if (联网验证(zwifi) != true) {
                 连接wifi(zwifi, 5000);
@@ -1808,6 +1878,10 @@ ui.ok.click(function () {
         phoneNum = ui.phoneNum.getText();
         log("phoneNum:" + phoneNum);
         qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
+        removePhoneNum = ui.removePhoneNum.isChecked();
+        addJieshou = ui.addJieshou.isChecked();
+
+
 
 
 
@@ -1815,6 +1889,8 @@ ui.ok.click(function () {
         storage.put("dlwifi", ui.dlwifi.text());
         storage.put("phoneNum", ui.phoneNum.text());
         storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
+        storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
+        storage.put("addJieshou", ui.addJieshou.isChecked());
         device.keepScreenDim();
         home();
         //定义
@@ -1928,6 +2004,16 @@ ui.ok.click(function () {
         配置 = 读取配置(settingPath);
         if (配置["date"] != new Date().toLocaleDateString()) {
             初始化配置(settingPath);
+        }
+
+        if(removePhoneNum){
+            removePhone(phoneNum.toString());
+            storage.put("removePhoneNum", fslae);
+            exit();
+        }
+        if(addJieshou){
+            addJieshouList(phoneNum.toString());
+            storage.put("addJieshou", fslae);
         }
 
         var lunCount = 1;//轮回次数
