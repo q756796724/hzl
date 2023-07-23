@@ -2038,7 +2038,7 @@ ui.ok.click(function () {
         var content = getdaili();//"要设置的剪贴板内容";
         setClip(content);
         log(getClip());
-        
+
         if (addJieshou) {
             addJieshouList(phoneNum.toString());
             storage.put("addJieshou", false);
@@ -2051,7 +2051,37 @@ ui.ok.click(function () {
             exit();
         }
 
-
+        let ws = web.newWebSocket("ws://175.178.60.114:8081/fanqie/ws", {
+            eventThread: 'this'
+        });
+        ws.on("open", (res, ws) => {
+            log("WebSocket已连接");
+        }).on("failure", (err, res, ws) => {
+            log("WebSocket连接失败");
+            console.error(err);
+        }).on("closing", (code, reason, ws) => {
+            log("WebSocket关闭中");
+        }).on("text", (text, ws) => {
+            console.info("收到文本消息: ", text);
+            sleep(10000)
+            ws.send("收到");
+        }).on("binary", (bytes, ws) => {
+            console.info("收到二进制消息：大小 ", bytes.size());
+            console.info("hex: ", bytes.hex());
+            console.info("base64: ", bytes.base64());
+            console.info("md5: ", bytes.md5());
+            console.info("bytes: ", bytes.toByteArray());
+            ws.send(ByteString.of($files.readBytes('./test.png'))); // 从byte\[\]创建二进制数据并发送
+            ws.send(ByteString.encodeUtf8('你好')); // 将字符串按UTF8编码并创建二进制数据并发送
+            ws.send(ByteString.decodeBase64('QXV0by5qcyBQcm8geXlkcw==')); // 解码Base64并创建二进制数据并发送
+            ws.send(ByteString.decodeHex('621172314F60')); // 解码hex并创建二进制数据并发送
+        }).on("closed", (code, reason, ws) => {
+            log("WebSocket已关闭: code = %d, reason = %s", code, reason);
+        });
+        // 脚本退出时取消WebSocket
+        events.on('exit', () => {
+            ws.cancel();
+        });
         var lunCount = 1;//轮回次数
         for (; ;) {
             kz();
