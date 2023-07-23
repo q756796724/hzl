@@ -2091,7 +2091,10 @@ ui.ok.click(function () {
         var lunCount = 1;//轮回次数
         threads.start(function () {
             for (; ;) {
+                for (; ;) {
+                    sleep(10000)
                 ws.send('Hello, Auto.js Pro')
+                }
                 kz();
                 var nowHour = new Date().getHours();
                 log("当前时间:" + nowHour + "时");
