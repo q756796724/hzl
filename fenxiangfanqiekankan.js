@@ -106,9 +106,29 @@ ui.layout(
     <vertical padding="16">
         <Switch id="autoService" text="无障碍服务" checked="{{auto.service != null}}" padding="8 8 8 8" textSize="15sp" />
         <text textSize="16sp" textColor="black" text="请输入主Wifi" />
-        <input id="zwifi" text="{{zwifi}}" />
+        {/* <input id="zwifi" text="{{zwifi}}" /> */}
+        <select id="zwifi" v-model="zwifi">
+            <option value="XiaoMiWifi_5G">XiaoMiWifi_5G</option>
+            <option value="XiaoMiWifi_2.4G">XiaoMiWifi_2.4G</option>
+            <option value="XiaoMiWifi3G_5G">XiaoMiWifi3G_5G</option>
+            <option value="XiaoMiWifi3G_2.4G">XiaoMiWifi3G_2.4G</option>
+            <option value="XiaoMiWifi4A">XiaoMiWifi4A</option>
+            <option value="guest">guest</option>
+            <option value="WifiPro">WifiPro</option>
+            <option value="WifiPro_5G">WifiPro_5G</option>
+        </select>
         <text textSize="16sp" textColor="black" text="请输入代理Wifi" />
-        <input id="dlwifi" text="{{dlwifi}}" />
+        {/* <input id="dlwifi" text="{{dlwifi}}" />*/}
+        <select id="dlwifi" v-model="dlwifi">
+            <option value="XiaoMiWifi_5G">XiaoMiWifi_5G</option>
+            <option value="XiaoMiWifi_2.4G">XiaoMiWifi_2.4G</option>
+            <option value="XiaoMiWifi3G_5G">XiaoMiWifi3G_5G</option>
+            <option value="XiaoMiWifi3G_2.4G">XiaoMiWifi3G_2.4G</option>
+            <option value="XiaoMiWifi4A">XiaoMiWifi4A</option>
+            <option value="guest">guest</option>
+            <option value="WifiPro">WifiPro</option>
+            <option value="WifiPro_5G">WifiPro_5G</option>
+        </select>
         <text textSize="16sp" textColor="black" text="url" />
         <input id="readurl" text="{{readurl}}" />
         <text textSize="16sp" textColor="black" text="编号" />
@@ -193,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v8.0.3";
+        var versionNum = "番茄分享v8.0.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
