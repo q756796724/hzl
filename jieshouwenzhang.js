@@ -7,6 +7,8 @@ dlwifi = storage.get("dlwifi", "XiaoMiWifi3G_2.4G");
 qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
 removePhoneNum = storage.get("removePhoneNum", false);
 addJieshou = storage.get("addJieshou", false);
+lastUrl = "";//上一url
+latestUrl = "";//当前url
 
 phoneNum = storage.get("phoneNum", "");
 if (storage.get("readdays") == undefined) {
@@ -179,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.0.7";
+        var versionNum = "接收v7.0.8";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -935,6 +937,228 @@ ui.ok.click(function () {
                 sleep(300000);
             }
         }
+        function jieshouwenzhang2() {
+            //进入指定群，接收文章
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                app.launch(PKG_NAME);
+            }
+            sleep(10000)
+            返回v首页();
+
+            refreshStateInfo();
+            let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("通讯录").findOne(3000);
+            if (topActivity == MAIN_PAGE && wBtn != null) {
+                log("返回首页成功");
+            } else {
+                打开v()
+            }
+            let wBtns = className("android.widget.TextView").text("微信").find();
+            for (let i = 0; i < wBtns.length; i++) {
+                if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce() != null && packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
+                    log("进入列表成功")
+                    break;
+                };
+                let wBtn = wBtns[i];
+                for (let i = 0; i < 4; i++) {
+                    if (wBtn != null && wBtn.clickable()) {
+                        sleep(1000);
+                        wBtn.click();
+                        sleep(5000);
+                        if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce() != null && packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
+                            break;
+                        };
+                    } else if (wBtn != null && wBtn.parent() != null) {
+                        wBtn = wBtn.parent();
+                    }
+                }
+            }
+            wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
+            if (wBtns.length == 0) {
+                wBtns = packageName("com.tencent.mm").id('bg1').find();//8.0.1
+            }
+            if (wBtns.length > 0) {
+                sleep(random(8000, 10000))
+
+                if (random(0, 1) == 0) {
+                    for (let i = 1; i > -1; i--) {
+                        //longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                        wBtns[i].longClick()
+                        sleep(random(1000, 2000));
+                        if (text("取消置顶").findOne(5000) != null) {
+                            back();
+                            sleep(2000)
+                            //clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                            wBtns[i].click();
+                            sleep(random(1500, 2000))
+                            if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                                log("进入了文件传输助手");
+                                break
+                            } else {
+                                sleep(random(30000, 120000))
+                                back();
+                                sleep(3000)
+                                continue;
+                            }
+                        } else {
+                            console.error("置顶not found 文件传输助手")
+                            关闭应用(PKG_NAME);
+                            lunSleep(300000);
+                            return
+                        }
+                    }
+                } else {
+                    for (let i = 0; i < wBtns.length; i++) {
+                        //longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                        wBtns[i].longClick()
+                        sleep(random(1000, 2000));
+                        if (text("取消置顶").findOne(5000) != null) {
+                            back();
+                            sleep(2000)
+                            //clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                            wBtns[i].click();
+                            sleep(random(1500, 2000))
+                            if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                                log("进入了文件传输助手");
+                                break
+                            } else {
+                                sleep(random(30000, 120000))
+                                back();
+                                sleep(3000)
+                                continue;
+                            }
+                        } else {
+                            console.error("置顶not found 文件传输助手")
+                            关闭应用(PKG_NAME);
+                            lunSleep(300000);
+                            return
+                        }
+                    }
+                }
+
+
+
+                wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000);
+                if (wBtn != null) {
+                    let icount = random(10, 20); //读10~20次才结束
+                    let loopCount = 0;//循环次数
+                    let starttime = new Date().getTime();
+                    let readluntime = random(3000000, 4000000)
+                    for (let i = 0; i < icount;) {
+                        //3000~4000秒休息一次
+                        if (new Date().getTime() - starttime > readluntime) {
+                            break;
+                        }
+                        if (addjieshouCount(phoneNum.toString()) == false) {
+                            //console.error(new Date().toLocaleString() + "-" + "-----------------接收失败---休整");
+                            sleep(random(30000, 180000))
+                            //reducejieshouCount(phoneNum.toString())
+                            返回v首页();
+                            sleep(random(7200000, 14400000));
+                            return
+                        }
+                        loopCount++
+                        if (loopCount % 25 == 0) {
+                            配置 = 读取配置(settingPath);
+                            if (配置["date"] != new Date().toLocaleDateString()) {
+                                //reducejieshouCount("跨日结束-1")
+                                返回v首页();
+                                sleep(random(3000, 5000))
+                                home();
+                                return;
+                            }
+                            if (联网验证(zwifi) != true) {
+                                连接wifi(zwifi, 5000);
+                                app.launch(PKG_NAME);
+                                sleep(10000)
+                            }
+                        }
+                        wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手.*)/).findOne(5000);//id=ipv
+                        if (wBtn != null) {
+                            if (latestUrl != "" && lastUrl != latestUrl) {
+                                lastUrl=latestUrl;
+                                p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOnce();
+                                if (p) {
+                                    sleep(1000)
+                                    p.setText(latestUrl)
+                                    sleep(2000)
+                                }
+                                p = text("发送").className("android.widget.Button").packageName("com.tencent.mm").findOnce()
+                                if (p) {
+                                    sleep(1000)
+                                    click(p.bounds().centerX(), p.bounds().centerY());
+                                    sleep(2000)
+                                    发送 = true
+                                }
+
+                                if (发送) {
+                                    p = descEndsWith("头像").className("android.widget.ImageView").packageName("com.tencent.mm").find()
+                                    if (p.length > 0) {
+                                        sleep(1000)
+                                        click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
+                                        sleep(3000)
+                                    }
+                                }
+
+                                //接收文章进入阅读
+                                sleep(1000)
+                                reducejieshouCount(phoneNum.toString())
+                                let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                                sleep(5000)
+                                cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
+                                let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
+                                let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
+                                if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
+                                    latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
+                                    setConfig("latestTalkName", latestLinkTitle)
+                                }
+
+                                阅读到底();
+                                sleep(random(30000, 60000))
+                                i = i + 1
+                                console.log(new Date().toLocaleString() + "-" + "----------第" + i)
+                                wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce();//id=ipv
+                                if (wBtn != null) {
+                                    //addjieshouCount("阅读完成正常返回+1")
+                                } else {
+                                    返回v首页();
+                                    sleep(random(3000, 5000))
+                                    home();
+                                    return;
+                                }
+                            }else{
+                                sleep(random(3000, 5000))
+                            }
+                        } else {
+                            //reducejieshouCount("找不到文件传输助手退出-1")
+                            返回v首页();
+                            sleep(random(3000, 5000))
+                            home();
+                            return;
+                        }
+
+                        sleep(10000)
+
+                    }
+                    //reducejieshouCount("阅读循环结束-1")
+                    返回v首页();
+                    sleep(random(3000, 5000))
+                    home();
+                    sleep(random(150000, 300000));
+                    关闭应用(PKG_NAME);
+                    sleep(random(150000, 300000));
+                } else {
+                    console.error("not found 文件传输助手")
+                    关闭应用(PKG_NAME);
+                    sleep(300000);
+                }
+
+            } else {
+                console.error("not found bg1")
+                关闭应用(PKG_NAME);
+                sleep(300000);
+            }
+        }
         function 进入收藏() {
             打开v();
             返回v首页();
@@ -1177,7 +1401,7 @@ ui.ok.click(function () {
 
         function onMainPage() {
             log("进入v成功");
-            jieshouwenzhang();
+            jieshouwenzhang2();
             返回v首页();
         }
 
@@ -2053,6 +2277,10 @@ ui.ok.click(function () {
         }
 
         function initws() {
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                app.launch(PKG_NAME);
+            }
             ws = web.newWebSocket("ws://175.178.60.114:8081/fanqie/ws", {
                 eventThread: 'io'
                 /*eventThread {any} WebSocket事件派发的线程，默认为io
@@ -2069,6 +2297,10 @@ ui.ok.click(function () {
                 log("WebSocket关闭中");
             }).on("text", (text, ws) => {
                 console.info("收到文本消息: ", text);
+                if (JSON.parse(text)["url"] != undefined) {
+                    console.info("latestUrl: ", JSON.parse(text)["url"]);
+                    latestUrl = JSON.parse(text)["url"];
+                }
             }).on("binary", (bytes, ws) => {
                 console.info("收到二进制消息：大小 ", bytes.size());
                 console.info("hex: ", bytes.hex());
@@ -2097,7 +2329,7 @@ ui.ok.click(function () {
                         initws();
                         continue;
                     }
-                    let success = ws.send(JSON.stringify({ "type": "ping" }))
+                    let success = ws.send(JSON.stringify({ "type": "ping","phoneNum": phoneNum.toString() }))
                     if (!success) {
                         ws.close(1000, null);
                         sleep(1000)
@@ -2241,11 +2473,11 @@ ui.ok.click(function () {
                 }
 
                 if (nowHour < 6) {
-                    home()
+                    /*home()
                     log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                     sleepLongTime(random(1800000, 3000000));
                     关闭应用(PKG_NAME);
-                    continue;
+                    continue;*/
                 }
 
 
