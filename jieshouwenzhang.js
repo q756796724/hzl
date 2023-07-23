@@ -2063,6 +2063,10 @@ ui.ok.click(function () {
             log("WebSocket连接失败");
             console.error(err);
             ws.close(1000, null);
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                app.launch(PKG_NAME);
+            }
             ws = web.newWebSocket("ws://175.178.60.114:8081/fanqie/ws", {
                 eventThread: 'io'
                 /*eventThread {any} WebSocket事件派发的线程，默认为io
