@@ -2,8 +2,8 @@
 
 storage = storages.create("fanqiekankan配置");
 wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro|WifiPro_5G";
-zwifi = storage.get("zwifi", "XiaoMiWifi");
-dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
+zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G");
+dlwifi = storage.get("dlwifi", "XiaoMiWifi3G_2.4G");
 qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
 removePhoneNum = storage.get("removePhoneNum", false);
 addJieshou = storage.get("addJieshou", false);
@@ -98,10 +98,11 @@ ui.layout(
     <vertical padding="16">
         <Switch id="autoService" text="无障碍服务" checked="{{auto.service != null}}" padding="8 8 8 8" textSize="15sp" />
         <text textSize="16sp" textColor="black" text="请输入主Wifi" />
+        {/*<input id="zwifi" text="{{zwifi}}" /> */}
         <spinner id="zwifi_spinner" entries={wifiOptions} />
         <text textSize="16sp" textColor="black" text="请输入代理Wifi" />
+        {/* <input id="dlwifi" text="{{dlwifi}}" /> */}
         <spinner id="dlwifi_spinner" entries={wifiOptions} />
-        <spinner id="dlwifi_spinner2" entries={wifiOptions} text={dlwifi}/>
         <text textSize="16sp" textColor="black" text="url" />
         <text textSize="16sp" textColor="black" text="编号" />
         <input id="phoneNum" text="{{phoneNum}}" />
@@ -145,30 +146,13 @@ var thread1 = threads.start(function () {
                 //这里写针对UI的操作
                 ui.ok.click()
             });
-            sleep(8000)
-            let kbtn = textMatches(/(立即开始|.*立即开始.*)/).findOne(3000);
-            if (kbtn != null) {
-                kbtn.click()
-            }
         }
     }, 30000);
 });
-
-ui.run(() => {
-    var zwifispinner = ui.zwifi_spinner;
-    zwifispinner.setSelection(wifiOptions.split("|").indexOf(zwifi));
-
-    zwifiSpinner.on("item_selected", function(position, item) {
-        zwifi = item;
-    });
-
-    var dlwifispinner = ui.dlwifi_spinner;
-    dlwifispinner.setSelection(wifiOptions.split("|").indexOf(dlwifi));
-
-    dlwifiSpinner.on("item_selected", function(position, item) {
-        dlwifi = item;
-    });
-});
+var zwifispinner = ui.zwifi_spinner;
+zwifispinner.setSelection(wifiOptions.split("|").indexOf(zwifi));
+var dlwifispinner = ui.dlwifi_spinner;
+dlwifispinner.setSelection(wifiOptions.split("|").indexOf(dlwifi));
 
 //指定确定按钮点击时要执行的动作
 ui.ok.click(function () {
@@ -185,12 +169,8 @@ ui.ok.click(function () {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
+       
+    
 
 
         var topPackage = "";
@@ -199,7 +179,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.0.5";
+        var versionNum = "接收v7.0.6";
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -1890,7 +1870,7 @@ ui.ok.click(function () {
             }
         });
         sleep(3000);
-        let scbtn = textMatches(/(允许|确定)/).findOne(3000);
+        let scbtn = textMatches(/(允许|立即开始)/).findOne(3000);
         if (scbtn != null) {
             scbtn.click()
         }
@@ -1898,8 +1878,10 @@ ui.ok.click(function () {
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
         //zwifi = ui.zwifi.getText();
+        zwifi = ui.zwifi_spinner.getSelectedItem();
         log("主Wifi:" + zwifi);
         //dlwifi = ui.dlwifi.getText();
+        dlwifi = ui.dlwifi_spinner.getSelectedItem();
         log("代理Wifi:" + dlwifi);
         phoneNum = ui.phoneNum.getText();
         log("phoneNum:" + phoneNum);

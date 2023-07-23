@@ -2,8 +2,9 @@
 
 storage = storages.create("fanqiekankan配置");
 toolsStorage = storages.create("tools配置");
-zwifi = storage.get("zwifi", "XiaoMiWifi");
-dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
+wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro|WifiPro_5G";
+zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G");
+dlwifi = storage.get("dlwifi", "XiaoMiWifi3G_2.4G");
 auto_tx = storage.get("auto_tx", false);
 qun_into = storage.get("qun_into", true);
 qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
@@ -106,29 +107,11 @@ ui.layout(
     <vertical padding="16">
         <Switch id="autoService" text="无障碍服务" checked="{{auto.service != null}}" padding="8 8 8 8" textSize="15sp" />
         <text textSize="16sp" textColor="black" text="请输入主Wifi" />
-        <!-<input id="zwifi" text="{{zwifi}}" />-->
-        <select id="zwifi" v-model="zwifi">
-            <option value="XiaoMiWifi_5G">XiaoMiWifi_5G</option>
-            <option value="XiaoMiWifi_2.4G">XiaoMiWifi_2.4G</option>
-            <option value="XiaoMiWifi3G_5G">XiaoMiWifi3G_5G</option>
-            <option value="XiaoMiWifi3G_2.4G">XiaoMiWifi3G_2.4G</option>
-            <option value="XiaoMiWifi4A">XiaoMiWifi4A</option>
-            <option value="guest">guest</option>
-            <option value="WifiPro">WifiPro</option>
-            <option value="WifiPro_5G">WifiPro_5G</option>
-        </select>
+        {/*<input id="zwifi" text="{{zwifi}}" /> */}
+        <spinner id="zwifi_spinner" entries={wifiOptions} />
         <text textSize="16sp" textColor="black" text="请输入代理Wifi" />
-        <!-<input id="dlwifi" text="{{dlwifi}}" />-->
-        <select id="dlwifi" v-model="dlwifi">
-            <option value="XiaoMiWifi_5G">XiaoMiWifi_5G</option>
-            <option value="XiaoMiWifi_2.4G">XiaoMiWifi_2.4G</option>
-            <option value="XiaoMiWifi3G_5G">XiaoMiWifi3G_5G</option>
-            <option value="XiaoMiWifi3G_2.4G">XiaoMiWifi3G_2.4G</option>
-            <option value="XiaoMiWifi4A">XiaoMiWifi4A</option>
-            <option value="guest">guest</option>
-            <option value="WifiPro">WifiPro</option>
-            <option value="WifiPro_5G">WifiPro_5G</option>
-        </select>
+        {/* <input id="dlwifi" text="{{dlwifi}}" /> */}
+        <spinner id="dlwifi_spinner" entries={wifiOptions} />
         <text textSize="16sp" textColor="black" text="url" />
         <input id="readurl" text="{{readurl}}" />
         <text textSize="16sp" textColor="black" text="编号" />
@@ -174,14 +157,14 @@ var thread1 = threads.start(function () {
                 //这里写针对UI的操作
                 ui.ok.click()
             });
-            sleep(8000)
-            let kbtn = textMatches(/(立即开始|.*立即开始.*)/).findOne(3000);
-            if (kbtn != null) {
-                kbtn.click()
-            }
         }
     }, 30000);
 });
+
+var zwifispinner = ui.zwifi_spinner;
+zwifispinner.setSelection(wifiOptions.split("|").indexOf(zwifi));
+var dlwifispinner = ui.dlwifi_spinner;
+dlwifispinner.setSelection(wifiOptions.split("|").indexOf(dlwifi));
 
 //指定确定按钮点击时要执行的动作
 ui.ok.click(function () {
@@ -213,7 +196,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v8.0.5";
+        var versionNum = "番茄分享v8.0.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -2859,15 +2842,17 @@ ui.ok.click(function () {
             }
         });
         sleep(3000);
-        let scbtn = textMatches(/(允许|确定)/).findOne(3000);
+        let scbtn = textMatches(/(允许|立即开始)/).findOne(3000);
         if (scbtn != null) {
             scbtn.click()
         }
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
-        zwifi = ui.zwifi.getText();
+        //zwifi = ui.zwifi.getText();
+        zwifi = ui.zwifi_spinner.getSelectedItem();
         log("主Wifi:" + zwifi);
-        dlwifi = ui.dlwifi.getText();
+        //dlwifi = ui.dlwifi.getText();
+        dlwifi = ui.dlwifi_spinner.getSelectedItem();
         log("代理Wifi:" + dlwifi);
         readurl = ui.readurl.getText();
         log("readurl:" + readurl);
