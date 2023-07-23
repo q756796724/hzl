@@ -101,6 +101,8 @@ ui.layout(
         <spinner id="zwifi_spinner" entries={wifiOptions} />
         <text textSize="16sp" textColor="black" text="请输入代理Wifi" />
         <spinner id="dlwifi_spinner" entries={wifiOptions} />
+        <spinner id="dlwifi_spinner2" entries={wifiOptions} text={dlwifi}/>
+        <spinner id="dlwifi_spinner3" entries={wifiOptions} text={{dlwifi}}/>
         <text textSize="16sp" textColor="black" text="url" />
         <text textSize="16sp" textColor="black" text="编号" />
         <input id="phoneNum" text="{{phoneNum}}" />
@@ -143,19 +145,6 @@ var thread1 = threads.start(function () {
             ui.run(() => {
                 //这里写针对UI的操作
                 ui.ok.click()
-                var zwifispinner = ui.zwifi_spinner;
-                zwifispinner.setSelection(wifiOptions.split("|").indexOf(zwifi));
-
-                zwifiSpinner.on("item_selected", function(position, item) {
-                    zwifi = item;
-                });
-
-                var dlwifispinner = ui.dlifi_spinner;
-                dlwifispinner.setSelection(wifiOptions.split("|").indexOf(dlwifi));
-
-                dlwifiSpinner.on("item_selected", function(position, item) {
-                    dlwifi = item;
-                });
             });
             sleep(8000)
             let kbtn = textMatches(/(立即开始|.*立即开始.*)/).findOne(3000);
@@ -164,6 +153,22 @@ var thread1 = threads.start(function () {
             }
         }
     }, 30000);
+});
+
+ui.run(() => {
+    var zwifispinner = ui.zwifi_spinner;
+    zwifispinner.setSelection(wifiOptions.split("|").indexOf(zwifi));
+
+    zwifiSpinner.on("item_selected", function(position, item) {
+        zwifi = item;
+    });
+
+    var dlwifispinner = ui.dlwifi_spinner;
+    dlwifispinner.setSelection(wifiOptions.split("|").indexOf(dlwifi));
+
+    dlwifiSpinner.on("item_selected", function(position, item) {
+        dlwifi = item;
+    });
 });
 
 //指定确定按钮点击时要执行的动作
