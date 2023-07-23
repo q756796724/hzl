@@ -221,8 +221,8 @@ ui.ok.click(function () {
 
 
 
-        storage.put("zwifi", ui.zwifi.text());
-        storage.put("dlwifi", ui.dlwifi.text());
+        storage.put("zwifi", zwifi);
+        storage.put("dlwifi", dlwifi);
         storage.put("auto_tx", ui.auto_tx.isChecked());
         storage.put("qun_into", ui.qun_into.isChecked());
         storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
