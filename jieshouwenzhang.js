@@ -13,6 +13,7 @@ if (storage.get("readdays") == undefined) {
     storage.put("readdays", 0);
 }
 readdays = storage.get("readdays");//阅读天数
+ws = null
 
 
 /**
@@ -2051,14 +2052,12 @@ ui.ok.click(function () {
             exit();
         }
 
-        
-        
         function initws() {
             ws = web.newWebSocket("ws://175.178.60.114:8081/fanqie/ws", {
-            eventThread: 'io'
-            /*eventThread {any} WebSocket事件派发的线程，默认为io
-            io 事件将在WebSocket的IO线程触发
-            this 事件将在创建WebSocket的线程触发，如果该线程被阻塞，则事件也无法被及时派发*/
+                eventThread: 'io'
+                /*eventThread {any} WebSocket事件派发的线程，默认为io
+                io 事件将在WebSocket的IO线程触发
+                this 事件将在创建WebSocket的线程触发，如果该线程被阻塞，则事件也无法被及时派发*/
             });
             ws.on("open", (res, ws) => {
                 log("WebSocket已连接");
@@ -2085,30 +2084,30 @@ ui.ok.click(function () {
             }).on("closed", (code, reason, ws) => {
                 log("WebSocket已关闭: code = %d, reason = %s", code, reason);
             });
-            // 脚本退出时取消WebSocket
-            events.on('exit', () => {
-                log("WebSocket已关闭");
-                ws.cancel();
-            });
+
         }
+        // 脚本退出时取消WebSocket
+        events.on('exit', () => {
+            log("WebSocket已关闭");
+            ws.close(1000, null);
+        });
+
         threads.start(function () {
             while (true) {
-                try{
-                    if(ws==null){
+                try {
+                    if (ws == null) {
                         initws();
                         continue;
                     }
-                    let success=ws.send(JSON.stringify({"type":"ping"}))
-                    if(!success){
+                    let success = ws.send(JSON.stringify({ "type": "ping" }))
+                    if (!success) {
                         ws.close(1000, null);
-                        if (联网验证(zwifi) != true) {
-                            连接wifi(zwifi, 5000);
-                            app.launch(PKG_NAME);
-                        }
-                        init();
+                        sleep(1000)
+                        initws();
                     }
                     sleep(10000)
-                }catch(e){
+                } catch (e) {
+                    log(e)
                 }
             }
         })
