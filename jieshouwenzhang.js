@@ -2051,64 +2051,71 @@ ui.ok.click(function () {
             exit();
         }
 
-        let ws = web.newWebSocket("ws://175.178.60.114:8081/fanqie/ws", {
+        
+        
+        function initws() {
+            ws = web.newWebSocket("ws://175.178.60.114:8081/fanqie/ws", {
             eventThread: 'io'
             /*eventThread {any} WebSocket事件派发的线程，默认为io
             io 事件将在WebSocket的IO线程触发
             this 事件将在创建WebSocket的线程触发，如果该线程被阻塞，则事件也无法被及时派发*/
-        });
-        ws.on("open", (res, ws) => {
-            log("WebSocket已连接");
-        }).on("failure", (err, res, ws) => {
-            log("WebSocket连接失败");
-            console.error(err);
-            ws.close(1000, null);
-            if (联网验证(zwifi) != true) {
-                连接wifi(zwifi, 5000);
-                app.launch(PKG_NAME);
-            }
-            ws = web.newWebSocket("ws://175.178.60.114:8081/fanqie/ws", {
-                eventThread: 'io'
-                /*eventThread {any} WebSocket事件派发的线程，默认为io
-                io 事件将在WebSocket的IO线程触发
-                this 事件将在创建WebSocket的线程触发，如果该线程被阻塞，则事件也无法被及时派发*/
             });
-        }).on("closing", (code, reason, ws) => {
-            log("WebSocket关闭中");
-        }).on("text", (text, ws) => {
-            console.info("收到文本消息: ", text);
-            sleep(10000)
-            ws.send("收到");
-        }).on("binary", (bytes, ws) => {
-            console.info("收到二进制消息：大小 ", bytes.size());
-            console.info("hex: ", bytes.hex());
-            console.info("base64: ", bytes.base64());
-            console.info("md5: ", bytes.md5());
-            console.info("bytes: ", bytes.toByteArray());
-            ws.send(ByteString.of($files.readBytes('./test.png'))); // 从byte\[\]创建二进制数据并发送
-            ws.send(ByteString.encodeUtf8('你好')); // 将字符串按UTF8编码并创建二进制数据并发送
-            ws.send(ByteString.decodeBase64('QXV0by5qcyBQcm8geXlkcw==')); // 解码Base64并创建二进制数据并发送
-            ws.send(ByteString.decodeHex('621172314F60')); // 解码hex并创建二进制数据并发送
-        }).on("closed", (code, reason, ws) => {
-            log("WebSocket已关闭: code = %d, reason = %s", code, reason);
-        });
-        // 脚本退出时取消WebSocket
-        events.on('exit', () => {
-            log("WebSocket已关闭");
-            ws.cancel();
-        });
-
-
-
-
+            ws.on("open", (res, ws) => {
+                log("WebSocket已连接");
+            }).on("failure", (err, res, ws) => {
+                log("WebSocket连接失败");
+                console.error(err);
+                ws.close(1000, null);
+            }).on("closing", (code, reason, ws) => {
+                log("WebSocket关闭中");
+            }).on("text", (text, ws) => {
+                console.info("收到文本消息: ", text);
+                sleep(10000)
+                ws.send("收到");
+            }).on("binary", (bytes, ws) => {
+                console.info("收到二进制消息：大小 ", bytes.size());
+                console.info("hex: ", bytes.hex());
+                console.info("base64: ", bytes.base64());
+                console.info("md5: ", bytes.md5());
+                console.info("bytes: ", bytes.toByteArray());
+                ws.send(ByteString.of($files.readBytes('./test.png'))); // 从byte\[\]创建二进制数据并发送
+                ws.send(ByteString.encodeUtf8('你好')); // 将字符串按UTF8编码并创建二进制数据并发送
+                ws.send(ByteString.decodeBase64('QXV0by5qcyBQcm8geXlkcw==')); // 解码Base64并创建二进制数据并发送
+                ws.send(ByteString.decodeHex('621172314F60')); // 解码hex并创建二进制数据并发送
+            }).on("closed", (code, reason, ws) => {
+                log("WebSocket已关闭: code = %d, reason = %s", code, reason);
+            });
+            // 脚本退出时取消WebSocket
+            events.on('exit', () => {
+                log("WebSocket已关闭");
+                ws.cancel();
+            });
+        }
+        threads.start(function () {
+            while (true) {
+                try{
+                    if(ws==null){
+                        initws();
+                        continue;
+                    }
+                    let success=ws.send(JSON.stringify({"type":"ping"}))
+                    if(!success){
+                        ws.close(1000, null);
+                        if (联网验证(zwifi) != true) {
+                            连接wifi(zwifi, 5000);
+                            app.launch(PKG_NAME);
+                        }
+                        init();
+                    }
+                    sleep(10000)
+                }catch(e){
+                }
+            }
+        })
 
         var lunCount = 1;//轮回次数
         threads.start(function () {
             for (; ;) {
-                for (; ;) {
-                    sleep(10000)
-                    ws.send('Hello, Auto.js Pro')
-                }
                 kz();
                 var nowHour = new Date().getHours();
                 log("当前时间:" + nowHour + "时");
