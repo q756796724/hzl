@@ -1,6 +1,7 @@
 "ui";
 
 storage = storages.create("fanqiekankan配置");
+wifiOptions = ["XiaoMiWifi_5G", "XiaoMiWifi_2.4G", "XiaoMiWifi3G_5G", "XiaoMiWifi3G_2.4G", "XiaoMiWifi4A", "guest", "WifiPro", "WifiPro_5G"];
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
@@ -93,32 +94,13 @@ function parseDate(str, fmt) {
     if (obj.S !== 0) date.setMilliseconds(obj.S); // 如果设置了毫秒
     return date;
 }
-
 ui.layout(
     <vertical padding="16">
         <Switch id="autoService" text="无障碍服务" checked="{{auto.service != null}}" padding="8 8 8 8" textSize="15sp" />
         <text textSize="16sp" textColor="black" text="请输入主Wifi" />
-        <select id="zwifi" v-model="zwifi">
-            <option value="XiaoMiWifi_5G">XiaoMiWifi_5G</option>
-            <option value="XiaoMiWifi_2.4G">XiaoMiWifi_2.4G</option>
-            <option value="XiaoMiWifi3G_5G">XiaoMiWifi3G_5G</option>
-            <option value="XiaoMiWifi3G_2.4G">XiaoMiWifi3G_2.4G</option>
-            <option value="XiaoMiWifi4A">XiaoMiWifi4A</option>
-            <option value="guest">guest</option>
-            <option value="WifiPro">WifiPro</option>
-            <option value="WifiPro_5G">WifiPro_5G</option>
-        </select>
+        <spinner id="zwifi_spinner" entries={wifiOptions} />
         <text textSize="16sp" textColor="black" text="请输入代理Wifi" />
-        <select id="dlwifi" v-model="dlwifi">
-            <option value="XiaoMiWifi_5G">XiaoMiWifi_5G</option>
-            <option value="XiaoMiWifi_2.4G">XiaoMiWifi_2.4G</option>
-            <option value="XiaoMiWifi3G_5G">XiaoMiWifi3G_5G</option>
-            <option value="XiaoMiWifi3G_2.4G">XiaoMiWifi3G_2.4G</option>
-            <option value="XiaoMiWifi4A">XiaoMiWifi4A</option>
-            <option value="guest">guest</option>
-            <option value="WifiPro">WifiPro</option>
-            <option value="WifiPro_5G">WifiPro_5G</option>
-        </select>
+        <spinner id="dlwifi_spinner" entries={wifiOptions} />
         <text textSize="16sp" textColor="black" text="url" />
         <text textSize="16sp" textColor="black" text="编号" />
         <input id="phoneNum" text="{{phoneNum}}" />
@@ -161,6 +143,23 @@ var thread1 = threads.start(function () {
             ui.run(() => {
                 //这里写针对UI的操作
                 ui.ok.click()
+                var zwifispinner = ui.zwifi_spinner;
+                zwifispinner.setSelection(wifiOptions.indexOf(zwifi));
+
+                zwifispinner.setOnItemSelectedListener({
+                    onItemSelected: function (parent, view, position, id) {
+                        zwifi = wifiOptions[position];
+                    }
+                });
+
+                var dlwifispinner = ui.dlifi_spinner;
+                dlwifispinner.setSelection(wifiOptions.indexOf(dlwifi));
+
+                dlwifispinner.setOnItemSelectedListener({
+                    onItemSelected: function (parent, view, position, id) {
+                        dlwifi = wifiOptions[position];
+                    }
+                });
             });
             sleep(8000)
             let kbtn = textMatches(/(立即开始|.*立即开始.*)/).findOne(3000);
@@ -1898,9 +1897,9 @@ ui.ok.click(function () {
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
-        zwifi = ui.zwifi.getText();
+        //zwifi = ui.zwifi.getText();
         log("主Wifi:" + zwifi);
-        dlwifi = ui.dlwifi.getText();
+        //dlwifi = ui.dlwifi.getText();
         log("代理Wifi:" + dlwifi);
         phoneNum = ui.phoneNum.getText();
         log("phoneNum:" + phoneNum);
@@ -1912,8 +1911,8 @@ ui.ok.click(function () {
 
 
 
-        storage.put("zwifi", ui.zwifi.text());
-        storage.put("dlwifi", ui.dlwifi.text());
+        storage.put("zwifi", zwifi);
+        storage.put("dlwifi", dlwifi);
         storage.put("phoneNum", ui.phoneNum.text());
         storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
         storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
