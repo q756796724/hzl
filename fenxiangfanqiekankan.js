@@ -200,6 +200,40 @@ ui.ok.click(function () {
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
+
+        toastLog(device.brand);
+        toastLog("版本号:" + versionNum);
+        //zwifi = ui.zwifi.getText();
+        zwifi = ui.zwifi_spinner.getSelectedItem();
+        log("主Wifi:" + zwifi);
+        //dlwifi = ui.dlwifi.getText();
+        dlwifi = ui.dlwifi_spinner.getSelectedItem();
+        log("代理Wifi:" + dlwifi);
+        readurl = ui.readurl.getText();
+        log("readurl:" + readurl);
+        phoneNum = ui.phoneNum.getText();
+        log("phoneNum:" + phoneNum);
+        auto_tx = ui.auto_tx.isChecked();
+        log("tx:" + auto_tx);
+        qun_into = ui.qun_into.isChecked();
+        qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
+        removePhoneNum = ui.removePhoneNum.isChecked();
+
+
+
+        storage.put("zwifi", ui.zwifi.text());
+        storage.put("dlwifi", ui.dlwifi.text());
+        storage.put("auto_tx", ui.auto_tx.isChecked());
+        storage.put("qun_into", ui.qun_into.isChecked());
+        storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
+        storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
+        storage.put("readurl", ui.readurl.text());
+        storage.put("phoneNum", ui.phoneNum.text());
+        
+        var content = getdaili();//"要设置的剪贴板内容";
+        setClip(content);
+        log(getClip());
+
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -2846,34 +2880,7 @@ ui.ok.click(function () {
         if (scbtn != null) {
             scbtn.click()
         }
-        toastLog(device.brand);
-        toastLog("版本号:" + versionNum);
-        //zwifi = ui.zwifi.getText();
-        zwifi = ui.zwifi_spinner.getSelectedItem();
-        log("主Wifi:" + zwifi);
-        //dlwifi = ui.dlwifi.getText();
-        dlwifi = ui.dlwifi_spinner.getSelectedItem();
-        log("代理Wifi:" + dlwifi);
-        readurl = ui.readurl.getText();
-        log("readurl:" + readurl);
-        phoneNum = ui.phoneNum.getText();
-        log("phoneNum:" + phoneNum);
-        auto_tx = ui.auto_tx.isChecked();
-        log("tx:" + auto_tx);
-        qun_into = ui.qun_into.isChecked();
-        qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
-        removePhoneNum = ui.removePhoneNum.isChecked();
-
-
-
-        storage.put("zwifi", ui.zwifi.text());
-        storage.put("dlwifi", ui.dlwifi.text());
-        storage.put("auto_tx", ui.auto_tx.isChecked());
-        storage.put("qun_into", ui.qun_into.isChecked());
-        storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
-        storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
-        storage.put("readurl", ui.readurl.text());
-        storage.put("phoneNum", ui.phoneNum.text());
+        
         device.keepScreenDim();
         home();
         //定义

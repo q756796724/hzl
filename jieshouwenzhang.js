@@ -8,7 +8,6 @@ qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
 removePhoneNum = storage.get("removePhoneNum", false);
 addJieshou = storage.get("addJieshou", false);
 
-
 phoneNum = storage.get("phoneNum", "");
 if (storage.get("readdays") == undefined) {
     storage.put("readdays", 0);
@@ -169,8 +168,8 @@ ui.ok.click(function () {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-       
-    
+
+
 
 
         var topPackage = "";
@@ -180,6 +179,32 @@ ui.ok.click(function () {
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
         var versionNum = "接收v7.0.6";
+
+        toastLog(device.brand);
+        toastLog("版本号:" + versionNum);
+        //zwifi = ui.zwifi.getText();
+        zwifi = ui.zwifi_spinner.getSelectedItem();
+        log("主Wifi:" + zwifi);
+        //dlwifi = ui.dlwifi.getText();
+        dlwifi = ui.dlwifi_spinner.getSelectedItem();
+        log("代理Wifi:" + dlwifi);
+        phoneNum = ui.phoneNum.getText();
+        log("phoneNum:" + phoneNum);
+        qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
+        removePhoneNum = ui.removePhoneNum.isChecked();
+        addJieshou = ui.addJieshou.isChecked();
+
+        storage.put("zwifi", zwifi);
+        storage.put("dlwifi", dlwifi);
+        storage.put("phoneNum", ui.phoneNum.text());
+        storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
+        storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
+        storage.put("addJieshou", ui.addJieshou.isChecked());
+
+        var content = getdaili();//"要设置的剪贴板内容";
+        setClip(content);
+        log(getClip());
+
         var totificationlistenersetting = function (actionname) {
             try {
                 let i = app.intent({
@@ -314,6 +339,31 @@ ui.ok.click(function () {
                 rs += this.substr(i, 1).replace(pattern, '');
             }
             return rs;
+        }
+
+        function getdaili() {
+            let temp = null;
+            let repData = "";
+            try {
+                temp = http.post("http://175.178.60.114:8081/fanqie/getdaili", {});
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    repData = rep["data"];
+                } else {
+                    throw Error("getdaili失败" + temp)
+                }
+            } catch (err) {
+                console.error("getdaili报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                repData = getdaili();
+            }
+            return repData
+
         }
 
         //获取接收人数
@@ -1875,30 +1925,7 @@ ui.ok.click(function () {
             scbtn.click()
         }
 
-        toastLog(device.brand);
-        toastLog("版本号:" + versionNum);
-        //zwifi = ui.zwifi.getText();
-        zwifi = ui.zwifi_spinner.getSelectedItem();
-        log("主Wifi:" + zwifi);
-        //dlwifi = ui.dlwifi.getText();
-        dlwifi = ui.dlwifi_spinner.getSelectedItem();
-        log("代理Wifi:" + dlwifi);
-        phoneNum = ui.phoneNum.getText();
-        log("phoneNum:" + phoneNum);
-        qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
-        removePhoneNum = ui.removePhoneNum.isChecked();
-        addJieshou = ui.addJieshou.isChecked();
 
-
-
-
-
-        storage.put("zwifi", zwifi);
-        storage.put("dlwifi", dlwifi);
-        storage.put("phoneNum", ui.phoneNum.text());
-        storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
-        storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
-        storage.put("addJieshou", ui.addJieshou.isChecked());
         device.keepScreenDim();
         home();
         //定义
