@@ -2061,16 +2061,14 @@ ui.ok.click(function () {
             });
             ws.on("open", (res, ws) => {
                 log("WebSocket已连接");
-            }).on("failure", (err, res, ws) => {
+            })/*.on("failure", (err, res, ws) => {
                 log("WebSocket连接失败");
                 console.error(err);
                 ws.close(1000, null);
-            }).on("closing", (code, reason, ws) => {
+            })*/.on("closing", (code, reason, ws) => {
                 log("WebSocket关闭中");
             }).on("text", (text, ws) => {
                 console.info("收到文本消息: ", text);
-                sleep(10000)
-                ws.send("收到");
             }).on("binary", (bytes, ws) => {
                 console.info("收到二进制消息：大小 ", bytes.size());
                 console.info("hex: ", bytes.hex());
@@ -2105,10 +2103,10 @@ ui.ok.click(function () {
                         sleep(1000)
                         initws();
                     }
-                    sleep(10000)
                 } catch (e) {
                     log(e)
                 }
+                sleep(10000)
             }
         })
 
