@@ -102,7 +102,6 @@ ui.layout(
         <text textSize="16sp" textColor="black" text="请输入代理Wifi" />
         <spinner id="dlwifi_spinner" entries={wifiOptions} />
         <spinner id="dlwifi_spinner2" entries={wifiOptions} text={dlwifi}/>
-        <spinner id="dlwifi_spinner3" entries={wifiOptions} text={{dlwifi}}/>
         <text textSize="16sp" textColor="black" text="url" />
         <text textSize="16sp" textColor="black" text="编号" />
         <input id="phoneNum" text="{{phoneNum}}" />
