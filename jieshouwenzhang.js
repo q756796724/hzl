@@ -2041,14 +2041,17 @@ ui.ok.click(function () {
             初始化配置(settingPath);
         }
 
-        if (removePhoneNum) {
-            removePhone(phoneNum.toString());
-            storage.put("removePhoneNum", fslae);
-            exit();
-        }
+        
         if (addJieshou) {
             addJieshouList(phoneNum.toString());
             storage.put("addJieshou", fslae);
+        }
+
+        if (removePhoneNum) {
+            removePhone(phoneNum.toString());
+            storage.put("removePhoneNum", fslae);
+            sleep(3000);
+            exit();
         }
 
         var lunCount = 1;//轮回次数
