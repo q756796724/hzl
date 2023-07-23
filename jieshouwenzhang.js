@@ -1,7 +1,7 @@
 "ui";
 
 storage = storages.create("fanqiekankan配置");
-wifiOptions = ["XiaoMiWifi_5G", "XiaoMiWifi_2.4G", "XiaoMiWifi3G_5G", "XiaoMiWifi3G_2.4G", "XiaoMiWifi4A", "guest", "WifiPro", "WifiPro_5G"];
+wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro|WifiPro_5G";
 zwifi = storage.get("zwifi", "XiaoMiWifi");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi_5G");
 qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
@@ -144,16 +144,14 @@ var thread1 = threads.start(function () {
                 //这里写针对UI的操作
                 ui.ok.click()
                 var zwifispinner = ui.zwifi_spinner;
-                zwifispinner.setSelection(wifiOptions.indexOf(zwifi));
+                zwifispinner.setSelection(wifiOptions.split("|").indexOf(zwifi));
 
-                zwifispinner.setOnItemSelectedListener({
-                    onItemSelected: function (parent, view, position, id) {
-                        zwifi = wifiOptions[position];
-                    }
+                zwifiSpinner.on("item_selected", function(position, item) {
+                    zwifi = item;
                 });
 
                 var dlwifispinner = ui.dlifi_spinner;
-                dlwifispinner.setSelection(wifiOptions.indexOf(dlwifi));
+                dlwifispinner.setSelection(wifiOptions.split("|").indexOf(dlwifi));
 
                 dlwifispinner.setOnItemSelectedListener({
                     onItemSelected: function (parent, view, position, id) {
