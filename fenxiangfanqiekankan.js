@@ -382,6 +382,29 @@ ui.ok.click(function () {
             return rs;
         }
 
+        function getdaili() {
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                home();
+            }
+            let temp = null;
+            let repData = "";
+            try {
+                temp = http.post("http://175.178.60.114:8081/fanqie/getdaili", {});
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    repData = rep["data"];
+                } else {
+                    throw Error("getdaili失败" + temp)
+                }
+            } catch (err) {
+                console.error("getdaili报错,原因:" + err);
+            }
+            return repData
+
+        }
+
         //获取当前接收号码
         function getjieshouNum() {
             let temp = null;

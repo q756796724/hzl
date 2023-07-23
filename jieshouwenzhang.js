@@ -200,7 +200,6 @@ ui.ok.click(function () {
         storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
         storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
         storage.put("addJieshou", ui.addJieshou.isChecked());
-        log(ui.removePhoneNum.isChecked())
 
         var content = getdaili();//"要设置的剪贴板内容";
         setClip(content);
@@ -343,6 +342,10 @@ ui.ok.click(function () {
         }
 
         function getdaili() {
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                home();
+            }
             let temp = null;
             let repData = "";
             try {
@@ -356,12 +359,6 @@ ui.ok.click(function () {
                 }
             } catch (err) {
                 console.error("getdaili报错,原因:" + err);
-                if (联网验证(zwifi) != true) {
-                    连接wifi(zwifi, 5000);
-                    app.launch(PKG_NAME);
-                }
-                sleep(8000)
-                repData = getdaili();
             }
             return repData
 
