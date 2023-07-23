@@ -2080,35 +2080,163 @@ ui.ok.click(function () {
         });
         // 脚本退出时取消WebSocket
         events.on('exit', () => {
+            log("WebSocket已关闭");
             ws.cancel();
         });
-        var lunCount = 1;//轮回次数
-        for (; ;) {
-            kz();
-            var nowHour = new Date().getHours();
-            log("当前时间:" + nowHour + "时");
-            toastLog("版本号:" + versionNum);
 
-            配置 = 读取配置(settingPath);
-            if (配置["date"] != new Date().toLocaleDateString()) {
-                lunSleep(random(600000, 3600000));
-                if (联网验证(zwifi) != true) {
-                    连接wifi(zwifi, 5000);
-                    sleep(10000);
-                }
-                if (getjieshouNum() == phoneNum.toString()) {
-                    if (readdays >= 2) {
-                        sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期" + readdays + "天");//切换
-                        while (1) {
-                            addXianZhi()
-                            sleep(5000)
-                            if (getjieshouNum() != phoneNum.toString()) {
-                                readdays = 0
-                                //跳出死循环
-                                break
+
+        
+
+
+        var lunCount = 1;//轮回次数
+        threads.start(function () {
+            for (; ;) {
+                ws.send('Hello, Auto.js Pro')
+                kz();
+                var nowHour = new Date().getHours();
+                log("当前时间:" + nowHour + "时");
+                toastLog("版本号:" + versionNum);
+
+                配置 = 读取配置(settingPath);
+                if (配置["date"] != new Date().toLocaleDateString()) {
+                    lunSleep(random(600000, 3600000));
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        sleep(10000);
+                    }
+                    if (getjieshouNum() == phoneNum.toString()) {
+                        if (readdays >= 2) {
+                            sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期" + readdays + "天");//切换
+                            while (1) {
+                                addXianZhi()
+                                sleep(5000)
+                                if (getjieshouNum() != phoneNum.toString()) {
+                                    readdays = 0
+                                    //跳出死循环
+                                    break
+                                }
+                            }
+
+                            if (qiehuanjiaoben) {
+                                //转yuedu
+                                toolsStorage.put("toolsSelectIdx", 0);
+                                engines.execScriptFile(toolsStorage.get("脚本路径") + "fenxiangfanqiekankan.js");
+                                exit();
+                            } else {
+                                //回滚回接收
+                                rollbackJieshou(phoneNum.toString());
+                            }
+
+                        } else {
+                            readdays++;
+                        }
+                    } else {
+                        readdays = 0
+                    }
+                    storage.put("readdays", readdays);
+
+                    初始化配置(settingPath);
+                    console.clear();
+                    toastLog("每天初始化配置");
+
+                    /*if (new Date().getDate() % 3 == 0) {
+                        app.launch("com.ss.android.ugc.aweme");
+                        sleep(60000)
+                        if (currentPackage() == "com.ss.android.ugc.aweme") {
+                            home();
+                            sleep(5000);
+                            关闭应用("com.ss.android.ugc.aweme");
+                            sleep(10000)
+                        }
+                        app.launch("com.ss.android.ugc.live");
+                        sleep(60000)
+                        if (currentPackage() == "com.ss.android.ugc.live") {
+                            home();
+                            sleep(5000);
+                            关闭应用("com.ss.android.ugc.live");
+                            sleep(10000)
+                        }
+                        app.launch("com.ss.android.article.news");
+                        sleep(60000)
+                        if (currentPackage() == "com.ss.android.article.news") {
+                            home();
+                            sleep(5000);
+                            关闭应用("com.ss.android.article.news");
+                            sleep(10000)
+                        }
+                    }*/
+
+                    if (random(0, 7) == 5) {
+                        home()
+                        lunSleep(random(1800000, 7200000));
+                        关闭应用(PKG_NAME);
+                        清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
+                        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
+                        if (files.listDir("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/").length > 100) {
+                            清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/");
+                        }
+                        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideotmp/");
+                        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideocache/");
+                        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxanewfiles/");
+                        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxafiles/");
+                        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxacache/");
+                        清空文件夹("/sdcard/Pictures/WeiXin/");
+                        let path = "/sdcard/Android/data/com.tencent.mm/MicroMsg/";
+                        let arr = files.listDir(path);
+                        for (let i = 0; i < arr.length; i++) {
+                            if (files.isDir(path + arr[i]) && arr[i].length == 32) {
+                                path = path + arr[i] + '/'
+                                if (files.listDir(path + "finder/image/").length > 30) {
+                                    清空文件夹(path + "finder/image/");
+                                }
+                                if (files.listDir(path + "finder/video/").length > 8) {
+                                    清空文件夹(path + "finder/video/");
+                                }
+                                if (files.listDir(path + "finder/tmp/").length > 100) {
+                                    清空文件夹(path + "finder/tmp/");
+                                }
+                                if (查询目录下文件个数(path + "finder/avatar/") > 100) {
+                                    清空文件夹(path + "finder/avatar/");
+                                }
+                                if (files.listDir(path + "image2/").length > 30) {
+                                    清空文件夹(path + "image2/");
+                                }
+                                if (files.listDir(path + "record/").length > 30) {
+                                    清空文件夹(path + "record/");
+                                }
+                                if (files.listDir(path + "video/").length > 30) {
+                                    清空文件夹(path + "video/");
+                                }
                             }
                         }
+                    }
 
+                }
+
+                配置 = 读取配置(settingPath);
+                lunCount = 配置["lunCount"];
+                if (配置["lunCount"] == undefined) {
+                    初始化配置(settingPath);
+                }
+
+                if (nowHour < 6) {
+                    home()
+                    log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
+                    sleepLongTime(random(1800000, 3000000));
+                    关闭应用(PKG_NAME);
+                    continue;
+                }
+
+
+                sleep(3000);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                }
+                if (getjieshouNum() != phoneNum.toString()) {
+                    if (readdays > 0) {
+                        sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "提前休息，已任天数" + (readdays));//切换
+                        readdays = 0
+                        storage.put("readdays", readdays);
                         if (qiehuanjiaoben) {
                             //转yuedu
                             toolsStorage.put("toolsSelectIdx", 0);
@@ -2118,171 +2246,53 @@ ui.ok.click(function () {
                             //回滚回接收
                             rollbackJieshou(phoneNum.toString());
                         }
+                    }
 
-                    } else {
-                        readdays++;
-                    }
-                } else {
-                    readdays = 0
-                }
-                storage.put("readdays", readdays);
-
-                初始化配置(settingPath);
-                console.clear();
-                toastLog("每天初始化配置");
-
-                /*if (new Date().getDate() % 3 == 0) {
-                    app.launch("com.ss.android.ugc.aweme");
-                    sleep(60000)
-                    if (currentPackage() == "com.ss.android.ugc.aweme") {
-                        home();
-                        sleep(5000);
-                        关闭应用("com.ss.android.ugc.aweme");
-                        sleep(10000)
-                    }
-                    app.launch("com.ss.android.ugc.live");
-                    sleep(60000)
-                    if (currentPackage() == "com.ss.android.ugc.live") {
-                        home();
-                        sleep(5000);
-                        关闭应用("com.ss.android.ugc.live");
-                        sleep(10000)
-                    }
-                    app.launch("com.ss.android.article.news");
-                    sleep(60000)
-                    if (currentPackage() == "com.ss.android.article.news") {
-                        home();
-                        sleep(5000);
-                        关闭应用("com.ss.android.article.news");
-                        sleep(10000)
-                    }
-                }*/
-
-                if (random(0, 7) == 5) {
-                    home()
-                    lunSleep(random(1800000, 7200000));
-                    关闭应用(PKG_NAME);
-                    清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
-                    清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/xlog/");
-                    if (files.listDir("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/").length > 100) {
-                        清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/CheckResUpdate/");
-                    }
-                    清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideotmp/");
-                    清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxvideocache/");
-                    清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxanewfiles/");
-                    清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxafiles/");
-                    清空文件夹("/sdcard/Android/data/com.tencent.mm/MicroMsg/wxacache/");
-                    清空文件夹("/sdcard/Pictures/WeiXin/");
-                    let path = "/sdcard/Android/data/com.tencent.mm/MicroMsg/";
-                    let arr = files.listDir(path);
-                    for (let i = 0; i < arr.length; i++) {
-                        if (files.isDir(path + arr[i]) && arr[i].length == 32) {
-                            path = path + arr[i] + '/'
-                            if (files.listDir(path + "finder/image/").length > 30) {
-                                清空文件夹(path + "finder/image/");
-                            }
-                            if (files.listDir(path + "finder/video/").length > 8) {
-                                清空文件夹(path + "finder/video/");
-                            }
-                            if (files.listDir(path + "finder/tmp/").length > 100) {
-                                清空文件夹(path + "finder/tmp/");
-                            }
-                            if (查询目录下文件个数(path + "finder/avatar/") > 100) {
-                                清空文件夹(path + "finder/avatar/");
-                            }
-                            if (files.listDir(path + "image2/").length > 30) {
-                                清空文件夹(path + "image2/");
-                            }
-                            if (files.listDir(path + "record/").length > 30) {
-                                清空文件夹(path + "record/");
-                            }
-                            if (files.listDir(path + "video/").length > 30) {
-                                清空文件夹(path + "video/");
-                            }
+                    if (random(0, 8 == 8)) {
+                        打开v();
+                        refreshStateInfo();
+                        /*if(topPackage != PKG_NAME){
+                            continue;
+                        }*/
+                        let wBtn = className("android.widget.TextView").text("我").findOne(3000);
+                        if (topActivity == MAIN_PAGE && wBtn != null) {
+                            onMainPage();
+                        } else {
+                            返回v首页();
+                            lunSleep(1200000);
                         }
-                    }
-                }
-
-            }
-
-            配置 = 读取配置(settingPath);
-            lunCount = 配置["lunCount"];
-            if (配置["lunCount"] == undefined) {
-                初始化配置(settingPath);
-            }
-
-            if (nowHour < 6) {
-                home()
-                log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
-                sleepLongTime(random(1800000, 3000000));
-                关闭应用(PKG_NAME);
-                continue;
-            }
-
-
-            sleep(3000);
-            if (联网验证(zwifi) != true) {
-                连接wifi(zwifi, 5000);
-            }
-            if (getjieshouNum() != phoneNum.toString()) {
-                if (readdays > 0) {
-                    sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "提前休息，已任天数" + (readdays));//切换
-                    readdays = 0
-                    storage.put("readdays", readdays);
-                    if (qiehuanjiaoben) {
-                        //转yuedu
-                        toolsStorage.put("toolsSelectIdx", 0);
-                        engines.execScriptFile(toolsStorage.get("脚本路径") + "fenxiangfanqiekankan.js");
-                        exit();
-                    } else {
-                        //回滚回接收
-                        rollbackJieshou(phoneNum.toString());
-                    }
-                }
-
-                if (random(0, 8 == 8)) {
-                    打开v();
-                    refreshStateInfo();
-                    /*if(topPackage != PKG_NAME){
-                        continue;
-                    }*/
-                    let wBtn = className("android.widget.TextView").text("我").findOne(3000);
-                    if (topActivity == MAIN_PAGE && wBtn != null) {
-                        onMainPage();
-                    } else {
-                        返回v首页();
+                    } else if (random(0, 1 == 1)) {
+                        home();
                         lunSleep(1200000);
                     }
-                } else if (random(0, 1 == 1)) {
-                    home();
-                    lunSleep(1200000);
+                    continue;
+                } else {
+                    if (readdays == 0) {
+                        readdays = 1
+                        storage.put("readdays", readdays);
+                        sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "上任");//切换
+                    }
                 }
-                continue;
-            } else {
-                if (readdays == 0) {
-                    readdays = 1
-                    storage.put("readdays", readdays);
-                    sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "上任");//切换
+
+                打开v();
+
+
+                refreshStateInfo();
+                /*if(topPackage != PKG_NAME){
+                    continue;
+                }*/
+                let wBtn = className("android.widget.TextView").text("我").findOne(3000);
+                if (topActivity == MAIN_PAGE && wBtn != null) {
+                    onMainPage();
+                } else {
+                    log(wBtn);
+                    返回v首页();
+                    continue;
                 }
+
             }
+        });
 
-            打开v();
-
-
-            refreshStateInfo();
-            /*if(topPackage != PKG_NAME){
-                continue;
-            }*/
-            let wBtn = className("android.widget.TextView").text("我").findOne(3000);
-            if (topActivity == MAIN_PAGE && wBtn != null) {
-                onMainPage();
-            } else {
-                log(wBtn);
-                返回v首页();
-                continue;
-            }
-
-        }
 
     });
 });
