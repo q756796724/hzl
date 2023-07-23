@@ -200,6 +200,7 @@ ui.ok.click(function () {
         storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
         storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
         storage.put("addJieshou", ui.addJieshou.isChecked());
+        log(ui.removePhoneNum.isChecked())
 
         var content = getdaili();//"要设置的剪贴板内容";
         setClip(content);
@@ -2044,12 +2045,12 @@ ui.ok.click(function () {
         
         if (addJieshou) {
             addJieshouList(phoneNum.toString());
-            storage.put("addJieshou", fslae);
+            storage.put("addJieshou", false);
         }
 
         if (removePhoneNum) {
             removePhone(phoneNum.toString());
-            storage.put("removePhoneNum", fslae);
+            storage.put("removePhoneNum", false);
             sleep(3000);
             exit();
         }

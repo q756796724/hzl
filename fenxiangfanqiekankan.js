@@ -229,7 +229,7 @@ ui.ok.click(function () {
         storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
         storage.put("readurl", ui.readurl.text());
         storage.put("phoneNum", ui.phoneNum.text());
-        
+
         var content = getdaili();//"要设置的剪贴板内容";
         setClip(content);
         log(getClip());
@@ -3001,7 +3001,7 @@ ui.ok.click(function () {
         保存配置(settingPath, 配置);
         if(removePhoneNum){
             removePhone(phoneNum.toString());
-            storage.put("removePhoneNum", fslae);
+            storage.put("removePhoneNum", false);
             exit();
         }
         addYuedu(phoneNum.toString());
