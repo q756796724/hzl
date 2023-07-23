@@ -153,10 +153,8 @@ var thread1 = threads.start(function () {
                 var dlwifispinner = ui.dlifi_spinner;
                 dlwifispinner.setSelection(wifiOptions.split("|").indexOf(dlwifi));
 
-                dlwifispinner.setOnItemSelectedListener({
-                    onItemSelected: function (parent, view, position, id) {
-                        dlwifi = wifiOptions[position];
-                    }
+                dlwifiSpinner.on("item_selected", function(position, item) {
+                    dlwifi = item;
                 });
             });
             sleep(8000)
