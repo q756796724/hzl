@@ -2052,13 +2052,23 @@ ui.ok.click(function () {
         }
 
         let ws = web.newWebSocket("ws://175.178.60.114:8081/fanqie/ws", {
-            eventThread: 'this'
+            eventThread: 'io'
+            /*eventThread {any} WebSocket事件派发的线程，默认为io
+            io 事件将在WebSocket的IO线程触发
+            this 事件将在创建WebSocket的线程触发，如果该线程被阻塞，则事件也无法被及时派发*/
         });
         ws.on("open", (res, ws) => {
             log("WebSocket已连接");
         }).on("failure", (err, res, ws) => {
             log("WebSocket连接失败");
             console.error(err);
+            ws.close(1000, null);
+            ws = web.newWebSocket("ws://175.178.60.114:8081/fanqie/ws", {
+                eventThread: 'io'
+                /*eventThread {any} WebSocket事件派发的线程，默认为io
+                io 事件将在WebSocket的IO线程触发
+                this 事件将在创建WebSocket的线程触发，如果该线程被阻塞，则事件也无法被及时派发*/
+            });
         }).on("closing", (code, reason, ws) => {
             log("WebSocket关闭中");
         }).on("text", (text, ws) => {
@@ -2085,7 +2095,7 @@ ui.ok.click(function () {
         });
 
 
-        
+
 
 
         var lunCount = 1;//轮回次数
@@ -2093,7 +2103,7 @@ ui.ok.click(function () {
             for (; ;) {
                 for (; ;) {
                     sleep(10000)
-                ws.send('Hello, Auto.js Pro')
+                    ws.send('Hello, Auto.js Pro')
                 }
                 kz();
                 var nowHour = new Date().getHours();
