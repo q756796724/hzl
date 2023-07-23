@@ -1,7 +1,7 @@
 "ui";
 
 storage = storages.create("fanqiekankan配置");
-wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro|WifiPro_5G";
+wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro|WifiPro_5G|myg";
 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi3G_2.4G");
 qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
@@ -178,7 +178,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.0.6";
+        var versionNum = "接收v7.0.7";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -200,10 +200,6 @@ ui.ok.click(function () {
         storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
         storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
         storage.put("addJieshou", ui.addJieshou.isChecked());
-
-        var content = getdaili();//"要设置的剪贴板内容";
-        setClip(content);
-        log(getClip());
 
         var totificationlistenersetting = function (actionname) {
             try {
@@ -2039,6 +2035,9 @@ ui.ok.click(function () {
             初始化配置(settingPath);
         }
 
+        var content = getdaili();//"要设置的剪贴板内容";
+        setClip(content);
+        log(getClip());
         
         if (addJieshou) {
             addJieshouList(phoneNum.toString());
@@ -2051,6 +2050,7 @@ ui.ok.click(function () {
             sleep(3000);
             exit();
         }
+
 
         var lunCount = 1;//轮回次数
         for (; ;) {
