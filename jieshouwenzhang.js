@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.1.0";
+        var versionNum = "接收v7.1.1";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -2478,11 +2478,11 @@ ui.ok.click(function () {
                 }
 
                 if (nowHour < 6) {
-                    /*home()
+                    home()
                     log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
                     sleepLongTime(random(1800000, 3000000));
                     关闭应用(PKG_NAME);
-                    continue;*/
+                    continue;
                 }
 
 
