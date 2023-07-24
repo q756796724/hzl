@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.1.1";
+        var versionNum = "接收v7.1.2";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -2301,7 +2301,7 @@ ui.ok.click(function () {
             })*/.on("closing", (code, reason, ws) => {
                 log("WebSocket关闭中");
             }).on("text", (text, ws) => {
-                console.info("收到文本消息: ", text);
+                //console.info("收到文本消息: ", text);
                 try{
                     if (JSON.parse(text)["url"] != undefined) {
                         console.info("latestUrl: ", JSON.parse(text)["url"]);
