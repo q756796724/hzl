@@ -197,7 +197,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v8.0.8";
+        var versionNum = "番茄分享v8.1.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -3151,6 +3151,7 @@ ui.ok.click(function () {
             });
             ws.on("open", (res, ws) => {
                 log("WebSocket已连接");
+                ws.send(JSON.stringify({ "type": "ping","phoneNum": phoneNum.toString() }))
             })/*.on("failure", (err, res, ws) => {
                 log("WebSocket连接失败");
                 console.error(err);
@@ -3159,10 +3160,12 @@ ui.ok.click(function () {
                 log("WebSocket关闭中");
             }).on("text", (text, ws) => {
                 console.info("收到文本消息: ", text);
-                if (JSON.parse(text)["url"] != undefined) {
-                    console.info("latestUrl: ", JSON.parse(text)["url"]);
-                    latestUrl = JSON.parse(text)["url"];
-                }
+                try{
+                    if (JSON.parse(text)["url"] != undefined) {
+                        console.info("latestUrl: ", JSON.parse(text)["url"]);
+                        latestUrl = JSON.parse(text)["url"];
+                    }
+                }catch (e) {log(e)}
             }).on("binary", (bytes, ws) => {
                 console.info("收到二进制消息：大小 ", bytes.size());
                 console.info("hex: ", bytes.hex());
@@ -3183,26 +3186,24 @@ ui.ok.click(function () {
             log("WebSocket已关闭");
             ws.close(1000, null);
         });
-
-        threads.start(function () {
-            while (true) {
-                try {
-                    if (ws == null) {
-                        initws();
-                        continue;
-                    }
-                    let success = ws.send(JSON.stringify({ "type": "ping","phoneNum": phoneNum.toString() }))
-                    if (!success) {
-                        ws.close(1000, null);
-                        sleep(1000)
-                        initws();
-                    }
-                } catch (e) {
-                    log(e)
+        
+        function startWebSocket() {
+            try {
+                if (ws == null) {
+                    initws();
                 }
-                sleep(10000)
+                let success = ws.send(JSON.stringify({ "type": "ping","phoneNum": phoneNum.toString() }))
+                if (!success) {
+                    ws.close(1000, null);
+                    sleep(1000)
+                    initws();
+                }
+            } catch (e) {
+                log(e)
             }
-        })
+            return startWebSocket;
+        }
+        setInterval(startWebSocket(), 10000);
 
         threads.start(function () {
             for (; ;) {

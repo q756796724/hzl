@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.0.8";
+        var versionNum = "接收v7.1.0";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -415,6 +415,10 @@ ui.ok.click(function () {
                     }
                 }
             } catch (err) {
+                if(err=='JavaException: java.util.concurrent.TimeoutException: null'){
+                    console.error("addjieshouCount报错,原因:正常");
+                    return true 
+                }
                 console.error("addjieshouCount报错,原因:" + err);
                 if (联网验证(zwifi) != true) {
                     连接wifi(zwifi, 5000);
@@ -2289,6 +2293,7 @@ ui.ok.click(function () {
             });
             ws.on("open", (res, ws) => {
                 log("WebSocket已连接");
+                ws.send(JSON.stringify({ "type": "ping","phoneNum": phoneNum.toString() }))
             })/*.on("failure", (err, res, ws) => {
                 log("WebSocket连接失败");
                 console.error(err);
@@ -2297,10 +2302,12 @@ ui.ok.click(function () {
                 log("WebSocket关闭中");
             }).on("text", (text, ws) => {
                 console.info("收到文本消息: ", text);
-                if (JSON.parse(text)["url"] != undefined) {
-                    console.info("latestUrl: ", JSON.parse(text)["url"]);
-                    latestUrl = JSON.parse(text)["url"];
-                }
+                try{
+                    if (JSON.parse(text)["url"] != undefined) {
+                        console.info("latestUrl: ", JSON.parse(text)["url"]);
+                        latestUrl = JSON.parse(text)["url"];
+                    }
+                }catch (e) {log(e)}
             }).on("binary", (bytes, ws) => {
                 console.info("收到二进制消息：大小 ", bytes.size());
                 console.info("hex: ", bytes.hex());
@@ -2321,26 +2328,24 @@ ui.ok.click(function () {
             log("WebSocket已关闭");
             ws.close(1000, null);
         });
-
-        threads.start(function () {
-            while (true) {
-                try {
-                    if (ws == null) {
-                        initws();
-                        continue;
-                    }
-                    let success = ws.send(JSON.stringify({ "type": "ping","phoneNum": phoneNum.toString() }))
-                    if (!success) {
-                        ws.close(1000, null);
-                        sleep(1000)
-                        initws();
-                    }
-                } catch (e) {
-                    log(e)
+        
+        function startWebSocket() {
+            try {
+                if (ws == null) {
+                    initws();
                 }
-                sleep(10000)
+                let success = ws.send(JSON.stringify({ "type": "ping","phoneNum": phoneNum.toString() }))
+                if (!success) {
+                    ws.close(1000, null);
+                    sleep(1000)
+                    initws();
+                }
+            } catch (e) {
+                log(e)
             }
-        })
+            return startWebSocket;
+        }
+        setInterval(startWebSocket(), 10000);
 
         var lunCount = 1;//轮回次数
         threads.start(function () {
@@ -2485,6 +2490,7 @@ ui.ok.click(function () {
                 if (联网验证(zwifi) != true) {
                     连接wifi(zwifi, 5000);
                 }
+                    
                 if (getjieshouNum() != phoneNum.toString()) {
                     if (readdays > 0) {
                         sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "提前休息，已任天数" + (readdays));//切换
