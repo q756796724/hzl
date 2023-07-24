@@ -1092,7 +1092,7 @@ ui.ok.click(function () {
                                 if (p) {
                                     sleep(1000)
                                     click(p.bounds().centerX(), p.bounds().centerY());
-                                    sleep(2000)
+                                    sleep(3000)
                                     发送 = true
                                 }
 
