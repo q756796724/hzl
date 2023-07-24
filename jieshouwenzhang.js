@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.1.2";
+        var versionNum = "接收v7.1.3";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -1077,6 +1077,7 @@ ui.ok.click(function () {
                                 sleep(10000)
                             }
                         }
+                        let 发送=false
                         wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手.*)/).findOne(5000);//id=ipv
                         if (wBtn != null) {
                             if (latestUrl != "" && lastUrl != latestUrl) {
@@ -1087,7 +1088,7 @@ ui.ok.click(function () {
                                     p.setText(latestUrl)
                                     sleep(2000)
                                 }
-                                p = text("发送").className("android.widget.Button").packageName("com.tencent.mm").findOnce()
+                                p = text("发送").className("android.widget.Button").packageName("com.tencent.mm").findOne(8000)
                                 if (p) {
                                     sleep(1000)
                                     click(p.bounds().centerX(), p.bounds().centerY());
