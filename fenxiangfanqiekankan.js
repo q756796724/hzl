@@ -3160,12 +3160,6 @@ ui.ok.click(function () {
                 log("WebSocket关闭中");
             }).on("text", (text, ws) => {
                 console.info("收到文本消息: ", text);
-                try{
-                    if (JSON.parse(text)["url"] != undefined) {
-                        console.info("latestUrl: ", JSON.parse(text)["url"]);
-                        latestUrl = JSON.parse(text)["url"];
-                    }
-                }catch (e) {log(e)}
             }).on("binary", (bytes, ws) => {
                 console.info("收到二进制消息：大小 ", bytes.size());
                 console.info("hex: ", bytes.hex());
