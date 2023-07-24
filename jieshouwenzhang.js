@@ -2307,7 +2307,7 @@ ui.ok.click(function () {
                         console.info("latestUrl: ", JSON.parse(text)["url"]);
                         latestUrl = JSON.parse(text)["url"];
                     }
-                }catch (e) {log(e)}
+                }catch (e) {}
             }).on("binary", (bytes, ws) => {
                 console.info("收到二进制消息：大小 ", bytes.size());
                 console.info("hex: ", bytes.hex());
