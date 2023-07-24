@@ -1084,7 +1084,6 @@ ui.ok.click(function () {
                                 lastUrl = latestUrl;
                                 p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(5000);
                                 if (p) {
-                                    sleep(1000)
                                     p.setText(latestUrl)
                                     sleep(2000)
                                     p.click();
