@@ -1093,7 +1093,6 @@ ui.ok.click(function () {
                                 }
                                 p = text("发送").className("android.widget.Button").packageName("com.tencent.mm").findOnce()
                                 if (p) {
-                                    sleep(1000)
                                     clickx(p.bounds().centerX(), p.bounds().centerY());
                                     sleep(3000)
                                     发送 = true
