@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.1.4";
+        var versionNum = "接收v7.1.5";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -1077,12 +1077,11 @@ ui.ok.click(function () {
                                 sleep(10000)
                             }
                         }
-                        let 发送 = false
                         wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手.*)/).findOne(5000);//id=ipv
                         if (wBtn != null) {
                             if (latestUrl != "" && lastUrl != latestUrl) {
                                 lastUrl = latestUrl;
-                                p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(5000);
+                                let p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(5000);
                                 if (p) {
                                     p.setText(latestUrl)
                                     sleep(2000)
@@ -1095,10 +1094,6 @@ ui.ok.click(function () {
                                 if (p) {
                                     clickx(p.bounds().centerX(), p.bounds().centerY());
                                     sleep(3000)
-                                    发送 = true
-                                }
-
-                                if (发送) {
                                     p = descEndsWith("头像").className("android.widget.ImageView").packageName("com.tencent.mm").find()
                                     if (p.length > 0) {
                                         sleep(1000)
@@ -1115,6 +1110,8 @@ ui.ok.click(function () {
                                 let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
                                 let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                                 if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
+                                    let latestLinkTitle = cBtn.text()+js_name.desc();
+                                    latestLinkTitle = latestLinkTitle.TextFilter();
                                     latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
                                     setConfig("latestTalkName", latestLinkTitle)
                                 }
