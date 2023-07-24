@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.1.3";
+        var versionNum = "接收v7.1.4";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -415,9 +415,9 @@ ui.ok.click(function () {
                     }
                 }
             } catch (err) {
-                if(err=='JavaException: java.util.concurrent.TimeoutException: null'){
+                if (err == 'JavaException: java.util.concurrent.TimeoutException: null') {
                     console.error("addjieshouCount报错,原因:正常");
-                    return true 
+                    return true
                 }
                 console.error("addjieshouCount报错,原因:" + err);
                 if (联网验证(zwifi) != true) {
@@ -1077,21 +1077,25 @@ ui.ok.click(function () {
                                 sleep(10000)
                             }
                         }
-                        let 发送=false
+                        let 发送 = false
                         wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手.*)/).findOne(5000);//id=ipv
                         if (wBtn != null) {
                             if (latestUrl != "" && lastUrl != latestUrl) {
-                                lastUrl=latestUrl;
-                                p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOnce();
+                                lastUrl = latestUrl;
+                                p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(5000);
                                 if (p) {
                                     sleep(1000)
                                     p.setText(latestUrl)
                                     sleep(2000)
+                                    p.click();
+                                    sleep(1000)
+                                    back();
+                                    sleep(2000)
                                 }
-                                p = text("发送").className("android.widget.Button").packageName("com.tencent.mm").findOne(8000)
+                                p = text("发送").className("android.widget.Button").packageName("com.tencent.mm").findOnce()
                                 if (p) {
                                     sleep(1000)
-                                    click(p.bounds().centerX(), p.bounds().centerY());
+                                    clickx(p.bounds().centerX(), p.bounds().centerY());
                                     sleep(3000)
                                     发送 = true
                                 }
@@ -1101,7 +1105,6 @@ ui.ok.click(function () {
                                     if (p.length > 0) {
                                         sleep(1000)
                                         click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
-                                        sleep(3000)
                                     }
                                 }
 
@@ -1131,7 +1134,7 @@ ui.ok.click(function () {
                                     home();
                                     return;
                                 }
-                            }else{
+                            } else {
                                 sleep(random(3000, 5000))
                             }
                         } else {
@@ -2294,7 +2297,7 @@ ui.ok.click(function () {
             });
             ws.on("open", (res, ws) => {
                 log("WebSocket已连接");
-                ws.send(JSON.stringify({ "type": "ping","phoneNum": phoneNum.toString() }))
+                ws.send(JSON.stringify({ "type": "ping", "phoneNum": phoneNum.toString() }))
             })/*.on("failure", (err, res, ws) => {
                 log("WebSocket连接失败");
                 console.error(err);
@@ -2303,12 +2306,12 @@ ui.ok.click(function () {
                 log("WebSocket关闭中");
             }).on("text", (text, ws) => {
                 //console.info("收到文本消息: ", text);
-                try{
+                try {
                     if (JSON.parse(text)["url"] != undefined) {
                         console.info("latestUrl: ", JSON.parse(text)["url"]);
                         latestUrl = JSON.parse(text)["url"];
                     }
-                }catch (e) {}
+                } catch (e) { }
             }).on("binary", (bytes, ws) => {
                 console.info("收到二进制消息：大小 ", bytes.size());
                 console.info("hex: ", bytes.hex());
@@ -2329,13 +2332,13 @@ ui.ok.click(function () {
             log("WebSocket已关闭");
             ws.close(1000, null);
         });
-        
+
         function startWebSocket() {
             try {
                 if (ws == null) {
                     initws();
                 }
-                let success = ws.send(JSON.stringify({ "type": "ping","phoneNum": phoneNum.toString() }))
+                let success = ws.send(JSON.stringify({ "type": "ping", "phoneNum": phoneNum.toString() }))
                 if (!success) {
                     ws.close(1000, null);
                     sleep(1000)
@@ -2491,7 +2494,7 @@ ui.ok.click(function () {
                 if (联网验证(zwifi) != true) {
                     连接wifi(zwifi, 5000);
                 }
-                    
+
                 if (getjieshouNum() != phoneNum.toString()) {
                     if (readdays > 0) {
                         sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "提前休息，已任天数" + (readdays));//切换
