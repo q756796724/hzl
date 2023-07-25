@@ -181,7 +181,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.1.5";
+        var versionNum = "接收v7.1.6";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -2350,7 +2350,7 @@ ui.ok.click(function () {
         threads.start(function () {
             for (; ;) {
                 kz();
-                var nowHour = new Date().getHours();
+                nowHour = new Date().getHours();
                 log("当前时间:" + nowHour + "时");
                 toastLog("版本号:" + versionNum);
 

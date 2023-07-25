@@ -197,7 +197,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v8.1.1";
+        var versionNum = "番茄分享v8.1.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -3202,7 +3202,7 @@ ui.ok.click(function () {
         threads.start(function () {
             for (; ;) {
                 kz();
-                var nowHour = new Date().getHours();
+                nowHour = new Date().getHours();
                 log("当前时间:" + nowHour + "时");
                 toastLog("版本号:" + versionNum);
                 配置 = 读取配置(settingPath);
