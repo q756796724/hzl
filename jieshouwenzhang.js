@@ -1,6 +1,7 @@
 "ui";
 
 storage = storages.create("fanqiekankan配置");
+toolsStorage = storages.create("tools配置");
 wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro|WifiPro_5G|myg";
 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi3G_2.4G");
@@ -181,7 +182,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.1.6";
+        var versionNum = "接收v7.1.7";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
