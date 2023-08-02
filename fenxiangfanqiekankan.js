@@ -198,7 +198,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v8.1.3";
+        var versionNum = "番茄分享v8.2.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1223,6 +1223,9 @@ ui.ok.click(function () {
                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) == null && packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
                                     log("进入了家庭");
                                     break
+                                }else if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) != null) {
+                                    log("进入了大家庭");
+                                    break
                                 } else {
                                     sleep(random(30000, 120000))
                                     back();
@@ -1231,7 +1234,7 @@ ui.ok.click(function () {
                                 }
                             } else {
                                 if (i == 0) {
-                                    console.error("置顶not found 家庭")
+                                    console.error("置顶not found 家庭/大家庭")
                                     if (retryCount > 3) {
                                         retryCount = 0;
                                         关闭应用(PKG_NAME);
@@ -1256,24 +1259,24 @@ ui.ok.click(function () {
                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) == null && packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
                                     log("进入了家庭");
                                     break
-                                } else {
+                                } else if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) != null) {
+                                    log("进入了大家庭");
+                                    break
+                                }else {
                                     sleep(random(30000, 120000))
                                     back();
                                     sleep(3000)
                                     continue;
                                 }
                             } else {
-                                if (i == 0) {
-                                    console.error("置顶not found 家庭")
+                                console.error("置顶not found 家庭/大家庭")
                                     if (retryCount > 3) {
                                         retryCount = 0;
                                         关闭应用(PKG_NAME);
                                     } else {
                                         retryCount++
                                     }
-                                    return
-                                }
-                                continue;
+                                return
                             }
                         }
                     }
@@ -1281,7 +1284,8 @@ ui.ok.click(function () {
 
 
                     //let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOne(5000);
-                    if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000) == null && packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
+                    //if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000) == null && packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
+                    if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000) != null || packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
                         let news = packageName("com.tencent.mm").className("android.widget.ListView").findOne(5000);
                         if (news != null && news.children() != null) {
                             let newsList = news.children();
@@ -1306,7 +1310,7 @@ ui.ok.click(function () {
                                                                 for (let i = 0; i < 10; i++) {
                                                                     clickx(child.bounds().centerX(), child.bounds().centerY());
                                                                     sleep(2000);
-                                                                    if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() == null) {
+                                                                    if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(.*家庭.*)/).findOnce() == null) {
                                                                         log("点击番茄主成功")
                                                                         break
                                                                     }
@@ -1359,7 +1363,7 @@ ui.ok.click(function () {
                                                                                 sleep(3000);
                                                                             }
                                                                         }
-                                                                        if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() == null) {
+                                                                        if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(.*家庭.*)/).findOnce() == null) {
                                                                             log("点击番茄副成功")
                                                                             break
                                                                         }
@@ -1386,7 +1390,7 @@ ui.ok.click(function () {
                                                                 }
                                                                 sleep(1000)
                                                                 click("继续访问")
-                                                                if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() == null) {
+                                                                if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(.*家庭.*)/).findOnce() == null) {
                                                                     log("点击状态成功")
                                                                     let ztjs = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*friendNickname.*)/).findOnce();
                                                                     log(ztjs.text())
@@ -1459,7 +1463,7 @@ ui.ok.click(function () {
                             }
                         }
                     } else {
-                        console.error("not found 家庭")
+                        console.error("not found 家庭/大家庭")
 
                         if (retryCount > 3) {
                             retryCount = 0;
