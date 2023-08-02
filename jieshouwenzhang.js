@@ -182,7 +182,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.1.7";
+        var versionNum = "接收v7.1.8";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -986,9 +986,12 @@ ui.ok.click(function () {
                 sleep(random(8000, 10000))
 
                 if (random(0, 1) == 0) {
-                    for (let i = 1; i > -1; i--) {
-                        //longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
-                        wBtns[i].longClick()
+                    for (let i = 2; i > -1; i--) {
+                        if (i > wBtns.length - 1) {
+                            continue
+                        }
+                        longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                        //wBtns[i].longClick()
                         sleep(random(1000, 2000));
                         if (text("取消置顶").findOne(5000) != null) {
                             back();
@@ -1006,16 +1009,20 @@ ui.ok.click(function () {
                                 continue;
                             }
                         } else {
-                            console.error("置顶not found 文件传输助手")
-                            关闭应用(PKG_NAME);
-                            lunSleep(300000);
-                            return
+                            if (i == 0) {
+                                console.error("置顶not found 文件传输助手")
+                                关闭应用(PKG_NAME);
+                                lunSleep(300000);
+                                return
+                            }
+                            continue;
+
                         }
                     }
                 } else {
                     for (let i = 0; i < wBtns.length; i++) {
-                        //longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
-                        wBtns[i].longClick()
+                        longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                        //wBtns[i].longClick()
                         sleep(random(1000, 2000));
                         if (text("取消置顶").findOne(5000) != null) {
                             back();
@@ -1111,7 +1118,7 @@ ui.ok.click(function () {
                                 let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
                                 let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                                 if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
-                                    let latestLinkTitle = cBtn.text()+js_name.desc();
+                                    let latestLinkTitle = cBtn.text() + js_name.desc();
                                     latestLinkTitle = latestLinkTitle.TextFilter();
                                     latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
                                     setConfig("latestTalkName", latestLinkTitle)

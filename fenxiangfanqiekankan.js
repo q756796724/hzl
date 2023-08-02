@@ -198,7 +198,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v8.2.0";
+        var versionNum = "番茄分享v8.2.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1211,7 +1211,10 @@ ui.ok.click(function () {
                 if (wBtns.length > 1) {
                     sleep(random(8000, 10000))
                     if (random(0, 1) == 0) {
-                        for (let i = 1; i > -1; i--) {
+                        for (let i = 2; i > -1; i--) {
+                            if(i>wBtns.length-1){
+                                continue
+                            }
                             longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
                             sleep(random(1000, 2000));
                             if (text("取消置顶").findOne(5000) != null) {
@@ -3250,6 +3253,7 @@ ui.ok.click(function () {
     
                     fanxiangFlag = true;
                     if (random(0, 7) == 5) {
+                        jcfbf = []
                         lunSleep(random(1800000, 7200000));
                         关闭应用(PKG_NAME);
                         sleep(10000)
