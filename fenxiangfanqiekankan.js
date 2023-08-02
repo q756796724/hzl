@@ -24,6 +24,7 @@ xianzhiFlag = false;
 readErrCount = storage.get("readErrCount", 0);//读不上次数
 var lunCount = 0
 ws = null
+var jcfbf = [];//检测发布方
 
 /**
  * 日期相减获取天数（用于公式计算）
@@ -197,7 +198,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v8.1.2";
+        var versionNum = "番茄分享v8.1.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1425,12 +1426,18 @@ ui.ok.click(function () {
                                                                                 返回v首页()
                                                                             }
                                                                         } else if (JSON.parse(ztjs.text()).data.info.status == 4) {
-                                                                            log(new Date().toLocaleString() + "-----------" + "上限");
-                                                                            配置 = 读取配置(settingPath);
-                                                                            配置["lunCount"] = 20;
-                                                                            配置["count"] = 1;
-                                                                            保存配置(settingPath, 配置);
-                                                                            lunSleep(random(7200000, 10800000));//睡2~3小时
+                                                                            if (JSON.parse(ztjs.text()).data.info.msg != undefined && JSON.parse(ztjs.text()).data.info.msg.indexOf("上限") > -1){
+                                                                                log(new Date().toLocaleString() + "-----------" + "上限");
+                                                                                配置 = 读取配置(settingPath);
+                                                                                配置["lunCount"] = 20;
+                                                                                配置["count"] = 1;
+                                                                                保存配置(settingPath, 配置);
+                                                                                lunSleep(random(7200000, 10800000));//睡2~3小时
+                                                                            }else{
+                                                                                //其他原因，例如维护
+                                                                                lunSleep(random(3600000, 5000000));//睡1小时+
+                                                                                checkFlag = true
+                                                                            }
                                                                         }
                                                                     }
                                                                     break
@@ -1625,14 +1632,22 @@ ui.ok.click(function () {
                             if (JSON.parse(ztjs.text()).data.info.msg != undefined && JSON.parse(ztjs.text()).data.info.msg.indexOf("分钟后") > -1 && parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")).toString() != 'NaN') {
                                 lunSleep(random(parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")) * 60000, parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")) * 60000 + 300000));//按剩余时间睡眠
                                 checkFlag = true
+                            }else{
+                                返回v首页()
                             }
                         } else if (JSON.parse(ztjs.text()).data.info.status == 4) {
-                            log(new Date().toLocaleString() + "-----------" + "上限");
-                            配置 = 读取配置(settingPath);
-                            配置["lunCount"] = 20;
-                            配置["count"] = 1;
-                            保存配置(settingPath, 配置);
-                            lunSleep(random(7200000, 10800000));//睡2~3小时
+                            if (JSON.parse(ztjs.text()).data.info.msg != undefined && JSON.parse(ztjs.text()).data.info.msg.indexOf("上限") > -1){
+                                log(new Date().toLocaleString() + "-----------" + "上限");
+                                配置 = 读取配置(settingPath);
+                                配置["lunCount"] = 20;
+                                配置["count"] = 1;
+                                保存配置(settingPath, 配置);
+                                lunSleep(random(7200000, 10800000));//睡2~3小时
+                            }else{
+                                //其他原因，例如维护
+                                lunSleep(random(3600000, 5000000));//睡1小时+
+                                checkFlag = true
+                            }
                         }
                     }
                     return
@@ -2324,8 +2339,10 @@ ui.ok.click(function () {
                     let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
                     let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
+                        let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
+                        log(yuducontent)
                         if (lunCount == 1 && fanxiangFlag == true) {
-                            let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
+                            jcfbf.push(js_name.desc())
                             if (sfcfyd(yuducontent) == false) {
                                 console.error("cfyd：" + yuducontent);
                                 let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
@@ -2389,6 +2406,15 @@ ui.ok.click(function () {
                                 lunSleep(random(1800000, 2000000));
                                 return false;
                             }
+                        }else if(jcfbf.includes(js_name.desc())){
+                            console.error("可能要分享：" + yuducontent);
+                            let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                            if (rBtn != null && rBtn.parent() != null) {
+                                rBtn.parent().click();
+                            }
+                            返回v首页();
+                            lunSleep(random(1800000, 2000000));
+                            return false;
                         } else if (fanxiangFlag == false) {
                             xianzhiFlag = false
                         }
