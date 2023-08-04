@@ -201,7 +201,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v9.0.4";
+        var versionNum = "番茄分享v9.0.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -267,9 +267,9 @@ ui.ok.click(function () {
             click(x < 0 ? 1 : x, y < 0 ? 1 : y)
         }
         function longclickx(x, y) {
-            x = x + random(-5, -1)
-            y = y + random(-5, -1)
-            press(x < 0 ? 1 : x, y < 0 ? 1 : y, random(2000, 2500));
+            x = x + random(-5, 5)
+            y = y
+            press(x < 0 ? 1 : x, y < 0 ? 1 : y, random(2400, 2500));
         }
         function clickQrcode() {
             //log(text("长按二维码开始阅读").findOne(3000).parent().children())
@@ -339,14 +339,14 @@ ui.ok.click(function () {
                         if (i > wBtns.length - 1) {
                             continue
                         }
-                        longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                        longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
                         //wBtns[i].longClick()
-                        sleep(random(1000, 2000));
-                        if (text("取消置顶").findOne(5000) != null) {
+                        sleep(random(2000, 4000));
+                        if (text("取消置顶").findOne(3000) != null) {
                             back();
                             sleep(2000)
-                            //clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
-                            wBtns[i].click();
+                            click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
+                            //wBtns[i].click();
                             sleep(random(1500, 2000))
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
                                 log("进入了文件传输助手");
@@ -369,14 +369,14 @@ ui.ok.click(function () {
                     }
                 } else {
                     for (let i = 0; i < wBtns.length; i++) {
-                        longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                        longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
                         //wBtns[i].longClick()
-                        sleep(random(1000, 2000));
-                        if (text("取消置顶").findOne(5000) != null) {
+                        sleep(random(2000, 4000));
+                        if (text("取消置顶").findOne(3000) != null) {
                             back();
                             sleep(2000)
-                            //clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
-                            wBtns[i].click();
+                            click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
+                            //wBtns[i].click();
                             sleep(random(1500, 2000))
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
                                 log("进入了文件传输助手");
@@ -1378,13 +1378,13 @@ ui.ok.click(function () {
                             if (i > wBtns.length - 1) {
                                 continue
                             }
-                            longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
-                            sleep(random(1000, 2000));
-                            if (text("取消置顶").findOne(5000) != null) {
+                            longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
+                            sleep(random(2000, 4000));
+                            if (text("取消置顶").findOne(3000) != null) {
                                 retryCount = 0;
                                 back();
                                 sleep(2000)
-                                clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                                click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
                                 sleep(random(1500, 2000))
                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) == null && packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
                                     log("进入了家庭");
@@ -1414,13 +1414,13 @@ ui.ok.click(function () {
                         }
                     } else {
                         for (let i = 0; i < wBtns.length; i++) {
-                            longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
-                            sleep(random(1000, 2000));
-                            if (text("取消置顶").findOne(5000) != null) {
+                            longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
+                            sleep(random(2000, 4000));
+                            if (text("取消置顶").findOne(3000) != null) {
                                 retryCount = 0;
                                 back();
                                 sleep(2000)
-                                clickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().bottom)
+                                click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
                                 sleep(random(1500, 2000))
                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) == null && packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
                                     log("进入了家庭");
