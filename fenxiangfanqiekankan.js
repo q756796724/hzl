@@ -9,6 +9,8 @@ auto_tx = storage.get("auto_tx", false);
 qun_into = storage.get("qun_into", true);
 qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
 removePhoneNum = storage.get("removePhoneNum", false);
+zhengtian = storage.get("zhengtian", false);
+
 readurl = storage.get("readurl", "");
 if (readurl == "RHtWWJm" || readurl == "siNLtCo") {
     readurl = "FxWAkNP"
@@ -122,6 +124,7 @@ ui.layout(
         <checkbox text="群进入" id="qun_into" checked="{{qun_into}}" textSize="18sp" />\
         <checkbox text="是否切换" id="qiehuanjiaoben" checked="{{qiehuanjiaoben}}" textSize="18sp" />\
         <checkbox text="清除号码" id="removePhoneNum" checked="{{removePhoneNum}}" textSize="18sp" />\
+        <checkbox text="整天" id="zhengtian" checked="{{zhengtian}}" textSize="18sp" />\
         <button id="ok" text="开始运行" />
     </vertical>
 
@@ -198,7 +201,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v9.0.1";
+        var versionNum = "番茄分享v9.0.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -220,6 +223,9 @@ ui.ok.click(function () {
         qun_into = ui.qun_into.isChecked();
         qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
         removePhoneNum = ui.removePhoneNum.isChecked();
+        zhengtian = ui.zhengtian.isChecked();
+
+        
 
 
 
@@ -229,6 +235,7 @@ ui.ok.click(function () {
         storage.put("qun_into", ui.qun_into.isChecked());
         storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
         storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
+        storage.put("zhengtian", ui.zhengtian.isChecked());
         storage.put("readurl", ui.readurl.text());
         storage.put("phoneNum", ui.phoneNum.text());
 
@@ -405,12 +412,12 @@ ui.ok.click(function () {
                                 sleep(1000)
                                 click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
                             }
-                        }else{
+                        } else {
                             if (lunCount == 1 && fanxiangFlag == true) {
                                 fenxiangshibai();
                             }
                         }
-                    }else{
+                    } else {
                         if (lunCount == 1 && fanxiangFlag == true) {
                             fenxiangshibai();
                         }
@@ -440,6 +447,41 @@ ui.ok.click(function () {
         悬浮窗.setPosition(10, device.height / 2);   //设置位置（x，y）
         悬浮窗.setAdjustEnabled(true);   //显示调节位置控件
         悬浮窗.exitOnClose();   //关闭悬浮窗时自动结束脚本运行
+
+        // 获取画布对象
+        var canvas = new android.graphics.Canvas();
+        var bitmap = android.graphics.Bitmap.createBitmap(悬浮窗.getWidth(), 悬浮窗.getHeight(), android.graphics.Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        悬浮窗.setOnTouchListener(function (view, event) {
+            switch (event.getAction()) {
+                case event.ACTION_DOWN:
+                    var x = event.getRawX();
+                    var y = event.getRawY();
+                    drawPoint(x, y);
+                    return true;
+            }
+            return true;
+        });
+
+        // 绘制点的函数
+        function drawPoint(x, y) {
+            var paint = new android.graphics.Paint();
+            paint.setColor(android.graphics.Color.RED);
+            paint.setStyle(android.graphics.Paint.Style.FILL);
+            canvas.drawCircle(x, y, 10, paint);
+            悬浮窗.invalidate();
+        }
+
+        悬浮窗.setOnTouchListener(function (view, event) {
+            switch (event.getAction()) {
+                case event.ACTION_DOWN:
+                    var x = event.getRawX();
+                    var y = event.getRawY();
+                    drawPoint(x, y);
+                    return true;
+            }
+            return true;
+        });
 
         /*var 悬浮窗2 = floaty.rawWindow(
             <frame  gravity="center" bg="#40808080">
@@ -1465,7 +1507,7 @@ ui.ok.click(function () {
                                                             if (child.text().indexOf("番茄主") > -1 && child.clickable()) {
                                                                 retryCount = 0;
                                                                 for (let i = 0; i < 10; i++) {
-                                                                    clickx(child.bounds().centerX(), child.bounds().centerY());
+                                                                    clickx(child.bounds().centerX()-300, child.bounds().centerY());
                                                                     sleep(2000);
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(.*家庭.*)/).findOnce() == null) {
                                                                         log("点击番茄主成功")
@@ -1484,7 +1526,7 @@ ui.ok.click(function () {
                                                                     log(child.text())
                                                                     retryCount = 0;
                                                                     for (let i = 0; i < 10; i++) {
-                                                                        clickx(child.bounds().centerX(), child.bounds().centerY());
+                                                                        clickx(child.bounds().centerX()-300, child.bounds().centerY());
                                                                         let zBtn = textMatches(/(.*注册时间.*)/).findOne(15000);
                                                                         if (zBtn != null) {
                                                                             let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
@@ -1539,7 +1581,7 @@ ui.ok.click(function () {
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
                                                                 log("尝试番茄状态" + (i + 1))
-                                                                clickx(child.bounds().centerX(), child.bounds().centerY());
+                                                                clickx(child.bounds().centerX()-300, child.bounds().centerY());
                                                                 checkFlag = false
                                                                 let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOne(10000);
                                                                 if (ntext != null) {
@@ -1603,6 +1645,9 @@ ui.ok.click(function () {
                                                                         }
                                                                     }
                                                                     break
+                                                                }else if(i==9){
+                                                                    log("点击状态失败")
+                                                                    checkFlag = true
                                                                 }
 
                                                             }
@@ -2390,6 +2435,10 @@ ui.ok.click(function () {
                     console.error("进入错误");
                     return false
                 }
+                if (className("android.view.View").textMatches(/(链接失效.*)/).findOnce() != null) {
+                    console.warn("链接失效");
+                    return false
+                }
 
 
                 if (className("android.view.View").textMatches(/(.*ZhaoLin|.*miu|.*噜啦啦)/).findOne(3000) != null) {
@@ -3061,7 +3110,8 @@ ui.ok.click(function () {
                 for (let i = 0; i < 5; i++) {
                     if (联网验证(wifiName) != true) {
                         log("第" + (i + 1) + "次连接重试")
-                        cBtn = text(wifiName).findOne(5000);
+                        sleep(3000)
+                        cBtn = text(wifiName).findOne(2000);
                         if (cBtn != null) {
                             cBounds = cBtn.bounds();
                             clickx(cBounds.right, cBounds.bottom);
@@ -3083,6 +3133,7 @@ ui.ok.click(function () {
         function 联网验证(wifiName) {
             http.__okhttp__.setTimeout(3000);
             if (wifiName == zwifi) {
+                log("zwifi验证")
                 try {
                     let url = "www.baidu.com";
                     //log("url="+url)
@@ -3096,6 +3147,7 @@ ui.ok.click(function () {
                     return false
                 }
             } else if (wifiName == dlwifi) {
+                log("dlwifi验证")
                 try {
                     //let url = readurl;
                     let url = "mail.sina.com.cn"//"www.csdn.net";//mail.sina.com.cn
@@ -3371,10 +3423,6 @@ ui.ok.click(function () {
         log(getClip());
 
         function initws() {
-            if (联网验证(zwifi) != true) {
-                连接wifi(zwifi, 5000);
-                app.launch(PKG_NAME);
-            }
             ws = web.newWebSocket("ws://175.178.60.114:8081/fanqie/ws", {
                 eventThread: 'io'
                 /*eventThread {any} WebSocket事件派发的线程，默认为io
@@ -3416,6 +3464,10 @@ ui.ok.click(function () {
         function startWebSocket() {
             try {
                 if (ws == null) {
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        app.launch(PKG_NAME);
+                    }
                     initws();
                 }
                 let success = ws.send(JSON.stringify({ "type": "ping", "phoneNum": phoneNum.toString() }))
@@ -3439,6 +3491,7 @@ ui.ok.click(function () {
                 toastLog("版本号:" + versionNum);
                 配置 = 读取配置(settingPath);
                 if (配置["date"] != new Date().toLocaleDateString()) {
+                    storage.put("zhengtian", false);
                     addYuedu(phoneNum.toString());
                     if (isInJieshou(phoneNum.toString()) == 1) {
                         //转jieshou
@@ -3557,7 +3610,7 @@ ui.ok.click(function () {
                     continue;
                 }
 
-                if (zwifi.toString() != dlwifi.toString()) {
+                if (!zhengtian) {
                     if (nowHour < 8) {
                         if (random(0, 1) == 0 && nowHour >= 7) {
 

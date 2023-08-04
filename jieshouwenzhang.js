@@ -8,6 +8,8 @@ dlwifi = storage.get("dlwifi", "XiaoMiWifi3G_2.4G");
 qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
 removePhoneNum = storage.get("removePhoneNum", false);
 addJieshou = storage.get("addJieshou", false);
+zhengtian = storage.get("zhengtian", false);
+
 lastUrl = "";//上一url
 latestUrl = "";//当前url
 
@@ -112,6 +114,7 @@ ui.layout(
         <checkbox text="是否切换" id="qiehuanjiaoben" checked="{{qiehuanjiaoben}}" textSize="18sp" />\
         <checkbox text="清除号码" id="removePhoneNum" checked="{{removePhoneNum}}" textSize="18sp" />\
         <checkbox text="添加到接收" id="addJieshou" checked="{{addJieshou}}" textSize="18sp" />\
+        <checkbox text="整天" id="zhengtian" checked="{{zhengtian}}" textSize="18sp" />\
         <button id="ok" text="开始接收" />
     </vertical>
 
@@ -182,7 +185,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.1.8";
+        var versionNum = "接收v7.2.0";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -196,6 +199,7 @@ ui.ok.click(function () {
         log("phoneNum:" + phoneNum);
         qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
         removePhoneNum = ui.removePhoneNum.isChecked();
+        zhengtian = ui.zhengtian.isChecked();
         addJieshou = ui.addJieshou.isChecked();
 
         storage.put("zwifi", zwifi);
@@ -203,6 +207,7 @@ ui.ok.click(function () {
         storage.put("phoneNum", ui.phoneNum.text());
         storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
         storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
+        storage.put("zhengtian", ui.zhengtian.isChecked());
         storage.put("addJieshou", ui.addJieshou.isChecked());
 
         var totificationlistenersetting = function (actionname) {
@@ -1003,7 +1008,7 @@ ui.ok.click(function () {
                                 log("进入了文件传输助手");
                                 break
                             } else {
-                                sleep(random(30000, 120000))
+                                sleep(random(10000, 20000))
                                 back();
                                 sleep(3000)
                                 continue;
@@ -1034,7 +1039,7 @@ ui.ok.click(function () {
                                 log("进入了文件传输助手");
                                 break
                             } else {
-                                sleep(random(30000, 120000))
+                                sleep(random(10000, 20000))
                                 back();
                                 sleep(3000)
                                 continue;
@@ -1879,7 +1884,8 @@ ui.ok.click(function () {
                 for (let i = 0; i < 5; i++) {
                     if (联网验证(wifiName) != true) {
                         log("第" + (i + 1) + "次连接重试")
-                        cBtn = text(wifiName).findOne(5000);
+                        sleep(3000)
+                        cBtn = text(wifiName).findOne(2000);
                         if (cBtn != null) {
                             cBounds = cBtn.bounds();
                             clickx(cBounds.right, cBounds.bottom);
@@ -1901,6 +1907,7 @@ ui.ok.click(function () {
         function 联网验证(wifiName) {
             http.__okhttp__.setTimeout(3000);
             if (wifiName == zwifi) {
+                log("zwifi验证")
                 try {
                     let url = "www.baidu.com";
                     //log("url="+url)
@@ -1914,7 +1921,9 @@ ui.ok.click(function () {
                     return false
                 }
             } else if (wifiName == dlwifi) {
+                log("dlwifi验证")
                 try {
+                    //let url = readurl;
                     let url = "mail.sina.com.cn"//"www.csdn.net";//mail.sina.com.cn
                     //log("url="+url)
                     let r = http.get(url.toString());
@@ -1958,6 +1967,7 @@ ui.ok.click(function () {
                 qBtn.click();
             }
         }
+
         //回滚回接收
         function rollbackJieshou(phoneNum) {
             if (联网验证(zwifi) != true) {
@@ -2364,13 +2374,14 @@ ui.ok.click(function () {
 
                 配置 = 读取配置(settingPath);
                 if (配置["date"] != new Date().toLocaleDateString()) {
+                    storage.put("zhengtian", false);
                     lunSleep(random(600000, 3600000));
                     if (联网验证(zwifi) != true) {
                         连接wifi(zwifi, 5000);
                         sleep(10000);
                     }
                     if (getjieshouNum() == phoneNum.toString()) {
-                        if (readdays >= 2) {
+                        if (readdays >= 3) {
                             sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期" + readdays + "天");//切换
                             while (1) {
                                 addXianZhi()
@@ -2484,12 +2495,14 @@ ui.ok.click(function () {
                     初始化配置(settingPath);
                 }
 
-                if (nowHour < 6) {
-                    home()
-                    log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
-                    sleepLongTime(random(1800000, 3000000));
-                    关闭应用(PKG_NAME);
-                    continue;
+                if (!zhengtian) {
+                    if (nowHour < 6) {
+                        home()
+                        log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
+                        sleepLongTime(random(1800000, 3000000));
+                        关闭应用(PKG_NAME);
+                        continue;
+                    }
                 }
 
 
