@@ -201,7 +201,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v9.0.9";
+        var versionNum = "番茄分享v9.1.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1617,11 +1617,11 @@ ui.ok.click(function () {
                                                                         }else{
                                                                             console.warn("异常状态："+ztjs)
                                                                         }
-                                                                    }else{
+                                                                        break
+                                                                    }else if (i == 9){
                                                                         log("进入状态失败")
                                                                         checkFlag = true
                                                                     }
-                                                                    break
                                                                 } else if (i == 9) {
                                                                     log("点击状态失败")
                                                                     checkFlag = true
