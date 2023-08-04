@@ -225,7 +225,7 @@ ui.ok.click(function () {
         removePhoneNum = ui.removePhoneNum.isChecked();
         zhengtian = ui.zhengtian.isChecked();
 
-        
+
 
 
 
@@ -447,41 +447,6 @@ ui.ok.click(function () {
         悬浮窗.setPosition(10, device.height / 2);   //设置位置（x，y）
         悬浮窗.setAdjustEnabled(true);   //显示调节位置控件
         悬浮窗.exitOnClose();   //关闭悬浮窗时自动结束脚本运行
-
-        // 获取画布对象
-        var canvas = new android.graphics.Canvas();
-        var bitmap = android.graphics.Bitmap.createBitmap(悬浮窗.getWidth(), 悬浮窗.getHeight(), android.graphics.Bitmap.Config.ARGB_8888);
-        canvas.setBitmap(bitmap);
-        悬浮窗.setOnTouchListener(function (view, event) {
-            switch (event.getAction()) {
-                case event.ACTION_DOWN:
-                    var x = event.getRawX();
-                    var y = event.getRawY();
-                    drawPoint(x, y);
-                    return true;
-            }
-            return true;
-        });
-
-        // 绘制点的函数
-        function drawPoint(x, y) {
-            var paint = new android.graphics.Paint();
-            paint.setColor(android.graphics.Color.RED);
-            paint.setStyle(android.graphics.Paint.Style.FILL);
-            canvas.drawCircle(x, y, 10, paint);
-            悬浮窗.invalidate();
-        }
-
-        悬浮窗.setOnTouchListener(function (view, event) {
-            switch (event.getAction()) {
-                case event.ACTION_DOWN:
-                    var x = event.getRawX();
-                    var y = event.getRawY();
-                    drawPoint(x, y);
-                    return true;
-            }
-            return true;
-        });
 
         /*var 悬浮窗2 = floaty.rawWindow(
             <frame  gravity="center" bg="#40808080">
@@ -1507,7 +1472,7 @@ ui.ok.click(function () {
                                                             if (child.text().indexOf("番茄主") > -1 && child.clickable()) {
                                                                 retryCount = 0;
                                                                 for (let i = 0; i < 10; i++) {
-                                                                    clickx(child.bounds().centerX()-300, child.bounds().centerY());
+                                                                    clickx(child.bounds().centerX() - 300, child.bounds().centerY());
                                                                     sleep(2000);
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(.*家庭.*)/).findOnce() == null) {
                                                                         log("点击番茄主成功")
@@ -1526,7 +1491,7 @@ ui.ok.click(function () {
                                                                     log(child.text())
                                                                     retryCount = 0;
                                                                     for (let i = 0; i < 10; i++) {
-                                                                        clickx(child.bounds().centerX()-300, child.bounds().centerY());
+                                                                        clickx(child.bounds().centerX() - 300, child.bounds().centerY());
                                                                         let zBtn = textMatches(/(.*注册时间.*)/).findOne(15000);
                                                                         if (zBtn != null) {
                                                                             let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
@@ -1581,7 +1546,7 @@ ui.ok.click(function () {
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
                                                                 log("尝试番茄状态" + (i + 1))
-                                                                clickx(child.bounds().centerX()-300, child.bounds().centerY());
+                                                                clickx(child.bounds().centerX() - 300, child.bounds().centerY());
                                                                 checkFlag = false
                                                                 let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOne(10000);
                                                                 if (ntext != null) {
@@ -1645,7 +1610,7 @@ ui.ok.click(function () {
                                                                         }
                                                                     }
                                                                     break
-                                                                }else if(i==9){
+                                                                } else if (i == 9) {
                                                                     log("点击状态失败")
                                                                     checkFlag = true
                                                                 }
