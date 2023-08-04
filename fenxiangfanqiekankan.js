@@ -201,7 +201,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v9.0.8";
+        var versionNum = "番茄分享v9.0.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1634,7 +1634,9 @@ ui.ok.click(function () {
                                                 }
                                             })
                                         } catch (e) {
-                                            console.error(e)
+                                            if(e!="Error"){
+                                                console.error(e)
+                                            }
                                             break
                                         }
                                     } else if (i == 0) {
