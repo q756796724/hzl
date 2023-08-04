@@ -201,7 +201,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v9.0.3";
+        var versionNum = "番茄分享v9.0.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -263,12 +263,12 @@ ui.ok.click(function () {
         }
         function clickx(x, y) {
             x = x + random(-5, -1)
-            y = y + random(-5, -1)
+            y = y + random(-10, 10)
             click(x < 0 ? 1 : x, y < 0 ? 1 : y)
         }
         function longclickx(x, y) {
             x = x + random(-5, -1)
-            y = y + random(-5, -1)
+            y = y + random(-10, 10)
             press(x < 0 ? 1 : x, y < 0 ? 1 : y, random(2000, 2500));
         }
         function clickQrcode() {
@@ -1472,7 +1472,8 @@ ui.ok.click(function () {
                                                             if (child.text().indexOf("番茄主") > -1 && child.clickable()) {
                                                                 retryCount = 0;
                                                                 for (let i = 0; i < 10; i++) {
-                                                                    clickx(child.bounds().centerX() - 300, child.bounds().centerY());
+                                                                    log("尝试番茄主" + (i + 1))
+                                                                    clickx(child.bounds().centerX() - 100, child.bounds().centerY());
                                                                     sleep(2000);
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(.*家庭.*)/).findOnce() == null) {
                                                                         log("点击番茄主成功")
@@ -1491,7 +1492,8 @@ ui.ok.click(function () {
                                                                     log(child.text())
                                                                     retryCount = 0;
                                                                     for (let i = 0; i < 10; i++) {
-                                                                        clickx(child.bounds().centerX() - 300, child.bounds().centerY());
+                                                                        log("尝试番茄副" + (i + 1))
+                                                                        clickx(child.bounds().centerX() - 100, child.bounds().centerY());
                                                                         let zBtn = textMatches(/(.*注册时间.*)/).findOne(15000);
                                                                         if (zBtn != null) {
                                                                             let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
@@ -1546,7 +1548,7 @@ ui.ok.click(function () {
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
                                                                 log("尝试番茄状态" + (i + 1))
-                                                                clickx(child.bounds().centerX() - 300, child.bounds().centerY());
+                                                                clickx(child.bounds().centerX() - 100, child.bounds().centerY());
                                                                 checkFlag = false
                                                                 let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOne(10000);
                                                                 if (ntext != null) {
