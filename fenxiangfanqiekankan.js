@@ -263,12 +263,12 @@ ui.ok.click(function () {
         }
         function clickx(x, y) {
             x = x + random(-5, -1)
-            y = y + random(-10, 10)
+            y = y + random(-5, -1)
             click(x < 0 ? 1 : x, y < 0 ? 1 : y)
         }
         function longclickx(x, y) {
             x = x + random(-5, -1)
-            y = y + random(-10, 10)
+            y = y + random(-5, -1)
             press(x < 0 ? 1 : x, y < 0 ? 1 : y, random(2000, 2500));
         }
         function clickQrcode() {
@@ -284,13 +284,15 @@ ui.ok.click(function () {
             }
         }
         function clickFuZhi() {
-            let fzbtn = packageName("com.tencent.mm").className("android.view.View").text("复制").findOne(5000);
+            sleep(2000)
+            let fzbtn = packageName("com.tencent.mm").className("android.view.View").text("复制").findOne(3000);
             if (fzbtn != null) {
-                sleep(500)
+                sleep(1000)
                 fzbtn.click();
                 if (textMatches(/(复制成功.*)/).findOne(5000) != null && packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(5000) != null) {
+                    sleep(1000)
                     click("确定")
-                    sleep(500)
+                    sleep(1000)
                     返回v首页();
                 }
             }
@@ -1473,7 +1475,7 @@ ui.ok.click(function () {
                                                                 retryCount = 0;
                                                                 for (let i = 0; i < 10; i++) {
                                                                     log("尝试番茄主" + (i + 1))
-                                                                    clickx(child.bounds().centerX() - 100, child.bounds().centerY());
+                                                                    click(child.bounds().centerX()+random(-100, -105), child.bounds().centerY()+random(-10, 10));
                                                                     sleep(2000);
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(.*家庭.*)/).findOnce() == null) {
                                                                         log("点击番茄主成功")
@@ -1493,7 +1495,7 @@ ui.ok.click(function () {
                                                                     retryCount = 0;
                                                                     for (let i = 0; i < 10; i++) {
                                                                         log("尝试番茄副" + (i + 1))
-                                                                        clickx(child.bounds().centerX() - 100, child.bounds().centerY());
+                                                                        click(child.bounds().centerX()+random(-100, -105), child.bounds().centerY()+random(-10, 10));
                                                                         let zBtn = textMatches(/(.*注册时间.*)/).findOne(15000);
                                                                         if (zBtn != null) {
                                                                             let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
@@ -1548,7 +1550,7 @@ ui.ok.click(function () {
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
                                                                 log("尝试番茄状态" + (i + 1))
-                                                                clickx(child.bounds().centerX() - 100, child.bounds().centerY());
+                                                                click(child.bounds().centerX()+random(-100, -105), child.bounds().centerY()+random(-10, 10));
                                                                 checkFlag = false
                                                                 let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOne(10000);
                                                                 if (ntext != null) {
@@ -2040,7 +2042,10 @@ ui.ok.click(function () {
                 }
 
                 if (lunCount == 1 && fanxiangFlag == true) {
-                    for (var i = 0; i < 5; i++) {
+                    for (var i = 0; i < 15; i++) {
+                        if (className("android.view.View").textMatches(/(.*ZhaoLin|.*miu|.*噜啦啦)/).findOne(5000) == null) {
+                            return;
+                        }
                         if (联网验证(zwifi) != true) {
                             连接wifi(zwifi, 5000);
                             app.launch(PKG_NAME);
@@ -2050,7 +2055,7 @@ ui.ok.click(function () {
                             //逻辑后端处理了
                             //reducejieshouCount("开始阅读前数量减一");
                             break
-                        } else if (i == 4) {
+                        } else if (i == 14) {
                             return;
                         }
                         if (getjieshouNum() == "0") {
@@ -2059,7 +2064,7 @@ ui.ok.click(function () {
                             return;
                         }
                         toastLog(new Date().toLocaleString() + "-" + "-----------" + "等待中！");
-                        sleep(300000)
+                        sleep(100000)
                     }
                 }
 
@@ -2141,7 +2146,7 @@ ui.ok.click(function () {
                                 } else if (new Date().getHours() > 18 && (lunCount < 5 || readNum < 150)) {
                                     lunSleep(random(3600000, 4000000));
                                 } else {
-                                    lunSleep(random(3600000, 5000000));
+                                    lunSleep(random(3600000, 4000000));
                                 }
                             }
                         }
@@ -2320,13 +2325,16 @@ ui.ok.click(function () {
 
             let wifiCount = count;
             for (; ;) {
-                if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 50) {
-                    if (count == wifiCount) {
-                        //addjieshouCount("未分享数量加1");
+                if (!zhengtian) {
+                    if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 50) {
+                        if (count == wifiCount) {
+                            //addjieshouCount("未分享数量加1");
+                        }
+    
+                        return true;
                     }
-
-                    return true;
                 }
+                
                 kz();
                 /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(3000)!=null){
                     click("确定");

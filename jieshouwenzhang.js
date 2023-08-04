@@ -1147,6 +1147,7 @@ ui.ok.click(function () {
                             }
                         } else {
                             //reducejieshouCount("找不到文件传输助手退出-1")
+                            log("找不到文件传输助手退出")
                             返回v首页();
                             sleep(random(3000, 5000))
                             home();
