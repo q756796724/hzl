@@ -201,7 +201,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v9.0.6";
+        var versionNum = "番茄分享v9.0.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1564,9 +1564,9 @@ ui.ok.click(function () {
                                                                 click("继续访问")
                                                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(.*家庭.*)/).findOnce() == null) {
                                                                     log("点击状态成功")
-                                                                    let ztjs = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*friendNickname.*)/).findOnce();
-                                                                    log(ztjs.text())
+                                                                    let ztjs = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*friendNickname.*)/).findOne(10000);
                                                                     if (ztjs != null) {
+                                                                        log(ztjs.text())
                                                                         readNum = parseInt(JSON.parse(ztjs.text()).data.info.num);
                                                                         if (JSON.parse(ztjs.text()).data.info.status == 2) {
                                                                             log(new Date().toLocaleString() + "-----------" + "限制");
@@ -1629,6 +1629,7 @@ ui.ok.click(function () {
                                                 }
                                             })
                                         } catch (e) {
+                                            console.error(e)
                                             break
                                         }
                                     } else if (i == 0) {
@@ -1783,9 +1784,9 @@ ui.ok.click(function () {
                     click("继续访问")
                     log("点击状态成功")
                     checkFlag = false
-                    let ztjs = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*friendNickname.*)/).findOnce();
-                    log(ztjs.text())
+                    let ztjs = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*friendNickname.*)/).findOne(10000);
                     if (ztjs != null) {
+                        log(ztjs.text())
                         readNum = parseInt(JSON.parse(ztjs.text()).data.info.num);
                         if (JSON.parse(ztjs.text()).data.info.status == 2) {
                             log(new Date().toLocaleString() + "-----------" + "限制");
@@ -2570,8 +2571,8 @@ ui.ok.click(function () {
                     let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                         let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
-                        log(yuducontent)
                         if (lunCount == 1 && fanxiangFlag == true) {
+                            log("重复判断:" +yuducontent)
                             jcfbf.push(js_name.desc())
                             if (sfcfyd(yuducontent) == false) {
                                 console.error("cfyd：" + yuducontent);
