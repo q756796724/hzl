@@ -198,7 +198,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v9.0.0";
+        var versionNum = "番茄分享v9.0.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -396,21 +396,32 @@ ui.ok.click(function () {
                         sleep(1000)
                         back();
                         sleep(2000)
-                    }
-                    p = text("发送").className("android.widget.Button").packageName("com.tencent.mm").findOnce()
-                    if (p) {
-                        clickx(p.bounds().centerX(), p.bounds().centerY());
-                        sleep(3000)
-                        p = descEndsWith("头像").className("android.widget.ImageView").packageName("com.tencent.mm").find()
-                        if (p.length > 0) {
-                            sleep(1000)
-                            click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
+                        p = text("发送").className("android.widget.Button").packageName("com.tencent.mm").findOnce()
+                        if (p) {
+                            clickx(p.bounds().centerX(), p.bounds().centerY());
+                            sleep(3000)
+                            p = descEndsWith("头像").className("android.widget.ImageView").packageName("com.tencent.mm").find()
+                            if (p.length > 0) {
+                                sleep(1000)
+                                click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
+                            }
+                        }else{
+                            if (lunCount == 1 && fanxiangFlag == true) {
+                                fenxiangshibai();
+                            }
+                        }
+                    }else{
+                        if (lunCount == 1 && fanxiangFlag == true) {
+                            fenxiangshibai();
                         }
                     }
+
                 } else {
+                    if (lunCount == 1 && fanxiangFlag == true) {
+                        fenxiangshibai();
+                    }
                     console.error("not found 文件传输助手")
                     关闭应用(PKG_NAME);
-                    sleep(300000);
                 }
 
             } else {
@@ -1373,7 +1384,7 @@ ui.ok.click(function () {
                                     log("进入了大家庭");
                                     break
                                 } else {
-                                    sleep(random(30000, 120000))
+                                    sleep(random(5000, 10000))
                                     back();
                                     sleep(3000)
                                     continue;
@@ -1409,7 +1420,7 @@ ui.ok.click(function () {
                                     log("进入了大家庭");
                                     break
                                 } else {
-                                    sleep(random(30000, 120000))
+                                    sleep(random(5000, 10000))
                                     back();
                                     sleep(3000)
                                     continue;
@@ -1527,6 +1538,7 @@ ui.ok.click(function () {
                                                         if (child.text().indexOf("番茄状态") > -1 && child.clickable()) {
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
+                                                                log("尝试番茄状态" + (i + 1))
                                                                 clickx(child.bounds().centerX(), child.bounds().centerY());
                                                                 checkFlag = false
                                                                 let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOne(10000);
@@ -1602,6 +1614,11 @@ ui.ok.click(function () {
                                         } catch (e) {
                                             break
                                         }
+                                    } else if (i == 0) {
+                                        console.error("not found RelativeLayout")
+                                        retryCount = 0;
+                                        关闭应用(PKG_NAME);
+                                        return
                                     }
 
                                 }
@@ -2331,7 +2348,7 @@ ui.ok.click(function () {
                             sBtn.click();
                             //clickQrcode()
                             back()
-                            
+
                             sleep(8000)
                         } else {
                             if (count == wifiCount) {
@@ -2373,7 +2390,10 @@ ui.ok.click(function () {
                     console.error("进入错误");
                     return false
                 }
+
+
                 if (className("android.view.View").textMatches(/(.*ZhaoLin|.*miu|.*噜啦啦)/).findOne(3000) != null) {
+                    console.warn("异常情况1")
                     for (var i = 0; i < 5; i++) {
                         kz();
                         if (className("android.view.View").textMatches(/(.*ZhaoLin|.*miu|.*噜啦啦)/).findOne(3000) != null) {
@@ -2461,6 +2481,30 @@ ui.ok.click(function () {
                             break
                         }
                     }
+                }
+
+                if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                    if (lunCount == 1 && count - wifiCount < 5 && xianzhiFlag == true) {
+                        xianzhiFlag = false
+                        checkFlag = true
+                        /*配置["count"] = 1;
+                        保存配置(settingPath, 配置);*/
+                        //sendTx("http://miaotixing.com/trigger?id=tnffHi1&text=num:" + phoneNum);//限制+1
+                        //sleep(30000)
+                        addXianZhi(phoneNum.toString())
+                        log(new Date().toLocaleString() + "-----------" + "应该限制addXianZhi");
+                        count = 60;
+                    } else {
+                        log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
+
+                        if (count == wifiCount) {
+                            //addjieshouCount("未分享数量加1");
+                        }
+
+                        count = 55;
+                    }
+
+                    break
                 }
 
                 refreshStateInfo();
@@ -2565,7 +2609,7 @@ ui.ok.click(function () {
                                 lunSleep(random(800000, 1000000));
                                 return false;
                             }
-                        } else if (jcfbf.includes(js_name.desc())) {
+                        } else if (jcfbf.indexOf(js_name.desc()) > -1) {
                             console.error("可能要分享：" + yuducontent);
                             let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                             if (rBtn != null && rBtn.parent() != null) {
@@ -2578,6 +2622,9 @@ ui.ok.click(function () {
                             xianzhiFlag = false
                         }
                     } else {
+                        if (lunCount == 1 && fanxiangFlag == true) {
+                            fenxiangshibai();
+                        }
                         console.error("标题识别失败");
                         if (lunCount == 1 && fanxiangFlag == true) {
                             let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
@@ -2601,8 +2648,8 @@ ui.ok.click(function () {
                 //短距离测试
                 //sml_move(400, 1000, 800, 600, 2000);
                 log("滑动");
-                swapeToRead();
-                sleep(random(3000, 7000));
+                // swapeToRead();
+                // sleep(random(3000, 7000));
                 swapeToRead();
                 sleep(random(3000, 7000));
                 /*if (count == wifiCount) {
