@@ -201,7 +201,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v9.0.5";
+        var versionNum = "番茄分享v9.0.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -290,11 +290,14 @@ ui.ok.click(function () {
                 sleep(1000)
                 fzbtn.click();
                 if (textMatches(/(复制成功.*)/).findOne(5000) != null && packageName("com.tencent.mm").className("android.widget.Button").text("确定").findOne(5000) != null) {
+                    log("复制成功")
                     sleep(1000)
                     click("确定")
                     sleep(1000)
                     返回v首页();
                 }
+            }else{
+                console.warn("clickFuZhi失败")
             }
         }
 
