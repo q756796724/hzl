@@ -185,7 +185,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.2.1";
+        var versionNum = "接收v7.2.2";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -2376,6 +2376,7 @@ ui.ok.click(function () {
                 配置 = 读取配置(settingPath);
                 if (配置["date"] != new Date().toLocaleDateString()) {
                     storage.put("zhengtian", false);
+                    zhengtian=false
                     lunSleep(random(600000, 3600000));
                     if (联网验证(zwifi) != true) {
                         连接wifi(zwifi, 5000);

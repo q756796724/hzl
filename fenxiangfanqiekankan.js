@@ -201,7 +201,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v9.1.0";
+        var versionNum = "番茄分享v9.1.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -296,7 +296,7 @@ ui.ok.click(function () {
                     sleep(1000)
                     返回v首页();
                 }
-            }else{
+            } else {
                 console.warn("clickFuZhi失败")
             }
         }
@@ -348,7 +348,7 @@ ui.ok.click(function () {
                         if (text("取消置顶").findOne(3000) != null) {
                             back();
                             sleep(2000)
-                            click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
+                            click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
                             //wBtns[i].click();
                             sleep(random(1500, 2000))
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
@@ -378,7 +378,7 @@ ui.ok.click(function () {
                         if (text("取消置顶").findOne(3000) != null) {
                             back();
                             sleep(2000)
-                            click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
+                            click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
                             //wBtns[i].click();
                             sleep(random(1500, 2000))
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
@@ -1387,7 +1387,7 @@ ui.ok.click(function () {
                                 retryCount = 0;
                                 back();
                                 sleep(2000)
-                                click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
+                                click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
                                 sleep(random(1500, 2000))
                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) == null && packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
                                     log("进入了家庭");
@@ -1423,7 +1423,7 @@ ui.ok.click(function () {
                                 retryCount = 0;
                                 back();
                                 sleep(2000)
-                                click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
+                                click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
                                 sleep(random(1500, 2000))
                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) == null && packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
                                     log("进入了家庭");
@@ -1478,7 +1478,7 @@ ui.ok.click(function () {
                                                                 retryCount = 0;
                                                                 for (let i = 0; i < 10; i++) {
                                                                     log("尝试番茄主" + (i + 1))
-                                                                    click(child.bounds().centerX()+random(-100, -105), child.bounds().centerY()+random(-10, 10));
+                                                                    click(child.bounds().centerX() + random(-100, -105), child.bounds().centerY() + random(-10, 10));
                                                                     sleep(2000);
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(.*家庭.*)/).findOnce() == null) {
                                                                         log("点击番茄主成功")
@@ -1498,7 +1498,7 @@ ui.ok.click(function () {
                                                                     retryCount = 0;
                                                                     for (let i = 0; i < 10; i++) {
                                                                         log("尝试番茄副" + (i + 1))
-                                                                        click(child.bounds().centerX()+random(-100, -105), child.bounds().centerY()+random(-10, 10));
+                                                                        click(child.bounds().centerX() + random(-100, -105), child.bounds().centerY() + random(-10, 10));
                                                                         let zBtn = textMatches(/(.*注册时间.*)/).findOne(15000);
                                                                         if (zBtn != null) {
                                                                             let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
@@ -1553,7 +1553,7 @@ ui.ok.click(function () {
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
                                                                 log("尝试番茄状态" + (i + 1))
-                                                                click(child.bounds().centerX()+random(-100, -105), child.bounds().centerY()+random(-10, 10));
+                                                                click(child.bounds().centerX() + random(-100, -105), child.bounds().centerY() + random(-10, 10));
                                                                 checkFlag = false
                                                                 let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOne(10000);
                                                                 if (ntext != null) {
@@ -1596,6 +1596,15 @@ ui.ok.click(function () {
                                                                         } else if (JSON.parse(ztjs.text()).data.info.status == 1) {
                                                                             //非首次
                                                                             if (JSON.parse(ztjs.text()).data.info.msg != undefined && JSON.parse(ztjs.text()).data.info.msg.indexOf("分钟后") > -1 && parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")).toString() != 'NaN') {
+                                                                                if (readErrCount > 0) {
+                                                                                    readErrCount--
+                                                                                }
+                                                                                配置 = 读取配置(settingPath);
+                                                                                log("本轮结束，完成第" + lunCount + "轮,第" + 配置["count"] + "次");
+                                                                                lunCount++;
+                                                                                配置["lunCount"] = lunCount;
+                                                                                配置["count"] = 1;
+                                                                                保存配置(settingPath, 配置);
                                                                                 checkFlag = true
                                                                                 lunSleep(random(parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")) * 60000, parseInt(JSON.parse(ztjs.text()).data.info.msg.replace(/[^\d]/g, " ")) * 60000 + 300000));//按剩余时间睡眠
                                                                             } else {
@@ -1614,11 +1623,11 @@ ui.ok.click(function () {
                                                                                 lunSleep(random(3600000, 5000000));//睡1小时+
                                                                                 checkFlag = true
                                                                             }
-                                                                        }else{
-                                                                            console.warn("异常状态："+ztjs)
+                                                                        } else {
+                                                                            console.warn("异常状态：" + ztjs)
                                                                         }
                                                                         break
-                                                                    }else if (i == 9){
+                                                                    } else if (i == 9) {
                                                                         log("进入状态失败")
                                                                         checkFlag = true
                                                                     }
@@ -1634,7 +1643,7 @@ ui.ok.click(function () {
                                                 }
                                             })
                                         } catch (e) {
-                                            if(e!="Error"){
+                                            if (e != "Error") {
                                                 console.error(e)
                                             }
                                             break
@@ -2341,11 +2350,11 @@ ui.ok.click(function () {
                         if (count == wifiCount) {
                             //addjieshouCount("未分享数量加1");
                         }
-    
+
                         return true;
                     }
                 }
-                
+
                 kz();
                 /*if(className("android.widget.TextView").textContains("请在微信上正常阅读").findOne(3000)!=null){
                     click("确定");
@@ -2519,6 +2528,7 @@ ui.ok.click(function () {
                 }
 
                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                    log(new Date().toLocaleString() + "-----------" + "回到助手");
                     if (lunCount == 1 && count - wifiCount < 5 && xianzhiFlag == true) {
                         xianzhiFlag = false
                         checkFlag = true
@@ -2528,18 +2538,23 @@ ui.ok.click(function () {
                         //sleep(30000)
                         addXianZhi(phoneNum.toString())
                         log(new Date().toLocaleString() + "-----------" + "应该限制addXianZhi");
-                        count = 60;
+                        //count = 60;
                     } else {
-                        log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
+                        //log("本轮结束，完成第" + lunCount + "轮,第" + count + "次");
 
                         if (count == wifiCount) {
                             //addjieshouCount("未分享数量加1");
                         }
 
-                        count = 55;
+                        //count = 55;
                     }
-
-                    break
+                    配置["count"] = count;
+                    保存配置(settingPath, 配置);
+                    if(count - wifiCount < 3){
+                        log(new Date().toLocaleString() + "-----------" + "促发启动x5");
+                        启动x5();
+                    }
+                    return false;
                 }
 
                 refreshStateInfo();
@@ -2579,7 +2594,7 @@ ui.ok.click(function () {
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                         let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
                         if (lunCount == 1 && fanxiangFlag == true) {
-                            log("重复判断:" +yuducontent)
+                            log("重复判断:" + yuducontent)
                             jcfbf.push(js_name.desc())
                             if (sfcfyd(yuducontent) == false) {
                                 console.error("cfyd：" + yuducontent);
@@ -3478,6 +3493,7 @@ ui.ok.click(function () {
                 配置 = 读取配置(settingPath);
                 if (配置["date"] != new Date().toLocaleDateString()) {
                     storage.put("zhengtian", false);
+                    zhengtian=false
                     addYuedu(phoneNum.toString());
                     if (isInJieshou(phoneNum.toString()) == 1) {
                         //转jieshou
