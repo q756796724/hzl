@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.1.3";
+        var versionNum = "聚合分享v9.1.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1487,10 +1487,7 @@ ui.ok.click(function () {
                                                                     tsbtn.click();
                                                                 }
                                                                 sleep(random(1000, 2000))
-                                                                let kshdbtns = packageName("com.tencent.mm").className("android.view.View").text("开始活动").find()
-                                                                let wztxt = packageName("com.tencent.mm").className("android.view.View").text("文章阅读推荐").findOnce()
-
-                                                                if (kshdbtns.length > 0 || wztxt != null) {
+                                                                if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(.*家庭.*)/).findOnce() == null) {
                                                                     log("点击美添成功")
                                                                     break
                                                                 }
@@ -1547,7 +1544,11 @@ ui.ok.click(function () {
                 return
             }
             sleep(10000)
-            if(auto_tx == false){
+            let tsbtn = packageName("com.tencent.mm").className("android.view.View").text("我知道了").findOnce()
+            if (tsbtn) {
+                tsbtn.click();
+            }
+            if (auto_tx == false) {
                 let txbtn = packageName("com.tencent.mm").className("android.widget.TextView").text("提现").findOne(2000)
                 if (txbtn) {
                     clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
@@ -1561,13 +1562,13 @@ ui.ok.click(function () {
                             exit();
                         }
                     }
-                    if(packageName("com.tencent.mm").text("用户提现").findOnce()){
+                    if (packageName("com.tencent.mm").text("用户提现").findOnce()) {
                         back()
                         sleep(5000)
                     }
                 }
             }
-            
+
 
             let wztxt = packageName("com.tencent.mm").className("android.view.View").text("文章阅读推荐").findOne(10000)
             let kshdbtns = packageName("com.tencent.mm").className("android.view.View").text("开始活动").find()
