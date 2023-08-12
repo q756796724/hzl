@@ -185,7 +185,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.3.3";
+        var versionNum = "接收v7.3.4";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -1125,7 +1125,8 @@ ui.ok.click(function () {
                                 if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                                     let latestLinkTitle = cBtn.text() + js_name.desc();
                                     latestLinkTitle = latestLinkTitle.TextFilter();
-                                    latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
+                                    //latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
+                                    latestLinkTitle = latestUrl + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
                                     setConfig("latestTalkName", latestLinkTitle)
                                 }
 
