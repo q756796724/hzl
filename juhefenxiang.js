@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.1.6";
+        var versionNum = "聚合分享v9.1.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1574,11 +1574,37 @@ ui.ok.click(function () {
             let kshdbtns = packageName("com.tencent.mm").className("android.view.View").text("开始活动").find()
             if (kshdbtns.length > 0 && wztxt != null) {
                 if (kshdbtns[0].bounds().top - wztxt.bounds().bottom < 100) {
+                    for (var i = 0; i < 15; i++) {
+                        if (packageName("com.tencent.mm").className("android.view.View").text("文章阅读推荐") == null) {
+                            log("离开了页面")
+                            return;
+                        }
+                        if (联网验证(zwifi) != true) {
+                            连接wifi(zwifi, 5000);
+                            app.launch(PKG_NAME);
+                            sleep(10000)
+                        }
+                        if (havejieshouren(1)) {
+                            //逻辑后端处理了
+                            //reducejieshouCount("开始阅读前数量减一");
+                            break
+                        } else if (i == 14) {
+                            返回v首页();
+                            return;
+                        }
+                        if (getjieshouNum() == "0") {
+                            sendTx("http://miaotixing.com/trigger?id=tzbrDO8&text=num:" + phoneNum);//phoneNum=0
+                            lunSleep(random(3600000, 4000000));//睡1个多小时
+                            return;
+                        }
+                        toastLog(new Date().toLocaleString() + "-" + "-----------" + "等待中！");
+                        sleep(100000)
+                    }
+                    
                     clickx(kshdbtns[0].bounds().centerX(), kshdbtns[0].bounds().centerY())
-                    let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按识别.*)/).findOne(8000)
+                    sleep(8000)
+                    let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按识别.*)/).findOne(3000)
                     if (tstxt) {
-                        sleep(8000)
-                        log(tstxt.bounds().centerX()+","+ tstxt.bounds().centerY() - 300)
                         longclickx(tstxt.bounds().centerX(), tstxt.bounds().centerY() - 300)
                         let sbqrBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("识别图中的二维码").findOne(10000);
                         if (sbqrBtn != null && sbqrBtn.parent() != null && sbqrBtn.parent().clickable()) {
@@ -1587,31 +1613,6 @@ ui.ok.click(function () {
                             sleep(5000)
                             let yuedubtn = packageName("com.tencent.mm").className("android.view.View").text("开始阅读").findOne(8000)
                             if (yuedubtn) {
-                                for (var i = 0; i < 15; i++) {
-                                    if (packageName("com.tencent.mm").className("android.view.View").text("开始阅读").findOne(8000) == null) {
-                                        return;
-                                    }
-                                    if (联网验证(zwifi) != true) {
-                                        连接wifi(zwifi, 5000);
-                                        app.launch(PKG_NAME);
-                                        sleep(10000)
-                                    }
-                                    if (havejieshouren(1)) {
-                                        //逻辑后端处理了
-                                        //reducejieshouCount("开始阅读前数量减一");
-                                        break
-                                    } else if (i == 14) {
-                                        返回v首页();
-                                        return;
-                                    }
-                                    if (getjieshouNum() == "0") {
-                                        sendTx("http://miaotixing.com/trigger?id=tzbrDO8&text=num:" + phoneNum);//phoneNum=0
-                                        lunSleep(random(3600000, 4000000));//睡1个多小时
-                                        return;
-                                    }
-                                    toastLog(new Date().toLocaleString() + "-" + "-----------" + "等待中！");
-                                    sleep(100000)
-                                }
                                 clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
                                 if (yuedu2()) {
                                     返回v首页()
@@ -1622,11 +1623,16 @@ ui.ok.click(function () {
                                     }
                                 }
                             } else {
+                                fenxiangshibai();
                                 console.warn("meitian进入失败")
                                 返回v首页();
                                 return
                             }
+                        }else{
+                            fenxiangshibai();
                         }
+                    }else{
+                        fenxiangshibai();
                     }
                 } else {
                     let dengdaitxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(剩余.*)/).find()
@@ -2726,18 +2732,7 @@ ui.ok.click(function () {
                         let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                         if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                             let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
-                            log("重复判断:" + yuducontent)
                             jcfbf.push(js_name.desc())
-                            if (sfcfyd(yuducontent) == false) {
-                                console.error("cfyd：" + yuducontent);
-                                let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
-                                if (rBtn != null && rBtn.parent() != null) {
-                                    rBtn.parent().click();
-                                }
-                                返回v首页();
-                                lunSleep(random(800000, 1000000));
-                                return false;
-                            }
                             let fxflag = fenxiangurl();
                             let clipurl = getClip();
                             if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
@@ -2767,6 +2762,18 @@ ui.ok.click(function () {
                                 return false;
                             }
                             log(clipurl);
+                            yuducontent = clipurl + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
+                            log("重复判断:" + yuducontent)
+                            if (sfcfyd(yuducontent) == false) {
+                                console.error("cfyd：" + yuducontent);
+                                let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                                if (rBtn != null && rBtn.parent() != null) {
+                                    rBtn.parent().click();
+                                }
+                                返回v首页();
+                                lunSleep(random(800000, 1000000));
+                                return false;
+                            }
                             if (fxurl(clipurl)) {
 
                             } else {
