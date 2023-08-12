@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.1.2";
+        var versionNum = "聚合分享v9.1.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1552,7 +1552,7 @@ ui.ok.click(function () {
                 if (txbtn) {
                     clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
                     sleep(3000)
-                    let jfzybtn = packageName("com.tencent.mm").className("android.view.View").text("积分转移").findOne(2000)
+                    let jfzybtn = packageName("com.tencent.mm").text("积分转移").findOne(2000)
                     if (jfzybtn) {
                         clickx(jfzybtn.bounds().centerX(), jfzybtn.bounds().centerY())
                         sleep(5000)
@@ -1780,7 +1780,11 @@ ui.ok.click(function () {
                     }
 
 
-
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        app.launch(PKG_NAME);
+                        sleep(10000)
+                    }
                     //let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOne(5000);
                     //if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000) == null && packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(5000) != null || packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(家庭.*)/).findOnce() != null) {
@@ -1873,11 +1877,6 @@ ui.ok.click(function () {
                                                             }
                                                         }
                                                     } else {
-                                                        if (联网验证(zwifi) != true) {
-                                                            连接wifi(zwifi, 5000);
-                                                            app.launch(PKG_NAME);
-                                                            sleep(10000)
-                                                        }
                                                         if (child.text().indexOf("番茄状态") > -1 && child.clickable()) {
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
@@ -2030,6 +2029,11 @@ ui.ok.click(function () {
                     return
                 }
             } else {
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                    sleep(10000)
+                }
                 let wBtns = className("android.widget.TextView").text("我").find();
                 for (let i = 0; i < wBtns.length; i++) {
                     if (className("android.widget.TextView").text("收藏").findOne(5000) != null) {
@@ -2113,11 +2117,6 @@ ui.ok.click(function () {
                     clickx(阅读.right, 阅读.bottom);
                     log("点击链接成功");
                 } else {
-                    if (联网验证(zwifi) != true) {
-                        连接wifi(zwifi, 5000);
-                        app.launch(PKG_NAME);
-                        sleep(10000)
-                    }
                     checkFlag = false
                     let 阅读;
                     if (className("android.widget.TextView").textContains("番茄状态").findOne(5000) != null) {
