@@ -185,7 +185,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.3.0";
+        var versionNum = "接收v7.3.1";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -693,7 +693,7 @@ ui.ok.click(function () {
                         } else {
                             console.error("置顶not found 大家庭")
                             关闭应用(PKG_NAME);
-                            lunSleep(300000);
+                            lunSleep(30000);
                             return
                         }
                     }
@@ -720,7 +720,7 @@ ui.ok.click(function () {
                         } else {
                             console.error("置顶not found 大家庭")
                             关闭应用(PKG_NAME);
-                            lunSleep(300000);
+                            lunSleep(30000);
                             return
                         }
                     }
@@ -1017,7 +1017,7 @@ ui.ok.click(function () {
                             if (i == 0) {
                                 console.error("置顶not found 文件传输助手")
                                 关闭应用(PKG_NAME);
-                                lunSleep(300000);
+                                lunSleep(30000);
                                 return
                             }
                             continue;
@@ -1047,7 +1047,7 @@ ui.ok.click(function () {
                         } else {
                             console.error("置顶not found 文件传输助手")
                             关闭应用(PKG_NAME);
-                            lunSleep(300000);
+                            lunSleep(30000);
                             return
                         }
                     }
@@ -2159,6 +2159,7 @@ ui.ok.click(function () {
             } else {
                 toastLog("请求截图成功");
             }
+            setInterval(() => { }, 3600000);
         });
         sleep(3000);
         let scbtn = textMatches(/(允许|立即开始)/).findOne(3000);

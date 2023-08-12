@@ -201,7 +201,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v9.1.1";
+        var versionNum = "番茄分享v9.1.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -3288,6 +3288,7 @@ ui.ok.click(function () {
             } else {
                 toastLog("请求截图成功");
             }
+            setInterval(() => { }, 3600000);
         });
         sleep(3000);
         let scbtn = textMatches(/(允许|立即开始)/).findOne(3000);
