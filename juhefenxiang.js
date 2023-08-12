@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.1.4";
+        var versionNum = "聚合分享v9.1.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1577,6 +1577,7 @@ ui.ok.click(function () {
                     clickx(kshdbtns[0].bounds().centerX(), kshdbtns[0].bounds().centerY())
                     let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按识别.*)/).findOne(8000)
                     if (tstxt) {
+                        sleep(8000)
                         longclickx(tstxt.bounds().centerX(), tstxt.bounds().centerY() - 300)
                         let sbqrBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("识别图中的二维码").findOne(10000);
                         if (sbqrBtn != null && sbqrBtn.parent() != null && sbqrBtn.parent().clickable()) {
