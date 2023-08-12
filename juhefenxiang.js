@@ -2731,6 +2731,11 @@ ui.ok.click(function () {
         function yuedu2() {
             let count = 1;
             for (; ;) {
+                refreshStateInfo();
+                if (count % 3 == 0 && topPackage != PKG_NAME) {
+                    启动x5();
+                    return false;
+                }
                 if (!zhengtian) {
                     if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 50) {
                         return true;
@@ -2878,12 +2883,17 @@ ui.ok.click(function () {
                             sleep(3000)
                             clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
                         }
+                        let fhbtn = packageName("com.tencent.mm").className("android.view.View").text("请返回").findOne(8000)
+                        if (fhbtn) {
+                            console.warn(fhbtn)
+                            return false
+                        }
                     } else if (count > 2) {
                         let wcbtn = packageName("com.tencent.mm").className("android.view.View").text("已完成").findOne(8000)
                         if (wcbtn) {
                             return true
                         }
-                        fhbtn = packageName("com.tencent.mm").className("android.view.View").text("请返回").findOne(8000)
+                        let fhbtn = packageName("com.tencent.mm").className("android.view.View").text("请返回").findOne(8000)
                         if (fhbtn) {
                             console.warn(fhbtn)
                             return false
