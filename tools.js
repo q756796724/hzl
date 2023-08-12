@@ -24,7 +24,7 @@ function main() {
         title: "请选择",
         positive: "确定",
         negative: "取消",
-        items: ["分享番茄", "接收文章", "互助番茄kk", "取guan", "珊友", "更新app"],
+        items: ["分享番茄", "接收文章","聚合分享", "互助番茄kk", "取guan", "珊友", "更新app"],
         itemsSelectMode: "singleChoice",
         itemsSelectedIndex: toolsStorage.get("toolsSelectIdx", 0)
     }).on("single_choice", (index, item, dialog) => {
@@ -58,13 +58,16 @@ function getSelect(runSelect) {
         github下载的脚本 = 打开Github文件("jieshouwenzhang.js");//这个方法返回的就是要运行的代码
         //console.info("下载完成的代码为:"+'\n'+github下载的脚本);
     }else if (runSelect == 2) {
-        github下载的脚本 = 打开Github文件("huzufanqiekankan.js");//这个方法返回的就是要运行的代码
+        github下载的脚本 = 打开Github文件("juhefenxiang.js");//这个方法返回的就是要运行的代码
         //console.info("下载完成的代码为:"+'\n'+github下载的脚本);
     }else if (runSelect == 3) {
-        github下载的脚本 = 打开Github文件("quguan.js");//这个方法返回的就是要运行的代码
+        github下载的脚本 = 打开Github文件("huzufanqiekankan.js");//这个方法返回的就是要运行的代码
+        //console.info("下载完成的代码为:"+'\n'+github下载的脚本);
     }else if (runSelect == 4) {
+        github下载的脚本 = 打开Github文件("quguan.js");//这个方法返回的就是要运行的代码
+    }else if (runSelect == 5) {
         github下载的脚本 = 打开Github文件("sanyou.js");//这个方法返回的就是要运行的代码
-    } else if (runSelect == 5) {
+    } else if (runSelect == 6) {
         github下载的脚本 = 打开Github文件("updateapp.js");//这个方法返回的就是要运行的代码
     } 
 

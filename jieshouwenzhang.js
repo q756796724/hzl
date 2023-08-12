@@ -185,7 +185,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.2.2";
+        var versionNum = "接收v7.3.0";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -2397,8 +2397,8 @@ ui.ok.click(function () {
 
                             if (qiehuanjiaoben) {
                                 //转yuedu
-                                toolsStorage.put("toolsSelectIdx", 0);
-                                engines.execScriptFile(toolsStorage.get("脚本路径") + "fenxiangfanqiekankan.js");
+                                toolsStorage.put("toolsSelectIdx", 2);
+                                engines.execScriptFile(toolsStorage.get("脚本路径") + "juhefenxiang.js");
                                 exit();
                             } else {
                                 //回滚回接收
@@ -2520,8 +2520,8 @@ ui.ok.click(function () {
                         storage.put("readdays", readdays);
                         if (qiehuanjiaoben) {
                             //转yuedu
-                            toolsStorage.put("toolsSelectIdx", 0);
-                            engines.execScriptFile(toolsStorage.get("脚本路径") + "fenxiangfanqiekankan.js");
+                            toolsStorage.put("toolsSelectIdx", 2);
+                            engines.execScriptFile(toolsStorage.get("脚本路径") + "juhefenxiang.js");
                             exit();
                         } else {
                             //回滚回接收
