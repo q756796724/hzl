@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.1.1";
+        var versionNum = "聚合分享v9.1.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1481,7 +1481,7 @@ ui.ok.click(function () {
                                                                     click("允许");
                                                                     sleep(3000);
                                                                 }
-                                                                sleep(random(1000, 2000))
+                                                                sleep(random(5000, 8000))
                                                                 let tsbtn = packageName("com.tencent.mm").className("android.view.View").text("我知道了").findOnce()
                                                                 if (tsbtn) {
                                                                     tsbtn.click();
@@ -1547,20 +1547,27 @@ ui.ok.click(function () {
                 return
             }
             sleep(10000)
-            let txbtn = packageName("com.tencent.mm").className("android.widget.TextView").text("提现").findOne(2000)
-            if (txbtn) {
-                clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
-                sleep(3000)
-                let jfzybtn = packageName("com.tencent.mm").className("android.view.View").text("积分转移").findOne(2000)
-                if (jfzybtn) {
-                    clickx(jfzybtn.bounds().centerX(), jfzybtn.bounds().centerY())
-                    sleep(5000)
-                    if (packageName("com.tencent.mm").textMatches(/(.*绑定积分转移对象.*)/).findOne(1000)) {
-                        console.error("未绑定积分转移对象")
-                        exit();
+            if(auto_tx == false){
+                let txbtn = packageName("com.tencent.mm").className("android.widget.TextView").text("提现").findOne(2000)
+                if (txbtn) {
+                    clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
+                    sleep(3000)
+                    let jfzybtn = packageName("com.tencent.mm").className("android.view.View").text("积分转移").findOne(2000)
+                    if (jfzybtn) {
+                        clickx(jfzybtn.bounds().centerX(), jfzybtn.bounds().centerY())
+                        sleep(5000)
+                        if (packageName("com.tencent.mm").textMatches(/(.*绑定积分转移对象.*)/).findOne(1000)) {
+                            console.error("未绑定积分转移对象")
+                            exit();
+                        }
+                    }
+                    if(packageName("com.tencent.mm").text("用户提现").findOnce()){
+                        back()
+                        sleep(5000)
                     }
                 }
             }
+            
 
             let wztxt = packageName("com.tencent.mm").className("android.view.View").text("文章阅读推荐").findOne(10000)
             let kshdbtns = packageName("com.tencent.mm").className("android.view.View").text("开始活动").find()
@@ -3366,6 +3373,11 @@ ui.ok.click(function () {
         }
 
         function 返回v首页() {
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                app.launch(PKG_NAME);
+                sleep(10000)
+            }
             for (let i = 0; i < 15; i++) {
                 if (结束未响应()) {
                     return;
