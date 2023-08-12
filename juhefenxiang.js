@@ -1191,21 +1191,33 @@ ui.ok.click(function () {
                     }
                 }
             } else {
-                for (let i = 0; i < 7; i++) {
-                    kz();
-                    var img = captureScreen();
-                    var imgH = img.height;
-                    var clip = images.clip(img, 0, img.height - 200, 200, 20);
-                    swapeToRead();
-                    sleep(random(4000, 5000));
-                    var p = findImage(captureScreen(), clip, {
-                        region: [0, imgH - 300, 220, 150],
-                        threshold: 1
-                    });
-                    img.recycle();//不再使用需要手动回收
-                    if (p || checkWatchFull()) {
-                        log("到底了");
-                        break;
+                try{
+                    for (let i = 0; i < 7; i++) {
+                        kz();
+                        var img = captureScreen();
+                        var imgH = img.height;
+                        var clip = images.clip(img, 0, img.height - 200, 200, 20);
+                        swapeToRead();
+                        sleep(random(4000, 5000));
+                        var p = findImage(captureScreen(), clip, {
+                            region: [0, imgH - 300, 220, 150],
+                            threshold: 0.9
+                        });
+                        img.recycle();//不再使用需要手动回收
+                        if (p || checkWatchFull()) {
+                            log("到底了");
+                            break;
+                        }
+                    }
+                }catch(e){
+                    for (let i = 0; i < 7; i++) {
+                        kz();
+                        swapeToRead();
+                        sleep(random(2000, 4000));
+                        if (checkWatchFull()) {
+                            log("到底了");
+                            break;
+                        }
                     }
                 }
             }
@@ -3834,7 +3846,6 @@ ui.ok.click(function () {
             } else {
                 toastLog("请求截图成功");
             }
-            setInterval(() => { }, 3600000);
         });
         sleep(3000);
         let scbtn = textMatches(/(允许|立即开始)/).findOne(3000);
