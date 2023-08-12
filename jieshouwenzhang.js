@@ -185,7 +185,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.3.1";
+        var versionNum = "接收v7.3.2";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -678,7 +678,7 @@ ui.ok.click(function () {
                         if (text("取消置顶").findOne(3000) != null) {
                             back();
                             sleep(2000)
-                            click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
+                            click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
                             //wBtns[i].click();
                             sleep(random(1500, 2000))
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) != null) {
@@ -705,7 +705,7 @@ ui.ok.click(function () {
                         if (text("取消置顶").findOne(3000) != null) {
                             back();
                             sleep(2000)
-                            click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
+                            click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
                             wBtns[i].click();
                             sleep(random(1500, 2000))
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) != null) {
@@ -1001,7 +1001,7 @@ ui.ok.click(function () {
                         if (text("取消置顶").findOne(3000) != null) {
                             back();
                             sleep(2000)
-                            click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
+                            click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
                             //wBtns[i].click();
                             sleep(random(1500, 2000))
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
@@ -1032,7 +1032,7 @@ ui.ok.click(function () {
                         if (text("取消置顶").findOne(3000) != null) {
                             back();
                             sleep(2000)
-                            click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
+                            click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
                             //wBtns[i].click();
                             sleep(random(1500, 2000))
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
@@ -2152,6 +2152,15 @@ ui.ok.click(function () {
         console.setSize(device.width -100, device.height / 4);
         sleep(2000);*/
         threads.start(function () {
+            threads.start(function () {
+                setInterval(() => {
+                    let scbtn = textMatches(/(允许|立即开始)/).findOne(3000);
+                    if (scbtn != null) {
+                        scbtn.click()
+                        threads.currentThread().interrupt();
+                    }
+                }, 10000);
+            })
             // 请求屏幕截图权限
             if (!requestScreenCapture(true)) {
                 toastLog("请求截图失败");
@@ -2159,13 +2168,10 @@ ui.ok.click(function () {
             } else {
                 toastLog("请求截图成功");
             }
-            setInterval(() => { }, 3600000);
+
         });
         sleep(3000);
-        let scbtn = textMatches(/(允许|立即开始)/).findOne(3000);
-        if (scbtn != null) {
-            scbtn.click()
-        }
+
 
 
         device.keepScreenDim();
@@ -2377,7 +2383,7 @@ ui.ok.click(function () {
                 配置 = 读取配置(settingPath);
                 if (配置["date"] != new Date().toLocaleDateString()) {
                     storage.put("zhengtian", false);
-                    zhengtian=false
+                    zhengtian = false
                     lunSleep(random(600000, 3600000));
                     if (联网验证(zwifi) != true) {
                         连接wifi(zwifi, 5000);
