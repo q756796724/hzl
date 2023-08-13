@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.2.8";
+        var versionNum = "聚合分享v9.2.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1565,6 +1565,16 @@ ui.ok.click(function () {
             if (tsbtn) {
                 sleep(4000)
                 tsbtn.click();
+            }
+            while(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()==null||isNaN(parseInt(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce().text().replace(/[^\d]/g, " ")))){
+                let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
+                if (stopPage != null) {
+                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum);//出错请处理
+                    lunSleep(random(3600000, 4000000));//睡1个多小时
+                    return;
+                }
+                sleep(3000)
+                toast("加载中")
             }
             if (auto_tx == false) {
                 let txbtn = packageName("com.tencent.mm").className("android.widget.TextView").text("提现").findOne(2000)
@@ -2951,7 +2961,16 @@ ui.ok.click(function () {
                                 sleep(5000)
                                 back();
                                 if (auto_tx == false) {
-                                    sleep(30000)
+                                    while(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()==null||isNaN(parseInt(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce().text().replace(/[^\d]/g, " ")))){
+                                        let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
+                                        if (stopPage != null) {
+                                            sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum);//出错请处理
+                                            lunSleep(random(3600000, 4000000));//睡1个多小时
+                                            return;
+                                        }
+                                        sleep(3000)
+                                        toast("加载中")
+                                    }
                                     let txbtn = packageName("com.tencent.mm").className("android.widget.TextView").text("提现").findOne(2000)
                                     if (txbtn) {
                                         sleep(2000)
