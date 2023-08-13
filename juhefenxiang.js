@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.3.3";
+        var versionNum = "聚合分享v9.3.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1566,7 +1566,7 @@ ui.ok.click(function () {
                 sleep(4000)
                 tsbtn.click();
             }
-            let jzcount=0
+            let xhcount = 0
             while (packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce() == null || isNaN(parseInt(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce().text().replace(/[^\d]/g, " ")))) {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                 if (stopPage != null) {
@@ -1575,8 +1575,8 @@ ui.ok.click(function () {
                     return;
                 }
                 sleep(3000)
-                jzcount++
-                if(jzcount>50){
+                xhcount++
+                if (xhcount > 20) {
                     break;
                 }
                 toast("加载中")
@@ -1612,7 +1612,7 @@ ui.ok.click(function () {
             let kshdbtns = packageName("com.tencent.mm").className("android.view.View").text("开始活动").find()
             if (kshdbtns.length > 0 && wztxt != null) {
                 if (kshdbtns[0].bounds().top - wztxt.bounds().bottom < 100) {
-                    for (var i = 0; i < 15; i++) {
+                    for (var i = 0; i < 150; i++) {
                         if (packageName("com.tencent.mm").className("android.view.View").text("文章阅读推荐").findOnce() == null) {
                             log("离开了页面")
                             return;
@@ -1630,7 +1630,7 @@ ui.ok.click(function () {
                             //逻辑后端处理了
                             //reducejieshouCount("开始阅读前数量减一");
                             break
-                        } else if (i == 14) {
+                        } else if (i == 149) {
                             返回v首页();
                             return;
                         }
@@ -1649,6 +1649,9 @@ ui.ok.click(function () {
                     if (tstxt) {
                         longclickx(tstxt.bounds().centerX(), tstxt.bounds().centerY() - 300)
                     } else {
+                        log("重试进入活动")
+                        kshdbtns[0].click()
+                        sleep(8000)
                         longclickx(device.width * 0.5, device.height * 0.45)
                     }
                     sleep(3000)
@@ -1658,23 +1661,31 @@ ui.ok.click(function () {
                         sbqrBtn.parent().click();
                         let yuedubtn = packageName("com.tencent.mm").className("android.view.View").text("开始阅读").findOne(10000)
                         if (yuedubtn) {
+                            let xhcount = 0
                             while (packageName("com.tencent.mm").className("android.view.View").textMatches(/(\（0\/.*)/).findOnce() == null) {
                                 toast(new Date().toLocaleString() + "-" + "-----------" + "等待出现数字！");
-                                sleep(2000)
+                                xhcount++
+                                if (xhcount > 20) {
+                                    break;
+                                }
+                                sleep(3000)
                             }
                             let counttxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(\（0\/.*)/).findOnce();
-                            var matches = counttxt.text().match(/\d+/g);
-                            if (parseInt(matches[1]) < 10) {
-                                if((new Date().getDay()==0||new Date().getDay()==6)&&parseInt(matches[1]) >= 8){
-                                    console.info("文章数:" + parseInt(matches[1]))
-                                }else{
-                                    fenxiangshibai();
-                                    console.warn("文章过少:" + parseInt(matches[1]))
-                                    返回v首页();
-                                    lunSleep(random(1800000, 3600000));
-                                    return
+                            if (counttxt) {
+                                var matches = counttxt.text().match(/\d+/g);
+                                if (parseInt(matches[1]) < 10) {
+                                    if ((new Date().getDay() == 0 || new Date().getDay() == 6) && parseInt(matches[1]) >= 8) {
+                                        console.info("文章数:" + parseInt(matches[1]))
+                                    } else {
+                                        fenxiangshibai();
+                                        console.warn("文章过少:" + parseInt(matches[1]))
+                                        返回v首页();
+                                        lunSleep(random(1800000, 3600000));
+                                        return
+                                    }
                                 }
                             }
+
                             clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
                             let yuedu2flag = yuedu2()
                             if (yuedu2flag == true) {
@@ -1697,6 +1708,7 @@ ui.ok.click(function () {
                             return
                         }
                     } else {
+                        console.warn("没有找到识别图中的二维码")
                         fenxiangshibai();
                     }
                 } else {
@@ -2950,14 +2962,26 @@ ui.ok.click(function () {
                 if (等待未响应() > -1) {
                     sleep(8000)
                 }
+                xhcount=0
                 while (packageName("com.tencent.mm").className("android.view.View").text("不喜欢，换一篇阅读").findOnce()) {
                     sleep(2000)
-                    if (count == 2) {
+                    xhcount++
+                    if (xhcount > 20) {
+                        break;
+                    }
+                    if (count == 1) {
+                        let yuedubtn = packageName("com.tencent.mm").className("android.view.View").text("开始阅读").findOnce()
+                        if (yuedubtn) {
+                            sleep(3000)
+                            clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
+                        }
+                    } else if (count == 2) {
                         let yuedubtn = packageName("com.tencent.mm").className("android.view.View").text("开始阅读").findOnce()
                         if (yuedubtn) {
                             console.info("检测通过")
                             sleep(3000)
                             clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
+                            break
                         }
                         let fhbtn = packageName("com.tencent.mm").className("android.view.View").text("请返回").findOnce()
                         if (fhbtn) {
@@ -2975,12 +2999,12 @@ ui.ok.click(function () {
                                 sleep(5000)
                                 back();
                                 if (auto_tx == false) {
-                                    let jzcount=0
+                                    let xhcount = 0
                                     while (packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce() == null || isNaN(parseInt(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce().text().replace(/[^\d]/g, " ")))) {
-                        
+
                                         sleep(3000)
-                                        jzcount++
-                                        if(jzcount>50){
+                                        xhcount++
+                                        if (xhcount > 20) {
                                             break;
                                         }
                                         toast("加载中")
@@ -3021,7 +3045,6 @@ ui.ok.click(function () {
                 }
                 back();
                 count++;
-
             }
         }
 
