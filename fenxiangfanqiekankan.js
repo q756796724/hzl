@@ -3428,6 +3428,7 @@ ui.ok.click(function () {
         if (removePhoneNum) {
             removePhone(phoneNum.toString());
             storage.put("removePhoneNum", false);
+            storage.put("readdays", 0);
             exit();
         }
         addYuedu(phoneNum.toString());

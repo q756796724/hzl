@@ -1566,6 +1566,7 @@ ui.ok.click(function () {
                 sleep(4000)
                 tsbtn.click();
             }
+            let jzcount=0
             while (packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce() == null || isNaN(parseInt(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce().text().replace(/[^\d]/g, " ")))) {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                 if (stopPage != null) {
@@ -1574,6 +1575,9 @@ ui.ok.click(function () {
                     return;
                 }
                 sleep(3000)
+                if(jzcount>50){
+                    break;
+                }
                 toast("加载中")
             }
             if (auto_tx == false) {
@@ -1659,11 +1663,11 @@ ui.ok.click(function () {
                             }
                             let counttxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(\（0\/.*)/).findOnce();
                             var matches = counttxt.text().match(/\d+/g);
-                            if (parseInt(matches[1]) < 8) {
+                            if (parseInt(matches[1]) < 10) {
                                 fenxiangshibai();
                                 console.warn("文章过少:" + parseInt(matches[1]))
                                 返回v首页();
-                                lunSleep(random(1800000, 2000000));
+                                lunSleep(random(1800000, 3600000));
                                 return
                             }
                             clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
@@ -2846,13 +2850,13 @@ ui.ok.click(function () {
                             log("重复判断:" + yuducontent)
                             if (sfcfyd(yuducontent) == false) {
                                 console.error("cfyd：" + yuducontent);
+                                lunSleep(300000);
                                 let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                                 if (rBtn != null && rBtn.parent() != null) {
                                     rBtn.parent().click();
                                 }
-                                lunSleep(300000);
                                 返回v首页();
-                                lunSleep(random(1800000, 2000000));
+                                lunSleep(random(800000, 1000000));
                                 return false;
                             }
                             if (fxurl(clipurl)) {
@@ -2953,6 +2957,7 @@ ui.ok.click(function () {
                         let fhbtn = packageName("com.tencent.mm").className("android.view.View").text("请返回").findOnce()
                         if (fhbtn) {
                             console.info("检测失败")
+                            addXianZhi(phoneNum.toString())
                             return false
                         }
                     } else if (count > 2) {
@@ -2965,14 +2970,14 @@ ui.ok.click(function () {
                                 sleep(5000)
                                 back();
                                 if (auto_tx == false) {
+                                    let jzcount=0
                                     while (packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce() == null || isNaN(parseInt(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce().text().replace(/[^\d]/g, " ")))) {
-                                        let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
-                                        if (stopPage != null) {
-                                            sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum);//出错请处理
-                                            lunSleep(random(3600000, 4000000));//睡1个多小时
-                                            return;
-                                        }
+                        
                                         sleep(3000)
+                                        jzcount++
+                                        if(jzcount>50){
+                                            break;
+                                        }
                                         toast("加载中")
                                     }
                                     let txbtn = packageName("com.tencent.mm").className("android.widget.TextView").text("提现").findOne(2000)
@@ -3274,11 +3279,11 @@ ui.ok.click(function () {
                             jcfbf.push(js_name.desc())
                             if (sfcfyd(yuducontent) == false) {
                                 console.error("cfyd：" + yuducontent);
+                                lunSleep(300000);
                                 let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                                 if (rBtn != null && rBtn.parent() != null) {
                                     rBtn.parent().click();
                                 }
-                                lunSleep(300000);
                                 返回v首页();
                                 lunSleep(random(800000, 1000000));
                                 return false;
@@ -4098,6 +4103,7 @@ ui.ok.click(function () {
         if (removePhoneNum) {
             removePhone(phoneNum.toString());
             storage.put("removePhoneNum", false);
+            storage.put("readdays", 0);
             exit();
         }
         addYuedu(phoneNum.toString());

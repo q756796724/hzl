@@ -185,7 +185,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.3.4";
+        var versionNum = "接收v7.3.5";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -2302,11 +2302,13 @@ ui.ok.click(function () {
         if (addJieshou) {
             addJieshouList(phoneNum.toString());
             storage.put("addJieshou", false);
+            storage.put("readdays", 0);
         }
 
         if (removePhoneNum) {
             removePhone(phoneNum.toString());
             storage.put("removePhoneNum", false);
+            storage.put("readdays", 0);
             sleep(3000);
             exit();
         }
@@ -2396,7 +2398,7 @@ ui.ok.click(function () {
                         sleep(10000);
                     }
                     if (getjieshouNum() == phoneNum.toString()) {
-                        if (readdays >= 3) {
+                        if (readdays >= 2) {
                             sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期" + readdays + "天");//切换
                             while (1) {
                                 addXianZhi()
