@@ -2610,6 +2610,7 @@ ui.ok.click(function () {
                             jcfbf.push(js_name.desc())
                             if (sfcfyd(yuducontent) == false) {
                                 console.error("cfyd：" + yuducontent);
+                                sleep(300000);
                                 let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                                 if (rBtn != null && rBtn.parent() != null) {
                                     rBtn.parent().click();
