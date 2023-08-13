@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.2.0";
+        var versionNum = "聚合分享v9.2.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1627,7 +1627,18 @@ ui.ok.click(function () {
                         if (sbqrBtn != null && sbqrBtn.parent() != null && sbqrBtn.parent().clickable()) {
                             sleep(random(500, 2000));
                             sbqrBtn.parent().click();
-                            sleep(5000)
+                            sleep(10000)
+                            let counttxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(\（0\/.*)/).findOnce();
+                            if (counttxt) {
+                                var matches = counttxt.text().match(/\d+/g);
+                                if(parseInt(matches[1])<10){
+                                    fenxiangshibai();
+                                    console.warn("文章过少:"+parseInt(matches[1]))
+                                    返回v首页();
+                                    lunSleep(random(1800000, 2000000));
+                                    return
+                                }
+                            }
                             let yuedubtn = packageName("com.tencent.mm").className("android.view.View").text("开始阅读").findOne(8000)
                             if (yuedubtn) {
                                 clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
@@ -2880,7 +2891,7 @@ ui.ok.click(function () {
                 if (等待未响应() > -1) {
                     sleep(8000)
                 }
-                while(packageName("com.tencent.mm").className("android.view.View").text("不喜欢，换一篇阅读").findOnce()){
+                while (packageName("com.tencent.mm").className("android.view.View").text("不喜欢，换一篇阅读").findOnce()) {
                     sleep(2000)
                     if (count == 2) {
                         let yuedubtn = packageName("com.tencent.mm").className("android.view.View").text("开始阅读").findOnce()
@@ -2897,7 +2908,7 @@ ui.ok.click(function () {
                     } else if (count > 2) {
                         let wcbtn = packageName("com.tencent.mm").className("android.view.View").text("已完成").findOnce()
                         if (wcbtn) {
-                            console.info(wcbtn)
+                            console.info("本轮完成")
                             return true
                         }
                         let fhbtn = packageName("com.tencent.mm").className("android.view.View").text("请返回").findOnce()
@@ -2909,7 +2920,7 @@ ui.ok.click(function () {
                 }
                 back();
                 count++;
-                
+
             }
         }
 
