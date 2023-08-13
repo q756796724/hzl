@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.2.6";
+        var versionNum = "聚合分享v9.2.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1569,20 +1569,25 @@ ui.ok.click(function () {
             if (auto_tx == false) {
                 let txbtn = packageName("com.tencent.mm").className("android.widget.TextView").text("提现").findOne(2000)
                 if (txbtn) {
-                    clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
-                    sleep(3000)
-                    let jfzybtn = packageName("com.tencent.mm").text("积分转移").findOne(2000)
-                    if (jfzybtn) {
-                        clickx(jfzybtn.bounds().centerX(), jfzybtn.bounds().centerY())
-                        sleep(5000)
-                        if (packageName("com.tencent.mm").textMatches(/(.*绑定积分转移对象.*)/).findOne(1000)) {
-                            console.error("未绑定积分转移对象")
-                            exit();
+                    sleep(2000)
+                    let sybtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()
+                    let sytext = sybtn.text()
+                    if (parseInt(sytext.replace(/[^\d]/g, " ")) > 800) {
+                        clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
+                        sleep(3000)
+                        let jfzybtn = packageName("com.tencent.mm").text("积分转移").findOne(2000)
+                        if (jfzybtn) {
+                            clickx(jfzybtn.bounds().centerX(), jfzybtn.bounds().centerY())
+                            sleep(5000)
+                            if (packageName("com.tencent.mm").textMatches(/(.*绑定积分转移对象.*)/).findOne(1000)) {
+                                console.error("未绑定积分转移对象")
+                                exit();
+                            }
                         }
-                    }
-                    if (packageName("com.tencent.mm").text("用户提现").findOnce()) {
-                        back()
-                        sleep(5000)
+                        if (packageName("com.tencent.mm").text("用户提现").findOnce()) {
+                            back()
+                            sleep(5000)
+                        }
                     }
                 }
             }
@@ -1624,48 +1629,49 @@ ui.ok.click(function () {
                     let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按识别.*)/).findOne(3000)
                     if (tstxt) {
                         longclickx(tstxt.bounds().centerX(), tstxt.bounds().centerY() - 300)
-                        let sbqrBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("识别图中的二维码").findOne(10000);
-                        if (sbqrBtn != null && sbqrBtn.parent() != null && sbqrBtn.parent().clickable()) {
-                            sleep(random(500, 2000));
-                            sbqrBtn.parent().click();
-                            let yuedubtn = packageName("com.tencent.mm").className("android.view.View").text("开始阅读").findOne(10000)
-                            if (yuedubtn) {
-                                while (packageName("com.tencent.mm").className("android.view.View").textMatches(/(\（0\/.*)/).findOnce() == null) {
-                                    toast(new Date().toLocaleString() + "-" + "-----------" + "等待出现数字！");
-                                    sleep(2000)
-                                }
-                                let counttxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(\（0\/.*)/).findOnce();
-                                var matches = counttxt.text().match(/\d+/g);
-                                if (parseInt(matches[1]) < 10) {
-                                    fenxiangshibai();
-                                    console.warn("文章过少:" + parseInt(matches[1]))
-                                    返回v首页();
-                                    lunSleep(random(1800000, 2000000));
-                                    return
-                                }
-                                clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
-                                let yuedu2flag = yuedu2()
-                                if (yuedu2flag == true) {
-                                    返回v首页()
-                                    if (fanqieflag == false) {
-                                        sleep(3600000)
-                                    } else {
-                                        checkFlag = true
-                                    }
-                                } else if (yuedu2flag == flase) {
-                                    返回v首页()
+                    } else {
+                        longclickx(device.width * 0.5, device.height * 0.45)
+                    }
+                    sleep(3000)
+                    let sbqrBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("识别图中的二维码").findOne(7000);
+                    if (sbqrBtn != null && sbqrBtn.parent() != null && sbqrBtn.parent().clickable()) {
+                        sleep(random(500, 2000));
+                        sbqrBtn.parent().click();
+                        let yuedubtn = packageName("com.tencent.mm").className("android.view.View").text("开始阅读").findOne(10000)
+                        if (yuedubtn) {
+                            while (packageName("com.tencent.mm").className("android.view.View").textMatches(/(\（0\/.*)/).findOnce() == null) {
+                                toast(new Date().toLocaleString() + "-" + "-----------" + "等待出现数字！");
+                                sleep(2000)
+                            }
+                            let counttxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(\（0\/.*)/).findOnce();
+                            var matches = counttxt.text().match(/\d+/g);
+                            if (parseInt(matches[1]) < 10) {
+                                fenxiangshibai();
+                                console.warn("文章过少:" + parseInt(matches[1]))
+                                返回v首页();
+                                lunSleep(random(1800000, 2000000));
+                                return
+                            }
+                            clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
+                            let yuedu2flag = yuedu2()
+                            if (yuedu2flag == true) {
+                                返回v首页()
+                                if (fanqieflag == false) {
                                     sleep(3600000)
                                 } else {
-                                    返回v首页()
+                                    checkFlag = true
                                 }
+                            } else if (yuedu2flag == flase) {
+                                返回v首页()
+                                sleep(3600000)
                             } else {
-                                fenxiangshibai();
-                                console.warn("meitian进入失败")
-                                返回v首页();
-                                return
+                                返回v首页()
                             }
                         } else {
                             fenxiangshibai();
+                            console.warn("meitian进入失败")
+                            返回v首页();
+                            return
                         }
                     } else {
                         fenxiangshibai();
@@ -2947,20 +2953,25 @@ ui.ok.click(function () {
                                     sleep(30000)
                                     let txbtn = packageName("com.tencent.mm").className("android.widget.TextView").text("提现").findOne(2000)
                                     if (txbtn) {
-                                        clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
-                                        sleep(3000)
-                                        let jfzybtn = packageName("com.tencent.mm").text("积分转移").findOne(2000)
-                                        if (jfzybtn) {
-                                            clickx(jfzybtn.bounds().centerX(), jfzybtn.bounds().centerY())
-                                            sleep(5000)
-                                            if (packageName("com.tencent.mm").textMatches(/(.*绑定积分转移对象.*)/).findOne(1000)) {
-                                                console.error("未绑定积分转移对象")
-                                                exit();
+                                        sleep(2000)
+                                        let sybtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()
+                                        let sytext = sybtn.text()
+                                        if (parseInt(sytext.replace(/[^\d]/g, " ")) > 800) {
+                                            clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
+                                            sleep(3000)
+                                            let jfzybtn = packageName("com.tencent.mm").text("积分转移").findOne(2000)
+                                            if (jfzybtn) {
+                                                clickx(jfzybtn.bounds().centerX(), jfzybtn.bounds().centerY())
+                                                sleep(5000)
+                                                if (packageName("com.tencent.mm").textMatches(/(.*绑定积分转移对象.*)/).findOne(1000)) {
+                                                    console.error("未绑定积分转移对象")
+                                                    exit();
+                                                }
                                             }
-                                        }
-                                        if (packageName("com.tencent.mm").text("用户提现").findOnce()) {
-                                            back()
-                                            sleep(5000)
+                                            if (packageName("com.tencent.mm").text("用户提现").findOnce()) {
+                                                back()
+                                                sleep(5000)
+                                            }
                                         }
                                     }
                                 }
