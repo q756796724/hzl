@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.1.8";
+        var versionNum = "聚合分享v9.1.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1088,21 +1088,26 @@ ui.ok.click(function () {
         }
 
         function fenxiangurl() {
-            let cBtn = packageName("com.tencent.mm").className("android.widget.ImageView").desc("返回").findOnce();
-            if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
-                sleep(random(2000, 3000));
-                click(device.width - random(1, 10), cBtn.bounds().bottom - random(1, 5));
-            } else {
-                console.error("寻找fenxiang失败")
-                return false
-            }
-            cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("复制链接").findOne(4000);
-            if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
-                sleep(random(2000, 3000));
-                cBtn.parent().click();
-                sleep(random(2000, 3000));
-            } else {
-                console.error("notfound复制链接");
+            try {
+                let cBtn = packageName("com.tencent.mm").className("android.widget.ImageView").desc("返回").findOnce();
+                if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
+                    sleep(random(2000, 3000));
+                    click(device.width - random(1, 10), cBtn.bounds().bottom - random(1, 5));
+                } else {
+                    console.error("寻找fenxiang失败")
+                    return false
+                }
+                cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("复制链接").findOne(4000);
+                if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
+                    sleep(random(2000, 3000));
+                    cBtn.parent().click();
+                    sleep(random(2000, 3000));
+                } else {
+                    console.error("notfound复制链接");
+                    return false
+                }
+            } catch (e) {
+                console.warn(e)
                 return false
             }
         }
@@ -1191,7 +1196,7 @@ ui.ok.click(function () {
                     }
                 }
             } else {
-                try{
+                try {
                     for (let i = 0; i < 7; i++) {
                         kz();
                         var img = captureScreen();
@@ -1209,7 +1214,7 @@ ui.ok.click(function () {
                             break;
                         }
                     }
-                }catch(e){
+                } catch (e) {
                     for (let i = 0; i < 7; i++) {
                         kz();
                         swapeToRead();
@@ -1612,7 +1617,7 @@ ui.ok.click(function () {
                         toastLog(new Date().toLocaleString() + "-" + "-----------" + "等待中！");
                         sleep(100000)
                     }
-                    
+
                     clickx(kshdbtns[0].bounds().centerX(), kshdbtns[0].bounds().centerY())
                     sleep(8000)
                     let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按识别.*)/).findOne(3000)
@@ -1640,10 +1645,10 @@ ui.ok.click(function () {
                                 返回v首页();
                                 return
                             }
-                        }else{
+                        } else {
                             fenxiangshibai();
                         }
-                    }else{
+                    } else {
                         fenxiangshibai();
                     }
                 } else {
@@ -2740,36 +2745,24 @@ ui.ok.click(function () {
                     if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 50) {
                         return true;
                     }
-                    kz();
-                    if (count == 1) {
-                        //判断是否需要互助
-                        let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
-                        sleep(5000)
-                        cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
-                        let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
-                        let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
-                        if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
-                            let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
-                            jcfbf.push(js_name.desc())
-                            let fxflag = fenxiangurl();
-                            let clipurl = getClip();
-                            if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
-                                sleep(5000)
-                                if (fenxiangurl() == false) {
-                                    //addjieshouCount("分享失败数量加1");
-                                    fenxiangshibai();
-                                    let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
-                                    if (rBtn != null && rBtn.parent() != null) {
-                                        rBtn.parent().click();
-                                    }
-                                    返回v首页();
-                                    lunSleep(random(800000, 1000000));
-                                    return false;
-                                } else {
-                                    clipurl = getClip();
-                                }
-                            }
-                            if (clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
+                }
+                kz();
+                if (count == 1) {
+                    //判断是否需要互助
+                    let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                    sleep(5000)
+                    cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
+                    let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
+                    let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
+                    if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
+                        let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
+                        jcfbf.push(js_name.desc())
+                        let fxflag = fenxiangurl();
+                        let clipurl = getClip();
+                        if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
+                            sleep(5000)
+                            if (fenxiangurl() == false) {
+                                //addjieshouCount("分享失败数量加1");
                                 fenxiangshibai();
                                 let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                                 if (rBtn != null && rBtn.parent() != null) {
@@ -2778,35 +2771,12 @@ ui.ok.click(function () {
                                 返回v首页();
                                 lunSleep(random(800000, 1000000));
                                 return false;
-                            }
-                            log(clipurl);
-                            yuducontent = clipurl + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
-                            log("重复判断:" + yuducontent)
-                            if (sfcfyd(yuducontent) == false) {
-                                console.error("cfyd：" + yuducontent);
-                                let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
-                                if (rBtn != null && rBtn.parent() != null) {
-                                    rBtn.parent().click();
-                                }
-                                返回v首页();
-                                lunSleep(random(800000, 1000000));
-                                return false;
-                            }
-                            if (fxurl(clipurl)) {
-
                             } else {
-                                fenxiangshibai();
-                                let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
-                                if (rBtn != null && rBtn.parent() != null) {
-                                    rBtn.parent().click();
-                                }
-                                返回v首页();
-                                lunSleep(random(800000, 1000000));
-                                return false;
+                                clipurl = getClip();
                             }
-                        } else {
+                        }
+                        if (clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
                             fenxiangshibai();
-                            console.error("标题识别失败");
                             let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                             if (rBtn != null && rBtn.parent() != null) {
                                 rBtn.parent().click();
@@ -2815,91 +2785,131 @@ ui.ok.click(function () {
                             lunSleep(random(800000, 1000000));
                             return false;
                         }
-                        sleep(10000);
-                    }
-
-                    log("第" + count + "次");
-
-                    //长距离测试
-                    //sml_move(400, 1800, 800, 230, 2000);
-                    //短距离测试
-                    //sml_move(400, 1000, 800, 600, 2000);
-                    log("滑动");
-                    swapeToRead();
-                    sleep(random(3000, 7000));
-                    swapeToRead();
-                    sleep(random(3000, 7000));
-                    /*if (count == wifiCount) {
-                        swapeToRead();
-                        sleep(random(3000, 7000));
-                        swapeToRead();
-                        sleep(random(3000, 7000));
-                        swapeToRead();
-                        sleep(random(3000, 7000));
-                    }
-                    if (count == wifiCount + 1) {
-                        swapeToRead();
-                        sleep(random(3000, 7000));
-                        swapeToRead();
-                        sleep(random(3000, 7000));
-                        swapeToRead();
-                        sleep(random(3000, 7000));
-                        连接wifi(dlwifi, 5000);
-                        app.launch(PKG_NAME);
-                    }*/
-
-                    if (count == 1) {
-                        swapeToRead();
-                        sleep(random(3000, 5000));
-                        swapeToRead();
-                        sleep(random(2000, 4000));
-                        swapeToRead();
-                        sleep(random(3000, 7000));
-                        swapeToRead();
-                        sleep(random(3000, 7000));
-                        swapeToRead();
-                        sleep(random(3000, 7000));
-                        连接wifi(dlwifi, 5000);
-                        app.launch(PKG_NAME);
-                    }
-
-                    if (count % 5 == 0) {
-                        if (联网验证(dlwifi) != true) {
-                            连接wifi(dlwifi, 5000);
-                            app.launch(PKG_NAME);
-                            sleep(2000)
+                        log(clipurl);
+                        yuducontent = clipurl + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
+                        log("重复判断:" + yuducontent)
+                        if (sfcfyd(yuducontent) == false) {
+                            console.error("cfyd：" + yuducontent);
+                            let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                            if (rBtn != null && rBtn.parent() != null) {
+                                rBtn.parent().click();
+                            }
+                            返回v首页();
+                            lunSleep(random(800000, 1000000));
+                            return false;
                         }
-                    }
+                        if (fxurl(clipurl)) {
 
-                    if (等待未响应() > -1) {
-                        sleep(8000)
+                        } else {
+                            fenxiangshibai();
+                            let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                            if (rBtn != null && rBtn.parent() != null) {
+                                rBtn.parent().click();
+                            }
+                            返回v首页();
+                            lunSleep(random(800000, 1000000));
+                            return false;
+                        }
+                    } else {
+                        fenxiangshibai();
+                        console.error("标题识别失败");
+                        let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
+                        if (rBtn != null && rBtn.parent() != null) {
+                            rBtn.parent().click();
+                        }
+                        返回v首页();
+                        lunSleep(random(800000, 1000000));
+                        return false;
                     }
+                    sleep(10000);
+                }
 
-                    back();
-                    count++;
+                log("第" + count + "次");
+
+                //长距离测试
+                //sml_move(400, 1800, 800, 230, 2000);
+                //短距离测试
+                //sml_move(400, 1000, 800, 600, 2000);
+                log("滑动");
+                swapeToRead();
+                sleep(random(3000, 7000));
+                swapeToRead();
+                sleep(random(3000, 7000));
+                /*if (count == wifiCount) {
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                }
+                if (count == wifiCount + 1) {
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    连接wifi(dlwifi, 5000);
+                    app.launch(PKG_NAME);
+                }*/
+
+                if (count == 1) {
+                    swapeToRead();
+                    sleep(random(3000, 5000));
+                    swapeToRead();
+                    sleep(random(2000, 4000));
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    连接wifi(dlwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+
+                if (count % 5 == 0) {
+                    if (联网验证(dlwifi) != true) {
+                        连接wifi(dlwifi, 5000);
+                        app.launch(PKG_NAME);
+                        sleep(2000)
+                    }
+                }
+
+                if (等待未响应() > -1) {
+                    sleep(8000)
+                }
+                while(packageName("com.tencent.mm").className("android.view.View").text("不喜欢，换一篇阅读").findOnce()){
+                    sleep(2000)
                     if (count == 2) {
-                        let yuedubtn = packageName("com.tencent.mm").className("android.view.View").text("开始阅读").findOne(8000)
+                        let yuedubtn = packageName("com.tencent.mm").className("android.view.View").text("开始阅读").findOnce()
                         if (yuedubtn) {
+                            console.info(wcbtn)
                             sleep(3000)
                             clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
                         }
-                        let fhbtn = packageName("com.tencent.mm").className("android.view.View").text("请返回").findOne(8000)
+                        let fhbtn = packageName("com.tencent.mm").className("android.view.View").text("请返回").findOnce()
                         if (fhbtn) {
                             console.warn(fhbtn)
                             return false
                         }
                     } else if (count > 2) {
-                        let wcbtn = packageName("com.tencent.mm").className("android.view.View").text("已完成").findOne(8000)
+                        let wcbtn = packageName("com.tencent.mm").className("android.view.View").text("已完成").findOnce()
                         if (wcbtn) {
+                            console.info(wcbtn)
                             return true
                         }
-                        let fhbtn = packageName("com.tencent.mm").className("android.view.View").text("请返回").findOne(8000)
+                        let fhbtn = packageName("com.tencent.mm").className("android.view.View").text("请返回").findOnce()
                         if (fhbtn) {
                             console.warn(fhbtn)
                             return false
                         }
                     }
                 }
+                back();
+                count++;
+                
             }
         }
 
