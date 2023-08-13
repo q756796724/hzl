@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.2.9";
+        var versionNum = "聚合分享v9.3.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1566,7 +1566,7 @@ ui.ok.click(function () {
                 sleep(4000)
                 tsbtn.click();
             }
-            while(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()==null||isNaN(parseInt(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce().text().replace(/[^\d]/g, " ")))){
+            while (packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce() == null || isNaN(parseInt(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce().text().replace(/[^\d]/g, " ")))) {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                 if (stopPage != null) {
                     sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum);//出错请处理
@@ -1582,7 +1582,7 @@ ui.ok.click(function () {
                     sleep(2000)
                     let sybtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()
                     let sytext = sybtn.text()
-                    if (parseInt(sytext.replace(/[^\d]/g, " ")) > 800) {
+                    if (parseInt(sytext.replace(/[^\d]/g, " ")) > 300) {
                         clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
                         sleep(3000)
                         let jfzybtn = packageName("com.tencent.mm").text("积分转移").findOne(2000)
@@ -1608,9 +1608,13 @@ ui.ok.click(function () {
             if (kshdbtns.length > 0 && wztxt != null) {
                 if (kshdbtns[0].bounds().top - wztxt.bounds().bottom < 100) {
                     for (var i = 0; i < 15; i++) {
-                        if (packageName("com.tencent.mm").className("android.view.View").text("文章阅读推荐") == null) {
+                        if (packageName("com.tencent.mm").className("android.view.View").text("文章阅读推荐").findOnce() == null) {
                             log("离开了页面")
                             return;
+                        }
+                        let tsbtn = packageName("com.tencent.mm").className("android.view.View").text("我知道了").findOnce()
+                        if (tsbtn) {
+                            tsbtn.click();
                         }
                         if (联网验证(zwifi) != true) {
                             连接wifi(zwifi, 5000);
@@ -2961,7 +2965,7 @@ ui.ok.click(function () {
                                 sleep(5000)
                                 back();
                                 if (auto_tx == false) {
-                                    while(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()==null||isNaN(parseInt(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce().text().replace(/[^\d]/g, " ")))){
+                                    while (packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce() == null || isNaN(parseInt(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce().text().replace(/[^\d]/g, " ")))) {
                                         let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                                         if (stopPage != null) {
                                             sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum);//出错请处理
@@ -2976,7 +2980,7 @@ ui.ok.click(function () {
                                         sleep(2000)
                                         let sybtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()
                                         let sytext = sybtn.text()
-                                        if (parseInt(sytext.replace(/[^\d]/g, " ")) > 800) {
+                                        if (parseInt(sytext.replace(/[^\d]/g, " ")) > 300) {
                                             clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
                                             sleep(3000)
                                             let jfzybtn = packageName("com.tencent.mm").text("积分转移").findOne(2000)
