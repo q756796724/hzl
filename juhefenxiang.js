@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.1.9";
+        var versionNum = "聚合分享v9.2.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -2769,7 +2769,7 @@ ui.ok.click(function () {
                                     rBtn.parent().click();
                                 }
                                 返回v首页();
-                                lunSleep(random(800000, 1000000));
+                                lunSleep(random(1800000, 2000000));
                                 return false;
                             } else {
                                 clipurl = getClip();
@@ -2782,7 +2782,7 @@ ui.ok.click(function () {
                                 rBtn.parent().click();
                             }
                             返回v首页();
-                            lunSleep(random(800000, 1000000));
+                            lunSleep(random(1800000, 2000000));
                             return false;
                         }
                         log(clipurl);
@@ -2795,7 +2795,7 @@ ui.ok.click(function () {
                                 rBtn.parent().click();
                             }
                             返回v首页();
-                            lunSleep(random(800000, 1000000));
+                            lunSleep(random(1800000, 2000000));
                             return false;
                         }
                         if (fxurl(clipurl)) {
@@ -2807,7 +2807,7 @@ ui.ok.click(function () {
                                 rBtn.parent().click();
                             }
                             返回v首页();
-                            lunSleep(random(800000, 1000000));
+                            lunSleep(random(1800000, 2000000));
                             return false;
                         }
                     } else {
@@ -2818,7 +2818,7 @@ ui.ok.click(function () {
                             rBtn.parent().click();
                         }
                         返回v首页();
-                        lunSleep(random(800000, 1000000));
+                        lunSleep(random(1800000, 2000000));
                         return false;
                     }
                     sleep(10000);
