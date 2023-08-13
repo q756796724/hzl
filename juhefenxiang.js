@@ -1655,7 +1655,7 @@ ui.ok.click(function () {
                             }
                             let counttxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(\（0\/.*)/).findOnce();
                             var matches = counttxt.text().match(/\d+/g);
-                            if (parseInt(matches[1]) < 7) {
+                            if (parseInt(matches[1]) < 8) {
                                 fenxiangshibai();
                                 console.warn("文章过少:" + parseInt(matches[1]))
                                 返回v首页();
@@ -1671,7 +1671,7 @@ ui.ok.click(function () {
                                 } else {
                                     checkFlag = true
                                 }
-                            } else if (yuedu2flag == flase) {
+                            } else if (yuedu2flag == false) {
                                 返回v首页()
                                 sleep(3600000)
                             } else {
