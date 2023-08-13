@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.2.7";
+        var versionNum = "聚合分享v9.2.8";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1645,7 +1645,7 @@ ui.ok.click(function () {
                             }
                             let counttxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(\（0\/.*)/).findOnce();
                             var matches = counttxt.text().match(/\d+/g);
-                            if (parseInt(matches[1]) < 10) {
+                            if (parseInt(matches[1]) < 7) {
                                 fenxiangshibai();
                                 console.warn("文章过少:" + parseInt(matches[1]))
                                 返回v首页();
