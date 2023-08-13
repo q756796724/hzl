@@ -1659,7 +1659,7 @@ ui.ok.click(function () {
                                 fenxiangshibai();
                                 console.warn("文章过少:" + parseInt(matches[1]))
                                 返回v首页();
-                                lunSleep(random(1800000, 2000000));
+                                lunSleep(random(1800000, 3600000));
                                 return
                             }
                             clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
