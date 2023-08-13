@@ -2836,6 +2836,7 @@ ui.ok.click(function () {
                                 if (rBtn != null && rBtn.parent() != null) {
                                     rBtn.parent().click();
                                 }
+                                lunSleep(300000);
                                 返回v首页();
                                 lunSleep(random(1800000, 2000000));
                                 return false;
@@ -3254,6 +3255,7 @@ ui.ok.click(function () {
                                 if (rBtn != null && rBtn.parent() != null) {
                                     rBtn.parent().click();
                                 }
+                                lunSleep(300000);
                                 返回v首页();
                                 lunSleep(random(800000, 1000000));
                                 return false;
