@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.3.4";
+        var versionNum = "聚合分享v9.3.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1567,7 +1567,8 @@ ui.ok.click(function () {
                 tsbtn.click();
             }
             let xhcount = 0
-            while (packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce() == null || isNaN(parseInt(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce().text().replace(/[^\d]/g, " ")))) {
+            let ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()
+            while (ktjfbtn == null || isNaN(parseInt(ktjfbtn.text().replace(/[^\d]/g, " ")))) {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                 if (stopPage != null) {
                     sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum);//出错请处理
@@ -1580,6 +1581,7 @@ ui.ok.click(function () {
                     break;
                 }
                 toast("加载中")
+                ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()
             }
             if (auto_tx == false) {
                 let txbtn = packageName("com.tencent.mm").className("android.widget.TextView").text("提现").findOne(2000)
@@ -2962,7 +2964,7 @@ ui.ok.click(function () {
                 if (等待未响应() > -1) {
                     sleep(8000)
                 }
-                xhcount=0
+                xhcount = 0
                 while (packageName("com.tencent.mm").className("android.view.View").text("不喜欢，换一篇阅读").findOnce()) {
                     sleep(2000)
                     xhcount++
@@ -3000,7 +3002,9 @@ ui.ok.click(function () {
                                 back();
                                 if (auto_tx == false) {
                                     let xhcount = 0
-                                    while (packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce() == null || isNaN(parseInt(packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce().text().replace(/[^\d]/g, " ")))) {
+
+                                    let ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()
+                                    while (ktjfbtn == null || isNaN(parseInt(ktjfbtn.text().replace(/[^\d]/g, " ")))) {
 
                                         sleep(3000)
                                         xhcount++
@@ -3008,6 +3012,7 @@ ui.ok.click(function () {
                                             break;
                                         }
                                         toast("加载中")
+                                        ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()
                                     }
                                     let txbtn = packageName("com.tencent.mm").className("android.widget.TextView").text("提现").findOne(2000)
                                     if (txbtn) {
