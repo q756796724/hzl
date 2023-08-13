@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.2.2";
+        var versionNum = "聚合分享v9.2.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1561,8 +1561,9 @@ ui.ok.click(function () {
                 return
             }
             sleep(10000)
-            let tsbtn = packageName("com.tencent.mm").className("android.view.View").text("我知道了").findOnce()
+            let tsbtn = packageName("com.tencent.mm").className("android.view.View").text("我知道了").findOne(10000)
             if (tsbtn) {
+                sleep(4000)
                 tsbtn.click();
             }
             if (auto_tx == false) {
