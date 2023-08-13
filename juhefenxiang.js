@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.2.5";
+        var versionNum = "聚合分享v9.2.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1644,18 +1644,18 @@ ui.ok.click(function () {
                                     return
                                 }
                                 clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
-                                let yuedu2flag=yuedu2()
-                                if (yuedu2flag==true) {
+                                let yuedu2flag = yuedu2()
+                                if (yuedu2flag == true) {
                                     返回v首页()
                                     if (fanqieflag == false) {
                                         sleep(3600000)
                                     } else {
                                         checkFlag = true
                                     }
-                                }else if(yuedu2flag==flase){
+                                } else if (yuedu2flag == flase) {
                                     返回v首页()
                                     sleep(3600000)
-                                }else{
+                                } else {
                                     返回v首页()
                                 }
                             } else {
@@ -1671,10 +1671,26 @@ ui.ok.click(function () {
                         fenxiangshibai();
                     }
                 } else {
-                    let dengdaitxt = packageName("com.tencent.mm").textMatches(/(剩余.*)/).find()
-                    if (dengdaitxt.length > 0) {
-                        log(dengdaitxt[0])
-                        sleep(3600000)
+                    let sybtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(剩余.*)/).findOnce()
+                    if (sybtn) {
+                        let sytext = sybtn.text()
+                        log(sytext)
+                        if (sytext.indexOf("小时") > -1) {
+                            storage.put("meitianover", true);
+                            meitianover = true
+                            console.info("当天已完成了")
+                            lunSleep()
+                        } else if (sytext.indexOf("分钟") > -1) {
+                            if (fanqieflag) {
+                                lunSleep(600000)
+                            } else {
+                                lunSleep(parseInt(sytext.substring(0, sytext.indexOf("分钟")).replace(/[^\d]/g, " ")) * 60000)
+                            }
+                        }
+                    } else {
+                        console.warn("meitian进入开始阅读失败")
+                        返回v首页();
+                        return
                     }
                 }
             } else {
