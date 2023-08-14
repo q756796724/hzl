@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.3.6";
+        var versionNum = "聚合分享v9.3.7";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1689,7 +1689,7 @@ ui.ok.click(function () {
                             }
 
                             clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
-                            let yuedu2flag = yuedu2()
+                            let yuedu2flag = yuedu2(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
                             if (yuedu2flag == true) {
                                 返回v首页()
                                 if (fanqieflag == false) {
@@ -2811,7 +2811,7 @@ ui.ok.click(function () {
             }
             return fileCount;
         }
-        function yuedu2() {
+        function yuedu2(btnx,btny) {
             let count = 1;
             for (; ;) {
                 refreshStateInfo();
@@ -2914,11 +2914,16 @@ ui.ok.click(function () {
                 //sml_move(400, 1800, 800, 230, 2000);
                 //短距离测试
                 //sml_move(400, 1000, 800, 600, 2000);
-                log("滑动");
-                swapeToRead();
-                sleep(random(3000, 7000));
-                swapeToRead();
-                sleep(random(3000, 7000));
+                if (count != 2) {
+                    log("滑动");
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                    swapeToRead();
+                    sleep(random(3000, 7000));
+                }else{
+                    sleep(10000);
+                }
+                
                 /*if (count == wifiCount) {
                     swapeToRead();
                     sleep(random(3000, 7000));
@@ -2965,7 +2970,7 @@ ui.ok.click(function () {
                     sleep(8000)
                 }
                 xhcount = 0
-                while (packageName("com.tencent.mm").className("android.view.View").text("不喜欢，换一篇阅读").findOnce()) {
+                while (packageName("com.tencent.mm").className("android.view.View").text("不喜欢，换一篇阅读").findOnce()||packageName("com.tencent.mm").className("android.view.View").text("阅读文章奖励积分").findOnce()) {
                     sleep(2000)
                     xhcount++
                     if (xhcount > 20) {
@@ -2991,6 +2996,8 @@ ui.ok.click(function () {
                             addXianZhi(phoneNum.toString())
                             return false
                         }
+                        clickx(btnx, btny)
+                        sleep(9000)
                     } else if (count > 2) {
                         let wcbtn = packageName("com.tencent.mm").className("android.view.View").text("已完成").findOnce()
                         if (wcbtn) {
