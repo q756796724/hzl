@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.3.7";
+        var versionNum = "聚合分享v9.3.8";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -2811,7 +2811,7 @@ ui.ok.click(function () {
             }
             return fileCount;
         }
-        function yuedu2(btnx,btny) {
+        function yuedu2(btnx, btny) {
             let count = 1;
             for (; ;) {
                 refreshStateInfo();
@@ -2834,7 +2834,7 @@ ui.ok.click(function () {
                     let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                         let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
-                        if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*检测.*)/).findOnce()) {
+                        if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*检测.*)/).findOnce() != null || jcfbf.indexOf(js_name.desc()) > -1) {
                             jcfbf.push(js_name.desc())
                             let fxflag = fenxiangurl();
                             let clipurl = getClip();
@@ -2920,10 +2920,10 @@ ui.ok.click(function () {
                     sleep(random(3000, 7000));
                     swapeToRead();
                     sleep(random(3000, 7000));
-                }else{
+                } else {
                     sleep(10000);
                 }
-                
+
                 /*if (count == wifiCount) {
                     swapeToRead();
                     sleep(random(3000, 7000));
@@ -2970,7 +2970,7 @@ ui.ok.click(function () {
                     sleep(8000)
                 }
                 xhcount = 0
-                while (packageName("com.tencent.mm").className("android.view.View").text("不喜欢，换一篇阅读").findOnce()||packageName("com.tencent.mm").className("android.view.View").text("阅读文章奖励积分").findOnce()) {
+                while (packageName("com.tencent.mm").className("android.view.View").text("不喜欢，换一篇阅读").findOnce() || packageName("com.tencent.mm").className("android.view.View").text("阅读文章奖励积分").findOnce()) {
                     sleep(2000)
                     xhcount++
                     if (xhcount > 20) {
@@ -3639,6 +3639,12 @@ ui.ok.click(function () {
                     sleep(5000);
                 } else {
                     sleep(5000);
+                    let xcx1 = packageName("com.tencent.mm").text("最近使用的小程序").findOnce()
+                    let xcx2 = packageName("com.tencent.mm").text("搜索小程序").findOnce()
+                    if (xcx1 != null && xcx1.bounds().top > 0 || xcx2 != null && xcx2.bounds().top > 0) {
+                        swapeToRead();
+                        sleep(random(3000, 5000));
+                    }
                     return;
                 }
             }
@@ -4362,7 +4368,12 @@ ui.ok.click(function () {
                     连接wifi(zwifi, 5000);
                 }
                 打开v();
-
+                let xcx1=packageName("com.tencent.mm").text("最近使用的小程序").findOnce()
+                let xcx2=packageName("com.tencent.mm").text("搜索小程序").findOnce()
+                if(xcx1!=null&&xcx1.bounds().top>0||xcx2!=null&&xcx2.bounds().top>0){
+                    swapeToRead();
+                    sleep(random(3000, 5000));
+                }
 
                 refreshStateInfo();
                 /*if(topPackage != PKG_NAME){

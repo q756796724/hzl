@@ -18,6 +18,7 @@ if (storage.get("readdays") == undefined) {
     storage.put("readdays", 0);
 }
 readdays = storage.get("readdays");//阅读天数
+sxreaddays=1;//上限阅读天数
 ws = null
 
 
@@ -185,7 +186,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.3.5";
+        var versionNum = "接收v7.3.6";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -2398,7 +2399,7 @@ ui.ok.click(function () {
                         sleep(10000);
                     }
                     if (getjieshouNum() == phoneNum.toString()) {
-                        if (readdays >= 2) {
+                        if (readdays >= sxreaddays) {
                             sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期" + readdays + "天");//切换
                             while (1) {
                                 addXianZhi()
