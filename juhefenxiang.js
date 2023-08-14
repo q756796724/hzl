@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.3.5";
+        var versionNum = "聚合分享v9.3.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -2983,7 +2983,7 @@ ui.ok.click(function () {
                             console.info("检测通过")
                             sleep(3000)
                             clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
-                            break
+                            sleep(9000)
                         }
                         let fhbtn = packageName("com.tencent.mm").className("android.view.View").text("请返回").findOnce()
                         if (fhbtn) {
@@ -3043,11 +3043,13 @@ ui.ok.click(function () {
                         }
                         let fhbtn = packageName("com.tencent.mm").className("android.view.View").text("请返回").findOnce()
                         if (fhbtn) {
+                            sendTx("http://miaotixing.com/trigger?id=tn9efbL&text=num:" + phoneNum + "--readNum:" + count + "--中途请返回");
                             console.warn("中途请返回")
                             return false
                         }
                     }
                 }
+                sleep(1000)
                 back();
                 count++;
             }
