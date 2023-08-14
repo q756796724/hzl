@@ -2419,7 +2419,7 @@ ui.ok.click(function () {
                 if (配置["date"] != new Date().toLocaleDateString()) {
                     storage.put("zhengtian", false);
                     zhengtian = false
-                    lunSleep(random(600000, 3600000));
+                    sleep(random(10000, 60000));
                     if (联网验证(zwifi) != true) {
                         连接wifi(zwifi, 5000);
                         sleep(10000);
