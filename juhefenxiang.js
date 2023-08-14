@@ -213,7 +213,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.3.8";
+        var versionNum = "聚合分享v9.3.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1615,6 +1615,11 @@ ui.ok.click(function () {
             if (kshdbtns.length > 0 && wztxt != null) {
                 if (kshdbtns[0].bounds().top - wztxt.bounds().bottom < 100) {
                     for (var i = 0; i < 150; i++) {
+                        if (!zhengtian) {
+                            if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 50) {
+                                return;
+                            }
+                        }
                         if (packageName("com.tencent.mm").className("android.view.View").text("文章阅读推荐").findOnce() == null) {
                             log("离开了页面")
                             return;

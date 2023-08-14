@@ -18,7 +18,7 @@ if (storage.get("readdays") == undefined) {
     storage.put("readdays", 0);
 }
 readdays = storage.get("readdays");//阅读天数
-sxreaddays=1;//上限阅读天数
+sxreaddays = 1;//上限阅读天数
 ws = null
 
 
@@ -186,7 +186,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.3.6";
+        var versionNum = "接收v7.3.7";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -679,7 +679,7 @@ ui.ok.click(function () {
                         if (text("取消置顶").findOne(3000) != null) {
                             back();
                             sleep(2000)
-                            click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
+                            click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
                             //wBtns[i].click();
                             sleep(random(1500, 2000))
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) != null) {
@@ -706,7 +706,7 @@ ui.ok.click(function () {
                         if (text("取消置顶").findOne(3000) != null) {
                             back();
                             sleep(2000)
-                            click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
+                            click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
                             wBtns[i].click();
                             sleep(random(1500, 2000))
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(大家庭.*)/).findOne(3000) != null) {
@@ -1002,7 +1002,7 @@ ui.ok.click(function () {
                         if (text("取消置顶").findOne(3000) != null) {
                             back();
                             sleep(2000)
-                            click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
+                            click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
                             //wBtns[i].click();
                             sleep(random(1500, 2000))
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
@@ -1033,7 +1033,7 @@ ui.ok.click(function () {
                         if (text("取消置顶").findOne(3000) != null) {
                             back();
                             sleep(2000)
-                            click(wBtns[i].bounds().centerX()+random(-5, 5), wBtns[i].bounds().centerY())
+                            click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
                             //wBtns[i].click();
                             sleep(random(1500, 2000))
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
@@ -1257,7 +1257,7 @@ ui.ok.click(function () {
                     }
                 }
             } else {
-                try{
+                try {
                     for (let i = 0; i < 7; i++) {
                         kz();
                         var img = captureScreen();
@@ -1275,7 +1275,7 @@ ui.ok.click(function () {
                             break;
                         }
                     }
-                }catch(e){
+                } catch (e) {
                     for (let i = 0; i < 7; i++) {
                         kz();
                         swapeToRead();
@@ -2046,6 +2046,32 @@ ui.ok.click(function () {
 
             }
         }
+        //是否在接收列表
+        function isInJieshou(phoneNum) {
+            let temp = null;
+            let repData = 0;;
+            try {
+                temp = http.post("http://175.178.60.114:8081/fanqie/isInJieshou?phoneNum=" + phoneNum, {});
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    repData = repState;
+                } else {
+                    throw Error("isInJieshou失败" + temp)
+                }
+            } catch (err) {
+                console.error("isInJieshou报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                repData = isInJieshou(type, phoneNum);
+            }
+            return repData
+
+        }
 
         //添加到接收列表
         function addJieshouList(phoneNum) {
@@ -2392,7 +2418,7 @@ ui.ok.click(function () {
                 配置 = 读取配置(settingPath);
                 if (配置["date"] != new Date().toLocaleDateString()) {
                     storage.put("zhengtian", false);
-                    zhengtian=false
+                    zhengtian = false
                     lunSleep(random(600000, 3600000));
                     if (联网验证(zwifi) != true) {
                         连接wifi(zwifi, 5000);
@@ -2412,10 +2438,12 @@ ui.ok.click(function () {
                             }
 
                             if (qiehuanjiaoben) {
-                                //转yuedu
-                                toolsStorage.put("toolsSelectIdx", 2);
-                                engines.execScriptFile(toolsStorage.get("脚本路径") + "juhefenxiang.js");
-                                exit();
+                                if (isInJieshou(phoneNum.toString()) == 0) {
+                                    //转yuedu
+                                    toolsStorage.put("toolsSelectIdx", 2);
+                                    engines.execScriptFile(toolsStorage.get("脚本路径") + "juhefenxiang.js");
+                                    exit();
+                                }
                             } else {
                                 //回滚回接收
                                 rollbackJieshou(phoneNum.toString());
