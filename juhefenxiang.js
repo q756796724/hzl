@@ -1567,7 +1567,7 @@ ui.ok.click(function () {
                 tsbtn.click();
             }
             let xhcount = 0
-            let ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()
+            let ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可用积分.*)/).findOnce()
             while (ktjfbtn == null || isNaN(parseInt(ktjfbtn.text().replace(/[^\d]/g, " ")))) {
                 let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                 if (stopPage != null) {
@@ -1581,13 +1581,13 @@ ui.ok.click(function () {
                     break;
                 }
                 toast("加载中")
-                ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()
+                ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可用积分.*)/).findOnce()
             }
             if (auto_tx == false) {
                 let txbtn = packageName("com.tencent.mm").className("android.widget.TextView").text("提现").findOne(2000)
                 if (txbtn) {
                     sleep(2000)
-                    let sybtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()
+                    let sybtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可用积分.*)/).findOnce()
                     if(sybtn){
                         let sytext = sybtn.text()
                         if (parseInt(sytext.replace(/[^\d]/g, " ")) > 300) {
@@ -3017,7 +3017,7 @@ ui.ok.click(function () {
                                 if (auto_tx == false) {
                                     let xhcount = 0
 
-                                    let ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()
+                                    let ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可用积分.*)/).findOnce()
                                     while (ktjfbtn == null || isNaN(parseInt(ktjfbtn.text().replace(/[^\d]/g, " ")))) {
 
                                         sleep(3000)
@@ -3026,12 +3026,12 @@ ui.ok.click(function () {
                                             break;
                                         }
                                         toast("加载中")
-                                        ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()
+                                        ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可用积分.*)/).findOnce()
                                     }
                                     let txbtn = packageName("com.tencent.mm").className("android.widget.TextView").text("提现").findOne(2000)
                                     if (txbtn) {
                                         sleep(2000)
-                                        let sybtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可提积分.*)/).findOnce()
+                                        let sybtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可用积分.*)/).findOnce()
                                         if(sybtn){
                                             let sytext = sybtn.text()
                                             if (parseInt(sytext.replace(/[^\d]/g, " ")) > 300) {
