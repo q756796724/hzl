@@ -26,7 +26,6 @@ xianzhiFlag = false;
 readErrCount = storage.get("readErrCount", 0);//读不上次数
 var lunCount = 0
 ws = null
-var jcfbf = [];//检测发布方
 
 /**
  * 日期相减获取天数（用于公式计算）
@@ -201,7 +200,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v9.1.3";
+        var versionNum = "番茄分享v9.2.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -836,6 +835,68 @@ ui.ok.click(function () {
             return repData
 
         }
+        //是否检测方
+        function isInJiancegongzhonghao(txt) {
+            txt = encodeURIComponent(txt)
+            let temp = null;
+            let repData = true;
+            try {
+                temp = http.post("http://175.178.60.114:8081/fanqie/isInJiancegongzhonghao?txt=" + txt, {});
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            } catch (err) {
+                console.error("isInJiancegongzhonghao报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                repData = isInJiancegongzhonghao(txt);
+
+            }
+            return repData
+
+        }
+
+        //添加检测方
+        function addJiancegongzhonghao(txt) {
+            txt = encodeURIComponent(txt)
+            let temp = null;
+            let repData = true;
+            try {
+                temp = http.post("http://175.178.60.114:8081/fanqie/addJiancegongzhonghao?txt=" + txt, {});
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                        return true;
+                    }  else {
+                        throw Error("addJiancegongzhonghao获取数据失败" + temp)
+                    }
+                }
+            } catch (err) {
+                console.error("addJiancegongzhonghao报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                repData = addJiancegongzhonghao(txt);
+
+            }
+            return repData
+
+        }
+
         //增加接收人数
         /*function addjieshouCount(txt) {
             let temp = null;
@@ -2607,7 +2668,7 @@ ui.ok.click(function () {
                         let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
                         if (lunCount == 1 && fanxiangFlag == true) {
                             log("重复判断:" + yuducontent)
-                            jcfbf.push(js_name.desc())
+                            addJiancegongzhonghao(js_name.desc())
                             if (sfcfyd(yuducontent) == false) {
                                 console.error("cfyd：" + yuducontent);
                                 sleep(300000);
@@ -2672,7 +2733,7 @@ ui.ok.click(function () {
                                 lunSleep(random(800000, 1000000));
                                 return false;
                             }
-                        } else if (jcfbf.indexOf(js_name.desc()) > -1) {
+                        } else if (isInJiancegongzhonghao(js_name.desc())==true) {
                             console.error("可能要分享：" + yuducontent);
                             let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                             if (rBtn != null && rBtn.parent() != null) {
@@ -3433,6 +3494,12 @@ ui.ok.click(function () {
             exit();
         }
         addYuedu(phoneNum.toString());
+        if (isInJieshou(phoneNum.toString()) == 1) {
+            //转jieshou
+            toolsStorage.put("toolsSelectIdx", 1);
+            engines.execScriptFile(toolsStorage.get("脚本路径") + "jieshouwenzhang.js");
+            exit();
+        }
         var content = getdaili();//"要设置的剪贴板内容";
         setClip(content);
         log(getClip());
@@ -3508,20 +3575,20 @@ ui.ok.click(function () {
                 if (配置["date"] != new Date().toLocaleDateString()) {
                     storage.put("zhengtian", false);
                     zhengtian=false
-                    addYuedu(phoneNum.toString());
                     if (isInJieshou(phoneNum.toString()) == 1) {
                         //转jieshou
                         toolsStorage.put("toolsSelectIdx", 1);
                         engines.execScriptFile(toolsStorage.get("脚本路径") + "jieshouwenzhang.js");
                         exit();
                     }
+                    
+                    addYuedu(phoneNum.toString());
 
                     readErrCount = 0
                     storage.put("readErrCount", readErrCount);
 
                     fanxiangFlag = true;
                     if (random(0, 7) == 5) {
-                        jcfbf = []
                         lunSleep(random(1800000, 7200000));
                         关闭应用(PKG_NAME);
                         sleep(10000)

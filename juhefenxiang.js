@@ -13,6 +13,8 @@ zhengtian = storage.get("zhengtian", false);
 fanqieflag = storage.get("fanqieflag", false);
 meitianflag = storage.get("meitianflag", true);
 meitianover = storage.get("meitianover", false);//当天是否完成
+xiaoyueyueflag = storage.get("xiaoyueyueflag", false);
+zfbtx = storage.get("zfbtx", true);
 
 
 readurl = storage.get("readurl", "");
@@ -30,7 +32,6 @@ xianzhiFlag = false;
 readErrCount = storage.get("readErrCount", 0);//读不上次数
 var lunCount = 0
 ws = null
-var jcfbf = [];//检测发布方
 
 /**
  * 日期相减获取天数（用于公式计算）
@@ -124,7 +125,10 @@ ui.layout(
         <input id="readurl" text="{{readurl}}" />
         <text textSize="16sp" textColor="black" text="编号" />
         <input id="phoneNum" text="{{phoneNum}}" />
-        <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
+        <horizontal>
+            <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
+            <checkbox text="zfbtx" id="zfbtx" checked="{{zfbtx}}" textSize="18sp" />\
+        </horizontal>
         <horizontal>
             <checkbox text="群进入" id="qun_into" checked="{{qun_into}}" textSize="18sp" />\
             <checkbox text="是否切换" id="qiehuanjiaoben" checked="{{qiehuanjiaoben}}" textSize="18sp" />\
@@ -136,6 +140,7 @@ ui.layout(
         <horizontal>
             <checkbox text="番茄" id="fanqieflag" checked="{{fanqieflag}}" textSize="18sp" />\
             <checkbox text="美添" id="meitianflag" checked="{{meitianflag}}" textSize="18sp" />\
+            <checkbox text="小阅阅" id="xiaoyueyueflag" checked="{{xiaoyueyueflag}}" textSize="18sp" />\
         </horizontal>
         <button id="ok" text="开始运行" />
     </vertical>
@@ -213,7 +218,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.4.1";
+        var versionNum = "聚合分享v9.5.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -232,12 +237,17 @@ ui.ok.click(function () {
         log("phoneNum:" + phoneNum);
         auto_tx = ui.auto_tx.isChecked();
         log("tx:" + auto_tx);
+        zfbtx = ui.zfbtx.isChecked();
+        log("zfbtx:" + zfbtx);
+
         qun_into = ui.qun_into.isChecked();
         qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
         removePhoneNum = ui.removePhoneNum.isChecked();
         zhengtian = ui.zhengtian.isChecked();
         fanqieflag = ui.fanqieflag.isChecked();
         meitianflag = ui.meitianflag.isChecked();
+        xiaoyueyueflag = ui.xiaoyueyueflag.isChecked();
+
 
 
 
@@ -246,12 +256,15 @@ ui.ok.click(function () {
         storage.put("zwifi", zwifi);
         storage.put("dlwifi", dlwifi);
         storage.put("auto_tx", ui.auto_tx.isChecked());
+        storage.put("zfbtx", ui.zfbtx.isChecked());
         storage.put("qun_into", ui.qun_into.isChecked());
         storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
         storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
         storage.put("zhengtian", ui.zhengtian.isChecked());
         storage.put("fanqieflag", ui.fanqieflag.isChecked());
         storage.put("meitianflag", ui.meitianflag.isChecked());
+        storage.put("xiaoyueyueflag", ui.xiaoyueyueflag.isChecked());
+
         storage.put("readurl", ui.readurl.text());
         storage.put("phoneNum", ui.phoneNum.text());
 
@@ -847,6 +860,66 @@ ui.ok.click(function () {
                 }
                 sleep(8000)
                 repData = sfcfyd(txt);
+
+            }
+            return repData
+
+        }
+        //是否检测方
+        function isInJiancegongzhonghao(txt) {
+            txt = encodeURIComponent(txt)
+            let temp = null;
+            let repData = true;
+            try {
+                temp = http.post("http://175.178.60.114:8081/fanqie/isInJiancegongzhonghao?txt=" + txt, {});
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            } catch (err) {
+                console.error("isInJiancegongzhonghao报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                repData = isInJiancegongzhonghao(txt);
+
+            }
+            return repData
+
+        }
+        //添加检测方
+        function addJiancegongzhonghao(txt) {
+            txt = encodeURIComponent(txt)
+            let temp = null;
+            let repData = true;
+            try {
+                temp = http.post("http://175.178.60.114:8081/fanqie/addJiancegongzhonghao?txt=" + txt, {});
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                        return true;
+                    } else {
+                        throw Error("addJiancegongzhonghao获取数据失败" + temp)
+                    }
+                }
+            } catch (err) {
+                console.error("addJiancegongzhonghao报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                repData = addJiancegongzhonghao(txt);
 
             }
             return repData
@@ -1588,7 +1661,7 @@ ui.ok.click(function () {
                 if (txbtn) {
                     sleep(2000)
                     let sybtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可用积分.*)/).findOnce()
-                    if(sybtn){
+                    if (sybtn) {
                         let sytext = sybtn.text()
                         if (parseInt(sytext.replace(/[^\d]/g, " ")) > 300) {
                             clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
@@ -2841,8 +2914,9 @@ ui.ok.click(function () {
                     let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                         let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
-                        if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*检测.*)/).findOnce() != null || jcfbf.indexOf(js_name.desc()) > -1) {
-                            jcfbf.push(js_name.desc())
+
+                        if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*检测.*)/).findOnce() != null || isInJiancegongzhonghao(js_name.desc()) == true) {
+                            addJiancegongzhonghao(js_name.desc())
                             let fxflag = fenxiangurl();
                             let clipurl = getClip();
                             if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
@@ -3032,7 +3106,7 @@ ui.ok.click(function () {
                                     if (txbtn) {
                                         sleep(2000)
                                         let sybtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可用积分.*)/).findOnce()
-                                        if(sybtn){
+                                        if (sybtn) {
                                             let sytext = sybtn.text()
                                             if (parseInt(sytext.replace(/[^\d]/g, " ")) > 300) {
                                                 clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
@@ -3327,7 +3401,7 @@ ui.ok.click(function () {
                         let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
                         if (lunCount == 1 && fanxiangFlag == true) {
                             log("重复判断:" + yuducontent)
-                            jcfbf.push(js_name.desc())
+                            addJiancegongzhonghao(js_name.desc())
                             if (sfcfyd(yuducontent) == false) {
                                 console.error("cfyd：" + yuducontent);
                                 sleep(300000);
@@ -3392,7 +3466,7 @@ ui.ok.click(function () {
                                 lunSleep(random(800000, 1000000));
                                 return false;
                             }
-                        } else if (jcfbf.indexOf(js_name.desc()) > -1) {
+                        } else if (isInJiancegongzhonghao(js_name.desc()) == true) {
                             console.error("可能要分享：" + yuducontent);
                             let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                             if (rBtn != null && rBtn.parent() != null) {
@@ -4164,6 +4238,12 @@ ui.ok.click(function () {
             exit();
         }
         addYuedu(phoneNum.toString());
+        if (isInJieshou(phoneNum.toString()) == 1) {
+            //转jieshou
+            toolsStorage.put("toolsSelectIdx", 1);
+            engines.execScriptFile(toolsStorage.get("脚本路径") + "jieshouwenzhang.js");
+            exit();
+        }
         var content = getdaili();//"要设置的剪贴板内容";
         setClip(content);
         log(getClip());
@@ -4241,7 +4321,6 @@ ui.ok.click(function () {
                     meitianover = false
                     storage.put("zhengtian", false);
                     zhengtian = false
-                    addYuedu(phoneNum.toString());
                     if (isInJieshou(phoneNum.toString()) == 1) {
                         //转jieshou
                         toolsStorage.put("toolsSelectIdx", 1);
@@ -4249,12 +4328,13 @@ ui.ok.click(function () {
                         exit();
                     }
 
+                    addYuedu(phoneNum.toString());
+
                     readErrCount = 0
                     storage.put("readErrCount", readErrCount);
 
                     fanxiangFlag = true;
                     if (random(0, 7) == 5) {
-                        jcfbf = []
                         lunSleep(random(1800000, 7200000));
                         关闭应用(PKG_NAME);
                         sleep(10000)
@@ -4377,9 +4457,9 @@ ui.ok.click(function () {
                     连接wifi(zwifi, 5000);
                 }
                 打开v();
-                let xcx1=packageName("com.tencent.mm").text("最近使用的小程序").findOnce()
-                let xcx2=packageName("com.tencent.mm").text("搜索小程序").findOnce()
-                if(xcx1!=null&&xcx1.bounds().top>0||xcx2!=null&&xcx2.bounds().top>0){
+                let xcx1 = packageName("com.tencent.mm").text("最近使用的小程序").findOnce()
+                let xcx2 = packageName("com.tencent.mm").text("搜索小程序").findOnce()
+                if (xcx1 != null && xcx1.bounds().top > 0 || xcx2 != null && xcx2.bounds().top > 0) {
                     swapeToRead();
                     sleep(random(3000, 5000));
                 }
