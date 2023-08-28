@@ -4623,7 +4623,6 @@ ui.ok.click(function () {
                 }
             }*/
             toastLog("版本号:" + versionNum);
-            log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                 配置 = 读取配置(settingPath);
                 if (i % 30 == 0) {
@@ -5485,7 +5484,7 @@ ui.ok.click(function () {
                     home();
                     log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "上限,休息中");
                     log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
-                    sleepLongTime(random(3600000, 5000000));
+                    lunSleep(random(3600000, 5000000));
                     continue;
                 }
 
@@ -5495,7 +5494,7 @@ ui.ok.click(function () {
 
                         } else {
                             log(new Date().toLocaleString() + "-" + "----------------------------------------------" + "休息中");
-                            sleepLongTime(random(1800000, 7200000));
+                            lunSleep(random(1800000, 7200000));
                             continue;
                         }
                     }
