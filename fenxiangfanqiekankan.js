@@ -200,7 +200,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v9.2.1";
+        var versionNum = "番茄分享v9.2.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -3707,7 +3707,15 @@ ui.ok.click(function () {
                 }
                 打开v();
 
-
+                let xcx1 = packageName("com.tencent.mm").text("最近使用的小程序").findOnce()
+                let xcx2 = packageName("com.tencent.mm").text("搜索小程序").findOnce()
+                if (xcx1 != null && xcx1.bounds().top > 0 || xcx2 != null && xcx2.bounds().top > 0) {
+                    if (packageName("com.tencent.mm").id('a4k').find().length == 1) {
+                        console.log("小程序")
+                        swapeToRead();
+                        sleep(random(3000, 5000));
+                    }
+                }
                 refreshStateInfo();
                 /*if(topPackage != PKG_NAME){
                     continue;

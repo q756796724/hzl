@@ -3255,8 +3255,9 @@ ui.ok.click(function () {
             home();
             if (sleepTime == undefined) {
                 sleepTime = random(4000000, 8400000);
-            }
-            log(new Date().toLocaleString() + "-" + "-----------" + "当天已轮回" + (lunCount - 1).toString() + "次,休息" + sleepTime / 1000 / 60 + "分钟");
+            } 
+
+            log(new Date().toLocaleString() + "-" + "-----------" + "番茄当天已轮回" + (lunCount - 1).toString() + "次完成篇数" + readNum + ",小阅阅完成篇数" + xiaoyueyueReadNum + ",meitianover=" + meitianover + ",休息" + sleepTime / 1000 / 60 + "分钟");
             sleepLongTime(sleepTime);
         }
         function 清空文件夹(path) {
@@ -3576,7 +3577,7 @@ ui.ok.click(function () {
                         }
                     }
                 }
-                let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后再来阅读)/).findOne(3000)
+                let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后再来阅读)/).findOnce()
                 if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(当前阅读被限制.*)/).findOnce()) {
                     if (xiaoyueyuecheckFlag) {
                         addXianZhi(phoneNum.toString())
@@ -3631,7 +3632,6 @@ ui.ok.click(function () {
                     }
                     loadcount++
                     if (loadcount == 10) {
-                        log(new Date().toLocaleString() + "-----------" + "小阅阅超时back");
                         back()
                     }
                 }
@@ -4472,9 +4472,12 @@ ui.ok.click(function () {
                     let xcx1 = packageName("com.tencent.mm").text("最近使用的小程序").findOnce()
                     let xcx2 = packageName("com.tencent.mm").text("搜索小程序").findOnce()
                     if (xcx1 != null && xcx1.bounds().top > 0 || xcx2 != null && xcx2.bounds().top > 0) {
-                        console.log("小程序")
-                        swapeToRead();
-                        sleep(random(3000, 5000));
+                        if (packageName("com.tencent.mm").id('a4k').find().length == 1) {
+                            console.log("小程序")
+                            swapeToRead();
+                            sleep(random(3000, 5000));
+                        }
+
                     }
                     return;
                 }
@@ -5223,7 +5226,15 @@ ui.ok.click(function () {
                 }
                 打开v();
 
-                返回v首页();
+                let xcx1 = packageName("com.tencent.mm").text("最近使用的小程序").findOnce()
+                let xcx2 = packageName("com.tencent.mm").text("搜索小程序").findOnce()
+                if (xcx1 != null && xcx1.bounds().top > 0 || xcx2 != null && xcx2.bounds().top > 0) {
+                    if (packageName("com.tencent.mm").id('a4k').find().length == 1) {
+                        console.log("小程序")
+                        swapeToRead();
+                        sleep(random(3000, 5000));
+                    }
+                }
 
                 refreshStateInfo();
                 /*if(topPackage != PKG_NAME){
