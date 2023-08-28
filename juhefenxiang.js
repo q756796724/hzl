@@ -225,7 +225,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.5.5";//美添多次进入失败结束进程未修复
+        var versionNum = "聚合分享v9.5.6";//美添多次进入失败结束进程未修复
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -4455,6 +4455,7 @@ ui.ok.click(function () {
                     let xcx1 = packageName("com.tencent.mm").text("最近使用的小程序").findOnce()
                     let xcx2 = packageName("com.tencent.mm").text("搜索小程序").findOnce()
                     if (xcx1 != null && xcx1.bounds().top > 0 || xcx2 != null && xcx2.bounds().top > 0) {
+                        console.log("小程序")
                         swapeToRead();
                         sleep(random(3000, 5000));
                     }
@@ -5204,13 +5205,9 @@ ui.ok.click(function () {
                     连接wifi(zwifi, 5000);
                 }
                 打开v();
-                let xcx1 = packageName("com.tencent.mm").text("最近使用的小程序").findOnce()
-                let xcx2 = packageName("com.tencent.mm").text("搜索小程序").findOnce()
-                if (xcx1 != null && xcx1.bounds().top > 0 || xcx2 != null && xcx2.bounds().top > 0) {
-                    swapeToRead();
-                    sleep(random(3000, 5000));
-                }
-
+                
+                返回v首页();
+                
                 refreshStateInfo();
                 /*if(topPackage != PKG_NAME){
                     continue;
