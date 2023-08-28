@@ -1401,11 +1401,6 @@ ui.ok.click(function () {
                     wBtn = wBtn.parent();
                 }
             }*/
-            if (联网验证(zwifi) != true) {
-                连接wifi(zwifi, 5000);
-                app.launch(PKG_NAME);
-                sleep(10000)
-            }
             if (readNum > 170 && auto_tx == false) {
                 if (readNum >= 180) {
                     lunCount = 20

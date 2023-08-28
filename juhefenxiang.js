@@ -15,6 +15,9 @@ meitianflag = storage.get("meitianflag", true);
 meitianover = storage.get("meitianover", false);//当天是否完成
 xiaoyueyueflag = storage.get("xiaoyueyueflag", false);
 zfbtx = storage.get("zfbtx", true);
+xiaoyueyueover = storage.get("xiaoyueyueover", false);//当天是否完成
+xiaoyueyueReadNum = storage.get("xiaoyueyueReadNum", 0);//小阅阅当天阅读次数
+
 
 
 readurl = storage.get("readurl", "");
@@ -218,7 +221,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.5.0";
+        var versionNum = "聚合分享v9.5.1";//美添多次进入失败结束进程未修复
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -360,9 +363,6 @@ ui.ok.click(function () {
                 }
             }
             wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
-            if (wBtns.length == 0) {
-                wBtns = packageName("com.tencent.mm").id('bg1').find();//8.0.1
-            }
             if (wBtns.length > 0) {
                 sleep(random(8000, 10000))
 
@@ -623,6 +623,37 @@ ui.ok.click(function () {
                 }
                 sleep(8000)
                 repData = getjieshouNum();
+
+            }
+            return repData
+
+        }
+
+        //获取
+        function getyunshaomaurl() {
+            let temp = null;
+            let repData = "0";
+            try {
+                temp = http.post("http://175.178.60.114:8081/fanqie/getyunshaomaurl", {});
+                if (temp && temp.statusCode == 200) {
+                    temp = temp.body.string();
+                    let rep = JSON.parse(temp);
+                    let repState = rep["state"];
+                    if (repState == 1) {
+                        let repData = rep["data"];
+                        return repData
+                    } else {
+                        throw Error("getyunshaomaurl获取数据失败" + temp)
+                    }
+                }
+            } catch (err) {
+                console.error("getyunshaomaurl报错,原因:" + err);
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(8000)
+                repData = getyunshaomaurl();
 
             }
             return repData
@@ -1417,17 +1448,447 @@ ui.ok.click(function () {
                 sleep(30000);
             }
         }
+        function onMainPageXiaoyueyue() {
+            log("xiaoyueyue进入v成功");
+            if (xiaoyueyueover) {
+                log(new Date().toLocaleString() + "-" + "-----------" + xiaoyueyueReadNum + "次");
+                返回v首页();
+                sleep(1000);
+                home();
+                if (fanqieflag == false && meitianflag == false) {
+                    lunSleep();
+                }
+                return
+            }
+            if (!qun_into) {
+                let wBtns = className("android.widget.TextView").text("微信").find();
+                for (let i = 0; i < wBtns.length; i++) {
+                    if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce() != null && packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
+                        log("进入聊天列表了");
+                        break;
+                    };
+                    let wBtn = wBtns[i];
+                    for (let i = 0; i < 4; i++) {
+                        if (wBtn != null && wBtn.clickable()) {
+                            wBtn.click();
+                            sleep(5000);
+                            if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce() != null && packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
+                                break;
+                            };
+                        } else if (wBtn != null && wBtn.parent() != null) {
+                            wBtn = wBtn.parent();
+                        }
+                    }
+                }
+
+                wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
+                if (wBtns.length > 1) {
+                    sleep(random(8000, 10000))
+                    if (random(0, 1) == 0) {
+                        for (let i = 2; i > -1; i--) {
+                            if (i > wBtns.length - 1) {
+                                continue
+                            }
+                            longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
+                            sleep(random(2000, 4000));
+                            if (text("取消置顶").findOne(3000) != null) {
+                                retryCount = 0;
+                                back();
+                                sleep(2000)
+                                click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
+                                sleep(random(1500, 2000))
+                                if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                                    log("进入了文件传输助手");
+                                    break
+                                } else {
+                                    sleep(random(3000, 12000))
+                                    back();
+                                    sleep(3000)
+                                    continue;
+                                }
+                            } else {
+                                if (i == 0) {
+                                    console.error("置顶not found 文件传输助手")
+                                    if (retryCount > 3) {
+                                        retryCount = 0;
+                                        关闭应用(PKG_NAME);
+                                    } else {
+                                        retryCount++
+                                    }
+                                    return
+                                }
+                                continue;
+                            }
+                        }
+                    } else {
+                        for (let i = 0; i < wBtns.length; i++) {
+                            longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
+                            sleep(random(2000, 4000));
+                            if (text("取消置顶").findOne(3000) != null) {
+                                retryCount = 0;
+                                back();
+                                sleep(2000)
+                                click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
+                                sleep(random(1500, 2000))
+                                if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                                    log("进入了文件传输助手");
+                                    break
+                                } else {
+                                    sleep(random(3000, 12000))
+                                    back();
+                                    sleep(3000)
+                                    continue;
+                                }
+                            } else {
+                                console.error("置顶not found 文件传输助手")
+                                if (retryCount > 3) {
+                                    retryCount = 0;
+                                    关闭应用(PKG_NAME);
+                                } else {
+                                    retryCount++
+                                }
+                                return
+                            }
+                        }
+                    }
+
+
+                    if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000) != null) {
+                        let yunshaomaurl = getyunshaomaurl();
+                        if (yunshaomaurl == "休息") {
+                            log(new Date().toLocaleString() + "-" + "-----yunshaomaurl=休息------" + xiaoyueyueReadNum + "次");
+                            返回v首页();
+                            sleep(1000);
+                            home();
+                            if (fanqieflag == false && meitianflag == false) {
+                                lunSleep();
+                            }
+                            return
+                        }
+                        let news = packageName("com.tencent.mm").className("android.widget.ListView").findOne(5000);
+                        if (news != null && news.children() != null) {
+                            let newsList = news.children();
+                            if (newsList.length > 0) {
+                                log("newsListLength=" + newsList.length)
+                                for (let i = newsList.length - 1; i > -1; i--) {
+                                    let latestNews = newsList[i];
+                                    if (latestNews.className() == "android.widget.RelativeLayout") {
+                                        try {
+                                            latestNews.children().forEach(function (child) {
+                                                if (child.className() == "android.widget.TextView") {
+                                                    if (child.text().indexOf(yunshaomaurl) > -1 && child.clickable()) {//随机点其中一个
+                                                        log(child.text())
+                                                        retryCount = 0;
+                                                        for (let i = 0; i < 10; i++) {
+                                                            log("尝试小阅阅" + (i + 1))
+                                                            click(child.bounds().centerX() + random(-100, -105), child.bounds().centerY() + random(-10, 10));
+                                                            sleep(3000)
+                                                            click("继续访问")
+                                                            sleep(3000)
+                                                            let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
+                                                            if (ntext != null) {
+                                                                click("允许");
+                                                                sleep(3000);
+                                                            }
+                                                            sleep(random(1000, 2000))
+                                                            if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
+                                                                log("点击小阅阅成功")
+                                                                break
+                                                            }
+                                                        }
+                                                        throw Error()
+                                                    }
+                                                }
+                                            })
+                                        } catch (e) {
+                                            if (e != "Error") {
+                                                console.error(e)
+                                            }
+                                            break
+                                        }
+                                    } else if (i == 0) {
+                                        console.error("not found RelativeLayout")
+                                        retryCount = 0;
+                                        关闭应用(PKG_NAME);
+                                        return
+                                    }
+                                }
+
+                            }
+                        }
+                        let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000);
+                        if (wBtn != null) {
+                            let p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(5000);
+                            if (p) {
+                                p.setText(yunshaomaurl)
+                                sleep(2000)
+                                p.click();
+                                sleep(1000)
+                                back();
+                                sleep(2000)
+                                p = text("发送").className("android.widget.Button").packageName("com.tencent.mm").findOnce()
+                                if (p) {
+                                    clickx(p.bounds().centerX(), p.bounds().centerY());
+                                    sleep(3000)
+                                    p = descEndsWith("头像").className("android.widget.ImageView").packageName("com.tencent.mm").find()
+                                    if (p.length > 0) {
+                                        sleep(1000)
+                                        click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
+                                        sleep(3000)
+                                        click("继续访问")
+                                        sleep(3000)
+                                        let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
+                                        if (ntext != null) {
+                                            click("允许");
+                                            sleep(3000);
+                                        }
+                                        sleep(random(1000, 2000))
+                                        if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
+                                            log("点击小阅阅成功")
+                                        }
+                                    }
+                                } else {
+                                    return
+                                }
+                            } else {
+                                return
+                            }
+
+                        }
+                    } else {
+                        console.error("not found 家庭/大家庭")
+
+                        if (retryCount > 3) {
+                            retryCount = 0;
+                            关闭应用(PKG_NAME);
+                        } else {
+                            retryCount++
+                        }
+                        return
+                    }
+                } else {
+                    console.error("not found bg1")
+                    if (retryCount > 3) {
+                        retryCount = 0;
+                        关闭应用(PKG_NAME);
+                    } else {
+                        retryCount++
+                    }
+                    return
+                }
+            } else {
+                console.warn("群进入休息");
+                返回v首页();
+                sleep(1000);
+                home();
+                if (fanqieflag == false && meitianflag == false) {
+                    lunSleep();
+                }
+                return
+            }
+            sleep(10000)
+            let tsbtn = packageName("com.tencent.mm").className("android.view.View").text("我知道了").findOne(10000)
+            if (tsbtn) {
+                sleep(4000)
+                tsbtn.click();
+            }
+            let xhcount = 0
+            let ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可用积分.*)/).findOnce()
+            while (ktjfbtn == null || isNaN(parseInt(ktjfbtn.text().replace(/[^\d]/g, " ")))) {
+                let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
+                if (stopPage != null) {
+                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum);//出错请处理
+                    lunSleep(random(3600000, 4000000));//睡1个多小时
+                    return;
+                }
+                sleep(3000)
+                xhcount++
+                if (xhcount > 20) {
+                    break;
+                }
+                toast("加载中")
+                ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可用积分.*)/).findOnce()
+            }
+            if (auto_tx == false) {
+                let txbtn = packageName("com.tencent.mm").className("android.widget.TextView").text("提现").findOne(2000)
+                if (txbtn) {
+                    sleep(2000)
+                    let sybtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可用积分.*)/).findOnce()
+                    if (sybtn) {
+                        let sytext = sybtn.text()
+                        if (parseInt(sytext.replace(/[^\d]/g, " ")) > 300) {
+                            clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
+                            sleep(3000)
+                            let jfzybtn = packageName("com.tencent.mm").text("积分转移").findOne(2000)
+                            if (jfzybtn) {
+                                clickx(jfzybtn.bounds().centerX(), jfzybtn.bounds().centerY())
+                                sleep(5000)
+                                if (packageName("com.tencent.mm").textMatches(/(.*绑定积分转移对象.*)/).findOne(1000)) {
+                                    console.error("未绑定积分转移对象")
+                                    exit();
+                                }
+                            }
+                            if (packageName("com.tencent.mm").text("用户提现").findOnce()) {
+                                back()
+                                sleep(5000)
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            let wztxt = packageName("com.tencent.mm").className("android.view.View").text("文章阅读推荐").findOne(10000)
+            let kshdbtns = packageName("com.tencent.mm").className("android.view.View").text("开始活动").find()
+            if (kshdbtns.length > 0 && wztxt != null) {
+                if (kshdbtns[0].bounds().top - wztxt.bounds().bottom < 100) {
+                    for (var i = 0; i < 150; i++) {
+                        if (!zhengtian) {
+                            if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 50) {
+                                return;
+                            }
+                        }
+                        if (packageName("com.tencent.mm").className("android.view.View").text("文章阅读推荐").findOnce() == null) {
+                            log("离开了页面")
+                            return;
+                        }
+                        let tsbtn = packageName("com.tencent.mm").className("android.view.View").text("我知道了").findOnce()
+                        if (tsbtn) {
+                            tsbtn.click();
+                        }
+                        if (联网验证(zwifi) != true) {
+                            连接wifi(zwifi, 5000);
+                            app.launch(PKG_NAME);
+                            sleep(10000)
+                        }
+                        if (havejieshouren(1)) {
+                            //逻辑后端处理了
+                            //reducejieshouCount("开始阅读前数量减一");
+                            break
+                        } else if (i == 149) {
+                            返回v首页();
+                            return;
+                        }
+                        if (getjieshouNum() == "0") {
+                            sendTx("http://miaotixing.com/trigger?id=tzbrDO8&text=num:" + phoneNum);//phoneNum=0
+                            lunSleep(random(3600000, 4000000));//睡1个多小时
+                            return;
+                        }
+                        toastLog(new Date().toLocaleString() + "-" + "-----------" + "等待中！");
+                        sleep(100000)
+                    }
+
+                    clickx(kshdbtns[0].bounds().centerX(), kshdbtns[0].bounds().centerY())
+                    sleep(8000)
+                    let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按识别.*)/).findOne(3000)
+                    if (tstxt) {
+                        longclickx(tstxt.bounds().centerX(), tstxt.bounds().centerY() - 300)
+                    } else {
+                        log("重试进入活动")
+                        kshdbtns[0].click()
+                        sleep(8000)
+                        longclickx(device.width * 0.5, device.height * 0.45)
+                    }
+                    sleep(3000)
+                    let sbqrBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("识别图中的二维码").findOne(7000);
+                    if (sbqrBtn != null && sbqrBtn.parent() != null && sbqrBtn.parent().clickable()) {
+                        sleep(random(500, 2000));
+                        sbqrBtn.parent().click();
+                        let yuedubtn = packageName("com.tencent.mm").className("android.view.View").text("开始阅读").findOne(10000)
+                        if (yuedubtn) {
+                            let xhcount = 0
+                            while (packageName("com.tencent.mm").className("android.view.View").textMatches(/(\（0\/.*)/).findOnce() == null) {
+                                toast(new Date().toLocaleString() + "-" + "-----------" + "等待出现数字！");
+                                xhcount++
+                                if (xhcount > 20) {
+                                    break;
+                                }
+                                sleep(3000)
+                            }
+                            let counttxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(\（0\/.*)/).findOnce();
+                            if (counttxt) {
+                                var matches = counttxt.text().match(/\d+/g);
+                                if (parseInt(matches[1]) < 10) {
+                                    if ((new Date().getDay() == 0 || new Date().getDay() == 6) && parseInt(matches[1]) >= 8) {
+                                        console.info("文章数:" + parseInt(matches[1]))
+                                    } else {
+                                        fenxiangshibai();
+                                        console.warn("文章过少:" + parseInt(matches[1]))
+                                        返回v首页();
+                                        lunSleep(random(1800000, 3600000));
+                                        return
+                                    }
+                                }
+                            }
+
+                            clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
+                            let yuedu2flag = yuedu2(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
+                            if (yuedu2flag == true) {
+                                返回v首页()
+                                if (fanqieflag == false) {
+                                    sleep(3600000)
+                                } else {
+                                    checkFlag = true
+                                }
+                            } else if (yuedu2flag == false) {
+                                返回v首页()
+                                sleep(3600000)
+                            } else {
+                                返回v首页()
+                            }
+                        } else {
+                            fenxiangshibai();
+                            console.warn("meitian进入失败")
+                            返回v首页();
+                            return
+                        }
+                    } else {
+                        console.warn("没有找到识别图中的二维码")
+                        fenxiangshibai();
+                    }
+                } else {
+                    let sybtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(剩余.*)/).findOnce()
+                    if (sybtn) {
+                        let sytext = sybtn.text()
+                        log(sytext)
+                        if (sytext.indexOf("小时") > -1) {
+                            storage.put("meitianover", true);
+                            meitianover = true
+                            console.info("当天已完成了")
+                            lunSleep()
+                        } else if (sytext.indexOf("分钟") > -1) {
+                            if (fanqieflag) {
+                                lunSleep(600000)
+                            } else {
+                                lunSleep(parseInt(sytext.substring(0, sytext.indexOf("分钟")).replace(/[^\d]/g, " ")) * 60000)
+                            }
+                        }
+                    } else {
+                        console.warn("meitian进入开始阅读失败")
+                        返回v首页();
+                        return
+                    }
+                }
+            } else {
+                console.warn("meitian进入失败")
+                返回v首页();
+                return
+            }
+
+
+
+        }
         function onMainPage2() {
             log("meitian进入v成功");
-            if (联网验证(zwifi) != true) {
-                连接wifi(zwifi, 5000);
-                app.launch(PKG_NAME);
-                sleep(10000)
-            }
             if (meitianover) {
                 返回v首页();
                 sleep(1000);
                 home();
+                log(new Date().toLocaleString() + "-" + "-----------" + "meitian当天已完成");
+                log("meitian当天已完成");
+                if (fanqieflag == false && xiaoyueyueflagflag == false) {
+                    lunSleep();
+                }
                 lunSleep();
                 return
             }
@@ -1453,9 +1914,6 @@ ui.ok.click(function () {
                 }
 
                 wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
-                if (wBtns.length == 0) {
-                    wBtns = packageName("com.tencent.mm").id('bg1').find();//8.0.1
-                }
                 if (wBtns.length > 1) {
                     sleep(random(8000, 10000))
                     if (random(0, 1) == 0) {
@@ -1842,11 +2300,6 @@ ui.ok.click(function () {
                     wBtn = wBtn.parent();
                 }
             }*/
-            if (联网验证(zwifi) != true) {
-                连接wifi(zwifi, 5000);
-                app.launch(PKG_NAME);
-                sleep(10000)
-            }
             if (readNum > 170 && auto_tx == false) {
                 if (readNum >= 180) {
                     lunCount = 20
@@ -1860,6 +2313,9 @@ ui.ok.click(function () {
                 返回v首页();
                 sleep(1000);
                 home();
+                if (xiaoyueyueflagflag == false && meitianflag == false) {
+                    lunSleep();
+                }
                 lunSleep();
                 return
             }
@@ -1885,9 +2341,6 @@ ui.ok.click(function () {
                 }
 
                 wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
-                if (wBtns.length == 0) {
-                    wBtns = packageName("com.tencent.mm").id('bg1').find();//8.0.1
-                }
                 if (wBtns.length > 1) {
                     sleep(random(8000, 10000))
                     if (random(0, 1) == 0) {
@@ -4319,6 +4772,10 @@ ui.ok.click(function () {
                 if (配置["date"] != new Date().toLocaleDateString()) {
                     storage.put("meitianover", false);
                     meitianover = false
+                    storage.put("xiaoyueyueover", false);
+                    xiaoyueyueover = false
+                    xiaoyueyueReadNum = 0
+                    storage.put("xiaoyueyueReadNum", xiaoyueyueReadNum);
                     storage.put("zhengtian", false);
                     zhengtian = false
                     if (isInJieshou(phoneNum.toString()) == 1) {
@@ -4474,6 +4931,8 @@ ui.ok.click(function () {
                     log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
                     if (fanqieflag == true) {
                         onMainPage();
+                    } else if (xiaoyueyueflag == true) {
+                        onMainPageXiaoyueyue();
                     } else if (meitianflag == true) {
                         onMainPage2();
                     }
