@@ -225,7 +225,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.5.8";//美添多次进入失败结束进程未修复
+        var versionNum = "聚合分享v9.5.9";//美添多次进入失败结束进程未修复
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -3370,7 +3370,7 @@ ui.ok.click(function () {
                     cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
                     let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
                     let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
-                    let fabudibtn = packageName("com.tencent.mm").id("js_ip_wording_wrp").className("android.view.View").findOnce().text();
+                    let fabudibtn = packageName("com.tencent.mm").id("js_ip_wording_wrp").className("android.view.View").findOnce();
                     let fabudi="";
                     if(fabudibtn){
                         fabudi=fabudibtn.text();
