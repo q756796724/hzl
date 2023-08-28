@@ -186,7 +186,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.3.7";
+        var versionNum = "接收v7.3.8";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -1058,15 +1058,15 @@ ui.ok.click(function () {
 
                 wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000);
                 if (wBtn != null) {
-                    let icount = random(10, 20); //读10~20次才结束
+                    let icount = random(1000, 2000); //读1000~2000次才结束
                     let loopCount = 0;//循环次数
                     let starttime = new Date().getTime();
                     let readluntime = random(3000000, 4000000)
                     for (let i = 0; i < icount;) {
                         //3000~4000秒休息一次
-                        if (new Date().getTime() - starttime > readluntime) {
+                        /*if (new Date().getTime() - starttime > readluntime) {
                             break;
-                        }
+                        }*/
                         if (addjieshouCount(phoneNum.toString()) == false) {
                             //console.error(new Date().toLocaleString() + "-" + "-----------------接收失败---休整");
                             sleep(random(30000, 180000))
