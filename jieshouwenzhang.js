@@ -186,7 +186,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.3.8";
+        var versionNum = "接收v7.3.9";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -2067,7 +2067,7 @@ ui.ok.click(function () {
                     app.launch(PKG_NAME);
                 }
                 sleep(8000)
-                repData = isInJieshou(type, phoneNum);
+                repData = isInJieshou(phoneNum);
             }
             return repData
 
