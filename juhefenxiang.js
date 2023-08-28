@@ -225,7 +225,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.5.4";//美添多次进入失败结束进程未修复
+        var versionNum = "聚合分享v9.5.5";//美添多次进入失败结束进程未修复
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -3551,6 +3551,7 @@ ui.ok.click(function () {
                 sleep(1000)
 
                 xiaoyueyuecount++;
+                storage.put("xiaoyueyuecount", xiaoyueyuecount);
                 if (xiaoyueyuecount <= 2 || xiaoyueyuecount - wifiCount <= 1 || (xiaoyueyueReadNum > 98 && xiaoyueyueReadNum < 102)) {
                     if (联网验证(zwifi) != true) {
                         连接wifi(zwifi, 5000);
@@ -3608,6 +3609,7 @@ ui.ok.click(function () {
                 while(loadcount<10){
                     if(packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOnce()||packageName("com.tencent.mm").className("android.view.View").text("无法打开网页").findOnce()||packageName("com.tencent.mm").className("android.view.View").text("点击空白处刷新").findOnce()||packageName("com.tencent.mm").className("android.widget.TextView").text("诊断网络").findOnce()) {
                      back()
+                     break;
                     }else{
                      sleep(2000)
                     }
