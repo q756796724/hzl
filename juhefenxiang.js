@@ -40,6 +40,7 @@ readErrCount = storage.get("readErrCount", 0);//读不上次数
 var lunCount = 0
 ws = null
 
+setInterval(() => { }, 1000);
 /**
  * 日期相减获取天数（用于公式计算）
  * @param date1 日期一 '2020-06-05'
@@ -225,7 +226,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.6.4";//美添多次进入失败结束进程未修复
+        var versionNum = "聚合分享v9.6.5";//美添多次进入失败结束进程未修复
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -540,7 +541,7 @@ ui.ok.click(function () {
         悬浮窗2.setTouchable(false);
         悬浮窗2.setPosition(0, device.height * 0.1);
 
-        setInterval(() => { }, 1000);
+        //setInterval(() => { }, 1000);
 
         //指定确定按钮点击时要执行的动作
         悬浮窗.console.click(function () {
@@ -5339,7 +5340,7 @@ ui.ok.click(function () {
             }
             return startWebSocket;
         }
-        setInterval(startWebSocket(), 10000);
+        //setInterval(startWebSocket(), 10000);
 
         if (fanqieflag == true) {
             dunage = "fanqiePage";

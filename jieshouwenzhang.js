@@ -21,6 +21,7 @@ readdays = storage.get("readdays");//阅读天数
 sxreaddays = 1;//上限阅读天数
 ws = null
 
+setInterval(() => { }, 1000);
 
 /**
  * 日期相减获取天数（用于公式计算）
@@ -186,7 +187,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.3.9";
+        var versionNum = "接收v7.4.0";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -308,7 +309,7 @@ ui.ok.click(function () {
         悬浮窗2.setTouchable(false);
         悬浮窗2.setPosition(0, device.height * 0.1);
 
-        setInterval(() => { }, 1000);
+        
 
         //指定确定按钮点击时要执行的动作
         悬浮窗.console.click(function () {
