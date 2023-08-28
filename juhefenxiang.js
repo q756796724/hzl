@@ -3370,7 +3370,11 @@ ui.ok.click(function () {
                     cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
                     let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
                     let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
-                    let fabudi = packageName("com.tencent.mm").id("js_ip_wording_wrp").className("android.view.View").findOnce().text();
+                    let fabudibtn = packageName("com.tencent.mm").id("js_ip_wording_wrp").className("android.view.View").findOnce().text();
+                    let fabudi="";
+                    if(fabudibtn){
+                        fabudi=fabudibtn.text();
+                    }
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                         let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() + "&&" + fabudi;
                         let fxflag = fenxiangurl();
