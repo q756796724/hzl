@@ -225,7 +225,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.5.3";//美添多次进入失败结束进程未修复
+        var versionNum = "聚合分享v9.5.4";//美添多次进入失败结束进程未修复
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1757,7 +1757,7 @@ ui.ok.click(function () {
             let longPress = packageName("com.tencent.mm").id("longPress").findOnce()
             if (close_btn) {
                 if (longPress) {
-                    longclickx(txbtn.bounds().centerX(), txbtn.bounds().centerY() - 280)
+                    longclickx(longPress.bounds().centerX(), longPress.bounds().centerY() - 280)
                 } else {
                     longclickx(device.width * 0.5, device.height * 0.4)
                 }
@@ -1770,7 +1770,7 @@ ui.ok.click(function () {
                         let longPress = packageName("com.tencent.mm").id("longPress").findOnce()
                         if (close_btn) {
                             if (longPress) {
-                                longclickx(txbtn.bounds().centerX(), txbtn.bounds().centerY() - 280)
+                                longclickx(longPress.bounds().centerX(), longPress.bounds().centerY() - 280)
                             } else {
                                 longclickx(device.width * 0.5, device.height * 0.4)
                             }
