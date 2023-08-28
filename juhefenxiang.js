@@ -225,7 +225,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.5.6";//美添多次进入失败结束进程未修复
+        var versionNum = "聚合分享v9.5.7";//美添多次进入失败结束进程未修复
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -3355,7 +3355,6 @@ ui.ok.click(function () {
                 
                 refreshStateInfo();
                 if (xiaoyueyuecount % 3 == 0 && topPackage != PKG_NAME) {
-                    启动x5();
                     return false;
                 }
                 if (!zhengtian) {
@@ -3476,6 +3475,7 @@ ui.ok.click(function () {
                         if (xiaoyueyuecheckFlag) {
                             addJiancegongzhonghao(js_name.desc())
                             yuducontent = clipurl + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
+                            log("重复判断:" + yuducontent)
                             if (sfcfyd(yuducontent) == false) {
                                 console.error("cfyd：" + yuducontent);
                                 sleep(300000);
@@ -3605,13 +3605,18 @@ ui.ok.click(function () {
                     }
                     return true
                 }
+                
                 let loadcount=0
                 while(loadcount<10){
                     if(packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOnce()||packageName("com.tencent.mm").className("android.view.View").text("无法打开网页").findOnce()||packageName("com.tencent.mm").className("android.view.View").text("点击空白处刷新").findOnce()||packageName("com.tencent.mm").className("android.widget.TextView").text("诊断网络").findOnce()) {
                      back()
                      break;
                     }else{
-                     sleep(2000)
+                        if(packageName("com.tencent.mm").textMatches(/(.*无法打开页面.*)/).find().length>0){
+                            启动x5();
+                            return false;
+                        }
+                        sleep(2000)
                     }
                     loadcount++
                     if(loadcount==10){
@@ -5219,6 +5224,7 @@ ui.ok.click(function () {
                     if (dunage == "fanqiePage") {
                         fanqiePage();
                     } else if (dunage == "xiaoyueyuePage") {
+                        log("xiaoyueyuecheckFlag:"+xiaoyueyuecheckFlag)
                         xiaoyueyuePage()
                     } else if (dunage == "meitianPage") {
                         meitianPage()
