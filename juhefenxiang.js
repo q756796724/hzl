@@ -226,7 +226,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.6.7";//美添多次进入失败结束进程未修复
+        var versionNum = "聚合分享v9.6.8";//美添多次进入失败结束进程未修复
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1621,7 +1621,7 @@ ui.ok.click(function () {
                                             latestNews.children().forEach(function (child) {
                                                 if (child.className() == "android.widget.TextView") {
                                                     if (child.text().indexOf(yunshaomaurl) > -1 && child.clickable()) {//随机点其中一个
-                                                        log("child.text()="+child.text())
+                                                        log("child.text()=" + child.text())
                                                         retryCount = 0;
                                                         for (let i = 0; i < 10; i++) {
                                                             log("尝试小阅阅" + (i + 1))
@@ -1985,7 +1985,7 @@ ui.ok.click(function () {
                                                         if (fanqiefuCount == 1 && random(0, 2) < 2) {
                                                         } else if (fanqiefuCount == 2 && random(0, 1) < 1) {
                                                         } else {
-                                                            log("child.text()="+child.text())
+                                                            log("child.text()=" + child.text())
                                                             retryCount = 0;
                                                             for (let i = 0; i < 10; i++) {
                                                                 log("尝试美添" + (i + 1))
@@ -2173,7 +2173,7 @@ ui.ok.click(function () {
                                             latestNews.children().forEach(function (child) {
                                                 if (child.className() == "android.widget.TextView") {
                                                     if (child.text().indexOf(meitianzhuanurl) > -1 && child.clickable()) {//随机点其中一个
-                                                        log("child.text()="+child.text())
+                                                        log("child.text()=" + child.text())
                                                         retryCount = 0;
                                                         for (let i = 0; i < 10; i++) {
                                                             log("尝试美添" + (i + 1))
@@ -2447,7 +2447,7 @@ ui.ok.click(function () {
                     let sybtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(剩余.*)/).findOnce()
                     if (sybtn) {
                         let sytext = sybtn.text()
-                        log("sytext="+sytext)
+                        log("sytext=" + sytext)
                         if (sytext.indexOf("小时") > -1) {
                             storage.put("meitianover", true);
                             meitianover = true
@@ -2657,7 +2657,7 @@ ui.ok.click(function () {
                                                                 if (fanqiefuCount == 1 && random(0, 2) < 2) {
                                                                 } else if (fanqiefuCount == 2 && random(0, 1) < 1) {
                                                                 } else {
-                                                                    log("child.text()="+child.text())
+                                                                    log("child.text()=" + child.text())
                                                                     retryCount = 0;
                                                                     for (let i = 0; i < 10; i++) {
                                                                         log("尝试番茄副" + (i + 1))
@@ -2724,7 +2724,7 @@ ui.ok.click(function () {
                                                                     log("点击状态成功")
                                                                     let ztjs = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*friendNickname.*)/).findOne(10000);
                                                                     if (ztjs != null) {
-                                                                        log("ztjstext="+ztjs.text())
+                                                                        log("ztjstext=" + ztjs.text())
                                                                         readNum = parseInt(JSON.parse(ztjs.text()).data.info.num);
                                                                         if (JSON.parse(ztjs.text()).data.info.status == 2) {
                                                                             log(new Date().toLocaleString() + "-----------" + "限制");
@@ -2980,7 +2980,7 @@ ui.ok.click(function () {
                     checkFlag = false
                     let ztjs = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*friendNickname.*)/).findOne(10000);
                     if (ztjs != null) {
-                        log("ztjstext="+ztjs.text())
+                        log("ztjstext=" + ztjs.text())
                         readNum = parseInt(JSON.parse(ztjs.text()).data.info.num);
                         if (JSON.parse(ztjs.text()).data.info.status == 2) {
                             log(new Date().toLocaleString() + "-----------" + "限制");
@@ -3560,7 +3560,16 @@ ui.ok.click(function () {
             } else if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(今日阅读已达上限.*)/).findOnce()) {
                 xiaoyueyueover = true
                 storage.put("xiaoyueyueover", xiaoyueyueover);
-                return true
+                if (fanqieflag == false && meitianflag == false) {
+                    lunSleep(random(7200000, 10800000));//睡2~3小时
+                } else if (meitianflag == true) {
+                    lunSleep(3600000);
+                    dunage = "meitianPage"
+                } else if (fanqieflag == true) {
+                    lunSleep(3600000);
+                    dunage = "fanqiePage"
+                }
+                return false;
             } else if (tstxt) {
                 xiaoyueyuecount = 1
                 storage.put("xiaoyueyuecount", xiaoyueyuecount);
@@ -3829,6 +3838,10 @@ ui.ok.click(function () {
                             return true
                         } else if (tstxt) {
                             log(new Date().toLocaleString() + "-----------" + "小阅阅本轮完成");
+                            xiaoyueyuecount = 1
+                            storage.put("xiaoyueyuecount", xiaoyueyuecount);
+                            xiaoyueyueluncount++
+                            storage.put("xiaoyueyueluncount", xiaoyueyueluncount);
                             if (fanqieflag == false && meitianflag == false) {
                                 lunSleep(random(parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000, parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + 300000));//按剩余时间睡眠
                             } else if (meitianflag == true) {
@@ -3839,7 +3852,7 @@ ui.ok.click(function () {
                                 dunage = "fanqiePage"
                             }
                             return true
-                        }else if(xiaoyueyuecount==1||xiaoyueyuecount==wifiCount){
+                        } else if (xiaoyueyuecount == 1 || xiaoyueyuecount == wifiCount) {
                             if (xiaoyueyuecheckFlag) {
                                 fenxiangshibai();
                             }
@@ -3885,14 +3898,14 @@ ui.ok.click(function () {
 
                 xiaoyueyuecount++;
                 storage.put("xiaoyueyuecount", xiaoyueyuecount);
-                if (xiaoyueyuecount <= 2 || xiaoyueyuecount - wifiCount <= 1 || (xiaoyueyueReadNum > 98 && xiaoyueyueReadNum < 102)) {
+                if (xiaoyueyuecount <= 2 || xiaoyueyuecount - wifiCount <= 1 || (xiaoyueyueReadNum > 97 && xiaoyueyueReadNum < 102)) {
                     if (联网验证(zwifi) != true) {
                         连接wifi(zwifi, 5000);
                         app.launch(PKG_NAME);
                         sleep(2000);
                     }
                 } else {
-                    if (xiaoyueyuecount % 3 == 0) {
+                    if (xiaoyueyuecount % 3 == 0 || xiaoyueyueReadNum == 102) {
                         if (联网验证(dlwifi) != true) {
                             连接wifi(dlwifi, 5000);
                             app.launch(PKG_NAME);
@@ -3936,6 +3949,10 @@ ui.ok.click(function () {
                             return true
                         } else if (tstxt) {
                             log(new Date().toLocaleString() + "-----------" + "小阅阅本轮完成");
+                            xiaoyueyuecount = 1
+                            storage.put("xiaoyueyuecount", xiaoyueyuecount);
+                            xiaoyueyueluncount++
+                            storage.put("xiaoyueyueluncount", xiaoyueyueluncount);
                             if (fanqieflag == false && meitianflag == false) {
                                 lunSleep(random(parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000, parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + 300000));//按剩余时间睡眠
                             } else if (meitianflag == true) {
@@ -4015,7 +4032,7 @@ ui.ok.click(function () {
                                 lunSleep(random(1800000, 2000000));
                                 return false;
                             }
-                            log("clipurl="+clipurl);
+                            log("clipurl=" + clipurl);
                             yuducontent = clipurl + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
                             log("重复判断:" + yuducontent)
                             if (sfcfyd(yuducontent) == false) {
@@ -4524,7 +4541,7 @@ ui.ok.click(function () {
                                 lunSleep(random(800000, 1000000));
                                 return false;
                             }
-                            log("clipurl="+clipurl);
+                            log("clipurl=" + clipurl);
                             if (fxurl(clipurl)) {
                                 fanxiangFlag = false;
                             } else {
@@ -5321,7 +5338,7 @@ ui.ok.click(function () {
         }
         var content = getdaili();//"要设置的剪贴板内容";
         setClip(content);
-        log("getClip="+getClip());
+        log("getClip=" + getClip());
 
         function initws() {
             ws = web.newWebSocket("ws://175.178.60.114:8081/fanqie/ws", {
@@ -5577,7 +5594,7 @@ ui.ok.click(function () {
                         meitianPage()
                     }
                 } else {
-                    log("wBtn="+wBtn);
+                    log("wBtn=" + wBtn);
                     返回v首页();
                     continue;
                 }
