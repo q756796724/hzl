@@ -228,7 +228,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.8.2";
+        var versionNum = "聚合分享v9.8.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1748,7 +1748,7 @@ ui.ok.click(function () {
             if (jb && parseInt(jb.desc().replace(/[^\d]/g, "")) > 8000) {
                 click("提现")
                 sleep(10000)
-                if(zfbtx){
+                if (zfbtx) {
                     let female = packageName("com.tencent.mm").id("female").findOnce()
                     if (female) {
                         female.click()
@@ -3888,6 +3888,17 @@ ui.ok.click(function () {
                             log(new Date().toLocaleString() + "-----------" + "小阅阅上限");
                             xiaoyueyueover = true
                             storage.put("xiaoyueyueover", xiaoyueyueover);
+                            配置 = 读取配置(settingPath);
+                            if (配置["date"] == new Date().toLocaleDateString()) {
+                                let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                tomorrow.setHours(1, 0, 0, 0);
+                                xiaoyueyuekedusj = tomorrow.getTime()
+                                storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                            } else {
+                                xiaoyueyuekedusj = new Date().getTime() + 3600 * 1000
+                                storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                            }
                             return true
                         } else if (tstxt) {
                             log(new Date().toLocaleString() + "-----------" + "小阅阅本轮完成");
@@ -3982,6 +3993,17 @@ ui.ok.click(function () {
                             log(new Date().toLocaleString() + "-----------" + "小阅阅上限");
                             xiaoyueyueover = true
                             storage.put("xiaoyueyueover", xiaoyueyueover);
+                            配置 = 读取配置(settingPath);
+                            if (配置["date"] == new Date().toLocaleDateString()) {
+                                let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                tomorrow.setHours(1, 0, 0, 0);
+                                xiaoyueyuekedusj = tomorrow.getTime()
+                                storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                            } else {
+                                xiaoyueyuekedusj = new Date().getTime() + 3600 * 1000
+                                storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                            }
                             return true
                         } else if (tstxt) {
                             log(new Date().toLocaleString() + "-----------" + "小阅阅本轮完成");
@@ -5670,10 +5692,10 @@ ui.ok.click(function () {
                 if (topActivity == MAIN_PAGE && wBtn != null) {
                     log("第" + lunCount + "轮");
                     log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
-                    let waitcount=0
+                    let waitcount = 0
                     while (true) {
                         waitcount++
-                        if(waitcount==1){
+                        if (waitcount == 1) {
                             let toaststr = "等待可读:";
                             if (fanqieflag == true) {
                                 toaststr = toaststr + "\n番茄:" + formatDate(fanqiekedusj, 'yyyy-MM-dd HH:mm:ss');
@@ -5682,7 +5704,7 @@ ui.ok.click(function () {
                             if (xiaoyueyueflag == true) {
                                 toaststr = toaststr + "\n小阅阅:" + formatDate(xiaoyueyuekedusj, 'yyyy-MM-dd HH:mm:ss')
                                 toaststr = toaststr + "\n小阅阅完成篇数" + xiaoyueyueReadNum
-    
+
                             }
                             if (meitianflag == true) {
                                 toaststr = toaststr + "\n美添:" + formatDate(meitiankedusj, 'yyyy-MM-dd HH:mm:ss')
