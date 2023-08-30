@@ -5688,7 +5688,7 @@ ui.ok.click(function () {
                                 toaststr = toaststr + "\n美添:" + formatDate(meitiankedusj, 'yyyy-MM-dd HH:mm:ss')
                                 toaststr = toaststr + "\nmeitianover=" + meitianover
                             }
-                            toastLog(toaststr)
+                            toastLog(toaststr);
                         }
                         if (new Date().getTime() > fanqiekedusj) {
                             fanqiePage();
