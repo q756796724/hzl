@@ -228,7 +228,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.8.1";
+        var versionNum = "聚合分享v9.8.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -5670,7 +5670,26 @@ ui.ok.click(function () {
                 if (topActivity == MAIN_PAGE && wBtn != null) {
                     log("第" + lunCount + "轮");
                     log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
+                    let waitcount=0
                     while (true) {
+                        waitcount++
+                        if(waitcount==1){
+                            let toaststr = "等待可读:";
+                            if (fanqieflag == true) {
+                                toaststr = toaststr + "\n番茄:" + formatDate(fanqiekedusj, 'yyyy-MM-dd HH:mm:ss');
+                                toaststr = toaststr + "\n番茄当天已轮回" + (lunCount - 1).toString() + "次完成篇数" + readNum;
+                            }
+                            if (xiaoyueyueflag == true) {
+                                toaststr = toaststr + "\n小阅阅:" + formatDate(xiaoyueyuekedusj, 'yyyy-MM-dd HH:mm:ss')
+                                toaststr = toaststr + "\n小阅阅完成篇数" + xiaoyueyueReadNum
+    
+                            }
+                            if (meitianflag == true) {
+                                toaststr = toaststr + "\n美添:" + formatDate(meitiankedusj, 'yyyy-MM-dd HH:mm:ss')
+                                toaststr = toaststr + "\nmeitianover=" + meitianover
+                            }
+                            toastLog(toaststr)
+                        }
                         if (new Date().getTime() > fanqiekedusj) {
                             fanqiePage();
                             break
@@ -5683,21 +5702,6 @@ ui.ok.click(function () {
                             break
                         }
                         sleep(10000)
-                        let toaststr = "等待可读:";
-                        if (fanqieflag == true) {
-                            toaststr = toaststr + "\n番茄:" + formatDate(fanqiekedusj, 'yyyy-MM-dd HH:mm:ss');
-                            toaststr = toaststr + "\n番茄当天已轮回" + (lunCount - 1).toString() + "次完成篇数" + readNum;
-                        }
-                        if (xiaoyueyueflag == true) {
-                            toaststr = toaststr + "\n小阅阅:" + formatDate(xiaoyueyuekedusj, 'yyyy-MM-dd HH:mm:ss')
-                            toaststr = toaststr + "\n小阅阅完成篇数" + xiaoyueyueReadNum
-
-                        }
-                        if (meitianflag == true) {
-                            toaststr = toaststr + "\n美添:" + formatDate(meitiankedusj, 'yyyy-MM-dd HH:mm:ss')
-                            toaststr = toaststr + "\nmeitianover=" + meitianover
-                        }
-                        toast(toaststr)
                     }
 
                 } else {
