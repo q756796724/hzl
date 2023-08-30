@@ -227,7 +227,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.7.2";
+        var versionNum = "聚合分享v9.7.3";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -5489,6 +5489,7 @@ ui.ok.click(function () {
                 log("当前时间:" + nowHour + "时");
                 toastLog("版本号:" + versionNum);
                 配置 = 读取配置(settingPath);
+                log("配置[date]="+配置["date"]+"new Date().toLocaleDateString()="+new Date().toLocaleDateString())
                 if (配置["date"] != new Date().toLocaleDateString()) {
                     if (fanqieflag == true) {
                         dunage = "fanqiePage";
@@ -5525,7 +5526,9 @@ ui.ok.click(function () {
 
                     fanxiangFlag = true;
                     if (random(0, 7) == 5) {
-                        lunSleep(random(1800000, 7200000));
+                        if (nowHour < 8) {
+                            lunSleep(random(1800000, 7200000));
+                        }
                         关闭应用(PKG_NAME);
                         sleep(10000)
                         清空文件夹("/sdcard/Android/data/com.tencent.mm/cache/");
@@ -5568,7 +5571,9 @@ ui.ok.click(function () {
                             }
                         }
                     }
-                    lunSleep(random(600000, 3600000));
+                    if (nowHour < 8) {
+                        lunSleep(random(600000, 3600000));
+                    }
                     readNum = 0;
                     todayTxCount = 0;
                     初始化配置(settingPath);
