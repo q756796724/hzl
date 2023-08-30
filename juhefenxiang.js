@@ -148,8 +148,8 @@ ui.layout(
         </horizontal>
         <horizontal>
             <checkbox text="番茄" id="fanqieflag" checked="{{fanqieflag}}" textSize="18sp" />\
-            <checkbox text="美添" id="meitianflag" checked="{{meitianflag}}" textSize="18sp" />\
             <checkbox text="小阅阅" id="xiaoyueyueflag" checked="{{xiaoyueyueflag}}" textSize="18sp" />\
+            <checkbox text="美添" id="meitianflag" checked="{{meitianflag}}" textSize="18sp" />\
         </horizontal>
         <button id="ok" text="开始运行" />
     </vertical>
@@ -3684,7 +3684,7 @@ ui.ok.click(function () {
                         fabudi = fabudibtn.text();
                     }
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
-                        let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() + "&&" + fabudi+ "&&" + read_area_num;
+                        let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + publish_time.text().replace(/-/g, "/") + "&&" + fabudi+ "&&" + read_area_num;
                         log(yuducontent);
                         if (xiaoyueyuecheckFlag == false) {
                             if (isInJiancegongzhonghao(js_name.desc()) == true && read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null) {
