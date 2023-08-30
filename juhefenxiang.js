@@ -227,7 +227,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.7.1";
+        var versionNum = "聚合分享v9.7.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -2515,7 +2515,7 @@ ui.ok.click(function () {
                 返回v首页();
                 sleep(1000);
                 home();
-                if (xiaoyueyueflagflag == false && meitianflag == false) {
+                if (xiaoyueyueflag == false && meitianflag == false) {
                     lunSleep();
                 }
                 lunSleep();
@@ -3674,7 +3674,7 @@ ui.ok.click(function () {
                     let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                     let fabudibtn = packageName("com.tencent.mm").id("js_ip_wording_wrp").className("android.view.View").findOnce();
                     let read_area = packageName("com.tencent.mm").id("js_read_area3").textMatches(/(阅读.*)/).findOnce();
-                    let js_focus = packageName("com.tencent.mm").id("js_focus").findOnce();=
+                    let js_focus = packageName("com.tencent.mm").id("js_focus").findOnce();
                     let read_area_num="";
                     if(read_area){
                         read_area_num=read_area.text();
