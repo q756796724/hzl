@@ -3688,7 +3688,7 @@ ui.ok.click(function () {
 
             let wifiCount = xiaoyueyuecount;
             for (; ;) {
-                let numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(阅读成功.*)/).findOne(6000)
+                let numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(阅读成功.*)/).findOne(10000)
                 if (numbtn && numbtn.text().indexOf("篇") > -1) {
                     xiaoyueyueReadNum = parseInt(numbtn.text().split("篇")[0].replace(/[^\d]/g, ""))
                     storage.put("xiaoyueyueReadNum", xiaoyueyueReadNum);
