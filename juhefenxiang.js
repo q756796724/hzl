@@ -228,7 +228,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.8.3";
+        var versionNum = "聚合分享v9.8.4";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1733,6 +1733,13 @@ ui.ok.click(function () {
                 return
             }
             sleep(10000)
+            click("继续访问")
+            sleep(5000)
+            let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
+            if (ntext != null) {
+                click("允许");
+                sleep(3000);
+            }
             let loadcount = 0
             while (packageName("com.tencent.mm").className("android.widget.TextView").text("小阅阅").findOnce() == null || packageName("com.tencent.mm").id("task_btn_read").findOnce() == null) {
                 sleep(3000)
@@ -2307,6 +2314,14 @@ ui.ok.click(function () {
                     }
                     return
                 }
+            }
+            sleep(10000)
+            click("继续访问")
+            sleep(5000)
+            let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
+            if (ntext != null) {
+                click("允许");
+                sleep(3000);
             }
             sleep(10000)
             let tsbtn = packageName("com.tencent.mm").className("android.view.View").text("我知道了").findOne(10000)
