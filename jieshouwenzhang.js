@@ -187,7 +187,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.4.0";
+        var versionNum = "接收v7.4.1";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -1579,7 +1579,7 @@ ui.ok.click(function () {
             log(new Date().toLocaleString() + "-" + "-----------");
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                 配置 = 读取配置(settingPath);
-                if (i % 30 == 0) {
+                if (i % 10 == 0) {
                     if (联网验证(zwifi) != true) {
                         连接wifi(zwifi, 5000);
                     }
@@ -1872,6 +1872,11 @@ ui.ok.click(function () {
 
 
         function 连接wifi(wifiName, connectTime) {
+            if (wifiName == zwifi) {
+                log("连接zwifi")
+            } else if (wifiName == dlwifi) {
+                log("连接dlwifi")
+            }
             if (zwifi.toString() != dlwifi.toString()) {
                 ui.run(function () { 悬浮窗.jbkz.visibility = 8 });
                 sleep(1000);
@@ -1923,7 +1928,7 @@ ui.ok.click(function () {
         function 联网验证(wifiName) {
             http.__okhttp__.setTimeout(3000);
             if (wifiName == zwifi) {
-                log("zwifi验证")
+                //log("zwifi验证")
                 try {
                     let url = "www.baidu.com";
                     //log("url="+url)
@@ -1937,7 +1942,7 @@ ui.ok.click(function () {
                     return false
                 }
             } else if (wifiName == dlwifi) {
-                log("dlwifi验证")
+                //log("dlwifi验证")
                 try {
                     //let url = readurl;
                     let url = "mail.sina.com.cn"//"www.csdn.net";//mail.sina.com.cn

@@ -231,7 +231,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.8.5";
+        var versionNum = "聚合分享v9.8.6";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -4782,7 +4782,7 @@ ui.ok.click(function () {
             toastLog("版本号:" + versionNum);
             for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                 配置 = 读取配置(settingPath);
-                if (i % 30 == 0) {
+                if (i % 10 == 0) {
                     if (联网验证(zwifi) != true) {
                         连接wifi(zwifi, 5000);
                     }
