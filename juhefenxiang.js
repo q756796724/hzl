@@ -228,7 +228,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.8.4";
+        var versionNum = "聚合分享v9.8.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -5709,8 +5709,7 @@ ui.ok.click(function () {
                     log(new Date().toLocaleString() + "-" + "-----------" + readNum + "次");
                     let waitcount = 0
                     while (true) {
-                        waitcount++
-                        if (waitcount == 1) {
+                        if (waitcount == 0) {
                             let toaststr = "等待可读:";
                             if (fanqieflag == true) {
                                 toaststr = toaststr + "\n番茄:" + formatDate(fanqiekedusj, 'yyyy-MM-dd HH:mm:ss');
@@ -5737,7 +5736,10 @@ ui.ok.click(function () {
                         } else if (new Date().getTime() > meitiankedusj) {
                             meitianPage()
                             break
+                        }else if (waitcount == 0) {
+                            home();
                         }
+                        waitcount++
                         sleep(10000)
                     }
 
