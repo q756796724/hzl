@@ -5498,7 +5498,7 @@ ui.ok.click(function () {
             }
             return startWebSocket;
         }
-        //setInterval(startWebSocket(), 10000);
+        setInterval(startWebSocket(), 10000);
 
         if (fanqieflag == false) {
             fanqiekedusj = new Date().getTime() + 365 * 24 * 3600 * 1000
