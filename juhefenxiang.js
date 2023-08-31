@@ -3860,7 +3860,7 @@ ui.ok.click(function () {
                                 return false;
                             }
                             if (fabudi.indexOf("浙江") == -1) {
-                                sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=url:" + clipurl + packageName("com.tencent.mm").id("js_ip_wording_wrp").className("android.view.View").findOnce().text());//出错请处理
+                                sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum+"url:" + clipurl + packageName("com.tencent.mm").id("js_ip_wording_wrp").className("android.view.View").findOnce().text());//出错请处理
                             }
                             addJiancegongzhonghao(js_name.desc())
                             yuducontent = clipurl + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
