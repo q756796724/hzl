@@ -3822,6 +3822,9 @@ ui.ok.click(function () {
                                     xiaoyueyuecheckFlag = false;
                                 }
                             }
+                            if(js_focus==null&&read_area==null&&fabudi.indexOf("浙江") == -1){
+                                xiaoyueyuecheckFlag = false;
+                            }
 
                             storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
 
