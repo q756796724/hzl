@@ -14,6 +14,8 @@ lastUrl = "";//上一url
 latestUrl = "";//当前url
 
 phoneNum = storage.get("phoneNum", "");
+jieshouwifi = storage.get("jieshouwifi", "WifiPro_5G");
+
 if (storage.get("readdays") == undefined) {
     storage.put("readdays", 0);
 }
@@ -110,7 +112,8 @@ ui.layout(
         <text textSize="16sp" textColor="black" text="请输入代理Wifi" />
         {/* <input id="dlwifi" text="{{dlwifi}}" /> */}
         <spinner id="dlwifi_spinner" entries={wifiOptions} />
-        <text textSize="16sp" textColor="black" text="url" />
+        <text textSize="16sp" textColor="black" text="jieshouwifi" />
+        <input id="jieshouwifi" text="{{jieshouwifi}}" />
         <text textSize="16sp" textColor="black" text="编号" />
         <input id="phoneNum" text="{{phoneNum}}" />
         <checkbox text="是否切换" id="qiehuanjiaoben" checked="{{qiehuanjiaoben}}" textSize="18sp" />\
@@ -187,7 +190,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.4.1";
+        var versionNum = "接收v7.4.2";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -199,6 +202,8 @@ ui.ok.click(function () {
         log("代理Wifi:" + dlwifi);
         phoneNum = ui.phoneNum.getText();
         log("phoneNum:" + phoneNum);
+        jieshouwifi = ui.jieshouwifi.getText();
+        log("jieshouwifi:" + jieshouwifi);
         qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
         removePhoneNum = ui.removePhoneNum.isChecked();
         zhengtian = ui.zhengtian.isChecked();
@@ -207,6 +212,7 @@ ui.ok.click(function () {
         storage.put("zwifi", zwifi);
         storage.put("dlwifi", dlwifi);
         storage.put("phoneNum", ui.phoneNum.text());
+        storage.put("jieshouwifi", ui.jieshouwifi.text());
         storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
         storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
         storage.put("zhengtian", ui.zhengtian.isChecked());
@@ -2413,7 +2419,9 @@ ui.ok.click(function () {
         }
         setInterval(startWebSocket(), 10000);
 
-        var lunCount = 1;//轮回次数
+        if(jieshouwifi!=null&&jieshouwifi!=""){
+            zwifi=jieshouwifi
+        }
         threads.start(function () {
             for (; ;) {
                 kz();
