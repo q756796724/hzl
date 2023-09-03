@@ -9,6 +9,7 @@ qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
 removePhoneNum = storage.get("removePhoneNum", false);
 addJieshou = storage.get("addJieshou", false);
 zhengtian = storage.get("zhengtian", false);
+autoX = storage.get("autoX", false);
 
 lastUrl = "";//上一url
 latestUrl = "";//当前url
@@ -116,10 +117,15 @@ ui.layout(
         <input id="jieshouwifi" text="{{jieshouwifi}}" />
         <text textSize="16sp" textColor="black" text="编号" />
         <input id="phoneNum" text="{{phoneNum}}" />
-        <checkbox text="是否切换" id="qiehuanjiaoben" checked="{{qiehuanjiaoben}}" textSize="18sp" />\
-        <checkbox text="清除号码" id="removePhoneNum" checked="{{removePhoneNum}}" textSize="18sp" />\
-        <checkbox text="添加到接收" id="addJieshou" checked="{{addJieshou}}" textSize="18sp" />\
-        <checkbox text="整天" id="zhengtian" checked="{{zhengtian}}" textSize="18sp" />\
+        <horizontal>
+            <checkbox text="是否切换" id="qiehuanjiaoben" checked="{{qiehuanjiaoben}}" textSize="18sp" />\
+            <checkbox text="添加到接收" id="addJieshou" checked="{{addJieshou}}" textSize="18sp" />\
+        </horizontal>
+        <horizontal>
+            <checkbox text="清除号码" id="removePhoneNum" checked="{{removePhoneNum}}" textSize="18sp" />\
+            <checkbox text="整天" id="zhengtian" checked="{{zhengtian}}" textSize="18sp" />\
+            <checkbox text="X" id="autoX" checked="{{autoX}}" textSize="18sp" />\
+        </horizontal>
         <button id="ok" text="开始接收" />
     </vertical>
 
@@ -190,7 +196,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.4.2";
+        var versionNum = "接收v7.4.3";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -208,6 +214,8 @@ ui.ok.click(function () {
         removePhoneNum = ui.removePhoneNum.isChecked();
         zhengtian = ui.zhengtian.isChecked();
         addJieshou = ui.addJieshou.isChecked();
+        autoX = ui.autoX.isChecked();
+
 
         storage.put("zwifi", zwifi);
         storage.put("dlwifi", dlwifi);
@@ -217,6 +225,8 @@ ui.ok.click(function () {
         storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
         storage.put("zhengtian", ui.zhengtian.isChecked());
         storage.put("addJieshou", ui.addJieshou.isChecked());
+        storage.put("autoX", ui.autoX.isChecked());
+
 
         var totificationlistenersetting = function (actionname) {
             try {
@@ -315,7 +325,7 @@ ui.ok.click(function () {
         悬浮窗2.setTouchable(false);
         悬浮窗2.setPosition(0, device.height * 0.1);
 
-        
+
 
         //指定确定按钮点击时要执行的动作
         悬浮窗.console.click(function () {
@@ -2419,8 +2429,8 @@ ui.ok.click(function () {
         }
         setInterval(startWebSocket(), 10000);
 
-        if(jieshouwifi!=null&&jieshouwifi!=""){
-            zwifi=jieshouwifi
+        if (jieshouwifi != null && jieshouwifi != "") {
+            zwifi = jieshouwifi
         }
         threads.start(function () {
             for (; ;) {
