@@ -223,7 +223,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.8.8";
+        var versionNum = "聚合分享v9.8.9";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1757,7 +1757,7 @@ ui.ok.click(function () {
                 }
 
                 let jb = packageName("com.tencent.mm").className("android.view.View").descMatches(/(.*金币.*)/).findOnce()
-                if (jb && parseInt(jb.desc().replace(/[^\d]/g, "")) > 8000) {
+                if (jb && parseInt(jb.desc().replace(/[^\d]/g, "")) >= 6000) {
                     click("提现")
                     sleep(10000)
                     if (zfbtx) {
