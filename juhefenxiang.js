@@ -223,7 +223,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.8.9";
+        var versionNum = "聚合分享v9.9.0";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -697,6 +697,12 @@ ui.ok.click(function () {
 
         //获取接收人数
         function getjieshouCount(type, phoneNum) {
+            if (联网验证(zwifi) != true) {
+                连接wifi(zwifi, 5000);
+                app.launch(PKG_NAME);
+                sleep(2000)
+            }
+
             let temp = null;
             let repData = 0;
             try {
@@ -2393,13 +2399,16 @@ ui.ok.click(function () {
                             if (parseInt(sytext.replace(/[^\d]/g, " ")) > 300) {
                                 clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
                                 sleep(3000)
-                                let jfzybtn = packageName("com.tencent.mm").text("积分转移").findOne(2000)
+                                let jfzybtn = packageName("com.tencent.mm").className("android.widget.TextView").text("积分转移").findOne(2000)
                                 if (jfzybtn) {
                                     clickx(jfzybtn.bounds().centerX(), jfzybtn.bounds().centerY())
                                     sleep(5000)
                                     if (packageName("com.tencent.mm").textMatches(/(.*绑定积分转移对象.*)/).findOne(1000)) {
                                         console.error("未绑定积分转移对象")
                                         exit();
+                                    }else{
+                                        click("积分转移")
+                                        sleep(5000)
                                     }
                                 }
                                 if (packageName("com.tencent.mm").text("用户提现").findOnce()) {
@@ -3716,10 +3725,55 @@ ui.ok.click(function () {
 
             let wifiCount = xiaoyueyuecount;
             for (; ;) {
-                let numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(阅读成功.*)/).findOne(10000)
+                let numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(阅读成功.*|阅读无效.*)/).findOne(10000)
                 if (numbtn && numbtn.text().indexOf("篇") > -1) {
                     xiaoyueyueReadNum = parseInt(numbtn.text().split("篇")[0].replace(/[^\d]/g, ""))
                     storage.put("xiaoyueyueReadNum", xiaoyueyueReadNum);
+                    if (xiaoyueyuecheckFlag) {
+                        xiaoyueyuecheckFlag = false
+                        storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
+                    }
+                } else if (numbtn && numbtn.text().indexOf("无效") > -1) {
+                    let xianzhistr = "小阅阅无效"
+                    if (xiaoyueyuecheckFlag) {
+                        addXianZhi(phoneNum.toString())
+                        xianzhistr = xianzhistr + "addXianZhi退出"
+                        log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                        xiaoyueyuecheckFlag = true
+                        storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
+                        sleep(300000);
+                        xiaoyueyuekedusj = new Date().getTime() + 1000 * 1000
+                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                        return false;
+                    } else {
+                        if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(当前阅读被限制.*)/).findOne(5000)) {//不会是第一篇因为顶头已经拦截
+                            let xianzhistr = "小阅阅限制"
+                            log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                            xiaoyueyuecheckFlag = true
+                            storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
+                            xiaoyueyuekedusj = new Date().getTime() + 2 * 3600 * 1000
+                            storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                            return false;
+                        }
+                        if (havejieshouren(1) == false) {
+                            xianzhistr = xianzhistr + "havejieshouren=false退出"
+                            log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                            xiaoyueyuecheckFlag = true
+                            storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
+                            sleep(300000);
+                            xiaoyueyuekedusj = new Date().getTime() + 1000 * 1000
+                            storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                            return false;
+                        }else{
+                            xianzhistr = xianzhistr + "havejieshouren=true重检"
+                            xiaoyueyuecheckFlag = true
+                            storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
+                            if (packageName("com.tencent.mm").className("android.view.View").text("无法打开网页").findOnce() || packageName("com.tencent.mm").className("android.view.View").text("点击空白处刷新").findOnce() || packageName("com.tencent.mm").className("android.widget.TextView").text("诊断网络").findOnce()) {
+                                clickx(device.width * 0.5, device.height * 0.4)
+                            }
+                            log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                        }
+                    }
                 }
 
                 refreshStateInfo();
@@ -4021,7 +4075,15 @@ ui.ok.click(function () {
                         back()
                         break;
                     } else {
-                        click("继续访问")
+                        if (packageName("com.tencent.mm").textMatches(/(.*继续访问.*)/).findOnce()) {
+                            click("继续访问")
+                            sleep(10000)
+                            back()
+                            if (packageName("com.tencent.mm").textMatches(/(.*继续访问.*)/).findOne(10000)) {
+                                back()
+                            }
+                            break;
+                        }
                         let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后再来阅读)/).findOnce()
                         if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(当前阅读被限制.*)/).findOnce()) {
                             let xianzhistr = "小阅阅限制"
@@ -4317,13 +4379,16 @@ ui.ok.click(function () {
                                             if (parseInt(sytext.replace(/[^\d]/g, " ")) > 300) {
                                                 clickx(txbtn.bounds().centerX(), txbtn.bounds().centerY())
                                                 sleep(3000)
-                                                let jfzybtn = packageName("com.tencent.mm").text("积分转移").findOne(2000)
+                                                let jfzybtn = packageName("com.tencent.mm").className("android.widget.TextView").text("积分转移").findOne(2000)
                                                 if (jfzybtn) {
                                                     clickx(jfzybtn.bounds().centerX(), jfzybtn.bounds().centerY())
                                                     sleep(5000)
                                                     if (packageName("com.tencent.mm").textMatches(/(.*绑定积分转移对象.*)/).findOne(1000)) {
                                                         console.error("未绑定积分转移对象")
                                                         exit();
+                                                    }else{
+                                                        click("积分转移")
+                                                        sleep(5000)
                                                     }
                                                 }
                                                 if (packageName("com.tencent.mm").text("用户提现").findOnce()) {
