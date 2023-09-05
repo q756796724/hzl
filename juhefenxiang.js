@@ -1820,7 +1820,7 @@ ui.ok.click(function () {
                             return;
                         }
                         toastLog(new Date().toLocaleString() + "-" + "-----------" + "小阅阅等待中！");
-                        sleep(100000)
+                        sleep(30000)
                     }
                 }
 
