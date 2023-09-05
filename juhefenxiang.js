@@ -223,7 +223,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.9.0";
+        var versionNum = "聚合分享v9.9.1";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -2449,7 +2449,12 @@ ui.ok.click(function () {
                                 //逻辑后端处理了
                                 //reducejieshouCount("开始阅读前数量减一");
                                 break
-                            } else if (i == 14) {
+                            } else if((fanqieflag||xiaoyueyueflag)&&i == 10){
+                                meitiankedusj = new Date().getTime() + 1000 * 1000
+                                storage.put("meitiankedusj", meitiankedusj);
+                                返回v首页();
+                                return;
+                            }else if (i == 14) {
                                 返回v首页();
                                 return;
                             }
@@ -2507,8 +2512,8 @@ ui.ok.click(function () {
                                 }
 
                                 clickx(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
-                                let yuedu2flag = yuedu2(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
-                                if (yuedu2flag == true) {
+                                let meitianyueduflag = meitianyuedu(yuedubtn.bounds().centerX(), yuedubtn.bounds().centerY())
+                                if (meitianyueduflag == true) {
                                     返回v首页()
                                     meitiankedusj = new Date().getTime() + 3600 * 1000
                                     storage.put("meitiankedusj", meitiankedusj);
@@ -4143,7 +4148,7 @@ ui.ok.click(function () {
             }
         }
 
-        function yuedu2(btnx, btny) {
+        function meitianyuedu(btnx, btny) {
             let count = 1;
             for (; ;) {
                 refreshStateInfo();
@@ -4211,7 +4216,11 @@ ui.ok.click(function () {
                                     rBtn.parent().click();
                                 }
                                 返回v首页();
-                                meitiankedusj = new Date().getTime() + 1000 * 1000
+                                if(fanqieflag||xiaoyueyueflag){
+                                    meitiankedusj = new Date().getTime() + 1800 * 1000
+                                }else{
+                                    meitiankedusj = new Date().getTime() + 1000 * 1000
+                                }
                                 storage.put("meitiankedusj", meitiankedusj);
                                 return false;
                             }
