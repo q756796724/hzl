@@ -223,7 +223,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.9.1";
+        var versionNum = "聚合分享v9.9.2";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -3830,6 +3830,9 @@ ui.ok.click(function () {
                             if (isInJiancegongzhonghao(js_name.desc()) == true && read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null) {
                                 xiaoyueyuecheckFlag = true;
                             }
+                            if (read_area==null&&js_focus==null&&isInJiancegongzhonghao(js_name.desc()) == true) {
+                                xiaoyueyuecheckFlag = true;
+                            }
                             if (fabudi.indexOf("浙江") > -1 || fabudi.indexOf("江西") > -1) {
                                 if (js_focus && js_focus.bounds().top < device.height * 3) {
                                     xiaoyueyuecheckFlag = true;
@@ -3869,6 +3872,9 @@ ui.ok.click(function () {
                                 }
                             }
                         } else {
+                            if (read_area==null&&js_focus==null&&isInJiancegongzhonghao(js_name.desc()) == false && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
+                                xiaoyueyuecheckFlag = false;
+                            }
                             if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce()) {
                                 xiaoyueyuecheckFlag = false;
                             }
