@@ -223,7 +223,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.9.3";
+        var versionNum = "聚合分享v9.9.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -4175,10 +4175,10 @@ ui.ok.click(function () {
                     let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                         let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
-
-                        if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*检测.*)/).findOnce() != null || isInJiancegongzhonghao(js_name.desc()) == true) {
+                        if (isInJiancegongzhonghao(js_name.desc()) == false) {
                             addJiancegongzhonghao(js_name.desc())
-                            let fxflag = fenxiangurl();
+                        } 
+                        let fxflag = fenxiangurl();
                             let clipurl = getClip();
                             if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
                                 sleep(5000)
@@ -4221,9 +4221,9 @@ ui.ok.click(function () {
                                 }
                                 返回v首页();
                                 if(fanqieflag||xiaoyueyueflag){
-                                    meitiankedusj = new Date().getTime() + 1800 * 1000
+                                    meitiankedusj = new Date().getTime() + 7200 * 1000
                                 }else{
-                                    meitiankedusj = new Date().getTime() + 1000 * 1000
+                                    meitiankedusj = new Date().getTime() + 3600 * 1000
                                 }
                                 storage.put("meitiankedusj", meitiankedusj);
                                 return false;
@@ -4242,10 +4242,6 @@ ui.ok.click(function () {
                                 storage.put("meitiankedusj", meitiankedusj);
                                 return false;
                             }
-                        } else {
-                            log("不用检测：" + yuducontent)
-                            fenxiangshibai();
-                        }
                     } else {
                         fenxiangshibai();
                         console.error("标题识别失败");
