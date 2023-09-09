@@ -201,9 +201,10 @@ ui.ok.click(function () {
         toast("请先开启无障碍服务！");
         return;
     }
-    var lock2 = {} // 创建一个全局的锁对象
+    var lock2 = threads.lock();
     threads.start(function () {
-        synchronized(lock2, function () {
+        lock2.lock(); // 获取锁
+        try {
             // 这里是需要保证只有一个线程执行的代码块
             //这里写你的流程代码
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -5579,9 +5580,10 @@ ui.ok.click(function () {
                 meitiankedusj = new Date().getTime()
                 storage.put("meitiankedusj", meitiankedusj);
             }
-            var lock1 = {} // 创建一个全局的锁对象
+            var lock1 = threads.lock();
             threads.start(function () {
-                synchronized(lock1, function () {
+                lock1.lock(); // 获取锁
+                try{
                     // 这里是需要保证只有一个线程执行的代码块
                     for (; ;) {
                         kz();
@@ -5835,8 +5837,12 @@ ui.ok.click(function () {
                             continue;
                         }
                     }
-                });
+                }finally {
+                    lock1.unlock(); // 释放锁
+                }
             })
-        })
+        }finally {
+            lock2.unlock(); // 释放锁
+        }
     });
 });
