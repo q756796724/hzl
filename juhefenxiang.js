@@ -223,7 +223,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "聚合分享v9.9.4";
+        var versionNum = "聚合分享v9.9.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1320,62 +1320,6 @@ ui.ok.click(function () {
             }
         }
 
-
-
-        function 阅读到底() {
-            sleep(5000);
-            log("滑动");
-            swapeToRead();
-            sleep(random(3000, 7000));
-            swapeToRead();
-            sleep(random(3000, 7000));
-            swapeToRead()
-            sleep(random(3000, 7000));
-            if (device.brand == "samsung") {
-                for (let i = 0; i < 7; i++) {
-                    kz();
-                    swapeToRead();
-                    sleep(random(4000, 5000));
-                    if (checkWatchFull()) {
-                        log("到底了");
-                        break;
-                    }
-                }
-            } else {
-                try {
-                    for (let i = 0; i < 7; i++) {
-                        kz();
-                        var img = captureScreen();
-                        var imgH = img.height;
-                        var clip = images.clip(img, 0, img.height - 200, 200, 20);
-                        swapeToRead();
-                        sleep(random(4000, 5000));
-                        var p = findImage(captureScreen(), clip, {
-                            region: [0, imgH - 300, 220, 150],
-                            threshold: 0.9
-                        });
-                        img.recycle();//不再使用需要手动回收
-                        if (p || checkWatchFull()) {
-                            log("到底了");
-                            break;
-                        }
-                    }
-                } catch (e) {
-                    for (let i = 0; i < 7; i++) {
-                        kz();
-                        swapeToRead();
-                        sleep(random(2000, 4000));
-                        if (checkWatchFull()) {
-                            log("到底了");
-                            break;
-                        }
-                    }
-                }
-            }
-
-            等待未响应();
-            back();
-        }
 
 
         function 页面异常处理() {
@@ -3802,7 +3746,7 @@ ui.ok.click(function () {
                 }
                 kz();
                 //判断是否需要互助
-                if (xiaoyueyuecount <= 2 || xiaoyueyuecount - wifiCount <= 1 || (xiaoyueyueReadNum > 97 && xiaoyueyueReadNum < 101) || xiaoyueyuecheckFlag) {
+                if (xiaoyueyuecount <= 2 || xiaoyueyuecount - wifiCount <= 1 || xiaoyueyuecheckFlag){ //|| (xiaoyueyueReadNum > 97 && xiaoyueyueReadNum < 101)) {
                     let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
                     sleep(5000)
                     cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
@@ -4057,14 +4001,14 @@ ui.ok.click(function () {
 
                 xiaoyueyuecount++;
                 storage.put("xiaoyueyuecount", xiaoyueyuecount);
-                if (xiaoyueyuecount <= 2 || xiaoyueyuecount - wifiCount <= 1 || (xiaoyueyueReadNum > 96 && xiaoyueyueReadNum < 101)) {
+                if (xiaoyueyuecount <= 2 || xiaoyueyuecount - wifiCount <= 1){  // || (xiaoyueyueReadNum > 96 && xiaoyueyueReadNum < 101)) {
                     if (联网验证(zwifi) != true) {
                         连接wifi(zwifi, 5000);
                         app.launch(PKG_NAME);
                         sleep(2000);
                     }
                 } else {
-                    if (xiaoyueyuecount % 3 == 0 || xiaoyueyueReadNum == 101 || xiaoyueyuecount - wifiCount == 2) {
+                    if (xiaoyueyuecount % 3 == 0 || xiaoyueyuecount - wifiCount == 2){   //|| xiaoyueyueReadNum == 101) {
                         if (联网验证(dlwifi) != true) {
                             连接wifi(dlwifi, 5000);
                             app.launch(PKG_NAME);
@@ -5054,17 +4998,6 @@ ui.ok.click(function () {
             return false;
         }
 
-        //到底判断
-        function checkWatchFull() {
-            var btn = textStartsWith("分享").boundsInside(0, 0, device.width, device.height - 1).findOne(3000);
-            if (btn) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-
 
         //此代码由飞云脚本圈整理提供（www.feiyunjs.com）
 
@@ -5407,14 +5340,16 @@ ui.ok.click(function () {
         /*sleep(1000);
         console.setSize(device.width -100, device.height / 4);
         sleep(2000);*/
+
+         // 请求屏幕截图权限
         threads.start(function () {
-            // 请求屏幕截图权限
             if (!requestScreenCapture(true)) {
                 toastLog("请求截图失败");
                 exit();
             } else {
                 toastLog("请求截图成功");
             }
+            sleep(20000);
         });
         sleep(3000);
         let scbtn = textMatches(/(允许|立即开始)/).findOne(3000);

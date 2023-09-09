@@ -203,7 +203,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "番茄分享v9.2.3";
+        var versionNum = "番茄分享v9.2.5";
         var readNum = 0;//最近获取到的阅读次数
         var retryCount = 0;//进入页面重试次数
         var todayTxCount = 0;
@@ -1217,62 +1217,6 @@ ui.ok.click(function () {
             }
         }
 
-
-
-        function 阅读到底() {
-            sleep(5000);
-            log("滑动");
-            swapeToRead();
-            sleep(random(3000, 7000));
-            swapeToRead();
-            sleep(random(3000, 7000));
-            swapeToRead()
-            sleep(random(3000, 7000));
-            if (device.brand == "samsung") {
-                for (let i = 0; i < 7; i++) {
-                    kz();
-                    swapeToRead();
-                    sleep(random(4000, 5000));
-                    if (checkWatchFull()) {
-                        log("到底了");
-                        break;
-                    }
-                }
-            } else {
-                try{
-                    for (let i = 0; i < 7; i++) {
-                        kz();
-                        var img = captureScreen();
-                        var imgH = img.height;
-                        var clip = images.clip(img, 0, img.height - 200, 200, 20);
-                        swapeToRead();
-                        sleep(random(4000, 5000));
-                        var p = findImage(captureScreen(), clip, {
-                            region: [0, imgH - 300, 220, 150],
-                            threshold: 0.9
-                        });
-                        img.recycle();//不再使用需要手动回收
-                        if (p || checkWatchFull()) {
-                            log("到底了");
-                            break;
-                        }
-                    }
-                }catch(e){
-                    for (let i = 0; i < 7; i++) {
-                        kz();
-                        swapeToRead();
-                        sleep(random(2000, 4000));
-                        if (checkWatchFull()) {
-                            log("到底了");
-                            break;
-                        }
-                    }
-                }
-            }
-
-            等待未响应();
-            back();
-        }
 
 
         function 页面异常处理() {
@@ -3004,17 +2948,6 @@ ui.ok.click(function () {
             return false;
         }
 
-        //到底判断
-        function checkWatchFull() {
-            var btn = textStartsWith("分享").boundsInside(0, 0, device.width, device.height - 1).findOne(3000);
-            if (btn) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-
 
         //此代码由飞云脚本圈整理提供（www.feiyunjs.com）
 
@@ -3352,15 +3285,15 @@ ui.ok.click(function () {
         /*sleep(1000);
         console.setSize(device.width -100, device.height / 4);
         sleep(2000);*/
-        threads.start(function () {
-            // 请求屏幕截图权限
+        // 请求屏幕截图权限
+        /*threads.start(function () {
             if (!requestScreenCapture(true)) {
                 toastLog("请求截图失败");
                 exit();
             } else {
                 toastLog("请求截图成功");
             }
-        });
+        });*/
         sleep(3000);
         let scbtn = textMatches(/(允许|立即开始)/).findOne(3000);
         if (scbtn != null) {

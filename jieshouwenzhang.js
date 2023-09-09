@@ -196,7 +196,7 @@ ui.ok.click(function () {
         var MAIN_PKG = "com.fanqie.cloud";
         var PKG_NAME = "com.tencent.mm";
         var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-        var versionNum = "接收v7.4.3";
+        var versionNum = "接收v7.4.5";
 
         toastLog(device.brand);
         toastLog("版本号:" + versionNum);
@@ -1251,61 +1251,72 @@ ui.ok.click(function () {
         function 阅读到底() {
             sleep(5000);
             log("滑动");
-            swapeToRead();
-            sleep(random(2000, 4000));
-            swapeToRead();
-            sleep(random(2000, 4000));
-            swapeToRead();
-            sleep(random(2000, 4000));
-            swapeToRead();
-            sleep(random(2000, 4000));
-            swapeToRead();
-            sleep(random(2000, 4000));
-            swapeToRead();
-            sleep(random(2000, 4000));
-            if (device.brand == "samsung") {
-                for (let i = 0; i < 7; i++) {
-                    kz();
-                    swapeToRead();
-                    sleep(random(2000, 4000));
-                    if (checkWatchFull()) {
-                        log("到底了");
-                        break;
-                    }
-                }
-            } else {
-                try {
-                    for (let i = 0; i < 7; i++) {
-                        kz();
-                        var img = captureScreen();
-                        var imgH = img.height;
-                        var clip = images.clip(img, 0, img.height - 200, 200, 20);
-                        swapeToRead();
-                        sleep(random(4000, 5000));
-                        var p = findImage(captureScreen(), clip, {
-                            region: [0, imgH - 300, 220, 150],
-                            threshold: 0.9
-                        });
-                        img.recycle();//不再使用需要手动回收
-                        if (p || checkWatchFull()) {
-                            log("到底了");
-                            break;
-                        }
-                    }
-                } catch (e) {
-                    for (let i = 0; i < 7; i++) {
-                        kz();
-                        swapeToRead();
-                        sleep(random(2000, 4000));
-                        if (checkWatchFull()) {
-                            log("到底了");
-                            break;
-                        }
-                    }
+            let slideCount = random(10, 15)
+            for (let i = 0; i < slideCount; i++) {
+                kz();
+                等待未响应();
+                swapeToRead();
+                sleep(random(3000, 5000));
+                if (checkWatchFull()) {
+                    log("到底了");
+                    break;
                 }
             }
+            // swapeToRead();
+            // sleep(random(2000, 4000));
+            // swapeToRead();
+            // sleep(random(2000, 4000));
+            // swapeToRead();
+            // sleep(random(2000, 4000));
+            // swapeToRead();
+            // sleep(random(2000, 4000));
+            // swapeToRead();
+            // sleep(random(2000, 4000));
+            // swapeToRead();
+            // sleep(random(2000, 4000));
+            // if (device.brand == "samsung") {
+            //     for (let i = 0; i < 7; i++) {
+            //         kz();
+            //         swapeToRead();
+            //         sleep(random(2000, 4000));
+            //         if (checkWatchFull()) {
+            //             log("到底了");
+            //             break;
+            //         }
+            //     }
+            // } else {
+            //     try {
+            //         for (let i = 0; i < 7; i++) {
+            //             kz();
+            //             var img = captureScreen();
+            //             var imgH = img.height;
+            //             var clip = images.clip(img, 0, img.height - 200, 200, 20);
+            //             swapeToRead();
+            //             sleep(random(4000, 5000));
+            //             var p = findImage(captureScreen(), clip, {
+            //                 region: [0, imgH - 300, 220, 150],
+            //                 threshold: 0.9
+            //             });
+            //             img.recycle();//不再使用需要手动回收
+            //             if (p || checkWatchFull()) {
+            //                 log("到底了");
+            //                 break;
+            //             }
+            //         }
+            //     } catch (e) {
+            //         for (let i = 0; i < 7; i++) {
+            //             kz();
+            //             swapeToRead();
+            //             sleep(random(2000, 4000));
+            //             if (checkWatchFull()) {
+            //                 log("到底了");
+            //                 break;
+            //             }
+            //         }
+            //     }
+            // }
 
-            等待未响应();
+            // 等待未响应();
             back();
         }
 
@@ -1739,12 +1750,20 @@ ui.ok.click(function () {
 
         //到底判断
         function checkWatchFull() {
-            var btn = textStartsWith("分享").boundsInside(0, 0, device.width, device.height - 1).findOne(3000);
+            var btn = textStartsWith("分享").boundsInside(0, 0, device.width, device.height - 1).findOnce();
             if (btn) {
                 return true;
-            } else {
-                return false;
             }
+            let read_area = packageName("com.tencent.mm").id("js_read_area3").textMatches(/(阅读.*)/).findOnce();
+            let js_focus = packageName("com.tencent.mm").id("js_focus").findOnce();
+            log(device.height)
+            if (read_area && read_area.bounds().top < device.height) {
+                return true;
+            }
+            if (js_focus && js_focus.bounds().top < device.height) {
+                return true;
+            }
+            return false;
         }
 
 
@@ -2221,6 +2240,7 @@ ui.ok.click(function () {
             } else {
                 toastLog("请求截图成功");
             }
+            sleep(20000);
         });
         sleep(3000);
         let scbtn = textMatches(/(允许|立即开始)/).findOne(3000);
