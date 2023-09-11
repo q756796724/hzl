@@ -228,7 +228,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v9.9.7";
+            var versionNum = "聚合分享v9.9.8";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -372,69 +372,75 @@ ui.ok.click(function () {
                     }
                 }
                 wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
-                if (wBtns.length > 0) {
-                    sleep(random(8000, 10000))
-
-                    if (random(0, 1) == 0) {
-                        for (let i = 2; i > -1; i--) {
-                            if (i > wBtns.length - 1) {
-                                continue
-                            }
-                            longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
-                            //wBtns[i].longClick()
-                            sleep(random(2000, 4000));
-                            if (text("取消置顶").findOne(3000) != null) {
-                                back();
-                                sleep(2000)
-                                click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
-                                //wBtns[i].click();
-                                sleep(random(1500, 2000))
-                                if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
-                                    log("进入了文件传输助手");
-                                    break
-                                } else {
-                                    sleep(random(3000, 12000))
-                                    back();
-                                    sleep(3000)
-                                    continue;
-                                }
-                            } else {
-                                if (i == 0) {
-                                    console.error("置顶not found 文件传输助手")
-                                    关闭应用(PKG_NAME);
-                                    return
-                                }
-                                continue;
-
-                            }
-                        }
-                    } else {
-                        for (let i = 0; i < wBtns.length; i++) {
-                            longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
-                            //wBtns[i].longClick()
-                            sleep(random(2000, 4000));
-                            if (text("取消置顶").findOne(3000) != null) {
-                                back();
-                                sleep(2000)
-                                click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
-                                //wBtns[i].click();
-                                sleep(random(1500, 2000))
-                                if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
-                                    log("进入了文件传输助手");
-                                    break
-                                } else {
-                                    sleep(random(3000, 12000))
-                                    back();
-                                    sleep(3000)
-                                    continue;
-                                }
-                            } else {
-                                console.error("置顶not found 文件传输助手")
-                                关闭应用(PKG_NAME);
-                                return
-                            }
-                        }
+                if (wBtns.length > 1) {
+                    sleep(2000)
+                    click(wBtns[i].bounds().centerX() + random(-10, 10), wBtns[i].bounds().centerY())
+                    sleep(random(1500, 2000))
+                    if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                        log("进入了文件传输助手");
                     }
+
+                    //sleep(random(8000, 10000))
+                    // if (random(0, 1) == 0) {
+                    //     for (let i = 2; i > -1; i--) {
+                    //         if (i > wBtns.length - 1) {
+                    //             continue
+                    //         }
+                    //         longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
+                    //         //wBtns[i].longClick()
+                    //         sleep(random(2000, 4000));
+                    //         if (text("取消置顶").findOne(3000) != null) {
+                    //             back();
+                    //             sleep(2000)
+                    //             click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
+                    //             //wBtns[i].click();
+                    //             sleep(random(1500, 2000))
+                    //             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                    //                 log("进入了文件传输助手");
+                    //                 break
+                    //             } else {
+                    //                 sleep(random(3000, 12000))
+                    //                 back();
+                    //                 sleep(3000)
+                    //                 continue;
+                    //             }
+                    //         } else {
+                    //             if (i == 0) {
+                    //                 console.error("置顶not found 文件传输助手")
+                    //                 关闭应用(PKG_NAME);
+                    //                 return
+                    //             }
+                    //             continue;
+
+                    //         }
+                    //     }
+                    // } else {
+                    //     for (let i = 0; i < wBtns.length; i++) {
+                    //         longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
+                    //         //wBtns[i].longClick()
+                    //         sleep(random(2000, 4000));
+                    //         if (text("取消置顶").findOne(3000) != null) {
+                    //             back();
+                    //             sleep(2000)
+                    //             click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
+                    //             //wBtns[i].click();
+                    //             sleep(random(1500, 2000))
+                    //             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                    //                 log("进入了文件传输助手");
+                    //                 break
+                    //             } else {
+                    //                 sleep(random(3000, 12000))
+                    //                 back();
+                    //                 sleep(3000)
+                    //                 continue;
+                    //             }
+                    //         } else {
+                    //             console.error("置顶not found 文件传输助手")
+                    //             关闭应用(PKG_NAME);
+                    //             return
+                    //         }
+                    //     }
+                    // }
 
                     wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000);
                     if (wBtn != null) {
@@ -1489,74 +1495,82 @@ ui.ok.click(function () {
 
                         wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
                         if (wBtns.length > 1) {
-                            sleep(random(8000, 10000))
-                            if (random(0, 1) == 0) {
-                                for (let i = 2; i > -1; i--) {
-                                    if (i > wBtns.length - 1) {
-                                        continue
-                                    }
-                                    longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
-                                    sleep(random(2000, 4000));
-                                    if (text("取消置顶").findOne(3000) != null) {
-                                        retryCount = 0;
-                                        back();
-                                        sleep(2000)
-                                        click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
-                                        sleep(random(1500, 2000))
-                                        if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
-                                            log("进入了文件传输助手");
-                                            break
-                                        } else {
-                                            sleep(random(3000, 12000))
-                                            back();
-                                            sleep(3000)
-                                            continue;
-                                        }
-                                    } else {
-                                        if (i == 0) {
-                                            console.error("置顶not found 文件传输助手")
-                                            if (retryCount > 3) {
-                                                retryCount = 0;
-                                                关闭应用(PKG_NAME);
-                                            } else {
-                                                retryCount++
-                                            }
-                                            return
-                                        }
-                                        continue;
-                                    }
-                                }
-                            } else {
-                                for (let i = 0; i < wBtns.length; i++) {
-                                    longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
-                                    sleep(random(2000, 4000));
-                                    if (text("取消置顶").findOne(3000) != null) {
-                                        retryCount = 0;
-                                        back();
-                                        sleep(2000)
-                                        click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
-                                        sleep(random(1500, 2000))
-                                        if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
-                                            log("进入了文件传输助手");
-                                            break
-                                        } else {
-                                            sleep(random(3000, 12000))
-                                            back();
-                                            sleep(3000)
-                                            continue;
-                                        }
-                                    } else {
-                                        console.error("置顶not found 文件传输助手")
-                                        if (retryCount > 3) {
-                                            retryCount = 0;
-                                            关闭应用(PKG_NAME);
-                                        } else {
-                                            retryCount++
-                                        }
-                                        return
-                                    }
-                                }
+                            sleep(2000)
+                            click(wBtns[i].bounds().centerX() + random(-10, 10), wBtns[i].bounds().centerY())
+                            sleep(random(1500, 2000))
+                            if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                                log("进入了文件传输助手");
                             }
+
+
+                            // sleep(random(8000, 10000))
+                            // if (random(0, 1) == 0) {
+                            //     for (let i = 2; i > -1; i--) {
+                            //         if (i > wBtns.length - 1) {
+                            //             continue
+                            //         }
+                            //         longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
+                            //         sleep(random(2000, 4000));
+                            //         if (text("取消置顶").findOne(3000) != null) {
+                            //             retryCount = 0;
+                            //             back();
+                            //             sleep(2000)
+                            //             click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
+                            //             sleep(random(1500, 2000))
+                            //             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                            //                 log("进入了文件传输助手");
+                            //                 break
+                            //             } else {
+                            //                 sleep(random(3000, 12000))
+                            //                 back();
+                            //                 sleep(3000)
+                            //                 continue;
+                            //             }
+                            //         } else {
+                            //             if (i == 0) {
+                            //                 console.error("置顶not found 文件传输助手")
+                            //                 if (retryCount > 3) {
+                            //                     retryCount = 0;
+                            //                     关闭应用(PKG_NAME);
+                            //                 } else {
+                            //                     retryCount++
+                            //                 }
+                            //                 return
+                            //             }
+                            //             continue;
+                            //         }
+                            //     }
+                            // } else {
+                            //     for (let i = 0; i < wBtns.length; i++) {
+                            //         longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
+                            //         sleep(random(2000, 4000));
+                            //         if (text("取消置顶").findOne(3000) != null) {
+                            //             retryCount = 0;
+                            //             back();
+                            //             sleep(2000)
+                            //             click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
+                            //             sleep(random(1500, 2000))
+                            //             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                            //                 log("进入了文件传输助手");
+                            //                 break
+                            //             } else {
+                            //                 sleep(random(3000, 12000))
+                            //                 back();
+                            //                 sleep(3000)
+                            //                 continue;
+                            //             }
+                            //         } else {
+                            //             console.error("置顶not found 文件传输助手")
+                            //             if (retryCount > 3) {
+                            //                 retryCount = 0;
+                            //                 关闭应用(PKG_NAME);
+                            //             } else {
+                            //                 retryCount++
+                            //             }
+                            //             return
+                            //         }
+                            //     }
+                            // }
 
 
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000) != null) {
@@ -2102,74 +2116,81 @@ ui.ok.click(function () {
 
                         wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
                         if (wBtns.length > 1) {
-                            sleep(random(8000, 10000))
-                            if (random(0, 1) == 0) {
-                                for (let i = 2; i > -1; i--) {
-                                    if (i > wBtns.length - 1) {
-                                        continue
-                                    }
-                                    longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
-                                    sleep(random(2000, 4000));
-                                    if (text("取消置顶").findOne(3000) != null) {
-                                        retryCount = 0;
-                                        back();
-                                        sleep(2000)
-                                        click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
-                                        sleep(random(1500, 2000))
-                                        if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
-                                            log("进入了文件传输助手");
-                                            break
-                                        } else {
-                                            sleep(random(3000, 12000))
-                                            back();
-                                            sleep(3000)
-                                            continue;
-                                        }
-                                    } else {
-                                        if (i == 0) {
-                                            console.error("置顶not found 文件传输助手")
-                                            if (retryCount > 3) {
-                                                retryCount = 0;
-                                                关闭应用(PKG_NAME);
-                                            } else {
-                                                retryCount++
-                                            }
-                                            return
-                                        }
-                                        continue;
-                                    }
-                                }
-                            } else {
-                                for (let i = 0; i < wBtns.length; i++) {
-                                    longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
-                                    sleep(random(2000, 4000));
-                                    if (text("取消置顶").findOne(3000) != null) {
-                                        retryCount = 0;
-                                        back();
-                                        sleep(2000)
-                                        click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
-                                        sleep(random(1500, 2000))
-                                        if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
-                                            log("进入了文件传输助手");
-                                            break
-                                        } else {
-                                            sleep(random(3000, 12000))
-                                            back();
-                                            sleep(3000)
-                                            continue;
-                                        }
-                                    } else {
-                                        console.error("置顶not found 文件传输助手")
-                                        if (retryCount > 3) {
-                                            retryCount = 0;
-                                            关闭应用(PKG_NAME);
-                                        } else {
-                                            retryCount++
-                                        }
-                                        return
-                                    }
-                                }
+                            sleep(2000)
+                            click(wBtns[i].bounds().centerX() + random(-10, 10), wBtns[i].bounds().centerY())
+                            sleep(random(1500, 2000))
+                            if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                                log("进入了文件传输助手");
                             }
+
+                            // sleep(random(8000, 10000))
+                            // if (random(0, 1) == 0) {
+                            //     for (let i = 2; i > -1; i--) {
+                            //         if (i > wBtns.length - 1) {
+                            //             continue
+                            //         }
+                            //         longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
+                            //         sleep(random(2000, 4000));
+                            //         if (text("取消置顶").findOne(3000) != null) {
+                            //             retryCount = 0;
+                            //             back();
+                            //             sleep(2000)
+                            //             click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
+                            //             sleep(random(1500, 2000))
+                            //             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                            //                 log("进入了文件传输助手");
+                            //                 break
+                            //             } else {
+                            //                 sleep(random(3000, 12000))
+                            //                 back();
+                            //                 sleep(3000)
+                            //                 continue;
+                            //             }
+                            //         } else {
+                            //             if (i == 0) {
+                            //                 console.error("置顶not found 文件传输助手")
+                            //                 if (retryCount > 3) {
+                            //                     retryCount = 0;
+                            //                     关闭应用(PKG_NAME);
+                            //                 } else {
+                            //                     retryCount++
+                            //                 }
+                            //                 return
+                            //             }
+                            //             continue;
+                            //         }
+                            //     }
+                            // } else {
+                            //     for (let i = 0; i < wBtns.length; i++) {
+                            //         longclickx(wBtns[i].bounds().centerX(), wBtns[i].bounds().centerY())
+                            //         sleep(random(2000, 4000));
+                            //         if (text("取消置顶").findOne(3000) != null) {
+                            //             retryCount = 0;
+                            //             back();
+                            //             sleep(2000)
+                            //             click(wBtns[i].bounds().centerX() + random(-5, 5), wBtns[i].bounds().centerY())
+                            //             sleep(random(1500, 2000))
+                            //             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                            //                 log("进入了文件传输助手");
+                            //                 break
+                            //             } else {
+                            //                 sleep(random(3000, 12000))
+                            //                 back();
+                            //                 sleep(3000)
+                            //                 continue;
+                            //             }
+                            //         } else {
+                            //             console.error("置顶not found 文件传输助手")
+                            //             if (retryCount > 3) {
+                            //                 retryCount = 0;
+                            //                 关闭应用(PKG_NAME);
+                            //             } else {
+                            //                 retryCount++
+                            //             }
+                            //             return
+                            //         }
+                            //     }
+                            // }
 
 
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000) != null) {
@@ -5583,7 +5604,7 @@ ui.ok.click(function () {
             var lock1 = threads.lock();
             threads.start(function () {
                 lock1.lock(); // 获取锁
-                try{
+                try {
                     // 这里是需要保证只有一个线程执行的代码块
                     for (; ;) {
                         kz();
@@ -5837,11 +5858,11 @@ ui.ok.click(function () {
                             continue;
                         }
                     }
-                }finally {
+                } finally {
                     lock1.unlock(); // 释放锁
                 }
             })
-        }finally {
+        } finally {
             lock2.unlock(); // 释放锁
         }
     });
