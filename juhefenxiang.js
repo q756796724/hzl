@@ -228,7 +228,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v9.9.8";
+            var versionNum = "聚合分享v9.9.9";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -374,7 +374,7 @@ ui.ok.click(function () {
                 wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
                 if (wBtns.length > 1) {
                     sleep(2000)
-                    click(wBtns[i].bounds().centerX() + random(-10, 10), wBtns[i].bounds().centerY())
+                    click(wBtns[0].bounds().centerX() + random(-10, 10), wBtns[0].bounds().centerY())
                     sleep(random(1500, 2000))
                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
                         log("进入了文件传输助手");
@@ -1496,7 +1496,7 @@ ui.ok.click(function () {
                         wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
                         if (wBtns.length > 1) {
                             sleep(2000)
-                            click(wBtns[i].bounds().centerX() + random(-10, 10), wBtns[i].bounds().centerY())
+                            click(wBtns[0].bounds().centerX() + random(-10, 10), wBtns[0].bounds().centerY())
                             sleep(random(1500, 2000))
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
                                 log("进入了文件传输助手");
@@ -2117,7 +2117,7 @@ ui.ok.click(function () {
                         wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
                         if (wBtns.length > 1) {
                             sleep(2000)
-                            click(wBtns[i].bounds().centerX() + random(-10, 10), wBtns[i].bounds().centerY())
+                            click(wBtns[0].bounds().centerX() + random(-10, 10), wBtns[0].bounds().centerY())
                             sleep(random(1500, 2000))
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
                                 log("进入了文件传输助手");

@@ -200,7 +200,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.4.7";
+            var versionNum = "接收v7.4.8";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -1012,7 +1012,7 @@ ui.ok.click(function () {
                 }
                 if (wBtns.length > 1) {
                     sleep(2000)
-                    click(wBtns[i].bounds().centerX() + random(-10, 10), wBtns[i].bounds().centerY())
+                    click(wBtns[0].bounds().centerX() + random(-10, 10), wBtns[0].bounds().centerY())
                     sleep(random(1500, 2000))
                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
                         log("进入了文件传输助手");
