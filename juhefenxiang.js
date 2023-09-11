@@ -1613,6 +1613,13 @@ ui.ok.click(function () {
                                                                     sleep(random(1000, 2000))
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                                         log("点击小阅阅成功")
+                                                                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|)/).findOne(10000)
+                                                                        if (stopPage != null) {
+                                                                            sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
+                                                                            xiaoyueyuekedusj = new Date().getTime() + 1000 * 1000
+                                                                            storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                                                                            return;
+                                                                        }
                                                                         break
                                                                     }
                                                                 }
@@ -2238,6 +2245,13 @@ ui.ok.click(function () {
                                                                     sleep(random(1000, 2000))
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                                         log("点击美添成功")
+                                                                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|)/).findOne(10000)
+                                                                        if (stopPage != null) {
+                                                                            sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
+                                                                            meitiankedusj = new Date().getTime() + 1800 * 1000
+                                                                            storage.put("meitiankedusj", meitiankedusj);
+                                                                            return;
+                                                                        }
                                                                         break
                                                                     }
                                                                 }
@@ -2344,7 +2358,7 @@ ui.ok.click(function () {
                     let xhcount = 0
                     let ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可用积分.*)/).findOnce()
                     while (ktjfbtn == null || isNaN(parseInt(ktjfbtn.text().replace(/[^\d]/g, " ")))) {
-                        let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
+                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|)/).findOnce()
                         if (stopPage != null) {
                             sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum);//出错请处理
                             meitiankedusj = new Date().getTime() + 3600 * 1000
