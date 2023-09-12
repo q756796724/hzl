@@ -200,7 +200,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.4.8";
+            var versionNum = "接收v7.4.9";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -1768,7 +1768,6 @@ ui.ok.click(function () {
                 }
                 let read_area = packageName("com.tencent.mm").id("js_read_area3").textMatches(/(阅读.*)/).findOnce();
                 let js_focus = packageName("com.tencent.mm").id("js_focus").findOnce();
-                log(device.height)
                 if (read_area && read_area.bounds().top < device.height) {
                     return true;
                 }
@@ -1791,10 +1790,10 @@ ui.ok.click(function () {
 
             function swapeToRead() {
                 if (currentPackage() != "com.miui.home") {
-                    let x1 = device.width * random(300, 400) / 1000;
-                    let y1 = device.height * random(700, 850) / 1000;
-                    let x2 = device.width * random(400, 500) / 1000;
-                    let y2 = device.height * random(450, 600) / 1000;
+                    let x1 = device.width * random(200, 500) / 1000;
+                    let y1 = device.height * random(700, 900) / 1000;
+                    let x2 = device.width * random(300, 800) / 1000;
+                    let y2 = device.height * random(200, 500) / 1000;
                     //swipe(x1, y1, x2, y2, random(1200, 1500));
                     sml_move(x1, y1, x2, y2, random(1200, 1500));
                 }
