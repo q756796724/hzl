@@ -228,7 +228,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.0.0";
+            var versionNum = "聚合分享v10.0.1";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -493,7 +493,7 @@ ui.ok.click(function () {
                 </frame>
             );
 
-            悬浮窗.setPosition(10, device.height *0.25);   //设置位置（x，y）
+            悬浮窗.setPosition(10, device.height * 0.25);   //设置位置（x，y）
             悬浮窗.setAdjustEnabled(true);   //显示调节位置控件
             悬浮窗.exitOnClose();   //关闭悬浮窗时自动结束脚本运行
 
@@ -1613,7 +1613,7 @@ ui.ok.click(function () {
                                                                     sleep(random(1000, 2000))
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                                         log("点击小阅阅成功")
-                                                                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|)/).findOne(10000)
+                                                                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*)/).findOne(10000)
                                                                         if (stopPage != null) {
                                                                             sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
                                                                             xiaoyueyuekedusj = new Date().getTime() + 1000 * 1000
@@ -2245,7 +2245,7 @@ ui.ok.click(function () {
                                                                     sleep(random(1000, 2000))
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                                         log("点击美添成功")
-                                                                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|)/).findOne(10000)
+                                                                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*)/).findOne(10000)
                                                                         if (stopPage != null) {
                                                                             sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
                                                                             meitiankedusj = new Date().getTime() + 1800 * 1000
@@ -2358,7 +2358,7 @@ ui.ok.click(function () {
                     let xhcount = 0
                     let ktjfbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(可用积分.*)/).findOnce()
                     while (ktjfbtn == null || isNaN(parseInt(ktjfbtn.text().replace(/[^\d]/g, " ")))) {
-                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|)/).findOnce()
+                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*)/).findOnce()
                         if (stopPage != null) {
                             sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum);//出错请处理
                             meitiankedusj = new Date().getTime() + 3600 * 1000
@@ -2404,8 +2404,14 @@ ui.ok.click(function () {
                         }
                     }
 
-
                     let wztxt = packageName("com.tencent.mm").className("android.view.View").text("文章阅读推荐").findOne(10000)
+                    if (wztxt != null && wztxt.bounds().bottom > device.height * 0.8) {
+                        swape()
+                        sleeep(5000)
+                    }
+
+
+                    wztxt = packageName("com.tencent.mm").className("android.view.View").text("文章阅读推荐").findOnce()
                     let kshdbtns = packageName("com.tencent.mm").className("android.view.View").text("开始活动").find()
                     if (kshdbtns.length > 0 && wztxt != null) {
                         meitiantry = 0;
@@ -5046,6 +5052,14 @@ ui.ok.click(function () {
                 var starx = random(500, 600);
                 var starty = random(600, 700);
                 swipe(starx, starty, starx, starty - 300, random(400, 500));
+            }
+            function swape() {
+                let x1 = device.width * random(300, 400) / 1000;
+                let y1 = device.height * random(700, 850) / 1000;
+                let x2 = device.width * random(400, 500) / 1000;
+                let y2 = device.height * random(450, 600) / 1000;
+                //swipe(x1, y1, x2, y2, random(1200, 1500));
+                sml_move(x1, y1, x2, y2, random(1200, 1500));
             }
 
             function swapeToRead() {
