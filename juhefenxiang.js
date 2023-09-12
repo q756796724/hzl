@@ -1350,6 +1350,7 @@ ui.ok.click(function () {
             }
 
             function 初始化配置(path) {
+                log("初始化配置")
                 files.createWithDirs(path)  //开始创建文件
                 let jsonContent = {
                     "date": new Date().toLocaleDateString(),
@@ -5532,7 +5533,7 @@ ui.ok.click(function () {
                 setInterval(进程守护(), 60000);
             });
             配置 = 读取配置(settingPath);
-            if (配置 == undefined || 配置["date"] != new Date().toLocaleDateString()) {
+            if (配置 == undefined) {
                 初始化配置(settingPath);
             }
 
