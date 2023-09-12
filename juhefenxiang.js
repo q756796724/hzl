@@ -228,7 +228,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.0.2";
+            var versionNum = "聚合分享v10.0.3";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -1467,7 +1467,7 @@ ui.ok.click(function () {
                             xiaoyueyuekedusj = tomorrow.getTime()
                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                         } else {
-                            xiaoyueyuekedusj = new Date().getTime() + 3600 * 1000
+                            xiaoyueyuekedusj = new Date().getTime() + random(3600, 4000) * 1000
                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                         }
                         return
@@ -1580,7 +1580,7 @@ ui.ok.click(function () {
                                     返回v首页();
                                     sleep(1000);
                                     home();
-                                    xiaoyueyuekedusj = new Date().getTime() + 3600 * 1000
+                                    xiaoyueyuekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
 
                                     return
@@ -1616,7 +1616,7 @@ ui.ok.click(function () {
                                                                         let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*)/).findOne(10000)
                                                                         if (stopPage != null) {
                                                                             sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
-                                                                            xiaoyueyuekedusj = new Date().getTime() + 1000 * 1000
+                                                                            xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                                                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                                                             return;
                                                                         }
@@ -1708,7 +1708,7 @@ ui.ok.click(function () {
                         返回v首页();
                         sleep(1000);
                         home();
-                        xiaoyueyuekedusj = new Date().getTime() + 3600 * 1000
+                        xiaoyueyuekedusj = new Date().getTime() + random(3600, 4000) * 1000
                         storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
 
                         return
@@ -1903,7 +1903,7 @@ ui.ok.click(function () {
                             meitiankedusj = tomorrow.getTime()
                             storage.put("meitiankedusj", meitiankedusj);
                         } else {
-                            meitiankedusj = new Date().getTime() + 3600 * 1000
+                            meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
                             storage.put("meitiankedusj", meitiankedusj);
                         }
                         return
@@ -2024,7 +2024,7 @@ ui.ok.click(function () {
                                                     latestNews.children().forEach(function (child) {
                                                         if (child.className() == "android.widget.TextView") {
                                                             if (child.text().indexOf("休息") > -1) {
-                                                                meitiankedusj = new Date().getTime() + 3600 * 1000
+                                                                meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
                                                                 storage.put("meitiankedusj", meitiankedusj);
                                                                 return;
                                                             }
@@ -2207,7 +2207,7 @@ ui.ok.click(function () {
                                     返回v首页();
                                     sleep(1000);
                                     home();
-                                    meitiankedusj = new Date().getTime() + 3600 * 1000
+                                    meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
                                     storage.put("meitiankedusj", meitiankedusj);
 
                                     return
@@ -2248,7 +2248,7 @@ ui.ok.click(function () {
                                                                         let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*)/).findOne(10000)
                                                                         if (stopPage != null) {
                                                                             sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
-                                                                            meitiankedusj = new Date().getTime() + 1800 * 1000
+                                                                            meitiankedusj = new Date().getTime() + random(1800, 3600) * 1000
                                                                             storage.put("meitiankedusj", meitiankedusj);
                                                                             return;
                                                                         }
@@ -2361,7 +2361,7 @@ ui.ok.click(function () {
                         let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*)/).findOnce()
                         if (stopPage != null) {
                             sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum);//出错请处理
-                            meitiankedusj = new Date().getTime() + 3600 * 1000
+                            meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
                             storage.put("meitiankedusj", meitiankedusj);
                             return;
                         }
@@ -2440,7 +2440,7 @@ ui.ok.click(function () {
                                     //reducejieshouCount("开始阅读前数量减一");
                                     break
                                 } else if ((fanqieflag || xiaoyueyueflag) && i == 10) {
-                                    meitiankedusj = new Date().getTime() + 1000 * 1000
+                                    meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
                                     storage.put("meitiankedusj", meitiankedusj);
                                     返回v首页();
                                     return;
@@ -2457,7 +2457,7 @@ ui.ok.click(function () {
                                 sleep(100000)
                             }
 
-                            clickx(kshdbtns[0].bounds().centerX(), kshdbtns[0].bounds().centerY())
+                            click(kshdbtns[0].bounds().centerX() + random(-5, 5), kshdbtns[0].bounds().centerY())
                             sleep(8000)
                             let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按识别.*)/).findOne(3000)
                             if (tstxt) {
@@ -2493,7 +2493,11 @@ ui.ok.click(function () {
                                                 fenxiangshibai();
                                                 console.warn("文章过少:" + parseInt(matches[1]))
                                                 返回v首页();
-                                                meitiankedusj = new Date().getTime() + 1800 * 1000
+                                                if (fanqieflag || xiaoyueyueflag) {
+                                                    meitiankedusj = new Date().getTime() + random(3600, 7200) * 1000
+                                                } else {
+                                                    meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                }
                                                 storage.put("meitiankedusj", meitiankedusj);
                                                 return
                                             }
@@ -2506,7 +2510,7 @@ ui.ok.click(function () {
                                 let meitianyueduflag = meitianyuedu()
                                 if (meitianyueduflag == true) {
                                     返回v首页()
-                                    meitiankedusj = new Date().getTime() + 3600 * 1000
+                                    meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
                                     storage.put("meitiankedusj", meitiankedusj);
 
                                 } else {
@@ -2515,6 +2519,11 @@ ui.ok.click(function () {
                             } else {
                                 console.warn("没有找到识别图中的二维码")
                                 fenxiangshibai();
+                                if (fanqieflag || xiaoyueyueflag) {
+                                    meitiankedusj = new Date().getTime() + random(3600, 7200) * 1000
+                                } else {
+                                    meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                }
                             }
                         } else {
                             let sybtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(剩余.*)/).findOnce()
@@ -2532,7 +2541,7 @@ ui.ok.click(function () {
                                         meitiankedusj = tomorrow.getTime()
                                         storage.put("meitiankedusj", meitiankedusj);
                                     } else {
-                                        meitiankedusj = new Date().getTime() + 3600 * 1000
+                                        meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
                                         storage.put("meitiankedusj", meitiankedusj);
                                     }
                                 } else if (sytext.indexOf("分钟") > -1) {
@@ -2599,7 +2608,7 @@ ui.ok.click(function () {
                             fanqiekedusj = tomorrow.getTime()
                             storage.put("fanqiekedusj", fanqiekedusj);
                         } else {
-                            fanqiekedusj = new Date().getTime() + 3600 * 1000
+                            fanqiekedusj = new Date().getTime() + random(3600, 4000) * 1000
                             storage.put("fanqiekedusj", fanqiekedusj);
                         }
                         return
@@ -2724,7 +2733,7 @@ ui.ok.click(function () {
                                                     latestNews.children().forEach(function (child) {
                                                         if (child.className() == "android.widget.TextView") {
                                                             if (child.text().indexOf("休息") > -1) {
-                                                                fanqiekedusj = new Date().getTime() + 3600 * 1000
+                                                                fanqiekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                                                 storage.put("fanqiekedusj", fanqiekedusj);
                                                                 return;
                                                             }
@@ -2827,7 +2836,7 @@ ui.ok.click(function () {
                                                                                     配置["count"] = 1;
                                                                                     保存配置(settingPath, 配置);
 
-                                                                                    fanqiekedusj = new Date().getTime() + 2 * 3600 * 1000
+                                                                                    fanqiekedusj = new Date().getTime() + random(7200, 8000) * 1000
                                                                                     storage.put("fanqiekedusj", fanqiekedusj);
 
                                                                                     checkFlag = true
@@ -2880,13 +2889,13 @@ ui.ok.click(function () {
                                                                                             fanqiekedusj = tomorrow.getTime()
                                                                                             storage.put("fanqiekedusj", fanqiekedusj);
                                                                                         } else {
-                                                                                            fanqiekedusj = new Date().getTime() + 3600 * 1000
+                                                                                            fanqiekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                                                                             storage.put("fanqiekedusj", fanqiekedusj);
                                                                                         }
 
                                                                                     } else {
                                                                                         //其他原因，例如维护
-                                                                                        fanqiekedusj = new Date().getTime() + 3600 * 1000
+                                                                                        fanqiekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                                                                         storage.put("fanqiekedusj", fanqiekedusj);
                                                                                         checkFlag = true
                                                                                     }
@@ -3078,7 +3087,7 @@ ui.ok.click(function () {
                                     配置["count"] = 1;
                                     保存配置(settingPath, 配置);
 
-                                    fanqiekedusj = new Date().getTime() + 2 * 3600 * 1000
+                                    fanqiekedusj = new Date().getTime() + random(7200, 8000) * 1000
                                     storage.put("fanqiekedusj", fanqiekedusj);
 
 
@@ -3123,12 +3132,12 @@ ui.ok.click(function () {
                                             fanqiekedusj = tomorrow.getTime()
                                             storage.put("fanqiekedusj", fanqiekedusj);
                                         } else {
-                                            fanqiekedusj = new Date().getTime() + 3600 * 1000
+                                            fanqiekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                             storage.put("fanqiekedusj", fanqiekedusj);
                                         }
                                     } else {
                                         //其他原因，例如维护
-                                        fanqiekedusj = new Date().getTime() + 3600 * 1000
+                                        fanqiekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                         storage.put("fanqiekedusj", fanqiekedusj);
                                         checkFlag = true
                                     }
@@ -3321,7 +3330,7 @@ ui.ok.click(function () {
                                 fanqiekedusj = tomorrow.getTime()
                                 storage.put("fanqiekedusj", fanqiekedusj);
                             } else {
-                                fanqiekedusj = new Date().getTime() + 3600 * 1000
+                                fanqiekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                 storage.put("fanqiekedusj", fanqiekedusj);
                             }
                             return;
@@ -3347,7 +3356,7 @@ ui.ok.click(function () {
                                 fanqiekedusj = tomorrow.getTime()
                                 storage.put("fanqiekedusj", fanqiekedusj);
                             } else {
-                                fanqiekedusj = new Date().getTime() + 3600 * 1000
+                                fanqiekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                 storage.put("fanqiekedusj", fanqiekedusj);
                             }
                             return;
@@ -3358,7 +3367,7 @@ ui.ok.click(function () {
                             配置["lunCount"] = 1;
                             配置["count"] = 1;
                             保存配置(settingPath, 配置);
-                            fanqiekedusj = new Date().getTime() + 2 * 3600 * 1000
+                            fanqiekedusj = new Date().getTime() + random(7200, 8000) * 1000
                             storage.put("fanqiekedusj", fanqiekedusj);
                             return
                         }
@@ -3415,7 +3424,7 @@ ui.ok.click(function () {
                                     配置["count"] = 1;
                                     保存配置(settingPath, 配置);
                                     checkFlag = true
-                                    fanqiekedusj = new Date().getTime() + 2 * 3600 * 1000
+                                    fanqiekedusj = new Date().getTime() + random(7200, 8000) * 1000
                                     storage.put("fanqiekedusj", fanqiekedusj);
                                     return
                                     /*if (auto_tx) {
@@ -3460,7 +3469,7 @@ ui.ok.click(function () {
                                         返回v首页();
                                         return;
                                     } else {
-                                        fanqiekedusj = new Date().getTime() + 3600 * 1000
+                                        fanqiekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                         storage.put("fanqiekedusj", fanqiekedusj);
 
                                     }
@@ -3480,7 +3489,7 @@ ui.ok.click(function () {
                         let stopPage = packageName("com.tencent.mm").textContains("已停止访问该网页").findOnce()
                         if (stopPage != null) {
                             sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=fanqienum:" + phoneNum);//出错请处理
-                            fanqiekedusj = new Date().getTime() + 3600 * 1000
+                            fanqiekedusj = new Date().getTime() + random(3600, 4000) * 1000
                             storage.put("fanqiekedusj", fanqiekedusj);
 
                             return;
@@ -3514,7 +3523,7 @@ ui.ok.click(function () {
                             }
                         }*/
                     }
-                    fanqiekedusj = new Date().getTime() + 2 * 3600 * 1000
+                    fanqiekedusj = new Date().getTime() + random(7200, 8000) * 1000
                     storage.put("fanqiekedusj", fanqiekedusj);
                     checkFlag = true
                     return
@@ -3647,7 +3656,7 @@ ui.ok.click(function () {
                     log(new Date().toLocaleString() + "-----------" + xianzhistr);
                     xiaoyueyuecheckFlag = true
                     storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
-                    xiaoyueyuekedusj = new Date().getTime() + 2 * 3600 * 1000
+                    xiaoyueyuekedusj = new Date().getTime() + random(7200, 8000) * 1000
                     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
 
                     return false;
@@ -3667,7 +3676,7 @@ ui.ok.click(function () {
                         xiaoyueyuekedusj = tomorrow.getTime()
                         storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                     } else {
-                        xiaoyueyuekedusj = new Date().getTime() + 3600 * 1000
+                        xiaoyueyuekedusj = new Date().getTime() + random(3600, 4000) * 1000
                         storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                     }
                     return false;
@@ -3681,7 +3690,7 @@ ui.ok.click(function () {
                     return false
                 } else if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(阅读加载中.*)/).findOnce()) {
                     console.warn("小阅阅可能进黑")
-                    xiaoyueyuekedusj = new Date().getTime() + 1200 * 1000
+                    xiaoyueyuekedusj = new Date().getTime() + random(1200, 1800) * 1000
                     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                     if (xiaoyueyuecheckFlag) {
                         console.warn("检测小阅阅打开失败")
@@ -3690,7 +3699,7 @@ ui.ok.click(function () {
                     return false
                 } else if (xiaoyueyuecheckFlag) {
                     console.warn("检测小阅阅打开失败")
-                    xiaoyueyuekedusj = new Date().getTime() + 1200 * 1000
+                    xiaoyueyuekedusj = new Date().getTime() + random(1200, 1800) * 1000
                     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                     fenxiangshibai();
                     return false
@@ -3732,7 +3741,7 @@ ui.ok.click(function () {
                             xiaoyueyuecheckFlag = true
                             storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
                             sleep(300000);
-                            xiaoyueyuekedusj = new Date().getTime() + 1000 * 1000
+                            xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                             return false;
                         } else {
@@ -3741,7 +3750,7 @@ ui.ok.click(function () {
                                 log(new Date().toLocaleString() + "-----------" + xianzhistr);
                                 xiaoyueyuecheckFlag = true
                                 storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
-                                xiaoyueyuekedusj = new Date().getTime() + 2 * 3600 * 1000
+                                xiaoyueyuekedusj = new Date().getTime() + random(7200, 8000) * 1000
                                 storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                 return false;
                             }
@@ -3751,7 +3760,7 @@ ui.ok.click(function () {
                                 xiaoyueyuecheckFlag = true
                                 storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
                                 sleep(300000);
-                                xiaoyueyuekedusj = new Date().getTime() + 1000 * 1000
+                                xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                 storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                 return false;
                             } else {
@@ -3776,7 +3785,7 @@ ui.ok.click(function () {
                             xiaoyueyueluncount++
                             storage.put("xiaoyueyueluncount", xiaoyueyueluncount);
 
-                            xiaoyueyuekedusj = new Date().getTime() + 3600 * 1000
+                            xiaoyueyuekedusj = new Date().getTime() + random(3600, 4000) * 1000
                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
 
                             return true;
@@ -3851,7 +3860,7 @@ ui.ok.click(function () {
                                 if (xiaoyueyuecheckFlag) {
                                     if (havejieshouren(1) == false) {
                                         sleep(300000);
-                                        xiaoyueyuekedusj = new Date().getTime() + 1000 * 1000
+                                        xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                         storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
 
                                         return false;
@@ -3906,7 +3915,7 @@ ui.ok.click(function () {
                                 } else if (xiaoyueyuecheckFlag && xiaoyueyuecount > wifiCount) {
                                     if (havejieshouren(1) == false) {
                                         sleep(300000);
-                                        xiaoyueyuekedusj = new Date().getTime() + 1000 * 1000
+                                        xiaoyueyuekedusj = new Date().getTime() + random(100, 1800) * 1000
                                         storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
 
                                         return false;
@@ -3920,7 +3929,7 @@ ui.ok.click(function () {
                                     sleep(5000)
                                     if (fenxiangurl() == false) {
                                         fenxiangshibai();
-                                        xiaoyueyuekedusj = new Date().getTime() + 1200 * 1000
+                                        xiaoyueyuekedusj = new Date().getTime() + random(1200, 1800) * 1000
                                         storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
 
                                         return false;
@@ -3930,7 +3939,7 @@ ui.ok.click(function () {
                                 }
                                 if (clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
                                     fenxiangshibai();
-                                    xiaoyueyuekedusj = new Date().getTime() + 1200 * 1000
+                                    xiaoyueyuekedusj = new Date().getTime() + random(1200, 1800) * 1000
                                     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
 
                                     return false;
@@ -3944,7 +3953,7 @@ ui.ok.click(function () {
                                 if (sfcfyd(yuducontent) == false) {
                                     console.error("cfyd：" + yuducontent);
                                     sleep(300000);
-                                    xiaoyueyuekedusj = new Date().getTime() + 1000 * 1000
+                                    xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
 
                                     return false;
@@ -3955,7 +3964,7 @@ ui.ok.click(function () {
                                     console.warn("fxurl失败")
                                     fenxiangshibai();
                                     sleep(300000);
-                                    xiaoyueyuekedusj = new Date().getTime() + 1000 * 1000
+                                    xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
 
                                     return false;
@@ -3972,7 +3981,7 @@ ui.ok.click(function () {
                                 log(new Date().toLocaleString() + "-----------" + xianzhistr);
                                 xiaoyueyuecheckFlag = true
                                 storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
-                                xiaoyueyuekedusj = new Date().getTime() + 2 * 3600 * 1000
+                                xiaoyueyuekedusj = new Date().getTime() + random(7200, 8000) * 1000
                                 storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
 
                                 return false;
@@ -3992,7 +4001,7 @@ ui.ok.click(function () {
                                     xiaoyueyuekedusj = tomorrow.getTime()
                                     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                 } else {
-                                    xiaoyueyuekedusj = new Date().getTime() + 3600 * 1000
+                                    xiaoyueyuekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                 }
                                 return true
@@ -4011,7 +4020,7 @@ ui.ok.click(function () {
                                     fenxiangshibai();
                                 }
                                 console.error("标题识别失败");
-                                xiaoyueyuekedusj = new Date().getTime() + 1200 * 1000
+                                xiaoyueyuekedusj = new Date().getTime() + random(1200, 1800) * 1000
                                 storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
 
                                 return false;
@@ -4089,7 +4098,7 @@ ui.ok.click(function () {
                                 xiaoyueyuecheckFlag = true
                                 storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
 
-                                xiaoyueyuekedusj = new Date().getTime() + 2 * 3600 * 1000
+                                xiaoyueyuekedusj = new Date().getTime() + random(7200, 8000) * 1000
                                 storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
 
                                 return false;
@@ -4109,7 +4118,7 @@ ui.ok.click(function () {
                                     xiaoyueyuekedusj = tomorrow.getTime()
                                     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                 } else {
-                                    xiaoyueyuekedusj = new Date().getTime() + 3600 * 1000
+                                    xiaoyueyuekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                 }
                                 return true
@@ -4183,7 +4192,7 @@ ui.ok.click(function () {
                                             rBtn.parent().click();
                                         }
                                         返回v首页();
-                                        meitiankedusj = new Date().getTime() + 1000 * 1000
+                                        meitiankedusj = new Date().getTime() + random(1000, 1200) * 1000
                                         storage.put("meitiankedusj", meitiankedusj);
 
                                         return false;
@@ -4198,7 +4207,7 @@ ui.ok.click(function () {
                                         rBtn.parent().click();
                                     }
                                     返回v首页();
-                                    meitiankedusj = new Date().getTime() + 1000 * 1000
+                                    meitiankedusj = new Date().getTime() + random(1000, 1200) * 1000
                                     storage.put("meitiankedusj", meitiankedusj);
                                     return false;
                                 }
@@ -4214,9 +4223,9 @@ ui.ok.click(function () {
                                     }
                                     返回v首页();
                                     if (fanqieflag || xiaoyueyueflag) {
-                                        meitiankedusj = new Date().getTime() + 7200 * 1000
+                                        meitiankedusj = new Date().getTime() + random(3600, 7200) * 1000
                                     } else {
-                                        meitiankedusj = new Date().getTime() + 3600 * 1000
+                                        meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
                                     }
                                     storage.put("meitiankedusj", meitiankedusj);
                                     return false;
@@ -4231,7 +4240,7 @@ ui.ok.click(function () {
                                         rBtn.parent().click();
                                     }
                                     返回v首页();
-                                    meitiankedusj = new Date().getTime() + 1000 * 1000
+                                    meitiankedusj = new Date().getTime() + random(1000, 1200) * 1000
                                     storage.put("meitiankedusj", meitiankedusj);
                                     return false;
                                 }
@@ -4247,7 +4256,7 @@ ui.ok.click(function () {
                                 rBtn.parent().click();
                             }
                             返回v首页();
-                            meitiankedusj = new Date().getTime() + 1000 * 1000
+                            meitiankedusj = new Date().getTime() + random(1000, 1200) * 1000
                             storage.put("meitiankedusj", meitiankedusj);
                             return false;
                         }
@@ -4346,7 +4355,7 @@ ui.ok.click(function () {
                                     addXianZhi(phoneNum.toString())
                                 }
 
-                                meitiankedusj = new Date().getTime() + 3600 * 1000
+                                meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
                                 storage.put("meitiankedusj", meitiankedusj);
 
                                 return false
@@ -4410,7 +4419,7 @@ ui.ok.click(function () {
                             if (fhbtn) {
                                 sendTx("http://miaotixing.com/trigger?id=tn9efbL&text=num:" + phoneNum + "--readNum:" + count + "--中途请返回");
                                 console.warn("中途请返回")
-                                meitiankedusj = new Date().getTime() + 3600 * 1000
+                                meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
                                 storage.put("meitiankedusj", xiaoyueyuekedusj);
                                 return false
                             }
@@ -4556,7 +4565,7 @@ ui.ok.click(function () {
                                             }
                                         }
                                     }*/
-                                    fanqiekedusj = new Date().getTime() + 2 * 3600 * 1000
+                                    fanqiekedusj = new Date().getTime() + random(7200, 8000) * 1000
                                     storage.put("fanqiekedusj", fanqiekedusj);
 
                                     return false
@@ -4689,7 +4698,7 @@ ui.ok.click(function () {
                                         rBtn.parent().click();
                                     }
                                     返回v首页();
-                                    fanqiekedusj = new Date().getTime() + 1000 * 1000
+                                    fanqiekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                     storage.put("fanqiekedusj", fanqiekedusj);
 
                                     return false;
@@ -4718,7 +4727,7 @@ ui.ok.click(function () {
                                             rBtn.parent().click();
                                         }
                                         返回v首页();
-                                        fanqiekedusj = new Date().getTime() + 1000 * 1000
+                                        fanqiekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                         storage.put("fanqiekedusj", fanqiekedusj);
 
                                         return false;
@@ -4733,7 +4742,7 @@ ui.ok.click(function () {
                                         rBtn.parent().click();
                                     }
                                     返回v首页();
-                                    fanqiekedusj = new Date().getTime() + 1000 * 1000
+                                    fanqiekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                     storage.put("fanqiekedusj", fanqiekedusj);
                                     return false;
                                 }
@@ -4748,7 +4757,7 @@ ui.ok.click(function () {
                                         rBtn.parent().click();
                                     }
                                     返回v首页();
-                                    fanqiekedusj = new Date().getTime() + 1000 * 1000
+                                    fanqiekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                     storage.put("fanqiekedusj", fanqiekedusj);
 
                                     return false;
@@ -4760,7 +4769,7 @@ ui.ok.click(function () {
                                     rBtn.parent().click();
                                 }
                                 返回v首页();
-                                fanqiekedusj = new Date().getTime() + 1000 * 1000
+                                fanqiekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                 storage.put("fanqiekedusj", fanqiekedusj);
 
                                 return false;
@@ -4778,7 +4787,7 @@ ui.ok.click(function () {
                                     rBtn.parent().click();
                                 }
                                 返回v首页();
-                                fanqiekedusj = new Date().getTime() + 1000 * 1000
+                                fanqiekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                 storage.put("fanqiekedusj", fanqiekedusj);
 
                             } else {
@@ -5793,7 +5802,7 @@ ui.ok.click(function () {
                                 fanqiekedusj = tomorrow.getTime()
                                 storage.put("fanqiekedusj", fanqiekedusj);
                             } else {
-                                fanqiekedusj = new Date().getTime() + 3600 * 1000
+                                fanqiekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                 storage.put("fanqiekedusj", fanqiekedusj);
                             }
                             continue;
