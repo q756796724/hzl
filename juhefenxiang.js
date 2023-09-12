@@ -493,7 +493,7 @@ ui.ok.click(function () {
                 </frame>
             );
 
-            悬浮窗.setPosition(10, device.height *0.3);   //设置位置（x，y）
+            悬浮窗.setPosition(10, device.height *0.25);   //设置位置（x，y）
             悬浮窗.setAdjustEnabled(true);   //显示调节位置控件
             悬浮窗.exitOnClose();   //关闭悬浮窗时自动结束脚本运行
 
