@@ -229,7 +229,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.1.2";
+            var versionNum = "聚合分享v10.1.3";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4189,65 +4189,69 @@ ui.ok.click(function () {
                     let loadcount = 0
                     while (loadcount < 10) {
                         if (packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOnce() || packageName("com.tencent.mm").className("android.view.View").text("无法打开网页").findOnce() || packageName("com.tencent.mm").className("android.view.View").text("点击空白处刷新").findOnce() || packageName("com.tencent.mm").className("android.widget.TextView").text("诊断网络").findOnce()) {
-                            let fxflag = fenxiangurl();
-                            let clipurl = getClip();
-                            if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
-                                sleep(5000)
-                                if (fenxiangurl() == false) {
+                            if (xiaoyueyuecheckFlag==false) {
+                                let fxflag = fenxiangurl();
+                                let clipurl = getClip();
+                                if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
+                                    sleep(5000)
+                                    if (fenxiangurl() == false) {
+                                        back()
+                                        break;
+                                    } else {
+                                        clipurl = getClip();
+                                    }
+                                }
+                                if (clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
                                     back()
                                     break;
-                                } else {
-                                    clipurl = getClip();
                                 }
-                            }
-                            if (clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
-                                back()
-                                break;
-                            }
-
-                            if (sfjcwz(encodeURIComponent(clipurl)) == true) {
-                                if (联网验证(zwifi) != true) {
-                                    连接wifi(zwifi, 5000);
-                                    app.launch(PKG_NAME);
-                                    sleep(8000)
-                                }
-                                xiaoyueyuecheckFlag = true;
-                                let xianzhistr = "小阅阅中途检测"
-                                if (havejieshouren(1) == false) {
-                                    xianzhistr = xianzhistr + "havejieshouren=false退出"
-                                    console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
-                                    storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
-                                    sleep(300000);
-                                    xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
-                                    storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
-                                    return false;
-                                } else {
-                                    xianzhistr = xianzhistr + "havejieshouren=true重检"
-                                    wifiCount = xiaoyueyuecount
-                                    storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
-                                    console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
-                                    if (packageName("com.tencent.mm").className("android.view.View").text("无法打开网页").findOnce() || packageName("com.tencent.mm").className("android.view.View").text("点击空白处刷新").findOnce() || packageName("com.tencent.mm").className("android.widget.TextView").text("诊断网络").findOnce()) {
-                                        clickx(device.width * 0.5, device.height * 0.4)
+    
+                                if (sfjcwz(encodeURIComponent(clipurl)) == true) {
+                                    if (联网验证(zwifi) != true) {
+                                        连接wifi(zwifi, 5000);
+                                        app.launch(PKG_NAME);
+                                        sleep(8000)
                                     }
-                                    // yuducontent = clipurl
-                                    // log("重复判断:" + yuducontent)
-                                    // if (sfcfyd(yuducontent) == false) {
-                                    //     console.error("cfyd：" + yuducontent);
-                                    //     sleep(300000);
-                                    //     xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
-                                    //     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
-                                    //     return false;
-                                    // }
-                                    // if (fxurl(clipurl)) {
-                                    //     sleep(random(40000,45000))
-                                    // } else {
-                                    //     console.warn("fxurl失败")
-                                    //     fenxiangshibai();
-                                    //     sleep(300000);
-                                    //     xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
-                                    //     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
-                                    //     return false;
-                                    // }
+                                    xiaoyueyuecheckFlag = true;
+                                    let xianzhistr = "小阅阅中途检测"
+                                    if (havejieshouren(1) == false) {
+                                        xianzhistr = xianzhistr + "havejieshouren=false退出"
+                                        console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                        storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
+                                        sleep(300000);
+                                        xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
+                                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                                        return false;
+                                    } else {
+                                        xianzhistr = xianzhistr + "havejieshouren=true重检"
+                                        wifiCount = xiaoyueyuecount
+                                        storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
+                                        console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                        if (packageName("com.tencent.mm").className("android.view.View").text("无法打开网页").findOnce() || packageName("com.tencent.mm").className("android.view.View").text("点击空白处刷新").findOnce() || packageName("com.tencent.mm").className("android.widget.TextView").text("诊断网络").findOnce()) {
+                                            clickx(device.width * 0.5, device.height * 0.4)
+                                        }
+                                        // yuducontent = clipurl
+                                        // log("重复判断:" + yuducontent)
+                                        // if (sfcfyd(yuducontent) == false) {
+                                        //     console.error("cfyd：" + yuducontent);
+                                        //     sleep(300000);
+                                        //     xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
+                                        //     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                                        //     return false;
+                                        // }
+                                        // if (fxurl(clipurl)) {
+                                        //     sleep(random(40000,45000))
+                                        // } else {
+                                        //     console.warn("fxurl失败")
+                                        //     fenxiangshibai();
+                                        //     sleep(300000);
+                                        //     xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
+                                        //     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                                        //     return false;
+                                        // }
+                                    }
+                                }else{
+                                    back()
                                 }
                             }else{
                                 back()
