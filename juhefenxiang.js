@@ -229,7 +229,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.1.0";
+            var versionNum = "聚合分享v10.1.1";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -592,10 +592,6 @@ ui.ok.click(function () {
             }
 
             function getdaili() {
-                if (联网验证(zwifi) != true) {
-                    连接wifi(zwifi, 5000);
-                    home();
-                }
                 let temp = null;
                 let repData = "";
                 try {
@@ -608,6 +604,10 @@ ui.ok.click(function () {
                         throw Error("getdaili失败" + temp)
                     }
                 } catch (err) {
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        home();
+                    }
                     console.error("getdaili报错,原因:" + err);
                 }
                 return repData
@@ -630,6 +630,8 @@ ui.ok.click(function () {
                         } else {
                             throw Error("getJieShouNum获取数据失败" + temp)
                         }
+                    }else {
+                        throw Error("getJieShouNum获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("getJieShouNum报错,原因:" + err);
@@ -661,6 +663,8 @@ ui.ok.click(function () {
                         } else {
                             throw Error("getyunshaomaurl获取数据失败" + temp)
                         }
+                    }else {
+                        throw Error("getyunshaomaurl获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("getyunshaomaurl报错,原因:" + err);
@@ -692,6 +696,8 @@ ui.ok.click(function () {
                         } else {
                             throw Error("getMeitianzhuanurl获取数据失败" + temp)
                         }
+                    }else {
+                        throw Error("getMeitianzhuanurl获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("getMeitianzhuanurl报错,原因:" + err);
@@ -709,12 +715,6 @@ ui.ok.click(function () {
 
             //获取接收人数
             function getjieshouCount(type, phoneNum) {
-                if (联网验证(zwifi) != true) {
-                    连接wifi(zwifi, 5000);
-                    app.launch(PKG_NAME);
-                    sleep(2000)
-                }
-
                 let temp = null;
                 let repData = 0;
                 try {
@@ -730,6 +730,9 @@ ui.ok.click(function () {
                             //console.warn("getjieshouCount获取数据失败" + temp);
                             throw Error("getjieshouCount获取数据失败" + temp)
                         }
+                    }else {
+                        //console.warn("getjieshouCount获取数据失败" + temp);
+                        throw Error("getjieshouCount获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("getjieshouCount报错,原因:" + err);
@@ -748,10 +751,6 @@ ui.ok.click(function () {
             //插入yuedu列表
             function addYuedu(phoneNum) {
                 if (qiehuanjiaoben) {
-                    if (联网验证(zwifi) != true) {
-                        连接wifi(zwifi, 5000);
-                        app.launch(PKG_NAME);
-                    }
                     let temp = null;
                     try {
                         temp = http.post("http://175.178.60.114:8081/fanqie/addYuedu?phoneNum=" + phoneNum, {});
@@ -781,10 +780,6 @@ ui.ok.click(function () {
 
             //清除号码
             function removePhone(phoneNum) {
-                if (联网验证(zwifi) != true) {
-                    连接wifi(zwifi, 5000);
-                    app.launch(PKG_NAME);
-                }
                 let temp = null;
                 try {
                     temp = http.post("http://175.178.60.114:8081/fanqie/removePhoneNum?phoneNum=" + phoneNum, {});
@@ -870,6 +865,8 @@ ui.ok.click(function () {
                         } else {
                             throw Error("addXianZhi获取数据失败" + temp)
                         }
+                    }else {
+                        throw Error("addXianZhi获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("addXianZhi报错,原因:" + err);
@@ -885,12 +882,6 @@ ui.ok.click(function () {
 
             //限制次数-1
             function reduceXianZhi() {
-                if (联网验证(zwifi) != true) {
-                    连接wifi(zwifi, 5000);
-                    app.launch(PKG_NAME);
-                }
-                sleep(8000)
-
                 let temp = null;
                 let repData = "0";
                 try {
@@ -905,6 +896,8 @@ ui.ok.click(function () {
                         } else {
                             throw Error("reduceXianZhi获取数据失败" + temp)
                         }
+                    }else {
+                        throw Error("reduceXianZhi获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("reduceXianZhi报错,原因:" + err);
@@ -935,6 +928,8 @@ ui.ok.click(function () {
                         } else {
                             return false;
                         }
+                    }else {
+                        throw Error("sfcfyd获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("sfcfyd报错,原因:" + err);
@@ -965,9 +960,15 @@ ui.ok.click(function () {
                         } else {
                             return false;
                         }
+                    }else {
+                        throw Error("sfjcwz获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("sfjcwz报错,原因:" + err);
+                    if (联网验证(zwifi) != true&&联网验证(dlwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        app.launch(PKG_NAME);
+                    }
                     repData = sfjcwz(txt);
                 }
                 return repData
@@ -989,6 +990,8 @@ ui.ok.click(function () {
                         } else {
                             return false;
                         }
+                    }else {
+                        throw Error("isInJiancegongzhonghao获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("isInJiancegongzhonghao报错,原因:" + err);
@@ -1019,6 +1022,8 @@ ui.ok.click(function () {
                         } else {
                             throw Error("addJiancegongzhonghao获取数据失败" + temp)
                         }
+                    } else {
+                        throw Error("addJiancegongzhonghao获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("addJiancegongzhonghao报错,原因:" + err);
@@ -1027,6 +1032,38 @@ ui.ok.click(function () {
                         app.launch(PKG_NAME);
                     }
                     sleep(8000)
+                    repData = addJiancegongzhonghao(txt);
+
+                }
+                return repData
+
+            }
+            //去掉检测方
+            function deleteJiancegongzhonghao(txt) {
+                txt = encodeURIComponent(txt)
+                let temp = null;
+                let repData = true;
+                try {
+                    temp = http.post("http://175.178.60.114:8081/fanqie/deleteJiancegongzhonghao?txt=" + txt, {});
+                    if (temp && temp.statusCode == 200) {
+                        temp = temp.body.string();
+                        let rep = JSON.parse(temp);
+                        let repState = rep["state"];
+                        if (repState == 1) {
+                            return true;
+                        } else {
+                            throw Error("deleteJiancegongzhonghao获取数据失败" + temp)
+                        }
+                    } else {
+                        throw Error("deleteJiancegongzhonghao获取数据失败" + temp)
+                    }
+                } catch (err) {
+                    console.error("deleteJiancegongzhonghao报错,原因:" + err);
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        app.launch(PKG_NAME);
+                    }
+                    sleep(2000)
                     repData = addJiancegongzhonghao(txt);
 
                 }
@@ -1050,7 +1087,10 @@ ui.ok.click(function () {
                             //console.error("addjieshouCount获取数据失败" + temp);
                             throw Error("addjieshouCount获取数据失败" + temp)
                         }
-                    }
+                    }else {
+                            //console.error("addjieshouCount获取数据失败" + temp);
+                            throw Error("addjieshouCount获取数据失败" + temp)
+                        }
                 } catch (err) {
                     console.error("getjieshouCount报错,原因:" + err);
                     if (联网验证(zwifi) != true) {
@@ -1078,7 +1118,10 @@ ui.ok.click(function () {
                             console.error("reducejieshouCount获取数据失败" + temp);
                             throw Error("reducejieshouCount获取数据失败" + temp)
                         }
-                    }
+                    }else {
+                            console.error("reducejieshouCount获取数据失败" + temp);
+                            throw Error("reducejieshouCount获取数据失败" + temp)
+                        }
                 } catch (err) {
                     if (联网验证(zwifi) != true) {
                         连接wifi(zwifi, 5000);
@@ -1102,8 +1145,12 @@ ui.ok.click(function () {
                             return repData
                         } else {
                             console.warn("getConfig获取数据失败" + temp);
+                            throw Error("getConfig获取数据失败" + temp)
                         }
-                    }
+                    }else {
+                            console.error("getConfig获取数据失败" + temp);
+                            throw Error("getConfig获取数据失败" + temp)
+                        }
                 } catch (err) {
                     console.error("getConfig报错,原因:" + err);
                 }
@@ -1139,8 +1186,10 @@ ui.ok.click(function () {
                             let repData = rep["data"];
                             return repData
                         } else {
-                            console.warn("getConfig获取数据失败" + temp);
+                            throw Error("getConfig获取数据失败" + temp)
                         }
+                    }else {
+                        throw Error("getConfig获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("getConfig报错,原因:" + err);
@@ -1162,6 +1211,8 @@ ui.ok.click(function () {
                             log(new Date().toLocaleString() + "-" + "-----------------发言人:" + lastTalkName + ",标题:" + lastLinkTitle);
                             return true
                         }
+                    }else {
+                        throw Error("setConfig获取数据失败" + temp)
                     }
                     return false
                 } catch (err) {
@@ -1185,6 +1236,8 @@ ui.ok.click(function () {
                         if (repState == 1) {
                             return true
                         }
+                    }else {
+                        throw Error("fenxiangshibai获取数据失败" + temp)
                     }
                     return false
                 } catch (err) {
@@ -1211,6 +1264,8 @@ ui.ok.click(function () {
                         if (repState == 1) {
                             return true
                         }
+                    }else {
+                        throw Error("fenxiangurl获取数据失败" + temp)
                     }
                     return false
                 } catch (err) {
@@ -2548,7 +2603,11 @@ ui.ok.click(function () {
                                 fenxiangshibai();
                                 meitiantrycount++
                                 if (meitiantrycount > 3) {
-                                    meitiankedusj = new Date().getTime() + 48 * 3600 * 1000
+                                    if (fanqieflag || xiaoyueyueflag) {
+                                        meitiankedusj = new Date().getTime() + 48 * 3600 * 1000
+                                    }else{
+                                        meitiankedusj = new Date().getTime() + random(3600, 7200) * 1000
+                                    }
                                 } else {
                                     if (fanqieflag || xiaoyueyueflag) {
                                         meitiankedusj = new Date().getTime() + random(3600, 7200) * 1000
@@ -2556,7 +2615,7 @@ ui.ok.click(function () {
                                         meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
                                     }
                                 }
-
+                                storage.put("meitiankedusj", meitiankedusj);
                             }
                         } else {
                             let sybtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(剩余.*)/).findOnce()
@@ -3880,11 +3939,18 @@ ui.ok.click(function () {
                                 }
                                 if (fabudi.indexOf("浙江") > -1 || fabudi.indexOf("江西") > -1) {
                                     if (js_focus && js_focus.bounds().top < device.height * 3) {
-                                        xiaoyueyuecheckFlag = true;
+                                        if(read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() != null){
+
+                                        }else{
+                                            xiaoyueyuecheckFlag = true;
+                                        }
                                     }
                                     if (read_area && read_area.bounds().top < device.height * 3) {
-                                        xiaoyueyuecheckFlag = true;
-                                    }
+                                        if(read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() != null){
+
+                                        }else{
+                                            xiaoyueyuecheckFlag = true;
+                                        }                                    }
                                     if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000) {
                                         if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] < 1000) {
                                             xiaoyueyuecheckFlag = true;
@@ -3962,6 +4028,8 @@ ui.ok.click(function () {
 
                                 if (xiaoyueyuecheckFlag == false && wifiCount == xiaoyueyuecount) {
                                     fenxiangshibai();
+                                    //去掉检测方
+                                    deleteJiancegongzhonghao(js_name.desc())
                                 } else if (xiaoyueyuecheckFlag && xiaoyueyuecount > wifiCount) {
                                     if (havejieshouren(1) == false) {
                                         sleep(300000);
@@ -4143,6 +4211,11 @@ ui.ok.click(function () {
                             }
 
                             if (sfjcwz(clipurl) == true) {
+                                if (联网验证(zwifi) != true) {
+                                    连接wifi(zwifi, 5000);
+                                    app.launch(PKG_NAME);
+                                    sleep(8000)
+                                }
                                 xiaoyueyuecheckFlag = true;
                                 let xianzhistr = "小阅阅中途检测"
                                 if (havejieshouren(1) == false) {
@@ -4158,29 +4231,32 @@ ui.ok.click(function () {
                                     wifiCount = xiaoyueyuecount
                                     storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
                                     console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
-                                    
-                                    yuducontent = clipurl
-                                    log("重复判断:" + yuducontent)
-                                    if (sfcfyd(yuducontent) == false) {
-                                        console.error("cfyd：" + yuducontent);
-                                        sleep(300000);
-                                        xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
-                                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
-                                        return false;
+                                    if (packageName("com.tencent.mm").className("android.view.View").text("无法打开网页").findOnce() || packageName("com.tencent.mm").className("android.view.View").text("点击空白处刷新").findOnce() || packageName("com.tencent.mm").className("android.widget.TextView").text("诊断网络").findOnce()) {
+                                        clickx(device.width * 0.5, device.height * 0.4)
                                     }
-                                    if (fxurl(clipurl)) {
-                                        sleep(random(40000,45000))
-                                    } else {
-                                        console.warn("fxurl失败")
-                                        fenxiangshibai();
-                                        sleep(300000);
-                                        xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
-                                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
-                                        return false;
-                                    }
+                                    // yuducontent = clipurl
+                                    // log("重复判断:" + yuducontent)
+                                    // if (sfcfyd(yuducontent) == false) {
+                                    //     console.error("cfyd：" + yuducontent);
+                                    //     sleep(300000);
+                                    //     xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
+                                    //     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                                    //     return false;
+                                    // }
+                                    // if (fxurl(clipurl)) {
+                                    //     sleep(random(40000,45000))
+                                    // } else {
+                                    //     console.warn("fxurl失败")
+                                    //     fenxiangshibai();
+                                    //     sleep(300000);
+                                    //     xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
+                                    //     storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                                    //     return false;
+                                    // }
                                 }
+                            }else{
+                                back()
                             }
-                            back()
                             break;
                         } else {
                             if (packageName("com.tencent.mm").textMatches(/(.*继续访问.*)/).findOnce()) {

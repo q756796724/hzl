@@ -207,7 +207,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "番茄分享v9.2.5";
+            var versionNum = "番茄分享v9.2.6";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -591,6 +591,8 @@ ui.ok.click(function () {
                         } else {
                             throw Error("getJieShouNum获取数据失败" + temp)
                         }
+                    }else {
+                        throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("getJieShouNum报错,原因:" + err);
@@ -623,6 +625,8 @@ ui.ok.click(function () {
                             //console.warn("getjieshouCount获取数据失败" + temp);
                             throw Error("getjieshouCount获取数据失败" + temp)
                         }
+                    }else {
+                        throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("getjieshouCount报错,原因:" + err);
@@ -763,6 +767,8 @@ ui.ok.click(function () {
                         } else {
                             throw Error("addXianZhi获取数据失败" + temp)
                         }
+                    }else {
+                        throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("addXianZhi报错,原因:" + err);
@@ -798,6 +804,8 @@ ui.ok.click(function () {
                         } else {
                             throw Error("reduceXianZhi获取数据失败" + temp)
                         }
+                    }else {
+                        throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("reduceXianZhi报错,原因:" + err);
@@ -828,6 +836,8 @@ ui.ok.click(function () {
                         } else {
                             return false;
                         }
+                    }else {
+                        throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("sfcfyd报错,原因:" + err);
@@ -858,6 +868,8 @@ ui.ok.click(function () {
                         } else {
                             return false;
                         }
+                    }else {
+                        throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("isInJiancegongzhonghao报错,原因:" + err);
@@ -889,6 +901,8 @@ ui.ok.click(function () {
                         } else {
                             throw Error("addJiancegongzhonghao获取数据失败" + temp)
                         }
+                    }else {
+                        throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("addJiancegongzhonghao报错,原因:" + err);
@@ -921,6 +935,8 @@ ui.ok.click(function () {
                             //console.error("addjieshouCount获取数据失败" + temp);
                             throw Error("addjieshouCount获取数据失败" + temp)
                         }
+                    }else {
+                        throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("getjieshouCount报错,原因:" + err);
@@ -949,6 +965,8 @@ ui.ok.click(function () {
                             console.error("reducejieshouCount获取数据失败" + temp);
                             throw Error("reducejieshouCount获取数据失败" + temp)
                         }
+                    }else {
+                        throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
                     if (联网验证(zwifi) != true) {
@@ -974,6 +992,8 @@ ui.ok.click(function () {
                         } else {
                             console.warn("getConfig获取数据失败" + temp);
                         }
+                    }else {
+                        throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("getConfig报错,原因:" + err);
@@ -1012,6 +1032,8 @@ ui.ok.click(function () {
                         } else {
                             console.warn("getConfig获取数据失败" + temp);
                         }
+                    }else {
+                        throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("getConfig报错,原因:" + err);
@@ -1033,6 +1055,8 @@ ui.ok.click(function () {
                             log(new Date().toLocaleString() + "-" + "-----------------发言人:" + lastTalkName + ",标题:" + lastLinkTitle);
                             return true
                         }
+                    }else {
+                        throw Error("获取数据失败" + temp)
                     }
                     return false
                 } catch (err) {
@@ -1056,6 +1080,8 @@ ui.ok.click(function () {
                         if (repState == 1) {
                             return true
                         }
+                    }else {
+                        throw Error("获取数据失败" + temp)
                     }
                     return false
                 } catch (err) {
@@ -1082,6 +1108,8 @@ ui.ok.click(function () {
                         if (repState == 1) {
                             return true
                         }
+                    }else {
+                        throw Error("获取数据失败" + temp)
                     }
                     return false
                 } catch (err) {
