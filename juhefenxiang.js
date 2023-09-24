@@ -229,7 +229,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.1.1";
+            var versionNum = "聚合分享v10.1.2";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -914,7 +914,6 @@ ui.ok.click(function () {
             }
             //是否重复阅读
             function sfcfyd(txt) {
-                txt = encodeURIComponent(txt)
                 let temp = null;
                 let repData = true;
                 try {
@@ -946,7 +945,6 @@ ui.ok.click(function () {
             }
             //是否检测文章
             function sfjcwz(txt) {
-                txt = encodeURIComponent(txt)
                 let temp = null;
                 let repData = true;
                 try {
@@ -976,7 +974,6 @@ ui.ok.click(function () {
             }
             //是否检测方
             function isInJiancegongzhonghao(txt) {
-                txt = encodeURIComponent(txt)
                 let temp = null;
                 let repData = true;
                 try {
@@ -1008,7 +1005,6 @@ ui.ok.click(function () {
             }
             //添加检测方
             function addJiancegongzhonghao(txt) {
-                txt = encodeURIComponent(txt)
                 let temp = null;
                 let repData = true;
                 try {
@@ -1040,7 +1036,6 @@ ui.ok.click(function () {
             }
             //去掉检测方
             function deleteJiancegongzhonghao(txt) {
-                txt = encodeURIComponent(txt)
                 let temp = null;
                 let repData = true;
                 try {
@@ -1064,7 +1059,7 @@ ui.ok.click(function () {
                         app.launch(PKG_NAME);
                     }
                     sleep(2000)
-                    repData = addJiancegongzhonghao(txt);
+                    repData = deleteJiancegongzhonghao(txt);
 
                 }
                 return repData
@@ -3931,10 +3926,10 @@ ui.ok.click(function () {
                             let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + publish_time.text().replace(/-/g, "/") + "&&" + fabudi + "&&" + read_area_num;
                             log(yuducontent);
                             if (xiaoyueyuecheckFlag == false) {
-                                if (isInJiancegongzhonghao(js_name.desc()) == true && read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null) {
+                                if (isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == true && read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null) {
                                     xiaoyueyuecheckFlag = true;
                                 }
-                                if (read_area == null && js_focus == null && isInJiancegongzhonghao(js_name.desc()) == true) {
+                                if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == true) {
                                     xiaoyueyuecheckFlag = true;
                                 }
                                 if (fabudi.indexOf("浙江") > -1 || fabudi.indexOf("江西") > -1) {
@@ -3983,7 +3978,7 @@ ui.ok.click(function () {
                                     }
                                 }
                             } else {
-                                if (read_area == null && js_focus == null && isInJiancegongzhonghao(js_name.desc()) == false && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
+                                if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == false && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
                                     xiaoyueyuecheckFlag = false;
                                 }
                                 if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce()) {
@@ -4029,7 +4024,7 @@ ui.ok.click(function () {
                                 if (xiaoyueyuecheckFlag == false && wifiCount == xiaoyueyuecount) {
                                     fenxiangshibai();
                                     //去掉检测方
-                                    deleteJiancegongzhonghao(js_name.desc())
+                                    deleteJiancegongzhonghao(encodeURIComponent(js_name.desc()))
                                 } else if (xiaoyueyuecheckFlag && xiaoyueyuecount > wifiCount) {
                                     if (havejieshouren(1) == false) {
                                         sleep(300000);
@@ -4065,10 +4060,10 @@ ui.ok.click(function () {
                                 if (fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
                                     sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "url:" + clipurl + packageName("com.tencent.mm").id("js_ip_wording_wrp").className("android.view.View").findOnce().text());//出错请处理
                                 }
-                                addJiancegongzhonghao(js_name.desc())
+                                addJiancegongzhonghao(encodeURIComponent(js_name.desc()))
                                 yuducontent = clipurl
                                 log("重复判断:" + yuducontent)
-                                if (sfcfyd(yuducontent) == false) {
+                                if (sfcfyd(encodeURIComponent(yuducontent)) == false) {
                                     console.error("cfyd：" + yuducontent);
                                     sleep(300000);
                                     xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
@@ -4210,7 +4205,7 @@ ui.ok.click(function () {
                                 break;
                             }
 
-                            if (sfjcwz(clipurl) == true) {
+                            if (sfjcwz(encodeURIComponent(clipurl)) == true) {
                                 if (联网验证(zwifi) != true) {
                                     连接wifi(zwifi, 5000);
                                     app.launch(PKG_NAME);
@@ -4366,7 +4361,7 @@ ui.ok.click(function () {
                             //     fenxiangshibai();
                             // }
 
-                            addJiancegongzhonghao(js_name.desc())
+                            addJiancegongzhonghao(encodeURIComponent(js_name.desc()))
                             let fxflag = fenxiangurl();
                             let clipurl = getClip();
                             if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
@@ -4401,7 +4396,7 @@ ui.ok.click(function () {
                             log("clipurl=" + clipurl);
                             yuducontent = clipurl
                             log("重复判断:" + yuducontent)
-                            if (sfcfyd(yuducontent) == false) {
+                            if (sfcfyd(encodeURIComponent(yuducontent)) == false) {
                                 console.error("cfyd：" + yuducontent);
                                 sleep(300000);
                                 let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
@@ -4872,8 +4867,8 @@ ui.ok.click(function () {
                             let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
                             if (lunCount == 1 && fanxiangFlag == true) {
                                 log("重复判断:" + yuducontent)
-                                addJiancegongzhonghao(js_name.desc())
-                                if (sfcfyd(yuducontent) == false) {
+                                addJiancegongzhonghao(encodeURIComponent(js_name.desc()))
+                                if (sfcfyd(encodeURIComponent(yuducontent)) == false) {
                                     console.error("cfyd：" + yuducontent);
                                     sleep(300000);
                                     let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
@@ -4945,7 +4940,7 @@ ui.ok.click(function () {
 
                                     return false;
                                 }
-                            } else if (isInJiancegongzhonghao(js_name.desc()) == true) {
+                            } else if (isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == true) {
                                 console.error("可能要分享：" + yuducontent);
                                 let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                                 if (rBtn != null && rBtn.parent() != null) {

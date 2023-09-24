@@ -207,7 +207,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "番茄分享v9.2.6";
+            var versionNum = "番茄分享v9.2.7";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -822,7 +822,6 @@ ui.ok.click(function () {
             }
             //是否重复阅读
             function sfcfyd(txt) {
-                txt = encodeURIComponent(txt)
                 let temp = null;
                 let repData = true;
                 try {
@@ -854,7 +853,6 @@ ui.ok.click(function () {
             }
             //是否检测方
             function isInJiancegongzhonghao(txt) {
-                txt = encodeURIComponent(txt)
                 let temp = null;
                 let repData = true;
                 try {
@@ -887,7 +885,6 @@ ui.ok.click(function () {
 
             //添加检测方
             function addJiancegongzhonghao(txt) {
-                txt = encodeURIComponent(txt)
                 let temp = null;
                 let repData = true;
                 try {
@@ -2643,8 +2640,8 @@ ui.ok.click(function () {
                             let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime();
                             if (lunCount == 1 && fanxiangFlag == true) {
                                 log("重复判断:" + yuducontent)
-                                addJiancegongzhonghao(js_name.desc())
-                                if (sfcfyd(yuducontent) == false) {
+                                addJiancegongzhonghao(encodeURIComponent(js_name.desc()))
+                                if (sfcfyd(encodeURIComponent(yuducontent)) == false) {
                                     console.error("cfyd：" + yuducontent);
                                     sleep(300000);
                                     let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
@@ -2708,7 +2705,7 @@ ui.ok.click(function () {
                                     lunSleep(random(800000, 1000000));
                                     return false;
                                 }
-                            } else if (isInJiancegongzhonghao(js_name.desc()) == true) {
+                            } else if (isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == true) {
                                 console.error("可能要分享：" + yuducontent);
                                 let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
                                 if (rBtn != null && rBtn.parent() != null) {
