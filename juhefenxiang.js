@@ -681,8 +681,8 @@ ui.ok.click(function () {
                     repData = getyunshaomaurl();
 
                 }
-                if(repData!="休息"){
-                    storage.put("yunshaomaurl",repData)
+                if (repData != "休息") {
+                    storage.put("yunshaomaurl", repData)
                 }
                 return repData
 
@@ -720,8 +720,8 @@ ui.ok.click(function () {
                     repData = getMeitianzhuanurl();
 
                 }
-                if(repData!="休息"){
-                    storage.put("meitianzhuanurl",repData)
+                if (repData != "休息") {
+                    storage.put("meitianzhuanurl", repData)
                 }
                 return repData
 
@@ -4151,8 +4151,17 @@ ui.ok.click(function () {
                                 }
                                 storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
                                 if (xiaoyueyuecheckFlag) {
+                                    if (xiaoyueyuecount - wifiCount == 1) {
+                                        let xianzhistr = "小阅阅无效"
+                                        if (sffs == false) {
+                                            addXianZhi(phoneNum.toString())
+                                            xianzhistr = xianzhistr + "addXianZhi"
+                                        }
+                                    }
                                     if (havejieshourenFu(1) == false) {
                                         if (havejieshouren(1) == false) {
+                                            xianzhistr = xianzhistr + "havejieshouren=false&&havejieshourenFu=false退出"
+                                            console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
                                             sleep(random(250000, 350000));
                                             xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
@@ -4160,6 +4169,7 @@ ui.ok.click(function () {
                                             return false;
                                         }
                                     }
+                                    console.warn(new Date().toLocaleString() + "-----------" + xianzhistr+"重检");
                                 }
                             } else {
                                 if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == false && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
