@@ -4076,7 +4076,7 @@ ui.ok.click(function () {
                             let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + publish_time.text().replace(/-/g, "/") + "&&" + fabudi + "&&" + read_area_num;
                             log(yuducontent);
                             if (xiaoyueyuecheckFlag == false) {
-                                if (isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == true && read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null) {
+                                if (isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == true && read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null&& packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] < 3000) {
                                     xiaoyueyuecheckFlag = true;
                                 }
                                 if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == true) {
@@ -4112,8 +4112,8 @@ ui.ok.click(function () {
                                             xiaoyueyuecheckFlag = true;
                                         }
                                     }
-                                    if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 15 * 24 * 3600 * 1000) {
-                                        if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] < 5000) {
+                                    if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() >= 15 * 24 * 3600 * 1000) {
+                                        if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] < 3000) {
                                             xiaoyueyuecheckFlag = true;
                                         }
                                     }
@@ -4123,7 +4123,7 @@ ui.ok.click(function () {
                                     if (havejieshourenFu(1) == false) {
                                         if (havejieshouren(1) == false) {
                                             sleep(random(250000, 350000));
-                                            xiaoyueyuekedusj = new Date().getTime() + random(1000, 1800) * 1000
+                                            xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
     
                                             return false;
@@ -4148,12 +4148,12 @@ ui.ok.click(function () {
                                     }
                                 }
                                 if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
-                                    if (read_area && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] > 5000) {
+                                    if (read_area && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] > 3000) {
                                         xiaoyueyuecheckFlag = false;
                                     }
                                 }
                                 if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 7 * 24 * 3600 * 1000) {
-                                    if (read_area && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] > 5000 && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
+                                    if (read_area && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] > 3000 && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
                                         xiaoyueyuecheckFlag = false;
                                     }
                                 }
@@ -4174,19 +4174,21 @@ ui.ok.click(function () {
 
                                 storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
 
-                                if (xiaoyueyuecheckFlag == false && wifiCount == xiaoyueyuecount) {
-                                    if(sffs){
-                                        fenxiangshibaiFu();
-                                    }else{
-                                        fenxiangshibai();
-                                    }
-                                    //去掉检测方
+                                if (xiaoyueyuecheckFlag == false) {
+                                     //去掉检测方
                                     deleteJiancegongzhonghao(encodeURIComponent(js_name.desc()))
+                                    if(wifiCount == xiaoyueyuecount){
+                                        if(sffs){
+                                            fenxiangshibaiFu();
+                                        }else{
+                                            fenxiangshibai();
+                                        }
+                                    }
                                 } else if (xiaoyueyuecheckFlag && xiaoyueyuecount > wifiCount) {
                                     if (havejieshourenFu(1) == false) {
                                         if (havejieshouren(1) == false) {
                                             sleep(random(250000, 350000));
-                                            xiaoyueyuekedusj = new Date().getTime() + random(1000, 1800) * 1000
+                                            xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
     
                                             return false;
