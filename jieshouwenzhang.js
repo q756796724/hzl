@@ -17,6 +17,8 @@ latestUrl = "";//当前url
 phoneNum = storage.get("phoneNum", "");
 jieshouwifi = storage.get("jieshouwifi", "WifiPro_5G");
 
+sffs=false;//是否副手
+
 if (storage.get("readdays") == undefined) {
     storage.put("readdays", 0);
 }
@@ -200,7 +202,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.5.5";
+            var versionNum = "接收v7.6.0";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -462,6 +464,45 @@ ui.ok.click(function () {
                 }
 
             }
+
+            //增加接收人数Fu
+            function addjieshouCountFu(txt) {
+                let temp = null;
+                try {
+                    temp = http.post("http://175.178.60.114:8081/fanqie/addjieshouCountFu?phoneNum=" + txt, {});
+                    if (temp && temp.statusCode == 200) {
+                        temp = temp.body.string();
+                        let rep = JSON.parse(temp);
+                        let repState = rep["state"];
+                        if (repState == 1) {
+                            //console.info(new Date().toLocaleString() + "-------"+txt);
+                            let repData = rep["data"];
+                            return repData
+                        } else if (repState == 0) {
+                            return false
+                        } else {
+                            //console.error("addjieshouCountFu获取数据失败" + temp);
+                            throw Error("addjieshouCountFu获取数据失败" + temp)
+                        }
+                    }else {
+                        throw Error("获取数据失败" + temp)
+                    }
+                } catch (err) {
+                    if (err == 'JavaException: java.util.concurrent.TimeoutException: null') {
+                        console.error("addjieshouCountFu报错,原因:正常");
+                        return true
+                    }
+                    console.error("addjieshouCountFu报错,原因:" + err);
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        app.launch(PKG_NAME);
+                    }
+                    sleep(10000)
+                    return addjieshouCountFu(txt)
+                }
+
+            }
+
             //减少接收人数
             function reducejieshouCount(txt) {
                 let temp = null;
@@ -489,6 +530,37 @@ ui.ok.click(function () {
                     }
                     sleep(10000)
                     return reducejieshouCount(txt)
+                }
+
+            }
+
+            //减少接收人数
+            function reducejieshouCountFu(txt) {
+                let temp = null;
+                try {
+                    temp = http.post("http://175.178.60.114:8081/fanqie/reducejieshouCountFu?phoneNum=" + txt, {});
+                    if (temp && temp.statusCode == 200) {
+                        temp = temp.body.string();
+                        let rep = JSON.parse(temp);
+                        let repState = rep["state"];
+                        if (repState == 1) {
+                            console.info(new Date().toLocaleString() + "-------" + txt);
+                            let repData = rep["data"];
+                            return repData
+                        } else {
+                            console.error("reducejieshouCountFu获取数据失败" + temp);
+                            throw Error("reducejieshouCountFu获取数据失败" + temp)
+                        }
+                    }else {
+                        throw Error("获取数据失败" + temp)
+                    }
+                } catch (err) {
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        app.launch(PKG_NAME);
+                    }
+                    sleep(10000)
+                    return reducejieshouCountFu(txt)
                 }
 
             }
@@ -541,12 +613,13 @@ ui.ok.click(function () {
                 }
 
             }
-            function setConfig(lastTalkName, lastLinkTitle) {
+            function setConfig(lastTalkName, lastLinkTitle, lastLinkTitle,phone) {
                 let temp = null;
                 try {
                     temp = http.postJson("http://175.178.60.114:8081/fanqie/setConfig", {
                         "lastTalkName": lastTalkName,
-                        "lastLinkTitle": lastLinkTitle
+                        "lastLinkTitle": lastLinkTitle,
+                        "phone": phone
                     });
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
@@ -594,6 +667,39 @@ ui.ok.click(function () {
                     }
                     sleep(8000)
                     repData = getjieshouNum();
+
+                }
+                return repData
+
+            }
+
+            //获取当前接收号码副
+            function getjieshouNumFu() {
+                let temp = null;
+                let repData = "0";
+                try {
+                    temp = http.post("http://175.178.60.114:8081/fanqie/getjieshouNumFu", {});
+                    if (temp && temp.statusCode == 200) {
+                        temp = temp.body.string();
+                        let rep = JSON.parse(temp);
+                        let repState = rep["state"];
+                        if (repState == 1) {
+                            let repData = rep["data"];
+                            return repData
+                        } else {
+                            throw Error("getjieshouNumFu获取数据失败" + temp)
+                        }
+                    }else {
+                        throw Error("获取数据失败" + temp)
+                    }
+                } catch (err) {
+                    console.error("getjieshouNumFu报错,原因:" + err);
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        app.launch(PKG_NAME);
+                    }
+                    sleep(8000)
+                    repData = getjieshouNumFu();
 
                 }
                 return repData
@@ -903,7 +1009,7 @@ ui.ok.click(function () {
                                         let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                                         if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                                             latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
-                                            setConfig(latestTalkName, latestLinkTitle)
+                                            setConfig(latestTalkName, latestLinkTitle,phoneNum.toString())
                                         }
 
                                         阅读到底();
@@ -937,7 +1043,7 @@ ui.ok.click(function () {
                                             let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                                             if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                                                 latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
-                                                setConfig(latestTalkName, latestLinkTitle)
+                                                setConfig(latestTalkName, latestLinkTitle,phoneNum.toString())
                                             }
 
                                             阅读到底();
@@ -1112,12 +1218,13 @@ ui.ok.click(function () {
                             /*if (new Date().getTime() - starttime > readluntime) {
                                 break;
                             }*/
-                            if (addjieshouCount(phoneNum.toString()) == false) {
-                                //console.error(new Date().toLocaleString() + "-" + "-----------------接收失败---休整");
-                                sleep(random(30000, 180000))
-                                //reducejieshouCount(phoneNum.toString())
-                                返回v首页();
-                                sleep(random(7200000, 14400000));
+                            if(sffs){
+                                if (addjieshouCountFu(phoneNum.toString()) == false) {
+                                    sleep(random(30000, 60000));
+                                    return
+                                }
+                            }else if (addjieshouCount(phoneNum.toString()) == false) {
+                                sleep(random(30000, 60000));
                                 return
                             }
                             loopCount++
@@ -1162,7 +1269,11 @@ ui.ok.click(function () {
 
                                     //接收文章进入阅读
                                     sleep(1000)
-                                    reducejieshouCount(phoneNum.toString())
+                                    if(sffs){
+                                        reducejieshouCountFu(phoneNum.toString())
+                                    }else{
+                                        reducejieshouCount(phoneNum.toString())
+                                    }
                                     let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
                                     sleep(5000)
                                     cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
@@ -1173,7 +1284,7 @@ ui.ok.click(function () {
                                         latestLinkTitle = latestLinkTitle.TextFilter();
                                         //latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
                                         latestLinkTitle = latestUrl
-                                        setConfig("latestTalkName", latestLinkTitle)
+                                        setConfig("latestTalkName", latestLinkTitle,phoneNum.toString())
                                     }
 
                                     阅读到底();
@@ -2651,25 +2762,32 @@ ui.ok.click(function () {
                                 }
                             }
 
-                            if (random(0, 8 == 8)) {
-                                打开v();
-                                refreshStateInfo();
-                                /*if(topPackage != PKG_NAME){
-                                    continue;
-                                }*/
-                                let wBtn = className("android.widget.TextView").text("我").findOne(3000);
-                                if (topActivity == MAIN_PAGE && wBtn != null) {
-                                    onMainPage();
-                                } else {
-                                    返回v首页();
+                            if (getjieshouNumFu() != phoneNum.toString()) {
+                                sffs=false;
+                                if (random(0, 8 == 8)) {
+                                    打开v();
+                                    refreshStateInfo();
+                                    /*if(topPackage != PKG_NAME){
+                                        continue;
+                                    }*/
+                                    let wBtn = className("android.widget.TextView").text("我").findOne(3000);
+                                    if (topActivity == MAIN_PAGE && wBtn != null) {
+                                        onMainPage();
+                                        sleep(random(7200000, 14400000));
+                                    } else {
+                                        返回v首页();
+                                        lunSleep(1200000);
+                                    }
+                                } else if (random(0, 1 == 1)) {
+                                    home();
                                     lunSleep(1200000);
                                 }
-                            } else if (random(0, 1 == 1)) {
-                                home();
-                                lunSleep(1200000);
+                                continue;
+                            }else{
+                                sffs=true;
                             }
-                            continue;
                         } else {
+                            sffs=false;
                             if (readdays == 0) {
                                 readdays = 1
                                 storage.put("readdays", readdays);
