@@ -231,7 +231,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.2.1";
+            var versionNum = "聚合分享v10.2.2";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -6274,6 +6274,13 @@ ui.ok.click(function () {
                         if (topActivity == MAIN_PAGE && wBtn != null) {
                             let waitcount = 0
                             while (true) {
+                                if (!zhengtian) {
+                                    if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 50) {
+                                        log("够钟休息")
+                                        sleep(1800000)
+                                        break
+                                    }
+                                }
                                 if (waitcount == 0) {
                                     let toaststr = "等待可读:";
                                     if (fanqieflag == true) {
