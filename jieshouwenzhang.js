@@ -202,7 +202,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.6.0";
+            var versionNum = "接收v7.6.1";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -710,7 +710,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = "0";
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/getjieshouNumFu", {});
+                    temp = http.post("http://175.178.60.114:8081/fanqie/getJieShouNumFu", {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
