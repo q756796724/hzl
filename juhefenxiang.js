@@ -2770,15 +2770,15 @@ ui.ok.click(function () {
                                 meitiantrycount++
                                 if (meitiantrycount > 3) {
                                     if (fanqieflag || xiaoyueyueflag) {
-                                        meitiankedusj = new Date().getTime() + 48 * 3600 * 1000
+                                        meitiankedusj = new Date().getTime() + 7*24 * 3600 * 1000
                                     } else {
-                                        meitiankedusj = new Date().getTime() + random(3600, 7200) * 1000
+                                        meitiankedusj = new Date().getTime() + 4*24 * 3600 * 1000
                                     }
                                 } else {
                                     if (fanqieflag || xiaoyueyueflag) {
-                                        meitiankedusj = new Date().getTime() + random(3600, 7200) * 1000
+                                        meitiankedusj = new Date().getTime() + random(7200, 10000) * 1000
                                     } else {
-                                        meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                        meitiankedusj = new Date().getTime() + random(3600, 7200) * 1000
                                     }
                                 }
                                 storage.put("meitiankedusj", meitiankedusj);
