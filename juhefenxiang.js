@@ -6000,8 +6000,6 @@ ui.ok.click(function () {
                 toastLog("初始化文件shouhu_setting");
             }
 
-            setAppAlive(device.serial)
-
             //app保活双进程守护
             function setAppAlive(name) {
                 zhu_setting配置 = 读取配置(zhu_setting);
@@ -6009,6 +6007,8 @@ ui.ok.click(function () {
                 保存配置(zhu_setting, zhu_setting配置);
                 //toolsStorage.put(name, new Date().getTime());
             }
+
+            setAppAlive(device.serial)
 
             function setShouhuAppAlive(name) {
                 shouhu_setting配置 = 读取配置(shouhu_setting);

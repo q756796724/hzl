@@ -17,7 +17,7 @@ if (!files.exists(zhu_setting)) {
     toastLog("初始化配置zhu_setting");
 }
 shouhu_setting配置 = 读取配置(shouhu_setting);
-shouhu_setting配置[device.serial+ "守护"] = new Date().getTime()+3*60 * 1000
+shouhu_setting配置[device.serial + "守护"] = new Date().getTime() + 3 * 60 * 1000
 保存配置(shouhu_setting, shouhu_setting配置);
 
 toastLog("版本号:" + versionNum);
@@ -111,7 +111,7 @@ function setShouhuAppAlive(name) {
 function getAppAlive(name) {
     zhu_setting配置 = 读取配置(zhu_setting);
     if (zhu_setting配置[name] != undefined) {
-        if (new Date().getTime() - zhu_setting配置[name] < 3*60 * 1000) {
+        if (new Date().getTime() - zhu_setting配置[name] < 3 * 60 * 1000) {
             return true
         } else {
             return false
@@ -134,7 +134,7 @@ function getAppAlive(name) {
 toastLog("版本号:" + versionNum);
 
 for (; ;) {
-    setShouhuAppAlive(device.serial+ "守护")
+    setShouhuAppAlive(device.serial + "守护")
     if (getAppAlive(device.serial) == false) {
         //setAppAlive(device.serial)
         log("重启主应用")
@@ -148,7 +148,7 @@ for (; ;) {
             app.launch("com.fanqie.cloud");
             sleep(300000);
         }
-        
+
 
         // log("重启主应用")
         // home();
@@ -159,6 +159,6 @@ for (; ;) {
         //     app.launch("com.feige.autoapp004");
         // }
     }
-   
+
     sleep(30 * 1000);
 }
