@@ -231,7 +231,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.2.6";
+            var versionNum = "聚合分享v10.2.7";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -1463,6 +1463,10 @@ ui.ok.click(function () {
                     }
                     cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("复制链接").findOne(8000);
                     if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
+                        if (packageName("com.tencent.mm").textMatches(/(.*禁止分享.*)/).findOnce()) {
+                            console.error("禁止分享");
+                            return false
+                        }
                         sleep(random(2000, 3000));
                         cBtn.parent().click();
                         sleep(random(2000, 3000));
@@ -1967,7 +1971,7 @@ ui.ok.click(function () {
                     }
 
                     let jb = packageName("com.tencent.mm").className("android.view.View").descMatches(/(.*金币.*)/).findOnce()
-                    if (jb && parseInt(jb.desc().replace(/[^\d]/g, "")) >= 6000) {
+                    if (jb && parseInt(jb.desc().replace(/[^\d]/g, "")) >= 12000) {
                         click("提现")
                         sleep(10000)
                         if (zfbtx) {
@@ -4169,7 +4173,7 @@ ui.ok.click(function () {
                                             return false;
                                         }
                                     }
-                                    console.warn(new Date().toLocaleString() + "-----------" + xianzhistr+"重检");
+                                    console.warn(new Date().toLocaleString() + "-----------" + xianzhistr + "重检");
                                 }
                             } else {
                                 if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == false && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
@@ -4256,6 +4260,7 @@ ui.ok.click(function () {
                                         clipurl = getClip();
                                     }
                                 }
+                                setClip("");
                                 if (clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
                                     if (sffs) {
                                         fenxiangshibaiFu();
@@ -4444,6 +4449,7 @@ ui.ok.click(function () {
                                         clipurl = getClip();
                                     }
                                 }
+                                setClip("");
                                 if (clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
                                     back()
                                     break;
@@ -4639,6 +4645,7 @@ ui.ok.click(function () {
                                     clipurl = getClip();
                                 }
                             }
+                            setClip("");
                             if (clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
                                 fenxiangshibai();
                                 let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
@@ -5170,6 +5177,7 @@ ui.ok.click(function () {
                                         clipurl = getClip();
                                     }
                                 }
+                                setClip("");
                                 if (clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
                                     fenxiangshibai();
                                     let rBtn = className("android.widget.ImageView").desc("返回").findOne(3000);
