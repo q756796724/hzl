@@ -6235,7 +6235,8 @@ ui.ok.click(function () {
                         if (配置["date"] != new Date().toLocaleDateString()) {
                             storage.put("yunshaomaurl", "")
                             storage.put("meitianzhuanurl", "")
-                            storage.put("meitiantrycount", 0)
+                            meitiantrycount=0
+                            storage.put("meitiantrycount", meitiantrycount)
                             if (fanqieflag == true) {
                                 fanqiekedusj = new Date().getTime()
                                 storage.put("fanqiekedusj", fanqiekedusj);
