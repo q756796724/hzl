@@ -1,10 +1,10 @@
 //进程守护
 
-var versionNum = "v1.2.3";
+var versionNum = "v1.2.5";
 toolsStorage = storages.create("tools配置");
 
 
-//auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
+auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
 var zhu_setting = files.join("/sdcard/fanqie/", "zhu_setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
 var shouhu_setting = files.join("/sdcard/fanqie/", "shouhu_setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
 if (!files.exists(shouhu_setting)) {
