@@ -2701,7 +2701,7 @@ ui.ok.click(function () {
 
             }
 
-            const 进程守护lock = new Lock();
+            var 进程守护lock = threads.lock();
             function 进程守护() {
                 //log("进程守护")
                 // 获取锁
