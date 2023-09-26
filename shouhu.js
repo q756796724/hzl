@@ -1,14 +1,20 @@
 //进程守护
 
-var versionNum = "v1.1.0";
+var versionNum = "v1.2.0";
 toolsStorage = storages.create("tools配置");
 
 
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
-var settingPath = files.join("/sdcard/fanqie/", "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
-if (!files.exists(settingPath)) {
-    初始化配置(settingPath);
-    toastLog("初始化配置");
+var zhu_setting = files.join("/sdcard/fanqie/", "zhu_setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
+var shouhu_setting = files.join("/sdcard/fanqie/", "shouhu_setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
+if (!files.exists(shouhu_setting)) {
+    初始化配置(shouhu_setting);
+    toastLog("初始化配置shouhu_setting");
+}
+
+if (!files.exists(zhu_setting)) {
+    初始化配置(zhu_setting);
+    toastLog("初始化配置zhu_setting");
 }
 toastLog("版本号:" + versionNum);
 setInterval(() => { }, 1000);
@@ -67,54 +73,6 @@ sleep(5000);
 KeepAliveService.start("keepalive", "进程守护");
 //}
 
-
-//app保活双进程守护
-// function setAppAlive(name) {
-//     let temp = null;
-//     try {
-//         temp = http.post("175.178.60.114:8081/fanqie/setAppAlive", {
-//             "serial": name
-//         });
-//         if (temp && temp.statusCode == 200) {
-//             temp = temp.body.string();
-//             let rep = JSON.parse(temp);
-//             let repState = rep["state"];
-//             if (repState == 1) {
-//                 return true
-//             } else {
-//                 console.warn("setAppAlive失败" + temp);
-//                 return false
-//             }
-//         }
-//         return false
-//     } catch (err) {
-//         console.error("setAppAlive报错,原因:" + err);
-//         return false
-//     }
-
-// }
-// function getAppAlive(name) {
-//     let temp = null;
-//     try {
-//         temp = http.post("175.178.60.114:8081/fanqie/getAppAlive", {
-//             "serial": name
-//         });
-//         if (temp && temp.statusCode == 200) {
-//             temp = temp.body.string();
-//             let rep = JSON.parse(temp);
-//             let repState = rep["state"];
-//             if (repState == 1) {
-//                 let repData = rep["data"];
-//                 return repData
-//             } else {
-//                 console.warn("getAppAlive获取数据失败" + temp);
-//             }
-//         }
-//     } catch (err) {
-//         console.error("getAppAlive报错,原因:" + err);
-//     }
-// }
-
 function 初始化配置(path) {
     files.createWithDirs(path)  //开始创建文件
     let jsonContent = {
@@ -124,8 +82,7 @@ function 初始化配置(path) {
         "lunCountllb": 1,
         "countllb": 1*/
     }
-    jsonContent[device.serial]=new Date().getTime()
-    jsonContent[device.serial+ "-1"]=new Date().getTime()
+    //jsonContent[name] = new Date().getTime()
     files.write(path, JSON.stringify(jsonContent));
     sleep(1000);
 }
@@ -140,17 +97,17 @@ function 读取配置(path) {
     return JSON.parse(files.read(path));
 }
 
-function setAppAlive(name) {
-    //log(name)
+
+function setShouhuAppAlive(name) {
+    shouhu_setting配置 = 读取配置(shouhu_setting);
+    shouhu_setting配置[name] = new Date().getTime();
+    保存配置(shouhu_setting, shouhu_setting配置);
     //toolsStorage.put(name, new Date().getTime());
-    配置 = 读取配置(settingPath);
-    配置[name] = new Date().getTime();
-    保存配置(settingPath, 配置);
 }
 function getAppAlive(name) {
-    配置 = 读取配置(settingPath);
-    if (配置[name] != undefined) {
-        if (new Date().getTime() - 配置[name] < 3*60 * 1000) {
+    zhu_setting配置 = 读取配置(zhu_setting);
+    if (zhu_setting配置[name] != undefined) {
+        if (new Date().getTime() - zhu_setting配置[name] < 3*60 * 1000) {
             return true
         } else {
             return false
@@ -170,7 +127,7 @@ function getAppAlive(name) {
     }*/
 }
 for (; ;) {
-    setAppAlive(device.serial+ "-1")
+    setShouhuAppAlive(device.serial+ "守护")
     if (getAppAlive(device.serial) == false) {
         //setAppAlive(device.serial)
         log("重启主应用")

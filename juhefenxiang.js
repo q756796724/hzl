@@ -231,7 +231,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.3.1";
+            var versionNum = "聚合分享v10.3.2";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -1603,7 +1603,7 @@ ui.ok.click(function () {
                     "lunCountllb": 1,
                     "countllb": 1*/
                 }
-                jsonContent[device.serial] = new Date().getTime()
+                //jsonContent[name] = new Date().getTime()
                 files.write(path, JSON.stringify(jsonContent));
                 sleep(1000);
             }
@@ -4867,76 +4867,80 @@ ui.ok.click(function () {
                             }
                         }
                     }
+
                     sleep(1000)
-
-                    while (true) {
-                        log("meitianwhile")
-                        let fxflag = fenxiangurl();
-                        let clipurl = getClip();
-                        if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
-                            sleep(5000)
-                            if (fenxiangurl() == false) {
-                                back()
-                                break;
-                            } else {
-                                clipurl = getClip();
-                            }
-                        }
-                        setClip("");
-                        if (clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
-                            back()
-                            break;
-                        }
-
-                        if (sfjcwz(encodeURIComponent(clipurl)) == true) {
-                            let xianzhistr = "美添中途检测"
-                            if (havejieshourenFu(1) == false) {
-                                if (havejieshouren(1) == false) {
-                                    xianzhistr = xianzhistr + "havejieshouren=false&&havejieshourenFu=false忽略"
-                                    console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
-                                    back()
-                                    break;
-                                } else {
-                                    xianzhistr = xianzhistr + "havejieshouren=true重检"
-                                }
-                            } else {
-                                xianzhistr = xianzhistr + "havejieshourenFu=true重检"
-                            }
-                            console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
-
-                            yuducontent = clipurl
-                            log("重复判断:" + yuducontent)
-                            if (sfcfyd(yuducontent) == false) {
-                                console.error("忽略cfyd：" + yuducontent);
-                                back()
-                                break;
-                            }
-                            if (sffs) {
-                                if (fxurlFu(clipurl)) {
-                                    sleep(random(40000, 45000))
-                                } else {
-                                    console.warn("忽略fxurl失败Fu")
-                                    fenxiangshibaiFu();
-                                    back()
-                                    break;
-                                }
-                            } else {
-                                if (fxurl(clipurl)) {
-                                    sleep(random(40000, 45000))
-                                } else {
-                                    console.warn("忽略fxurl失败")
-                                    fenxiangshibai();
-                                    back()
-                                    break;
-                                }
-                            }
-                        } else {
-                            back()
-                            break;
-                        }
-                    }
-
+                    back();
                     count++;
+                    // sleep(1000)
+
+                    // while (true) {
+                    //     log("meitianwhile")
+                    //     let fxflag = fenxiangurl();
+                    //     let clipurl = getClip();
+                    //     if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
+                    //         sleep(5000)
+                    //         if (fenxiangurl() == false) {
+                    //             back()
+                    //             break;
+                    //         } else {
+                    //             clipurl = getClip();
+                    //         }
+                    //     }
+                    //     setClip("");
+                    //     if (clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
+                    //         back()
+                    //         break;
+                    //     }
+
+                    //     if (sfjcwz(encodeURIComponent(clipurl)) == true) {
+                    //         let xianzhistr = "美添中途检测"
+                    //         if (havejieshourenFu(1) == false) {
+                    //             if (havejieshouren(1) == false) {
+                    //                 xianzhistr = xianzhistr + "havejieshouren=false&&havejieshourenFu=false忽略"
+                    //                 console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
+                    //                 back()
+                    //                 break;
+                    //             } else {
+                    //                 xianzhistr = xianzhistr + "havejieshouren=true重检"
+                    //             }
+                    //         } else {
+                    //             xianzhistr = xianzhistr + "havejieshourenFu=true重检"
+                    //         }
+                    //         console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
+
+                    //         yuducontent = clipurl
+                    //         log("重复判断:" + yuducontent)
+                    //         if (sfcfyd(yuducontent) == false) {
+                    //             console.error("忽略cfyd：" + yuducontent);
+                    //             back()
+                    //             break;
+                    //         }
+                    //         if (sffs) {
+                    //             if (fxurlFu(clipurl)) {
+                    //                 sleep(random(40000, 45000))
+                    //             } else {
+                    //                 console.warn("忽略fxurl失败Fu")
+                    //                 fenxiangshibaiFu();
+                    //                 back()
+                    //                 break;
+                    //             }
+                    //         } else {
+                    //             if (fxurl(clipurl)) {
+                    //                 sleep(random(40000, 45000))
+                    //             } else {
+                    //                 console.warn("忽略fxurl失败")
+                    //                 fenxiangshibai();
+                    //                 back()
+                    //                 break;
+                    //             }
+                    //         }
+                    //     } else {
+                    //         back()
+                    //         break;
+                    //     }
+                    // }
+
+                    // count++;
                 }
             }
 
@@ -5980,32 +5984,45 @@ ui.ok.click(function () {
                 KeepAliveService.start("fanqie", "茄子云");
             }
             var settingPath = files.join(files.cwd(), "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
-            var settingPath2 = files.join("/sdcard/fanqie/", "setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
+            var zhu_setting = files.join("/sdcard/fanqie/", "zhu_setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
+            var shouhu_setting = files.join("/sdcard/fanqie/", "shouhu_setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
+
             if (!files.exists(settingPath)) {
                 初始化配置(settingPath);
                 toastLog("初始化文件配置");
             }
-            if (!files.exists(settingPath2)) {
-                初始化配置2(settingPath2);
-                toastLog("初始化文件配置2");
+            if (!files.exists(zhu_setting)) {
+                初始化配置2(zhu_setting);
+                toastLog("初始化文件zhu_setting");
+            }
+            if (!files.exists(shouhu_setting)) {
+                初始化配置2(shouhu_setting);
+                toastLog("初始化文件shouhu_setting");
             }
 
             //app保活双进程守护
             function setAppAlive(name) {
-                配置2 = 读取配置(settingPath2);
-                配置2[name] = new Date().getTime();
-                保存配置(settingPath2, 配置2);
+                zhu_setting配置 = 读取配置(zhu_setting);
+                zhu_setting配置[name] = new Date().getTime();
+                保存配置(zhu_setting, zhu_setting配置);
                 //toolsStorage.put(name, new Date().getTime());
             }
-            function getAppAlive(name) {
-                配置2 = 读取配置(settingPath2);
-                if (配置2 == undefined || 配置2[device.serial] == undefined) {
-                    toastLog("重置文件配置2");
-                    初始化配置2(settingPath2);
+
+            function setShouhuAppAlive(name) {
+                shouhu_setting配置 = 读取配置(shouhu_setting);
+                shouhu_setting配置[name] = new Date().getTime();
+                保存配置(shouhu_setting, shouhu_setting配置);
+                //toolsStorage.put(name, new Date().getTime());
+            }
+            function getShouhuAppAlive(name) {
+                shouhu_setting配置 = 读取配置(shouhu_setting);
+                if (shouhu_setting配置 == undefined) {
+                    toastLog("重置文件shouhu_setting配置");
+                    初始化配置2(shouhu_setting);
                 }
-                if (配置2[name] != undefined) {
+                if (shouhu_setting配置[name] != undefined) {
                     setAppAlive(device.serial)
-                    if (new Date().getTime() - 配置2[name] < 60 * 1000) {
+                    if (new Date().getTime() - shouhu_setting配置[name] < 60 * 1000) {
                         return true
                     } else {
                         return false
@@ -6028,12 +6045,14 @@ ui.ok.click(function () {
             function 进程守护() {
                 //log("进程守护")
 
-                if (getAppAlive(device.serial + "-1") == false) {
-                    setAppAlive(device.serial + "-1")
+                if (getShouhuAppAlive(device.serial + "守护") == false) {
+                    setShouhuAppAlive(device.serial + "守护")
                     log("重启守护应用")
                     home();
                     sleep(5000);
                     app.launch("com.fanqie.shouhu");
+                    sleep(5000);
+                    back();
                 }
                 return 进程守护
             }
