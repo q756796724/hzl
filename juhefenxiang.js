@@ -231,7 +231,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.3.0";
+            var versionNum = "聚合分享v10.3.1";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4889,15 +4889,13 @@ ui.ok.click(function () {
                         }
 
                         if (sfjcwz(encodeURIComponent(clipurl)) == true) {
-                            sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "美添中途检测url:" + clipurl);//出错请处理
                             let xianzhistr = "美添中途检测"
                             if (havejieshourenFu(1) == false) {
                                 if (havejieshouren(1) == false) {
                                     xianzhistr = xianzhistr + "havejieshouren=false&&havejieshourenFu=false忽略"
                                     console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
-                                    meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
-                                    storage.put("meitiankedusj", xiaoyueyuekedusj);
-                                    return false
+                                    back()
+                                    break;
                                 } else {
                                     xianzhistr = xianzhistr + "havejieshouren=true重检"
                                 }
@@ -4910,9 +4908,8 @@ ui.ok.click(function () {
                             log("重复判断:" + yuducontent)
                             if (sfcfyd(yuducontent) == false) {
                                 console.error("忽略cfyd：" + yuducontent);
-                                meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
-                                storage.put("meitiankedusj", xiaoyueyuekedusj);
-                                return false
+                                back()
+                                break;
                             }
                             if (sffs) {
                                 if (fxurlFu(clipurl)) {
@@ -4920,9 +4917,8 @@ ui.ok.click(function () {
                                 } else {
                                     console.warn("忽略fxurl失败Fu")
                                     fenxiangshibaiFu();
-                                    meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
-                                    storage.put("meitiankedusj", xiaoyueyuekedusj);
-                                    return false
+                                    back()
+                                    break;
                                 }
                             } else {
                                 if (fxurl(clipurl)) {
@@ -4930,9 +4926,8 @@ ui.ok.click(function () {
                                 } else {
                                     console.warn("忽略fxurl失败")
                                     fenxiangshibai();
-                                    meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
-                                    storage.put("meitiankedusj", xiaoyueyuekedusj);
-                                    return false
+                                    back()
+                                    break;
                                 }
                             }
                         } else {
