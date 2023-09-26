@@ -4889,6 +4889,7 @@ ui.ok.click(function () {
                         }
 
                         if (sfjcwz(encodeURIComponent(clipurl)) == true) {
+                            sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "美添中途检测url:" + clipurl);//出错请处理
                             let xianzhistr = "美添中途检测"
                             if (havejieshourenFu(1) == false) {
                                 if (havejieshouren(1) == false) {
