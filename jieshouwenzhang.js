@@ -202,7 +202,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.6.5";
+            var versionNum = "接收v7.6.6";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -531,6 +531,37 @@ ui.ok.click(function () {
                     sleep(10000)
                     return reducejieshouCount(txt)
                 }
+
+            }
+            //是否检测方
+            function isInJiancegongzhonghao(txt) {
+                let temp = null;
+                let repData = true;
+                try {
+                    temp = http.post("http://175.178.60.114:8081/fanqie/isInJiancegongzhonghao?txt=" + txt, {});
+                    if (temp && temp.statusCode == 200) {
+                        temp = temp.body.string();
+                        let rep = JSON.parse(temp);
+                        let repState = rep["state"];
+                        if (repState == 1) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        throw Error("isInJiancegongzhonghao获取数据失败" + temp)
+                    }
+                } catch (err) {
+                    console.error("isInJiancegongzhonghao报错,原因:" + err);
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        app.launch(PKG_NAME);
+                    }
+                    sleep(8000)
+                    repData = isInJiancegongzhonghao(txt);
+
+                }
+                return repData
 
             }
 

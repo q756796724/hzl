@@ -231,7 +231,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.2.9";
+            var versionNum = "聚合分享v10.3.0";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2770,9 +2770,9 @@ ui.ok.click(function () {
                                 meitiantrycount++
                                 if (meitiantrycount > 3) {
                                     if (fanqieflag || xiaoyueyueflag) {
-                                        meitiankedusj = new Date().getTime() + 7*24 * 3600 * 1000
+                                        meitiankedusj = new Date().getTime() + 7 * 24 * 3600 * 1000
                                     } else {
-                                        meitiankedusj = new Date().getTime() + 4*24 * 3600 * 1000
+                                        meitiankedusj = new Date().getTime() + 4 * 24 * 3600 * 1000
                                     }
                                 } else {
                                     if (fanqieflag || xiaoyueyueflag) {
@@ -4895,8 +4895,9 @@ ui.ok.click(function () {
                                 if (havejieshouren(1) == false) {
                                     xianzhistr = xianzhistr + "havejieshouren=false&&havejieshourenFu=false忽略"
                                     console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
-                                    back()
-                                    break;
+                                    meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                    storage.put("meitiankedusj", xiaoyueyuekedusj);
+                                    return false
                                 } else {
                                     xianzhistr = xianzhistr + "havejieshouren=true重检"
                                 }
@@ -4909,8 +4910,9 @@ ui.ok.click(function () {
                             log("重复判断:" + yuducontent)
                             if (sfcfyd(yuducontent) == false) {
                                 console.error("忽略cfyd：" + yuducontent);
-                                back()
-                                break;
+                                meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                storage.put("meitiankedusj", xiaoyueyuekedusj);
+                                return false
                             }
                             if (sffs) {
                                 if (fxurlFu(clipurl)) {
@@ -4918,8 +4920,9 @@ ui.ok.click(function () {
                                 } else {
                                     console.warn("忽略fxurl失败Fu")
                                     fenxiangshibaiFu();
-                                    back()
-                                    break;
+                                    meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                    storage.put("meitiankedusj", xiaoyueyuekedusj);
+                                    return false
                                 }
                             } else {
                                 if (fxurl(clipurl)) {
@@ -4927,8 +4930,9 @@ ui.ok.click(function () {
                                 } else {
                                     console.warn("忽略fxurl失败")
                                     fenxiangshibai();
-                                    back()
-                                    break;
+                                    meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                    storage.put("meitiankedusj", xiaoyueyuekedusj);
+                                    return false
                                 }
                             }
                         } else {
