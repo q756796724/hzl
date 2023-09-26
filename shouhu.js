@@ -1,10 +1,20 @@
 //进程守护
 
-var versionNum = "v1.2.6";
+var versionNum = "v1.2.7";
 toolsStorage = storages.create("tools配置");
 
+// 获取所有正在运行的脚本引擎
+var allEngines = engines.all();
+// 遍历所有脚本引擎，并终止除当前脚本外的其他脚本
+for (var i = 0; i < allEngines.length; i++) {
+    var engine = allEngines[i];
+    if (engine != engines.myEngine()) {
+        engine.forceStop();
+    }
+}
 
 auto.waitFor()//检查无障碍服务是否已经启用，会在在无障碍服务启动后继续运行。
+
 var zhu_setting = files.join("/sdcard/fanqie/", "zhu_setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
 var shouhu_setting = files.join("/sdcard/fanqie/", "shouhu_setting.txt")//1、定义文件路径名  2、files.cwd()会返回:  /sdcard/脚本/  3、path=/sdcard/脚本/fanqie.zip
 if (!files.exists(shouhu_setting)) {

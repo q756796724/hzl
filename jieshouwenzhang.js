@@ -26,6 +26,16 @@ readdays = storage.get("readdays");//阅读天数
 sxreaddays = 1;//上限阅读天数
 ws = null
 
+// 获取所有正在运行的脚本引擎
+var allEngines = engines.all();
+// 遍历所有脚本引擎，并终止除当前脚本外的其他脚本
+for (var i = 0; i < allEngines.length; i++) {
+    var engine = allEngines[i];
+    if (engine != engines.myEngine()) {
+        engine.forceStop();
+    }
+}
+
 setInterval(() => { }, 1000);
 
 /**
@@ -202,7 +212,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.6.9";
+            var versionNum = "接收v7.7.0";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);

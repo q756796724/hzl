@@ -27,6 +27,15 @@ readErrCount = storage.get("readErrCount", 0);//读不上次数
 var lunCount = 0
 ws = null
 
+// 获取所有正在运行的脚本引擎
+var allEngines = engines.all();
+// 遍历所有脚本引擎，并终止除当前脚本外的其他脚本
+for (var i = 0; i < allEngines.length; i++) {
+    var engine = allEngines[i];
+    if (engine != engines.myEngine()) {
+        engine.forceStop();
+    }
+}
 
 setInterval(() => { }, 1000);
 
@@ -207,7 +216,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "番茄分享v9.3.1";
+            var versionNum = "番茄分享v9.3.2";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
