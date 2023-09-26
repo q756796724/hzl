@@ -231,7 +231,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.3.3";
+            var versionNum = "聚合分享v10.3.5";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -6000,6 +6000,8 @@ ui.ok.click(function () {
                 toastLog("初始化文件shouhu_setting");
             }
 
+            setAppAlive(device.serial)
+
             //app保活双进程守护
             function setAppAlive(name) {
                 zhu_setting配置 = 读取配置(zhu_setting);
@@ -6058,32 +6060,41 @@ ui.ok.click(function () {
                     }
 
                 } else {
+                    console.error("shouhu_setting配置[name] == undefined");
                     return true
                 }
                 
             }
 
 
+            const 进程守护lock = new Lock();
             function 进程守护() {
                 //log("进程守护")
-
-                if (getShouhuAppAlive(device.serial + "守护") == false) {
-                    setShouhuAppAlive(device.serial + "守护")
-                    log("重启守护应用")
-                    home();
-                    sleep(5000);
-                    app.launch("com.fanqie.shouhu");
-                    sleep(8000);
-                    //back();
-                    if(ShouhuAppIsStart(device.serial + "守护")== false){
-                        if(currentPackage()=="com.fanqie.shouhu"){
-                            back();
-                            sleep(5000);
-                        }
+                // 获取锁
+                进程守护lock.lock();
+                try {
+                    if (getShouhuAppAlive(device.serial + "守护") == false) {
+                        setShouhuAppAlive(device.serial + "守护")
+                        log("重启守护应用")
+                        home();
+                        sleep(5000);
                         app.launch("com.fanqie.shouhu");
                         sleep(8000);
+                        //back();
+                        if (ShouhuAppIsStart(device.serial + "守护") == false) {
+                            if (currentPackage() == "com.fanqie.shouhu") {
+                                back();
+                                sleep(5000);
+                            }
+                            app.launch("com.fanqie.shouhu");
+                            sleep(8000);
+                        }
                     }
+                } finally {
+                    // 释放锁
+                    进程守护lock.unlock();
                 }
+
                 return 进程守护
             }
 

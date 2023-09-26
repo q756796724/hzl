@@ -1,6 +1,6 @@
 //进程守护
 
-var versionNum = "v1.2.5";
+var versionNum = "v1.2.6";
 toolsStorage = storages.create("tools配置");
 
 
@@ -117,6 +117,7 @@ function getAppAlive(name) {
             return false
         }
     } else {
+        console.error("zhu_setting配置[name] == undefined");
         return true
     }
     /*if(toolsStorage.get(name)!=undefined){
