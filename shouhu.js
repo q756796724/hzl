@@ -1,6 +1,6 @@
 //进程守护
 
-var versionNum = "v1.2.7";
+var versionNum = "v1.2.8";
 toolsStorage = storages.create("tools配置");
 
 // 获取所有正在运行的脚本引擎
@@ -141,7 +141,6 @@ function getAppAlive(name) {
         return true
     }*/
 }
-toastLog("版本号:" + versionNum);
 
 for (; ;) {
     setShouhuAppAlive(device.serial + "守护")
