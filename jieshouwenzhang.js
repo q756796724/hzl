@@ -202,7 +202,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.6.7";
+            var versionNum = "接收v7.6.8";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -2675,6 +2675,28 @@ ui.ok.click(function () {
                     return true
                 }*/
             }
+
+            function ShouhuAppIsStart(name) {
+                shouhu_setting配置 = 读取配置(shouhu_setting);
+                if (shouhu_setting配置 == undefined) {
+                    toastLog("重置文件shouhu_setting配置");
+                    初始化配置2(shouhu_setting);
+                }
+                if (shouhu_setting配置[name] != undefined) {
+                    setAppAlive(device.serial)
+                    if (new Date().getTime() - shouhu_setting配置[name] < 0) {
+                        return true
+                    } else {
+                        return false
+                    }
+
+                } else {
+                    return true
+                }
+                
+            }
+
+
             function 进程守护() {
                 //log("进程守护")
 
@@ -2684,8 +2706,16 @@ ui.ok.click(function () {
                     home();
                     sleep(5000);
                     app.launch("com.fanqie.shouhu");
-                    sleep(5000);
-                    back();
+                    sleep(8000);
+                    //back();
+                    if(ShouhuAppIsStart(device.serial + "守护")== false){
+                        if(currentPackage()=="com.fanqie.shouhu"){
+                            back();
+                            sleep(5000);
+                        }
+                        app.launch("com.fanqie.shouhu");
+                        sleep(8000);
+                    }
                 }
                 return 进程守护
             }

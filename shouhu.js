@@ -1,6 +1,6 @@
 //进程守护
 
-var versionNum = "v1.2.1";
+var versionNum = "v1.2.2";
 toolsStorage = storages.create("tools配置");
 
 
@@ -16,6 +16,10 @@ if (!files.exists(zhu_setting)) {
     初始化配置(zhu_setting);
     toastLog("初始化配置zhu_setting");
 }
+shouhu_setting配置 = 读取配置(shouhu_setting);
+shouhu_setting配置[name] = new Date().getTime()+3*60 * 1000
+保存配置(shouhu_setting, shouhu_setting配置);
+
 toastLog("版本号:" + versionNum);
 setInterval(() => { }, 1000);
 var w = floaty.rawWindow(
@@ -126,6 +130,8 @@ function getAppAlive(name) {
         return true
     }*/
 }
+toastLog("版本号:" + versionNum);
+
 for (; ;) {
     setShouhuAppAlive(device.serial+ "守护")
     if (getAppAlive(device.serial) == false) {
