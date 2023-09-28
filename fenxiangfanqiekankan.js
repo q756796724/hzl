@@ -216,7 +216,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "番茄分享v9.3.2";
+            var versionNum = "番茄分享v9.3.3";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -600,7 +600,7 @@ ui.ok.click(function () {
                         } else {
                             throw Error("getJieShouNum获取数据失败" + temp)
                         }
-                    }else {
+                    } else {
                         throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
@@ -634,7 +634,7 @@ ui.ok.click(function () {
                             //console.warn("getjieshouCount获取数据失败" + temp);
                             throw Error("getjieshouCount获取数据失败" + temp)
                         }
-                    }else {
+                    } else {
                         throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
@@ -776,7 +776,7 @@ ui.ok.click(function () {
                         } else {
                             throw Error("addXianZhi获取数据失败" + temp)
                         }
-                    }else {
+                    } else {
                         throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
@@ -813,7 +813,7 @@ ui.ok.click(function () {
                         } else {
                             throw Error("reduceXianZhi获取数据失败" + temp)
                         }
-                    }else {
+                    } else {
                         throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
@@ -844,7 +844,7 @@ ui.ok.click(function () {
                         } else {
                             return false;
                         }
-                    }else {
+                    } else {
                         throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
@@ -875,7 +875,7 @@ ui.ok.click(function () {
                         } else {
                             return false;
                         }
-                    }else {
+                    } else {
                         throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
@@ -907,7 +907,7 @@ ui.ok.click(function () {
                         } else {
                             throw Error("addJiancegongzhonghao获取数据失败" + temp)
                         }
-                    }else {
+                    } else {
                         throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
@@ -1038,7 +1038,7 @@ ui.ok.click(function () {
                         } else {
                             console.warn("getConfig获取数据失败" + temp);
                         }
-                    }else {
+                    } else {
                         throw Error("获取数据失败" + temp)
                     }
                 } catch (err) {
@@ -1061,7 +1061,7 @@ ui.ok.click(function () {
                             log(new Date().toLocaleString() + "-" + "-----------------发言人:" + lastTalkName + ",标题:" + lastLinkTitle);
                             return true
                         }
-                    }else {
+                    } else {
                         throw Error("获取数据失败" + temp)
                     }
                     return false
@@ -1086,7 +1086,7 @@ ui.ok.click(function () {
                         if (repState == 1) {
                             return true
                         }
-                    }else {
+                    } else {
                         throw Error("获取数据失败" + temp)
                     }
                     return false
@@ -1114,7 +1114,7 @@ ui.ok.click(function () {
                         if (repState == 1) {
                             return true
                         }
-                    }else {
+                    } else {
                         throw Error("获取数据失败" + temp)
                     }
                     return false
@@ -1186,6 +1186,8 @@ ui.ok.click(function () {
                 if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
                     if (packageName("com.tencent.mm").textMatches(/(.*禁止分享.*)/).findOnce()) {
                         console.error("禁止分享");
+                        back()
+                        sleep(3000)
                         return false
                     }
                     sleep(random(2000, 3000));
@@ -1193,6 +1195,8 @@ ui.ok.click(function () {
                     sleep(random(2000, 3000));
                 } else {
                     console.error("notfound复制链接");
+                    back()
+                    sleep(3000)
                     return false
                 }
             }
@@ -3476,7 +3480,7 @@ ui.ok.click(function () {
                     console.error("shouhu_setting配置[name] == undefined");
                     return true
                 }
-                
+
             }
 
             var 进程守护lock = threads.lock();
