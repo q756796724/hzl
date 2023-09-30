@@ -3,14 +3,14 @@
 storage = storages.create("fanqiekankan配置");
 toolsStorage = storages.create("tools配置");
 wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro|WifiPro_5G|myg";
-xyyzlOptions = "无|zhaolin&&82a7b65d839ece2b1f1ff3183faac8a3|miu&&d46bf9c4bc91c2e502ec27e0a25db92d|噜啦啦&&59362ad1735868df3ad8068290e8a2eb|芬芳&&5a6452e0962e5544f90b79e0d12d8bf5|小青&&daee14bd94e54669407fc72801bb4fe3|长江&&87860cb0f8fe082daec78243b0f83187";
+xyyzlOptions = "无|zhaolin-82a7b65d839ece2b1f1ff3183faac8a3|miu-d46bf9c4bc91c2e502ec27e0a25db92d|噜啦啦-59362ad1735868df3ad8068290e8a2eb|芬芳-5a6452e0962e5544f90b79e0d12d8bf5|小青-daee14bd94e54669407fc72801bb4fe3|长江-87860cb0f8fe082daec78243b0f83187";
 xyyzlurlmap = {
-    "16929560174632825": "zhaolin&&82a7b65d839ece2b1f1ff3183faac8a3",
-    "16930384882973442": "miu&&d46bf9c4bc91c2e502ec27e0a25db92d",
-    "16930234298358265": "噜啦啦&&59362ad1735868df3ad8068290e8a2eb",
-    "16933209316698167": "芬芳&&5a6452e0962e5544f90b79e0d12d8bf5",
-    "16934744302493780": "小青&&daee14bd94e54669407fc72801bb4fe3",
-    "16934798223866255": "长江&&87860cb0f8fe082daec78243b0f83187"
+    "16929560174632825": "zhaolin-82a7b65d839ece2b1f1ff3183faac8a3",
+    "16930384882973442": "miu-d46bf9c4bc91c2e502ec27e0a25db92d",
+    "16930234298358265": "噜啦啦-59362ad1735868df3ad8068290e8a2eb",
+    "16933209316698167": "芬芳-5a6452e0962e5544f90b79e0d12d8bf5",
+    "16934744302493780": "小青-daee14bd94e54669407fc72801bb4fe3",
+    "16934798223866255": "长江-87860cb0f8fe082daec78243b0f83187"
   };
 xyysjid=storage.get("xyysjid");//小阅阅上级id
 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G");
@@ -267,7 +267,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.3.9";
+            var versionNum = "聚合分享v10.4.0";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -1862,7 +1862,7 @@ ui.ok.click(function () {
                             }
 
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000) != null) {
-                                let yunshaomaurl = getyunshaomazhuliurl(xyyzlurl.split("&&")[1]);
+                                let yunshaomaurl = getyunshaomazhuliurl(xyyzlurl.split("-")[1]);
                                 if (yunshaomaurl == "休息") {
                                     log(new Date().toLocaleString() + "-" + "-----yunshaomazhuliurl=休息------" + xiaoyueyueReadNum + "次");
                                     返回v首页();
