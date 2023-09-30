@@ -212,7 +212,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.7.0";
+            var versionNum = "接收v7.7.1";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -1648,10 +1648,6 @@ ui.ok.click(function () {
                 files.write(path, JSON.stringify(jsonContent));
                 sleep(1000);
                 if (random(0, 10) == 5) {
-                    if (联网验证(zwifi) != true) {
-                        连接wifi(zwifi, 5000);
-                        sleep(10000);
-                    }
                     启动x5()
                 }
             }

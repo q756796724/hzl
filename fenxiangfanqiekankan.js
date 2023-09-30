@@ -1290,10 +1290,8 @@ ui.ok.click(function () {
                     "count": 1
                 }
                 files.write(path, JSON.stringify(jsonContent));
-                if (联网验证(zwifi) != true) {
-                    连接wifi(zwifi, 5000);
-                    app.launch(PKG_NAME);
-                    sleep(10000)
+                if (nowHour < 8) {
+                    lunSleep(random(600000, 3600000));
                 }
                 启动x5()
             }
@@ -3673,7 +3671,6 @@ ui.ok.click(function () {
                                     }
                                 }
                             }
-                            lunSleep(random(600000, 3600000));
                             readNum = 0;
                             todayTxCount = 0;
                             初始化配置(settingPath);
