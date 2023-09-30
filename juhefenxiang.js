@@ -20,7 +20,7 @@ if (storage.get("xyyzlurl") == undefined) {
         let randomIndex = Math.floor(Math.random() * optionsList.length);
         let randomOption = optionsList[randomIndex];
         storage.put("xyyzlurl", randomOption)*/
-    if(xyysjid!=undefined){
+    if(xyysjid!=undefined&&xyyzlurlmap[xyysjid]!=undefined){
         storage.put("xyyzlurl", xyyzlurlmap[xyysjid])
     }
 }
@@ -267,7 +267,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.4.1";
+            var versionNum = "聚合分享v10.4.2";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -7466,6 +7466,7 @@ ui.ok.click(function () {
                                         toaststr = toaststr + "\n番茄当天已轮回" + (lunCount - 1).toString() + "次完成篇数" + readNum;
                                     }
                                     if (xiaoyueyueflag == true) {
+                                        toaststr = toaststr + "\n小阅阅xyysjid:" + xyysjid
                                         toaststr = toaststr + "\n小阅阅:" + formatDate(xiaoyueyuekedusj, 'yyyy-MM-dd HH:mm:ss')
                                         toaststr = toaststr + "\n小阅阅完成篇数" + xiaoyueyueReadNum
 
