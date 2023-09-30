@@ -2062,19 +2062,6 @@ ui.ok.click(function () {
                         loadcount++
                     }
 
-                    if (packageName("com.tencent.mm").textMatches(/(.*暂时失效.*)/).findOnce()) {
-                        if (xiaoyueyuecheckFlag) {
-                            fenxiangshibai();
-                        }
-                        let xianzhistr = "小阅阅助力限制中"
-                        log(new Date().toLocaleString() + "-----------" + xianzhistr);
-                        xiaoyueyuecheckFlag = true
-                        storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
-                        xiaoyueyuekedusj = new Date().getTime() + random(5000, 8000) * 1000
-                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
-                        return;
-                    }
-
                     if (packageName("com.tencent.mm").textMatches(/(.*上限.*)/).findOnce()) {
                         if (xiaoyueyuecheckFlag) {
                             fenxiangshibai();
@@ -2116,6 +2103,18 @@ ui.ok.click(function () {
                                 fenxiangshibai();
                             }
                             return
+                        }
+                        if (packageName("com.tencent.mm").textMatches(/(.*暂时失效.*)/).findOnce()) {
+                            if (xiaoyueyuecheckFlag) {
+                                fenxiangshibai();
+                            }
+                            let xianzhistr = "小阅阅助力限制中"
+                            log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                            xiaoyueyuecheckFlag = true
+                            storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
+                            xiaoyueyuekedusj = new Date().getTime() + random(5000, 8000) * 1000
+                            storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                            return;
                         }
                         let ksbtn = packageName("com.tencent.mm").id("task_btn_read").findOnce()
                         if (ksbtn && ksbtn.text == "开始阅读") {
