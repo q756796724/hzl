@@ -267,7 +267,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.4.2";
+            var versionNum = "聚合分享v10.4.3";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2062,11 +2062,11 @@ ui.ok.click(function () {
                         loadcount++
                     }
 
-                    if (packageName("com.tencent.mm").textMatches(/(.*限制.*)/).findOnce()) {
+                    if (packageName("com.tencent.mm").textMatches(/(.*暂时失效.*)/).findOnce()) {
                         if (xiaoyueyuecheckFlag) {
                             fenxiangshibai();
                         }
-                        let xianzhistr = "小阅阅助力限制"
+                        let xianzhistr = "小阅阅助力限制中"
                         log(new Date().toLocaleString() + "-----------" + xianzhistr);
                         xiaoyueyuecheckFlag = true
                         storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
@@ -5089,7 +5089,7 @@ ui.ok.click(function () {
                 
                 let wifiCount = xiaoyueyuecount;
                 for (; ;) {
-                    let numbtn = packageName("com.tencent.mm").textMatches(/(阅读有效.*|.*限制.*)/).findOne(10000)
+                    let numbtn = packageName("com.tencent.mm").textMatches(/(阅读有效.*|.*阅读无效.*)/).findOne(10000)
                     if (numbtn && numbtn.text().indexOf("阅读有效") > -1) {
                         xiaoyueyueReadNum++
                         storage.put("xiaoyueyueReadNum", xiaoyueyueReadNum);
@@ -5097,7 +5097,7 @@ ui.ok.click(function () {
                             xiaoyueyuecheckFlag = false
                             storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
                         }
-                    } else if (numbtn && numbtn.text().indexOf("限制") > -1) {
+                    } else if (numbtn && numbtn.text().indexOf("阅读无效") > -1) {
                         let xianzhistr = "小阅阅助力限制"
                         if (xiaoyueyuecheckFlag) {
                             if (sffs == false) {
@@ -5560,7 +5560,7 @@ ui.ok.click(function () {
                                 break;
                             }
                             let tstxt = packageName("com.tencent.mm").id("task_load_read").findOnce()
-                            if (packageName("com.tencent.mm").textMatches(/(.*限制.*)/).findOnce()) {
+                            if (packageName("com.tencent.mm").textMatches(/(.*阅读无效.*)/).findOnce()) {
                                 let xianzhistr = "小阅阅助力限制"
                                 if (xiaoyueyuecheckFlag && sffs == false) {
                                     addXianZhi(phoneNum.toString())
