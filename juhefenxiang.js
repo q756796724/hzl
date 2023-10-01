@@ -1681,6 +1681,7 @@ ui.ok.click(function () {
                     "count": 1
                 }
                 files.write(path, JSON.stringify(jsonContent));
+                nowHour = new Date().getHours();
                 if (nowHour < 8) {
                     lunSleep(random(600000, 3600000));
                 }
