@@ -271,7 +271,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.4.7";
+            var versionNum = "聚合分享v10.4.8";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2068,7 +2068,8 @@ ui.ok.click(function () {
                         loadcount++
                     }
 
-                    if (packageName("com.tencent.mm").textMatches(/(.*上限.*)/).findOnce()) {
+                    if (packageName("com.tencent.mm").textMatches(/(.*阅读已达上限.*)/).findOnce()) {
+                        log(new Date().toLocaleString() + "-----------" + "小阅阅助力上限");
                         if (xiaoyueyuecheckFlag) {
                             fenxiangshibai();
                         }
@@ -5143,7 +5144,8 @@ ui.ok.click(function () {
                         return true
                     }
 
-                    if (packageName("com.tencent.mm").textMatches(/(.*上限.*)/).findOnce()) {
+                    if (packageName("com.tencent.mm").textMatches(/(.*阅读已达上限.*)/).findOnce()) {
+                        log(new Date().toLocaleString() + "-----------" + "小阅阅助力上限");
                         if (xiaoyueyuecheckFlag) {
                             fenxiangshibai();
                         }
@@ -5607,7 +5609,7 @@ ui.ok.click(function () {
                                 xiaoyueyuecheckFlag = false
                                 storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
                             }
-                            if (packageName("com.tencent.mm").textMatches(/(.*上限.*)/).findOnce()) {
+                            if (packageName("com.tencent.mm").textMatches(/(.*阅读已达上限.*)/).findOnce()) {
                                 log(new Date().toLocaleString() + "-----------" + "小阅阅助力上限");
                                 xiaoyueyueover = true
                                 storage.put("xiaoyueyueover", xiaoyueyueover);
