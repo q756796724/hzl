@@ -4771,8 +4771,8 @@ ui.ok.click(function () {
 
                                     return false;
                                 }
-                                if (fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
-                                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "url:" + clipurl + packageName("com.tencent.mm").id("js_ip_wording_wrp").className("android.view.View").findOnce().text());//出错请处理
+                                if (fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1&& fabudi != "") {
+                                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "url:" + clipurl + "发布地:"+fabudi);//出错请处理
                                 }
                                 addJiancegongzhonghao(encodeURIComponent(js_name.desc()))
                                 yuducontent = clipurl
@@ -5383,8 +5383,8 @@ ui.ok.click(function () {
 
                                     return false;
                                 }
-                                if (fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
-                                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "url:" + clipurl + packageName("com.tencent.mm").id("js_ip_wording_wrp").className("android.view.View").findOnce().text());//出错请处理
+                                if (fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1&& fabudi != "") {
+                                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "url:" + clipurl + "发布地:"+fabudi);//出错请处理
                                 }
                                 addJiancegongzhonghao(encodeURIComponent(js_name.desc()))
                                 yuducontent = clipurl
