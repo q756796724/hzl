@@ -31,6 +31,7 @@ qun_into = storage.get("qun_into", false);
 qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
 removePhoneNum = storage.get("removePhoneNum", false);
 zhengtian = storage.get("zhengtian", false);
+chushihuaflag=storage.get("chushihuaflag", false);
 fanqieflag = storage.get("fanqieflag", false);
 meitianflag = storage.get("meitianflag", true);
 meitianover = storage.get("meitianover", false);//当天是否完成
@@ -174,6 +175,7 @@ ui.layout(
         <horizontal>
             <checkbox text="群进入" id="qun_into" checked="{{qun_into}}" textSize="18sp" />\
             <checkbox text="是否切换" id="qiehuanjiaoben" checked="{{qiehuanjiaoben}}" textSize="18sp" />\
+            <checkbox text="初始化" id="chushihuaflag" checked="{{chushihuaflag}}" textSize="18sp" />\
         </horizontal>
         <horizontal>
             <checkbox text="清除号码" id="removePhoneNum" checked="{{removePhoneNum}}" textSize="18sp" />\
@@ -268,7 +270,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.4.3";
+            var versionNum = "聚合分享v10.4.4";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -303,7 +305,7 @@ ui.ok.click(function () {
             meitianflag = ui.meitianflag.isChecked();
             xiaoyueyueflag = ui.xiaoyueyueflag.isChecked();
             autoX = ui.autoX.isChecked();
-
+            chushihuaflag= ui.chushihuaflag.isChecked();
 
 
 
@@ -319,6 +321,7 @@ ui.ok.click(function () {
             storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
             storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
             storage.put("zhengtian", ui.zhengtian.isChecked());
+            storage.put("chushihuaflag", ui.chushihuaflag.isChecked());
             storage.put("fanqieflag", ui.fanqieflag.isChecked());
             storage.put("meitianflag", ui.meitianflag.isChecked());
             storage.put("xiaoyueyueflag", ui.xiaoyueyueflag.isChecked());
@@ -4563,6 +4566,18 @@ ui.ok.click(function () {
                         }
                         return false;
                     }
+                    if(xiaoyueyuecount>60){
+                        log("本轮完成")
+                        xiaoyueyuecount = 1
+                        storage.put("xiaoyueyuecount", xiaoyueyuecount);
+                        xiaoyueyueluncount++
+                        storage.put("xiaoyueyueluncount", xiaoyueyueluncount);
+
+                        xiaoyueyuekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+
+                        return true;
+                    }
                     if (!zhengtian) {
                         if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 50) {
                             log("够钟休息")
@@ -5162,6 +5177,18 @@ ui.ok.click(function () {
                             return true;
                         }
                         return false;
+                    }
+                    if(xiaoyueyuecount>60){
+                        log("本轮完成")
+                        xiaoyueyuecount = 1
+                        storage.put("xiaoyueyuecount", xiaoyueyuecount);
+                        xiaoyueyueluncount++
+                        storage.put("xiaoyueyueluncount", xiaoyueyueluncount);
+
+                        xiaoyueyuekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+
+                        return true;
                     }
                     if (!zhengtian) {
                         if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 50) {
@@ -7253,7 +7280,9 @@ ui.ok.click(function () {
                         toastLog("版本号:" + versionNum);
                         配置 = 读取配置(settingPath);
                         log("配置[date]=" + 配置["date"] + "new Date().toLocaleDateString()=" + new Date().toLocaleDateString())
-                        if (配置["date"] != new Date().toLocaleDateString()) {
+                        if (配置["date"] != new Date().toLocaleDateString()||chushihuaflag) {
+                            chushihuaflag=false
+                            storage.put("chushihuaflag", chushihuaflag)
                             xyytodayTxCount=0
                             storage.put("xyytodayTxCount", xyytodayTxCount)
                             storage.put("yunshaomazhuliurl", "")
