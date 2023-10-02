@@ -274,7 +274,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.5.1";
+            var versionNum = "聚合分享v10.5.2";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2461,7 +2461,7 @@ ui.ok.click(function () {
                     nowHour = new Date().getHours();
                     let jb = packageName("com.tencent.mm").className("android.view.View").descMatches(/(.*金币.*)/).findOnce()
                     let jq = packageName("com.tencent.mm").className("android.view.View").descMatches(/(.*收徒奖励.*)/).findOnce()
-                    if (jb && ((zfbtx == true && xyytodayTxCount < 1&& parseFloat(jq.desc().replace(/[^\d.]/g, ""))+parseInt(jb.desc().replace(/[^\d]/g, ""))/10000>5) || (zfbtx == false && ((nowHour > 10 && xyytodayTxCount < 1) || (nowHour > 14 && xyytodayTxCount < 2) || (nowHour > 18 && xyytodayTxCount < 3))))) {
+                    if (jb && ((zfbtx == true && xyytodayTxCount < 1&& parseFloat(jq.desc().replace(/[^\d.]/g, ""))+parseInt(jb.desc().replace(/[^\d]/g, ""))/10000>zfbtxyz) || (zfbtx == false && ((nowHour > 10 && xyytodayTxCount < 1) || (nowHour > 14 && xyytodayTxCount < 2) || (nowHour > 18 && xyytodayTxCount < 3))))) {
                         click("提现")
                         sleep(10000)
                         if (zfbtx) {
