@@ -274,7 +274,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.4.9";
+            var versionNum = "聚合分享v10.5.0";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4475,6 +4475,7 @@ ui.ok.click(function () {
 
                 let wifiCount = xiaoyueyuecount;
                 for (; ;) {
+                    let lastXiaoyueyuecheckFlag=xiaoyueyuecheckFlag
                     let numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(阅读成功.*|阅读无效.*|当前阅读被限制.*)/).findOne(10000)
                     if (numbtn && numbtn.text().indexOf("篇") > -1) {
                         xiaoyueyueReadNum = parseInt(numbtn.text().split("篇")[0].replace(/[^\d]/g, ""))
@@ -4660,12 +4661,17 @@ ui.ok.click(function () {
                                 }
                                 storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
                                 if (xiaoyueyuecheckFlag) {
-                                    let xianzhistr = "小阅阅无效"
-                                    if (xiaoyueyuecount - wifiCount == 1) {
-                                        if (sffs == false) {
-                                            addXianZhi(phoneNum.toString())
-                                            xianzhistr = xianzhistr + "addXianZhi"
+                                    let xianzhistr = ""
+                                    if(lastXiaoyueyuecheckFlag==true){
+                                        xianzhistr = "小阅阅无效"
+                                        if (xiaoyueyuecount - wifiCount == 1) {
+                                            if (sffs == false) {
+                                                addXianZhi(phoneNum.toString())
+                                                xianzhistr = xianzhistr + "addXianZhi"
+                                            }
                                         }
+                                    }else{
+                                        xianzhistr = "小阅阅中途重检"
                                     }
                                     if (havejieshourenFu(1) == false) {
                                         if (havejieshouren(1) == false) {
