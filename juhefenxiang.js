@@ -38,6 +38,7 @@ meitianflag = storage.get("meitianflag", true);
 meitianover = storage.get("meitianover", false);//当天是否完成
 xiaoyueyueflag = storage.get("xiaoyueyueflag", false);
 zfbtx = storage.get("zfbtx", true);
+zfbtxyz = storage.get("zfbtxyz", 5);//阈值
 xyyzl = storage.get("xyyzl", false);
 xiaoyueyueover = storage.get("xiaoyueyueover", false);//当天是否完成
 xiaoyueyueReadNum = storage.get("xiaoyueyueReadNum", 0);//小阅阅当天阅读次数
@@ -167,7 +168,9 @@ ui.layout(
         <input id="phoneNum" text="{{phoneNum}}" />
         <horizontal>
             <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
-            <checkbox text="小阅阅zfbtx" id="zfbtx" checked="{{zfbtx}}" textSize="18sp" />\
+            <checkbox text="xyyzfbtx" id="zfbtx" checked="{{zfbtx}}" textSize="18sp" />\
+            <text textSize="16sp" textColor="black" text="xyyzfbtx阈值" />
+            <input id="zfbtxyz" text="{{zfbtxyz}}" />
         </horizontal>
         <horizontal>
             <checkbox text="小阅阅助力" id="xyyzl" checked="{{xyyzl}}" textSize="18sp" />\
@@ -271,7 +274,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.4.8";
+            var versionNum = "聚合分享v10.4.9";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -317,6 +320,7 @@ ui.ok.click(function () {
             storage.put("dlwifi", dlwifi);
             storage.put("auto_tx", ui.auto_tx.isChecked());
             storage.put("zfbtx", ui.zfbtx.isChecked());
+            storage.put("zfbtxyz", parseInt(ui.zfbtxyz.text().toString()));
             storage.put("xyyzl", ui.xyyzl.isChecked());
             storage.put("qun_into", ui.qun_into.isChecked());
             storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
@@ -2454,7 +2458,8 @@ ui.ok.click(function () {
 
                     nowHour = new Date().getHours();
                     let jb = packageName("com.tencent.mm").className("android.view.View").descMatches(/(.*金币.*)/).findOnce()
-                    if (jb && ((zfbtx == true && parseInt(jb.desc().replace(/[^\d]/g, "")) >= 15000) || (zfbtx == false && ((nowHour > 10 && todayTxCount < 1) || (nowHour > 14 && todayTxCount < 2) || (nowHour > 18 && todayTxCount < 3))))) {
+                    let jq = packageName("com.tencent.mm").className("android.view.View").descMatches(/(.*收徒奖励.*)/).findOnce()
+                    if (jb && ((zfbtx == true && xyytodayTxCount < 1&& parseFloat(jq.desc().replace(/[^\d.]/g, ""))+parseInt(jb.desc().replace(/[^\d]/g, ""))/10000>5) || (zfbtx == false && ((nowHour > 10 && xyytodayTxCount < 1) || (nowHour > 14 && xyytodayTxCount < 2) || (nowHour > 18 && xyytodayTxCount < 3))))) {
                         click("提现")
                         sleep(10000)
                         if (zfbtx) {
@@ -5139,7 +5144,11 @@ ui.ok.click(function () {
                         if (xiaoyueyuecheckFlag) {
                             fenxiangshibai();
                         }
-                        xiaoyueyuekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
+                        if(isNaN(parseInt(tstxt.text().replace(/[^\d]/g, " ")))){
+                            xiaoyueyuekedusj = new Date().getTime() + 60 * 60000 + random(60000, 480000)
+                        }else{
+                            xiaoyueyuekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
+                        }
                         storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                         return true
                     }
@@ -5631,7 +5640,11 @@ ui.ok.click(function () {
                                 storage.put("xiaoyueyuecount", xiaoyueyuecount);
                                 xiaoyueyueluncount++
                                 storage.put("xiaoyueyueluncount", xiaoyueyueluncount);
-                                xiaoyueyuekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
+                                if(isNaN(parseInt(tstxt.text().replace(/[^\d]/g, " ")))){
+                                    xiaoyueyuekedusj = new Date().getTime() + 60 * 60000 + random(60000, 480000)
+                                }else{
+                                    xiaoyueyuekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
+                                }
                                 storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                 return true
                             }
