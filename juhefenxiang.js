@@ -274,7 +274,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.5.4";
+            var versionNum = "聚合分享v10.5.5";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2125,6 +2125,8 @@ ui.ok.click(function () {
                             log(new Date().toLocaleString() + "-----------" + xianzhistr);
                             xiaoyueyuecheckFlag = true
                             storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
+                            返回v首页()
+                            xiaoyueyuePage()
                             xiaoyueyuekedusj = new Date().getTime() + random(5000, 8000) * 1000
                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                             return;
@@ -5144,10 +5146,12 @@ ui.ok.click(function () {
                         console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
                         xiaoyueyuecheckFlag = true
                         storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
-                        xiaoyueyuekedusj = new Date().getTime() + random(5000, 8000) * 1000
-                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                         xiaoyueyuecount = 1
                         storage.put("xiaoyueyuecount", xiaoyueyuecount);
+                        返回v首页()
+                        xiaoyueyuePage()
+                        xiaoyueyuekedusj = new Date().getTime() + random(5000, 8000) * 1000
+                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                         return false;
                     }
                     let tstxt = packageName("com.tencent.mm").id("task_load_read").findOnce()
@@ -5296,11 +5300,12 @@ ui.ok.click(function () {
                                 if (xiaoyueyuecheckFlag) {
                                     let xianzhistr = ""
                                     if (lastXiaoyueyuecheckFlag == true) {
-                                        xianzhistr = "小阅阅助力无效"
+                                        xianzhistr = "小阅阅助力可能无效"
                                         if (xiaoyueyuecount - wifiCount == 1) {
                                             if (sffs == false) {
-                                                addXianZhi(phoneNum.toString())
-                                                xianzhistr = xianzhistr + "addXianZhi"
+                                                //助力没有第二次机会
+                                                //addXianZhi(phoneNum.toString())
+                                                //xianzhistr = xianzhistr + "addXianZhi"
                                             }
                                         }
                                     } else {
@@ -5631,10 +5636,13 @@ ui.ok.click(function () {
                                 console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
                                 xiaoyueyuecheckFlag = true
                                 storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
-                                xiaoyueyuekedusj = new Date().getTime() + random(5000, 8000) * 1000
-                                storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                 xiaoyueyuecount = 1
                                 storage.put("xiaoyueyuecount", xiaoyueyuecount);
+                                返回v首页()
+                                xiaoyueyuePage()
+                                xiaoyueyuekedusj = new Date().getTime() + random(5000, 8000) * 1000
+                                storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+
                                 return false;
                             } else {
                                 xiaoyueyuecheckFlag = false
@@ -7317,6 +7325,7 @@ ui.ok.click(function () {
                         nowHour = new Date().getHours();
                         log("当前时间:" + nowHour + "时");
                         toastLog("版本号:" + versionNum);
+                        xyyzl = storage.get("xyyzl", false);
                         配置 = 读取配置(settingPath);
                         log("配置[date]=" + 配置["date"] + "new Date().toLocaleDateString()=" + new Date().toLocaleDateString())
                         if (配置["date"] != new Date().toLocaleDateString() || chushihuaflag) {
