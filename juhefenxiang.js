@@ -279,7 +279,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.5.6";
+            var versionNum = "聚合分享v10.5.7";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -299,7 +299,7 @@ ui.ok.click(function () {
             log("jieshouwifi:" + jieshouwifi);
             phoneNum = ui.phoneNum.getText();
             log("phoneNum:" + phoneNum);
-            zfbtxyz = parseInt(ui.zfbtxyz.text().toString());
+            zfbtxyz = parseFloat(ui.zfbtxyz.text().toString());
             log("zfbtxyz:" + zfbtxyz);
             auto_tx = ui.auto_tx.isChecked();
             log("tx:" + auto_tx);
@@ -327,7 +327,7 @@ ui.ok.click(function () {
             storage.put("dlwifi", dlwifi);
             storage.put("auto_tx", ui.auto_tx.isChecked());
             storage.put("zfbtx", ui.zfbtx.isChecked());
-            storage.put("zfbtxyz", parseInt(ui.zfbtxyz.text().toString()));
+            storage.put("zfbtxyz", parseFloat(ui.zfbtxyz.text().toString()));
             storage.put("xyyzl", ui.xyyzl.isChecked());
             storage.put("qun_into", ui.qun_into.isChecked());
             storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
