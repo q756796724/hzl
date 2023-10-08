@@ -279,7 +279,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.5.7";
+            var versionNum = "聚合分享v10.5.8";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -5736,7 +5736,7 @@ ui.ok.click(function () {
                             //     fenxiangshibai();
                             // }
 
-                            addJiancegongzhonghao(encodeURIComponent(js_name.desc()))
+                            //addJiancegongzhonghao(encodeURIComponent(js_name.desc()))
                             let fxflag = fenxiangurl();
                             let clipurl = getClip();
                             if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
