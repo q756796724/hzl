@@ -3,7 +3,7 @@
 storage = storages.create("fanqiekankan配置");
 toolsStorage = storages.create("tools配置");
 wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro|WifiPro_5G|myg";
-xyyzlOptions = "无|zhaolin-82a7b65d839ece2b1f1ff3183faac8a3|miu-d46bf9c4bc91c2e502ec27e0a25db92d|噜啦啦-59362ad1735868df3ad8068290e8a2eb|芬芳-5a6452e0962e5544f90b79e0d12d8bf5|小青-daee14bd94e54669407fc72801bb4fe3|长江-87860cb0f8fe082daec78243b0f83187|小飞鱼-162230d30b91501f1d96120b3ec2ea4d|温迪-90a01c7c6c33d85e268978d656b0d1e5";
+xyyzlOptions = "无|zhaolin-82a7b65d839ece2b1f1ff3183faac8a3|miu-d46bf9c4bc91c2e502ec27e0a25db92d|噜啦啦-59362ad1735868df3ad8068290e8a2eb|芬芳-5a6452e0962e5544f90b79e0d12d8bf5|小青-daee14bd94e54669407fc72801bb4fe3|长江-87860cb0f8fe082daec78243b0f83187|小飞鱼-162230d30b91501f1d96120b3ec2ea4d|温迪-90a01c7c6c33d85e268978d656b0d1e5|云雨-636db647337f0b640d7984d18825e53e";
 xyyzlurlmap = {
     "16929560174632825": "zhaolin-82a7b65d839ece2b1f1ff3183faac8a3",
     "16930384882973442": "miu-d46bf9c4bc91c2e502ec27e0a25db92d",
@@ -12,7 +12,8 @@ xyyzlurlmap = {
     "16934744302493780": "小青-daee14bd94e54669407fc72801bb4fe3",
     "16934798223866255": "长江-87860cb0f8fe082daec78243b0f83187",
     "16956000452513829": "小飞鱼-162230d30b91501f1d96120b3ec2ea4d",
-    "16943918526081523": "温迪-90a01c7c6c33d85e268978d656b0d1e5"
+    "16943918526081523": "温迪-90a01c7c6c33d85e268978d656b0d1e5",
+    "16950832849715798": "云雨-636db647337f0b640d7984d18825e53e"
 };
 xyysjid = storage.get("xyysjid");//小阅阅上级id
 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G");
