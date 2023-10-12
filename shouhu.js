@@ -1,5 +1,9 @@
+var w = floaty.rawWindow(
+    <frame gravity="center">
+        <text id="text">。 。 。</text>
+    </frame>
+);
 //进程守护
-
 var versionNum = "v1.2.9";
 toolsStorage = storages.create("tools配置");
 
@@ -32,16 +36,7 @@ shouhu_setting配置[device.serial + "守护"] = new Date().getTime() + 3 * 60 *
 
 toastLog("版本号:" + versionNum);
 setInterval(() => { }, 1000);
-/*var w = floaty.rawWindow(
-    <frame gravity="center">
-        <text id="text">。 。 。</text>
-    </frame>
-);*/
-document.writeln("var w = floaty.rawWindow(");
-document.writeln("    <frame gravity=\"center\">");
-document.writeln("        <text id=\"text\">。 。 。</text>");
-document.writeln("    </frame>");
-document.writeln(");");
+
 
 w.setPosition(500, 50);
 //w.setPosition(device.width * 0.03, device.height * 0.158);
