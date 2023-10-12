@@ -80,7 +80,6 @@ function getSelect(runSelect) {
             var r = 解压zip文件(path, "") //解压zip文件
         }
         files.copy(r + "shouhujiami.js", "/sdcard/fanqie/shouhu.js")
-        files.copy(r + "shouhujiami.dex", "/sdcard/fanqie/774de7.dex")
     } catch (err) {
         console.error(err)  //抛出异常
     }
