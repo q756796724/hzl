@@ -1,6 +1,6 @@
 //进程守护
 
-var versionNum = "v1.2.8";
+var versionNum = "v1.2.9";
 toolsStorage = storages.create("tools配置");
 
 // 获取所有正在运行的脚本引擎
@@ -121,7 +121,7 @@ function setShouhuAppAlive(name) {
 function getAppAlive(name) {
     zhu_setting配置 = 读取配置(zhu_setting);
     if (zhu_setting配置[name] != undefined) {
-        if (new Date().getTime() - zhu_setting配置[name] < 3 * 60 * 1000) {
+        if (new Date().getTime() - zhu_setting配置[name] < 5 * 60 * 1000) {
             return true
         } else {
             return false
