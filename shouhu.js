@@ -32,11 +32,16 @@ shouhu_setting配置[device.serial + "守护"] = new Date().getTime() + 3 * 60 *
 
 toastLog("版本号:" + versionNum);
 setInterval(() => { }, 1000);
-var w = floaty.rawWindow(
+/*var w = floaty.rawWindow(
     <frame gravity="center">
         <text id="text">。 。 。</text>
     </frame>
-);
+);*/
+document.writeln("var w = floaty.rawWindow(");
+document.writeln("    <frame gravity=\"center\">");
+document.writeln("        <text id=\"text\">。 。 。</text>");
+document.writeln("    </frame>");
+document.writeln(");");
 
 w.setPosition(500, 50);
 //w.setPosition(device.width * 0.03, device.height * 0.158);
@@ -80,12 +85,12 @@ let KeepAliveService = {
         manager.cancelAll();
     },
 };
-//if (app.autojs.versionName == '4.1.1 Alpha2') {
+
 sleep(1000);
 KeepAliveService.stop();
 sleep(5000);
 KeepAliveService.start("keepalive", "进程守护");
-//}
+
 
 function 初始化配置(path) {
     files.createWithDirs(path)  //开始创建文件
@@ -157,16 +162,6 @@ for (; ;) {
             app.launch("com.fanqie.cloud");
             sleep(300000);
         }
-
-
-        // log("重启主应用")
-        // home();
-        // sleep(3000);
-        // app.launch("com.fanqie.xiangjiao");
-        // sleep(60000);
-        // if(currentPackage() == "com.fanqie.xiangjiao"){
-        //     app.launch("com.feige.autoapp004");
-        // }
     }
 
     sleep(30 * 1000);

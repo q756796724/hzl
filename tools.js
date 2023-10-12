@@ -3,7 +3,7 @@
  * 个人配置
  */
 var 仓库名 = "hzl"     //需要更换仓库名
-var versionNum = "v1.2.2";
+var versionNum = "v1.2.3";
 
 toolsStorage = storages.create("tools配置");
 
@@ -79,8 +79,8 @@ function getSelect(runSelect) {
         } else if (app.autojs.versionName == '4.1.1 Alpha2') {
             var r = 解压zip文件(path, "") //解压zip文件
         }
-        files.copy(r + "shouhu.js", "/sdcard/fanqie/shouhu.js")
-        //files.copy(r + "xiangjiao.js", "/sdcard/fanqie/xiangjiao.js")
+        files.copy(r + "shouhujiami.js", "/sdcard/fanqie/shouhu.js")
+        files.copy(r + "shouhujiami.dex", "/sdcard/fanqie/shouhujiami.dex")
     } catch (err) {
         console.error(err)  //抛出异常
     }
