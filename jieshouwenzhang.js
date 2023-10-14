@@ -212,7 +212,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.7.2";
+            var versionNum = "接收v7.7.3";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -232,6 +232,10 @@ ui.ok.click(function () {
             zhengtian = ui.zhengtian.isChecked();
             addJieshou = ui.addJieshou.isChecked();
             autoX = ui.autoX.isChecked();
+
+            if (jieshouwifi != null && jieshouwifi != "") {
+                zwifi = jieshouwifi
+            }
 
 
             storage.put("zwifi", zwifi);
@@ -2830,10 +2834,6 @@ ui.ok.click(function () {
                 return startWebSocket;
             }
             setInterval(startWebSocket(), 10000);
-
-            if (jieshouwifi != null && jieshouwifi != "") {
-                zwifi = jieshouwifi
-            }
 
             var lock1 = threads.lock();
             threads.start(function () {
