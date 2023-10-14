@@ -233,11 +233,6 @@ ui.ok.click(function () {
             addJieshou = ui.addJieshou.isChecked();
             autoX = ui.autoX.isChecked();
 
-            if (jieshouwifi != null && jieshouwifi != "") {
-                zwifi = jieshouwifi
-            }
-
-
             storage.put("zwifi", zwifi);
             storage.put("dlwifi", dlwifi);
             storage.put("phoneNum", ui.phoneNum.text());
@@ -248,7 +243,10 @@ ui.ok.click(function () {
             storage.put("addJieshou", ui.addJieshou.isChecked());
             storage.put("autoX", ui.autoX.isChecked());
 
-
+            if (jieshouwifi != null && jieshouwifi != "") {
+                zwifi = jieshouwifi
+            }
+            
             var totificationlistenersetting = function (actionname) {
                 try {
                     let i = app.intent({
