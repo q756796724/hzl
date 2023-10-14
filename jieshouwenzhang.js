@@ -212,7 +212,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.7.3";
+            var versionNum = "接收v7.7.5";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -2832,7 +2832,14 @@ ui.ok.click(function () {
                 return startWebSocket;
             }
             setInterval(startWebSocket(), 10000);
-
+            if (isInJieshou(phoneNum.toString()) == 0) {
+                toastLog("不在接收列表！")
+                toastLog("不在接收列表！！")
+                toastLog("不在接收列表！！！")
+                toastLog("不在接收列表！！！！")
+                toastLog("不在接收列表！！！！！")
+                exit();
+            }
             var lock1 = threads.lock();
             threads.start(function () {
                 lock1.lock(); // 获取锁
