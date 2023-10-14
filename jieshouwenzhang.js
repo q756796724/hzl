@@ -246,7 +246,7 @@ ui.ok.click(function () {
             if (jieshouwifi != null && jieshouwifi != "") {
                 zwifi = jieshouwifi
             }
-            
+            log("主Wifi:" + zwifi);
             var totificationlistenersetting = function (actionname) {
                 try {
                     let i = app.intent({
