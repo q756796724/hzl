@@ -66,6 +66,7 @@ var lunCount = 0
 ws = null
 meitiantrycount = storage.get("meitiantrycount", 0);//美添连续识别失败次数
 sffs = false;//是否副手
+等待未响应次数=0
 
 // 获取所有正在运行的脚本引擎
 var allEngines = engines.all();
@@ -280,7 +281,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.5.8";
+            var versionNum = "聚合分享v10.5.9";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -6767,7 +6768,16 @@ ui.ok.click(function () {
                 //log(xxy);
                 gesture.apply(null, xxy);
             };
-
+            function 保持wifi() {
+                let wifitc=textMatches(/(.*选择否则继续保持当前连接.*)/).findOnce() 
+                if (wifitc) {
+                    log(new Date().toLocaleString() + "-" + "检测到wifi弹窗");
+                    if(wifitc.text().indexOf("选择否则继续保持当前连接")>-1){
+                        log(new Date().toLocaleString() + "-" + "点击否");
+                        click("否")
+                    }
+                }
+            }
             function 结束未响应() {
                 if (textMatches(/(.*未响应.*|.*没有响应.*|.*无响应.*)/).findOne(3000) != null) {
                     log(new Date().toLocaleString() + "-" + "检测到应用未响应");
@@ -6782,6 +6792,7 @@ ui.ok.click(function () {
                             clickx(cBounds.right, cBounds.bottom);
                         } else {
                             log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
+                            等待未响应次数=0
                             return true;
                         }
                         cBtn = textMatches(/(确定|关闭|关闭应用)/).findOne(3000);
@@ -6790,6 +6801,7 @@ ui.ok.click(function () {
                             return false;
                         } else {
                             log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
+                            等待未响应次数=0
                             return true;
                         }
                     }
@@ -6800,6 +6812,12 @@ ui.ok.click(function () {
             function 等待未响应() {
                 if (textMatches(/(.*未响应.*|.*没有响应.*|.*无响应.*)/).findOne(3000) != null) {
                     log(new Date().toLocaleString() + "-" + "检测到应用未响应");
+                    等待未响应次数++
+                    if(等待未响应次数>3){
+                        if (结束未响应()) {
+                            return 2;
+                        }
+                    }
                     let cBtn = textMatches(/(等待)/).findOne(3000);
                     if (cBtn != null) {
                         cBtn.click();
@@ -7280,6 +7298,7 @@ ui.ok.click(function () {
 
             function startWebSocket() {
                 try {
+                    保持wifi()
                     if (ws == null) {
                         if (联网验证(zwifi) != true) {
                             连接wifi(zwifi, 5000);
