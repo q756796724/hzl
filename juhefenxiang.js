@@ -40,8 +40,8 @@ meitianover = storage.get("meitianover", false);//当天是否完成
 xiaoyueyueflag = storage.get("xiaoyueyueflag", false);
 zfbtx = storage.get("zfbtx", true);
 zfbtxyz = storage.get("zfbtxyz", 3);//阈值
-if(zfbtxyz==5){
-    zfbtxyz=3
+if (zfbtxyz == 5) {
+    zfbtxyz = 3
     storage.put("zfbtxyz", zfbtxyz);
 }
 
@@ -66,7 +66,7 @@ var lunCount = 0
 ws = null
 meitiantrycount = storage.get("meitiantrycount", 0);//美添连续识别失败次数
 sffs = false;//是否副手
-等待未响应次数=0
+等待未响应次数 = 0
 
 // 获取所有正在运行的脚本引擎
 var allEngines = engines.all();
@@ -281,7 +281,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.6.0";
+            var versionNum = "聚合分享v10.6.1";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2483,11 +2483,22 @@ ui.ok.click(function () {
                         let txbtn = packageName("com.tencent.mm").id("label").findOne(5000)
                         if (txbtn) {
                             sml_move(txbtn.bounds().centerX(), txbtn.bounds().centerY(), device.width, txbtn.bounds().centerY(), random(1500, 1800));
-                            xyytodayTxCount++
                             storage.put("xyytodayTxCount", xyytodayTxCount)
+                            sleep(10000)
+                            if (zfbtx == true) {
+                                if (zfbtxyz>=2&&textMatches(/(.*需审核.*)/).findOnce() != null) {
+                                    xyytodayTxCount++
+                                    console.info("xyytodayTxCount="+xyytodayTxCount);
+                                }else if(zfbtxyz<2&&textMatches(/(.*提现成功.*)/).findOnce() != null) {
+                                    xyytodayTxCount++
+                                    console.info("xyytodayTxCount="+xyytodayTxCount);
+                                }
+                            } else {
+                                xyytodayTxCount++
+                            }
+                            click("确定")
                         }
-                        sleep(10000)
-                        click("确定")
+
                         sleep(10000)
                         for (var i = 0; i < 4; i++) {
                             if (packageName("com.tencent.mm").className("android.widget.TextView").text("小阅阅").findOnce() == null && packageName("com.tencent.mm").id("task_btn_read").findOnce() == null) {
@@ -4734,13 +4745,13 @@ ui.ok.click(function () {
                                     }
                                 }
                                 if (read_area) {
-                                    if (read_area && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] > 1000) {
-                                        if (read_area.bounds().top > device.height * 5) {
-                                            xiaoyueyuecheckFlag = false;
-                                        } else if (read_area.bounds().top > device.height * 3 && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
-                                            xiaoyueyuecheckFlag = false;
-                                        }
+if (read_area && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] > 1000) {
+                                    if (read_area.bounds().top > device.height * 5) {
+                                        xiaoyueyuecheckFlag = false;
+                                    } else if (read_area.bounds().top > device.height * 3 && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
+                                        xiaoyueyuecheckFlag = false;
                                     }
+                                }
                                 }else if (js_focus) {
                                     if (js_focus.bounds().top > device.height * 8) {
                                         xiaoyueyuecheckFlag = false;
@@ -6775,10 +6786,10 @@ ui.ok.click(function () {
                 gesture.apply(null, xxy);
             };
             function 保持wifi() {
-                let wifitc=textMatches(/(.*选择否则继续保持当前连接.*)/).findOnce() 
+                let wifitc = textMatches(/(.*选择否则继续保持当前连接.*)/).findOnce()
                 if (wifitc) {
                     log(new Date().toLocaleString() + "-" + "检测到wifi弹窗");
-                    if(wifitc.text().indexOf("选择否则继续保持当前连接")>-1){
+                    if (wifitc.text().indexOf("选择否则继续保持当前连接") > -1) {
                         log(new Date().toLocaleString() + "-" + "点击否");
                         click("否")
                     }
@@ -6798,7 +6809,7 @@ ui.ok.click(function () {
                             clickx(cBounds.right, cBounds.bottom);
                         } else {
                             log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
-                            等待未响应次数=0
+                            等待未响应次数 = 0
                             return true;
                         }
                         cBtn = textMatches(/(确定|关闭|关闭应用)/).findOne(3000);
@@ -6807,7 +6818,7 @@ ui.ok.click(function () {
                             return false;
                         } else {
                             log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
-                            等待未响应次数=0
+                            等待未响应次数 = 0
                             return true;
                         }
                     }
@@ -6819,7 +6830,7 @@ ui.ok.click(function () {
                 if (textMatches(/(.*未响应.*|.*没有响应.*|.*无响应.*)/).findOne(3000) != null) {
                     log(new Date().toLocaleString() + "-" + "检测到应用未响应");
                     等待未响应次数++
-                    if(等待未响应次数>3){
+                    if (等待未响应次数 > 3) {
                         if (结束未响应()) {
                             return 2;
                         }
