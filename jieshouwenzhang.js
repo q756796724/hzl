@@ -212,7 +212,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.7.5";
+            var versionNum = "接收v7.7.6";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -1379,12 +1379,12 @@ ui.ok.click(function () {
                                                 xiaoyueyuecheckFlag = false;
                                             }
                                             if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 24 * 3600 * 1000) {
-                                                if (read_area && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] > 1000) {
+                                                if (read_area && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] > 500) {
                                                     xiaoyueyuecheckFlag = false;
                                                 }
                                             }
                                             if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000) {
-                                                if (read_area && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] > 3000) {
+                                                if (read_area && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] > 2000) {
                                                     xiaoyueyuecheckFlag = false;
                                                 }
                                             }
@@ -1399,16 +1399,18 @@ ui.ok.click(function () {
                                                 }
                                             }
                                             if (read_area) {
-                                                if (read_area.bounds().top > device.height * 5) {
-                                                    xiaoyueyuecheckFlag = false;
-                                                } else if (read_area.bounds().top > device.height * 3 && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
-                                                    xiaoyueyuecheckFlag = false;
+                                                if (read_area && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] > 1000) {
+                                                    if (read_area.bounds().top > device.height * 5) {
+                                                        xiaoyueyuecheckFlag = false;
+                                                    } else if (read_area.bounds().top > device.height * 3 && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
+                                                        xiaoyueyuecheckFlag = false;
+                                                    }
                                                 }
-                                            }
-                                            if (js_focus) {
-                                                if (js_focus.bounds().top > device.height * 5) {
+                                                
+                                            }else if (js_focus) {
+                                                if (js_focus.bounds().top > device.height * 8) {
                                                     xiaoyueyuecheckFlag = false;
-                                                } else if (js_focus.bounds().top > device.height * 3 && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
+                                                } else if (js_focus.bounds().top > device.height * 5 && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
                                                     xiaoyueyuecheckFlag = false;
                                                 }
                                             }
