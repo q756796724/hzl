@@ -2486,7 +2486,7 @@ ui.ok.click(function () {
                             storage.put("xyytodayTxCount", xyytodayTxCount)
                             sleep(10000)
                             if (zfbtx == true) {
-                                if (zfbtxyz>=2&&textMatches(/(.*需审核.*)/).findOnce() != null) {
+                                if (zfbtxyz>=2&&textMatches(/(.*进入审核.*)/).findOnce() != null) {
                                     xyytodayTxCount++
                                     console.info("xyytodayTxCount="+xyytodayTxCount);
                                 }else if(zfbtxyz<2&&textMatches(/(.*提现成功.*)/).findOnce() != null) {
