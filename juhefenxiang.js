@@ -281,7 +281,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.6.2";
+            var versionNum = "聚合分享v10.6.3";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -1784,6 +1784,7 @@ ui.ok.click(function () {
             }
 
             function xiaoyueyuezhuliPage() {
+                let yunshaomaurl;
                 if (xiaoyueyuecheckFlag) {
                     for (var i = 0; i < 50; i++) {
                         if (!zhengtian) {
@@ -1879,7 +1880,7 @@ ui.ok.click(function () {
                             }
 
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000) != null) {
-                                let yunshaomaurl = getyunshaomazhuliurl(xyyzlurl.split("-")[1]);
+                                yunshaomaurl = getyunshaomazhuliurl(xyyzlurl.split("-")[1]);
                                 if (yunshaomaurl == "休息") {
                                     log(new Date().toLocaleString() + "-" + "-----yunshaomazhuliurl=休息------" + xiaoyueyueReadNum + "次");
                                     返回v首页();
@@ -1911,7 +1912,10 @@ ui.ok.click(function () {
                                                                     log("尝试小阅阅助力" + (i + 1))
                                                                     click(child.bounds().centerX() + random(-100, -105), child.bounds().centerY() + random(-10, 10));
                                                                     sleep(3000)
-                                                                    click("继续访问")
+                                                                    if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                                                                        sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅助力继续访问:" + yunshaomaurl);//出错请处理
+                                                                        click("继续访问")
+                                                                    }
                                                                     sleep(3000)
                                                                     let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
                                                                     if (ntext != null) {
@@ -1978,7 +1982,10 @@ ui.ok.click(function () {
                                                 sleep(1000)
                                                 click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
                                                 sleep(3000)
-                                                click("继续访问")
+                                                if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                                                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅助力继续访问:" + yunshaomaurl);//出错请处理
+                                                    click("继续访问")
+                                                }
                                                 sleep(3000)
                                                 let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
                                                 if (ntext != null) {
@@ -2060,7 +2067,10 @@ ui.ok.click(function () {
                         return
                     }
 
-                    click("继续访问")
+                    if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                        sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅助力继续访问:" + yunshaomaurl);//出错请处理
+                        click("继续访问")
+                    }
                     sleep(5000)
                     let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
                     if (ntext != null) {
@@ -2162,6 +2172,7 @@ ui.ok.click(function () {
             }
 
             function xiaoyueyuePage() {
+                let yunshaomaurl
                 refreshStateInfo();
                 let wBtn = className("android.widget.TextView").text("我").findOne(3000);
                 if (topActivity == MAIN_PAGE && wBtn != null) {
@@ -2290,7 +2301,7 @@ ui.ok.click(function () {
 
 
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000) != null) {
-                                let yunshaomaurl = getyunshaomaurl();
+                                yunshaomaurl = getyunshaomaurl();
                                 if (yunshaomaurl == "休息") {
                                     log(new Date().toLocaleString() + "-" + "-----yunshaomaurl=休息------" + xiaoyueyueReadNum + "次");
                                     返回v首页();
@@ -2319,7 +2330,10 @@ ui.ok.click(function () {
                                                                     log("尝试小阅阅" + (i + 1))
                                                                     click(child.bounds().centerX() + random(-100, -105), child.bounds().centerY() + random(-10, 10));
                                                                     sleep(3000)
-                                                                    click("继续访问")
+                                                                    if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                                                                        sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅继续访问:" + yunshaomaurl);//出错请处理
+                                                                        click("继续访问")
+                                                                    }
                                                                     sleep(3000)
                                                                     let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
                                                                     if (ntext != null) {
@@ -2379,7 +2393,10 @@ ui.ok.click(function () {
                                                 sleep(1000)
                                                 click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
                                                 sleep(3000)
-                                                click("继续访问")
+                                                if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                                                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅继续访问:" + yunshaomaurl);//出错请处理
+                                                    click("继续访问")
+                                                }
                                                 sleep(3000)
                                                 let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
                                                 if (ntext != null) {
@@ -2438,7 +2455,10 @@ ui.ok.click(function () {
 
                         return
                     }
-                    click("继续访问")
+                    if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                        sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅继续访问:" + yunshaomaurl);//出错请处理
+                        click("继续访问")
+                    }
                     sleep(5000)
                     let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
                     if (ntext != null) {
@@ -2640,6 +2660,7 @@ ui.ok.click(function () {
                 }
             }
             function meitianPage() {
+                let meitianzhuanurl
                 refreshStateInfo();
                 let wBtn = className("android.widget.TextView").text("我").findOne(3000);
                 if (topActivity == MAIN_PAGE && wBtn != null) {
@@ -2955,7 +2976,7 @@ ui.ok.click(function () {
 
 
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000) != null) {
-                                let meitianzhuanurl = getMeitianzhuanurl();
+                                meitianzhuanurl = getMeitianzhuanurl();
                                 if (meitianzhuanurl == "休息") {
                                     log(new Date().toLocaleString() + "-" + "-----meitianzhuanurl=休息------");
                                     返回v首页();
@@ -2984,7 +3005,10 @@ ui.ok.click(function () {
                                                                     log("尝试美添" + (i + 1))
                                                                     click(child.bounds().centerX() + random(-100, -105), child.bounds().centerY() + random(-10, 10));
                                                                     sleep(3000)
-                                                                    click("继续访问")
+                                                                    if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                                                                        sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "美添继续访问:" + meitianzhuanurl);//出错请处理
+                                                                        click("继续访问")
+                                                                    }
                                                                     sleep(3000)
                                                                     let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
                                                                     if (ntext != null) {
@@ -3049,7 +3073,10 @@ ui.ok.click(function () {
                                                 sleep(1000)
                                                 click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
                                                 sleep(3000)
-                                                click("继续访问")
+                                                if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                                                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "美添继续访问:" + meitianzhuanurl);//出错请处理
+                                                    click("继续访问")
+                                                }
                                                 sleep(3000)
                                                 let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
                                                 if (ntext != null) {
@@ -3105,7 +3132,10 @@ ui.ok.click(function () {
                         }
                     }
                     sleep(10000)
-                    click("继续访问")
+                    if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                        sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "美添继续访问:" + meitianzhuanurl);//出错请处理
+                        click("继续访问")
+                    }
                     sleep(5000)
                     let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
                     if (ntext != null) {
