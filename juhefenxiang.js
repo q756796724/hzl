@@ -281,7 +281,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.6.1";
+            var versionNum = "聚合分享v10.6.2";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2486,12 +2486,16 @@ ui.ok.click(function () {
                             storage.put("xyytodayTxCount", xyytodayTxCount)
                             sleep(10000)
                             if (zfbtx == true) {
+                                console.info("xyyzfbtx="+(parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000));
                                 if (zfbtxyz>=2&&textMatches(/(.*进入审核.*)/).findOnce() != null) {
                                     xyytodayTxCount++
                                     console.info("xyytodayTxCount="+xyytodayTxCount);
-                                }else if(zfbtxyz<2&&textMatches(/(.*提现成功.*)/).findOnce() != null) {
+                                }else if(zfbtxyz<2&&textMatches(/(.*提现成功.*|.*进入审核.*)/).findOnce() != null) {
                                     xyytodayTxCount++
                                     console.info("xyytodayTxCount="+xyytodayTxCount);
+                                }else if(textMatches(/(.*提现达到上限)/).findOnce() != null){
+                                    xyytodayTxCount++
+                                    console.info("xyyzfbtx上限");
                                 }
                             } else {
                                 xyytodayTxCount++
