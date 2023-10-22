@@ -1912,7 +1912,7 @@ ui.ok.click(function () {
                                                                     log("尝试小阅阅助力" + (i + 1))
                                                                     click(child.bounds().centerX() + random(-100, -105), child.bounds().centerY() + random(-10, 10));
                                                                     sleep(3000)
-                                                                    if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                                                                    if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                                                                         storage.put("yunshaomazhuliurl", "")
                                                                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅助力继续访问:" + yunshaomaurl);//出错请处理
                                                                         click("继续访问")
@@ -1983,7 +1983,7 @@ ui.ok.click(function () {
                                                 sleep(1000)
                                                 click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
                                                 sleep(3000)
-                                                if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                                                if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                                                     storage.put("yunshaomazhuliurl", "")
                                                     sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅助力继续访问:" + yunshaomaurl);//出错请处理
                                                     click("继续访问")
@@ -2069,7 +2069,7 @@ ui.ok.click(function () {
                         return
                     }
 
-                    if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                    if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                         storage.put("yunshaomazhuliurl", "")
                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅助力继续访问:" + yunshaomaurl);//出错请处理
                         click("继续访问")
@@ -2333,7 +2333,7 @@ ui.ok.click(function () {
                                                                     log("尝试小阅阅" + (i + 1))
                                                                     click(child.bounds().centerX() + random(-100, -105), child.bounds().centerY() + random(-10, 10));
                                                                     sleep(3000)
-                                                                    if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                                                                    if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                                                                         storage.put("yunshaomaurl", "")
                                                                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅继续访问:" + yunshaomaurl);//出错请处理
                                                                         click("继续访问")
@@ -2397,7 +2397,7 @@ ui.ok.click(function () {
                                                 sleep(1000)
                                                 click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
                                                 sleep(3000)
-                                                if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                                                if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                                                     storage.put("yunshaomaurl", "")
                                                     sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅继续访问:" + yunshaomaurl);//出错请处理
                                                     click("继续访问")
@@ -2460,7 +2460,7 @@ ui.ok.click(function () {
 
                         return
                     }
-                    if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                    if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                         storage.put("yunshaomaurl", "")
                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅继续访问:" + yunshaomaurl);//出错请处理
                         click("继续访问")
@@ -2512,14 +2512,14 @@ ui.ok.click(function () {
                             storage.put("xyytodayTxCount", xyytodayTxCount)
                             sleep(10000)
                             if (zfbtx == true) {
-                                console.info("xyyzfbtx="+(parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000));
-                                if (zfbtxyz>=2&&textMatches(/(.*进入审核.*)/).findOnce() != null) {
+                                console.info("xyyzfbtx=" + (parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000));
+                                if (zfbtxyz >= 2 && textMatches(/(.*进入审核.*)/).findOnce() != null) {
                                     xyytodayTxCount++
-                                    console.info("xyytodayTxCount="+xyytodayTxCount);
-                                }else if(zfbtxyz<2&&textMatches(/(.*提现成功.*|.*进入审核.*)/).findOnce() != null) {
+                                    console.info("xyytodayTxCount=" + xyytodayTxCount);
+                                } else if (zfbtxyz < 2 && textMatches(/(.*提现成功.*|.*进入审核.*)/).findOnce() != null) {
                                     xyytodayTxCount++
-                                    console.info("xyytodayTxCount="+xyytodayTxCount);
-                                }else if(textMatches(/(.*提现达到上限)/).findOnce() != null){
+                                    console.info("xyytodayTxCount=" + xyytodayTxCount);
+                                } else if (textMatches(/(.*提现达到上限)/).findOnce() != null) {
                                     xyytodayTxCount++
                                     console.info("xyyzfbtx上限");
                                 }
@@ -3011,7 +3011,7 @@ ui.ok.click(function () {
                                                                     log("尝试美添" + (i + 1))
                                                                     click(child.bounds().centerX() + random(-100, -105), child.bounds().centerY() + random(-10, 10));
                                                                     sleep(3000)
-                                                                    if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                                                                    if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                                                                         storage.put("meitianzhuanurl", "")
                                                                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "美添继续访问:" + meitianzhuanurl);//出错请处理
                                                                         click("继续访问")
@@ -3080,7 +3080,7 @@ ui.ok.click(function () {
                                                 sleep(1000)
                                                 click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
                                                 sleep(3000)
-                                                if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                                                if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                                                     storage.put("meitianzhuanurl", "")
                                                     sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "美添继续访问:" + meitianzhuanurl);//出错请处理
                                                     click("继续访问")
@@ -3140,7 +3140,7 @@ ui.ok.click(function () {
                         }
                     }
                     sleep(10000)
-                    if(packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()){
+                    if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                         storage.put("meitianzhuanurl", "")
                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "美添继续访问:" + meitianzhuanurl);//出错请处理
                         click("继续访问")
@@ -3314,7 +3314,11 @@ ui.ok.click(function () {
                                 let meitianyueduflag = meitianyuedu()
                                 if (meitianyueduflag == true) {
                                     返回v首页()
-                                    meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                    let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                    tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                    tomorrow.setHours(1, 0, 0, 0);
+                                    meitiankedusj = tomorrow.getTime()
+                                    //meitiankedusj = new Date().getTime() + random(3600, 4000) * 1000
                                     storage.put("meitiankedusj", meitiankedusj);
 
                                 } else {
@@ -3361,7 +3365,13 @@ ui.ok.click(function () {
                                         storage.put("meitiankedusj", meitiankedusj);
                                     }
                                 } else if (sytext.indexOf("分钟") > -1) {
-                                    meitiankedusj = new Date().getTime() + parseInt(sytext.substring(0, sytext.indexOf("分钟")).replace(/[^\d]/g, " ")) * 60000
+                                    //每天一次
+                                    let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                    tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                    tomorrow.setHours(1, 0, 0, 0);
+                                    meitiankedusj = tomorrow.getTime()
+
+                                    //meitiankedusj = new Date().getTime() + parseInt(sytext.substring(0, sytext.indexOf("分钟")).replace(/[^\d]/g, " ")) * 60000
                                     storage.put("meitiankedusj", meitiankedusj);
                                 }
                             } else {
@@ -4712,7 +4722,7 @@ ui.ok.click(function () {
                                             xiaoyueyuecheckFlag = true;
                                         }
                                     }
-                                    if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 24 * 3600 * 1000&&new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000) {
+                                    if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 24 * 3600 * 1000 && new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000) {
                                         if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] < 1000) {
                                             xiaoyueyuecheckFlag = true;
                                         }
@@ -4788,14 +4798,14 @@ ui.ok.click(function () {
                                     }
                                 }
                                 if (read_area) {
-if (read_area && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] > 1000) {
-                                    if (read_area.bounds().top > device.height * 5) {
-                                        xiaoyueyuecheckFlag = false;
-                                    } else if (read_area.bounds().top > device.height * 3 && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
-                                        xiaoyueyuecheckFlag = false;
+                                    if (read_area && packageName("com.tencent.mm").id("js_read_area3").findOnce().text().match(/\d+/g)[0] > 1000) {
+                                        if (read_area.bounds().top > device.height * 5) {
+                                            xiaoyueyuecheckFlag = false;
+                                        } else if (read_area.bounds().top > device.height * 3 && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
+                                            xiaoyueyuecheckFlag = false;
+                                        }
                                     }
-                                }
-                                }else if (js_focus) {
+                                } else if (js_focus) {
                                     if (js_focus.bounds().top > device.height * 8) {
                                         xiaoyueyuecheckFlag = false;
                                     } else if (js_focus.bounds().top > device.height * 5 && fabudi.indexOf("浙江") == -1 && fabudi.indexOf("江西") == -1) {
