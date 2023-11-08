@@ -10,6 +10,7 @@ removePhoneNum = storage.get("removePhoneNum", false);
 addJieshou = storage.get("addJieshou", false);
 zhengtian = storage.get("zhengtian", false);
 autoX = storage.get("autoX", false);
+wificount=0
 
 lastUrl = "";//上一url
 latestUrl = "";//当前url
@@ -212,7 +213,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.7.6";
+            var versionNum = "接收v7.7.7";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -2225,8 +2226,16 @@ ui.ok.click(function () {
                             }
                             wifi弹窗处理();
                             sleep(connectTime);
+                            if(i==4&&wifiName == storage.get("jieshouwifi", "WifiPro_5G")){
+                                wificount++
+                            }
+                            if(wificount>3){
+                                zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                                wificount=0
+                            }
                         } else {
                             log("连接正常")
+                            wificount=0
                             break
                         }
                     }
@@ -2924,7 +2933,10 @@ ui.ok.click(function () {
                                     sleep(10000)
                                 }
                             }*/
-
+                            if (jieshouwifi != null && jieshouwifi != "") {
+                                zwifi = jieshouwifi
+                            }
+                            log("主Wifi:" + zwifi);
                             if (random(0, 7) == 5) {
                                 home()
                                 lunSleep(random(1800000, 7200000));
