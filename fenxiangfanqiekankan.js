@@ -2139,7 +2139,7 @@ ui.ok.click(function () {
                                 return;
                             }
                             if (getjieshouNum() == "0") {
-                                sendTx("http://miaotixing.com/trigger?id=tzbrDO8&text=num:" + phoneNum);//phoneNum=0
+                                //sendTx("http://miaotixing.com/trigger?id=tzbrDO8&text=num:" + phoneNum);//phoneNum=0
                                 lunSleep(random(3600000, 4000000));//睡1个多小时
                                 return;
                             }
