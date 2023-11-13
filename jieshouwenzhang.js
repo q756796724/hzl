@@ -213,7 +213,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.7.8";
+            var versionNum = "接收v7.7.9";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -1372,7 +1372,7 @@ ui.ok.click(function () {
                                         //latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
                                         latestLinkTitle = latestUrl
                                         let xiaoyueyuecheckFlag = true
-                                        if (sffs) {
+                                        //if (sffs) {
                                             if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == false) {
                                                 xiaoyueyuecheckFlag = false;
                                             }
@@ -1416,7 +1416,7 @@ ui.ok.click(function () {
                                             } else {
                                                 setConfig("latestTalkName", latestLinkTitle, phoneNum.toString())
                                             }
-                                        }
+                                        //}
 
                                     }
 
