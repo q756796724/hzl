@@ -892,11 +892,8 @@ ui.ok.click(function () {
                 log("进入发现成功");
                 sleep(5000);
                 click("看一看");
-                sleep(random(10000,15000));
-                let redianBtn=packageName("com.tencent.mm").className("android.widget.TextView").text("热点").findOnce();
-                if (redianBtn){
-                    redianBtn.click();
-                }               
+                sleep(random(8000,12000));
+                click("热点")
                 sleep(random(8000,12000));
                 swapeToRead();
                 sleep(random(5000, 8000));
