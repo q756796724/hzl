@@ -213,7 +213,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.8.2";
+            var versionNum = "接收v7.8.3";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -886,16 +886,22 @@ ui.ok.click(function () {
                     return;
                 }
                 if (className("android.widget.TextView").text("看一看").findOne(5000) == null) {
+                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "看一看异常");
                     return;
                 };
                 log("进入发现成功");
                 sleep(5000);
                 click("看一看");
-                sleep(10000);
+                sleep(random(10000,15000));
+                let redianBtn=packageName("com.tencent.mm").className("android.widget.TextView").text("热点").findOnce();
+                if (redianBtn){
+                    redianBtn.click();
+                }               
+                sleep(random(8000,12000));
                 swapeToRead();
-                sleep(random(3000, 5000));
+                sleep(random(5000, 8000));
                 swapeToRead();
-                sleep(random(2000, 4000));
+                sleep(random(5000, 8000));
                 clickx(device.width * 0.1 * random(3, 7), device.height * 0.1 * random(3, 7))
                 sleep(random(10000, 15000));
 
@@ -906,7 +912,6 @@ ui.ok.click(function () {
                 let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                 if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                     阅读到底();
-                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "看一看");
                 } else {
                     sleep(random(30000, 60000));
                     back()
@@ -922,7 +927,6 @@ ui.ok.click(function () {
                 publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                 if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                     阅读到底();
-                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "看一看");
                 } else {
                     sleep(random(30000, 60000));
                     back()
