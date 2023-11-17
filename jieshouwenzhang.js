@@ -215,7 +215,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.8.3";
+            var versionNum = "接收v7.8.4";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -921,7 +921,7 @@ ui.ok.click(function () {
                                     click("允许")
                                     if (packageName("com.tencent.mm").className("android.widget.TextView").text("进入详细页").findOne(18000)) {
                                         click("确定")
-                                        for(let i=0;i<8;i++){
+                                        for(let i=0;i<20;i++){
                                             let tp = packageName("com.tencent.mm").className("android.view.View").indexInParent(1).text("给TA投票").findOne(18000)
                                             if (tp) {
                                                 log(tp.bounds().centerX() + "-" + tp.bounds().centerY())
