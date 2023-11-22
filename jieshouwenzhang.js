@@ -215,7 +215,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.8.5";
+            var versionNum = "接收v7.8.6";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -1930,15 +1930,19 @@ ui.ok.click(function () {
                             toupiao()
                         }
                         kanyikan();
+                    }else{
+                        jieshouwenzhang2();
                     }
-                } else if (addjieshouCount(phoneNum.toString()) == false) {
-                    if(sftp){
-                        toupiao()
+                } else{
+                    if (addjieshouCount(phoneNum.toString()) == false) {
+                        if(sftp){
+                            toupiao()
+                        }
+                        kanyikan();
+                    } else {
+                        jieshouwenzhang2();
                     }
-                    kanyikan();
-                } else {
-                    jieshouwenzhang2();
-                }
+                } 
                 返回v首页();
             }
 
