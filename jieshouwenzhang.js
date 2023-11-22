@@ -215,7 +215,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.8.4";
+            var versionNum = "接收v7.8.5";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -3224,6 +3224,7 @@ ui.ok.click(function () {
 
                             if (getjieshouNumFu() != phoneNum.toString()) {
                                 sffs = false;
+                                sftp=true
                                 if (random(0, 8 == 8)) {
                                     打开v();
                                     refreshStateInfo();
@@ -3246,6 +3247,8 @@ ui.ok.click(function () {
                             } else {
                                 sffs = true;
                                 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                                sftp=false
+
                             }
                         } else {
                             sffs = false;
@@ -3255,6 +3258,7 @@ ui.ok.click(function () {
                                 sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "上任");//切换
                             }
                             zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                            sftp=false
                         }
 
                         打开v();
