@@ -282,7 +282,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.6.9";
+            var versionNum = "聚合分享v10.7.0";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -1568,6 +1568,10 @@ ui.ok.click(function () {
                         return false
                     }
                     cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("复制链接").findOne(8000);
+                    let urltxt=packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(网页由.*)/).findOnce();
+                    if(urltxt.text().indexOf("mp.weixin.qq.com") ==-1){
+                        sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "daili:" + urltxt.text());//出错请处理
+                    }
                     if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
                         if (packageName("com.tencent.mm").textMatches(/(.*禁止分享.*)/).findOnce()) {
                             console.error("禁止分享");
@@ -7763,9 +7767,9 @@ ui.ok.click(function () {
                                     }
                                     toastLog(toaststr);
                                 }
-                                if(sftp){
+                                /*if(sftp){
                                     toupiao()
-                                }
+                                }*/
                                 if (new Date().getTime() > fanqiekedusj) {
                                     fanqiePage();
                                     break

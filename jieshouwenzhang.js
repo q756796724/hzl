@@ -10,6 +10,7 @@ removePhoneNum = storage.get("removePhoneNum", false);
 addJieshou = storage.get("addJieshou", false);
 zhengtian = storage.get("zhengtian", false);
 autoX = storage.get("autoX", false);
+kanyikanflag = storage.get("kanyikanflag", random(0, 1) == 0 ? false : true);
 wificount = 0
 
 lastUrl = "";//上一url
@@ -20,7 +21,7 @@ jieshouwifi = storage.get("jieshouwifi", "WifiPro_5G");
 
 sffs = false;//是否副手
 
-sftp=true
+sftp = true
 
 if (storage.get("readdays") == undefined) {
     storage.put("readdays", 0);
@@ -140,6 +141,7 @@ ui.layout(
             <checkbox text="清除号码" id="removePhoneNum" checked="{{removePhoneNum}}" textSize="18sp" />\
             <checkbox text="整天" id="zhengtian" checked="{{zhengtian}}" textSize="18sp" />\
             <checkbox text="X" id="autoX" checked="{{autoX}}" textSize="18sp" />\
+            <checkbox text="看一看" id="kanyikanflag" checked="{{kanyikanflag}}" textSize="18sp" />\
         </horizontal>
         <button id="ok" text="开始接收" />
     </vertical>
@@ -215,7 +217,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.8.6";
+            var versionNum = "接收v7.8.7";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -235,6 +237,7 @@ ui.ok.click(function () {
             zhengtian = ui.zhengtian.isChecked();
             addJieshou = ui.addJieshou.isChecked();
             autoX = ui.autoX.isChecked();
+            kanyikanflag = ui.kanyikanflag.isChecked();
 
             storage.put("zwifi", zwifi);
             storage.put("dlwifi", dlwifi);
@@ -245,6 +248,8 @@ ui.ok.click(function () {
             storage.put("zhengtian", ui.zhengtian.isChecked());
             storage.put("addJieshou", ui.addJieshou.isChecked());
             storage.put("autoX", ui.autoX.isChecked());
+            storage.put("kanyikanflag", ui.kanyikanflag.isChecked());
+
 
             if (jieshouwifi != null && jieshouwifi != "") {
                 zwifi = jieshouwifi
@@ -921,7 +926,7 @@ ui.ok.click(function () {
                                     click("允许")
                                     if (packageName("com.tencent.mm").className("android.widget.TextView").text("进入详细页").findOne(18000)) {
                                         click("确定")
-                                        for(let i=0;i<20;i++){
+                                        for (let i = 0; i < 20; i++) {
                                             let tp = packageName("com.tencent.mm").className("android.view.View").indexInParent(1).text("给TA投票").findOne(18000)
                                             if (tp) {
                                                 log(tp.bounds().centerX() + "-" + tp.bounds().centerY())
@@ -931,12 +936,12 @@ ui.ok.click(function () {
                                                     if (fh) {
                                                         click(fh.bounds().centerX(), fh.bounds().centerY())
                                                     }
-                                                }else if (packageName("com.tencent.mm").className("android.view.View").text("投票失败").findOne(18000)) {
+                                                } else if (packageName("com.tencent.mm").className("android.view.View").text("投票失败").findOne(18000)) {
                                                     let fh = packageName("com.tencent.mm").className("android.view.View").text("返回").findOne(18000)
                                                     if (fh) {
                                                         click(fh.bounds().centerX(), fh.bounds().centerY())
                                                     }
-                                                    sftp=false
+                                                    sftp = false
                                                     return
                                                 }
                                             }
@@ -1926,23 +1931,31 @@ ui.ok.click(function () {
                 log("进入v成功");
                 if (sffs) {
                     if (addjieshouCountFu(phoneNum.toString()) == false) {
-                        if(sftp){
+                        /*if(sftp){
                             toupiao()
+                        }*/
+                        if (kanyikanflag) {
+                            kanyikan();
+                        } else {
+                            home()
                         }
-                        kanyikan();
-                    }else{
-                        jieshouwenzhang2();
-                    }
-                } else{
-                    if (addjieshouCount(phoneNum.toString()) == false) {
-                        if(sftp){
-                            toupiao()
-                        }
-                        kanyikan();
                     } else {
                         jieshouwenzhang2();
                     }
-                } 
+                } else {
+                    if (addjieshouCount(phoneNum.toString()) == false) {
+                        /*if(sftp){
+                            toupiao()
+                        }*/
+                        if (kanyikanflag) {
+                            kanyikan();
+                        }else {
+                            home()
+                        }
+                    } else {
+                        jieshouwenzhang2();
+                    }
+                }
                 返回v首页();
             }
 
@@ -3066,7 +3079,7 @@ ui.ok.click(function () {
 
                         配置 = 读取配置(settingPath);
                         if (配置["date"] != new Date().toLocaleDateString()) {
-                            sftp=true
+                            sftp = true
                             storage.put("zhengtian", false);
                             zhengtian = false
                             sleep(random(10000, 60000));
@@ -3228,7 +3241,7 @@ ui.ok.click(function () {
 
                             if (getjieshouNumFu() != phoneNum.toString()) {
                                 sffs = false;
-                                sftp=true
+                                sftp = true
                                 if (random(0, 8 == 8)) {
                                     打开v();
                                     refreshStateInfo();
@@ -3251,7 +3264,7 @@ ui.ok.click(function () {
                             } else {
                                 sffs = true;
                                 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
-                                sftp=false
+                                sftp = false
 
                             }
                         } else {
@@ -3262,7 +3275,7 @@ ui.ok.click(function () {
                                 sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "上任");//切换
                             }
                             zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
-                            sftp=false
+                            sftp = false
                         }
 
                         打开v();
