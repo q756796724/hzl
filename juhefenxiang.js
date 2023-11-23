@@ -1569,7 +1569,7 @@ ui.ok.click(function () {
                     }
                     cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("复制链接").findOne(8000);
                     let urltxt=packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(网页由.*)/).findOnce();
-                    if(urltxt.text().indexOf("mp.weixin.qq.com") ==-1){
+                    if(urltxt&&urltxt.text().indexOf("mp.weixin.qq.com") ==-1){
                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "daili:" + urltxt.text());//出错请处理
                     }
                     if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
