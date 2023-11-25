@@ -3253,21 +3253,20 @@ ui.ok.click(function () {
                                     let wBtn = className("android.widget.TextView").text("我").findOne(3000);
                                     if (topActivity == MAIN_PAGE && wBtn != null) {
                                         onMainPage();
-                                        sleep(random(7200000, 14400000));
+                                        lunSleep(1200000);
                                     } else {
                                         返回v首页();
                                         lunSleep(1200000);
                                     }
-                                } else if (random(0, 1 == 1)) {
+                                } else {
                                     home();
-                                    lunSleep(1200000);
+                                    lunSleep(1800000);
                                 }
                                 continue;
                             } else {
                                 sffs = true;
                                 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
                                 sftp = false
-
                             }
                         } else {
                             sffs = false;
