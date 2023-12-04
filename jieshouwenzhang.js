@@ -217,7 +217,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.8.9";
+            var versionNum = "接收v7.9.0";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
