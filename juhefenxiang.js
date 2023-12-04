@@ -67,6 +67,7 @@ ws = null
 meitiantrycount = storage.get("meitiantrycount", 0);//美添连续识别失败次数
 sffs = false;//是否副手
 等待未响应次数 = 0
+sftp=true
 
 // 获取所有正在运行的脚本引擎
 var allEngines = engines.all();
@@ -281,7 +282,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.6.6";
+            var versionNum = "聚合分享v10.7.0";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -1567,6 +1568,10 @@ ui.ok.click(function () {
                         return false
                     }
                     cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("复制链接").findOne(8000);
+                    let urltxt=packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(网页由.*)/).findOnce();
+                    if(urltxt&&urltxt.text().indexOf("mp.weixin.qq.com") ==-1){
+                        sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "daili:" + urltxt.text());//出错请处理
+                    }
                     if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
                         if (packageName("com.tencent.mm").textMatches(/(.*禁止分享.*)/).findOnce()) {
                             console.error("禁止分享");
@@ -2085,6 +2090,8 @@ ui.ok.click(function () {
                         sleep(3000)
                         if (loadcount > 20) {
                             console.warn("小阅阅助力加载失败");
+                            storage.put("yunshaomazhuliurl", "")
+                            sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅助力加载失败:" + yunshaomaurl);//出错请处理
                             关闭应用(PKG_NAME);
                             if (xiaoyueyuecheckFlag) {
                                 fenxiangshibai();
@@ -2476,6 +2483,8 @@ ui.ok.click(function () {
                         sleep(3000)
                         if (loadcount > 20) {
                             console.warn("小阅阅加载失败");
+                            storage.put("yunshaomaurl", "")
+                            sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅加载失败:" + yunshaomaurl);//出错请处理
                             关闭应用(PKG_NAME);
                             return
                         }
@@ -2496,6 +2505,9 @@ ui.ok.click(function () {
                     nowHour = new Date().getHours();
                     let jb = packageName("com.tencent.mm").className("android.view.View").descMatches(/(.*金币.*)/).findOnce()
                     let jq = packageName("com.tencent.mm").className("android.view.View").descMatches(/(.*收徒奖励.*)/).findOnce()
+                    if(jb &&jq&&xyytodayTxCount>=1&&(parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 > 5)){
+                        sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅:" + (parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000));
+                    }
                     if (jb && ((zfbtx == true && xyytodayTxCount < 1 && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 > zfbtxyz) || (zfbtx == false && ((nowHour > 8 && xyytodayTxCount < 1) || (nowHour > 12 && xyytodayTxCount < 2) || (nowHour > 16 && xyytodayTxCount < 3))))) {
                         click("提现")
                         sleep(10000)
@@ -3394,7 +3406,113 @@ ui.ok.click(function () {
                     return
                 }
             }
+            function toupiao() {
+                //进入指定群，接收文章
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                }
+                sleep(10000)
+                返回v首页();
 
+                refreshStateInfo();
+                let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("通讯录").findOne(3000);
+                if (topActivity == MAIN_PAGE && wBtn != null) {
+                    log("返回首页成功");
+                } else {
+                    打开v()
+                }
+                let wBtns = className("android.widget.TextView").text("微信").find();
+                for (let i = 0; i < wBtns.length; i++) {
+                    if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce() != null && packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
+                        log("进入列表成功")
+                        break;
+                    };
+                    let wBtn = wBtns[i];
+                    for (let i = 0; i < 4; i++) {
+                        if (wBtn != null && wBtn.clickable()) {
+                            sleep(1000);
+                            wBtn.click();
+                            sleep(5000);
+                            if (packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce() != null && packageName("com.tencent.mm").id("nk").className("android.widget.TextView").textMatches(/(微信.*)/).findOnce().bounds().left > 0) {
+                                break;
+                            };
+                        } else if (wBtn != null && wBtn.parent() != null) {
+                            wBtn = wBtn.parent();
+                        }
+                    }
+                }
+                wBtns = packageName("com.tencent.mm").id('a4k').find();//8.0.10
+                if (wBtns.length == 0) {
+                    wBtns = packageName("com.tencent.mm").id('bg1').find();//8.0.1
+                }
+                if (wBtns.length > 1) {
+                    sleep(2000)
+                    click(wBtns[0].bounds().centerX() + random(-10, 10), wBtns[0].bounds().centerY())
+                    sleep(random(1500, 2000))
+                    if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(3000) != null) {
+                        log("进入了文件传输助手");
+                    }
+
+                    wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000);
+                    if (wBtn != null) {
+                        let p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(5000);
+                        if (p) {
+                            p.setText("#小程序://微投票帮手/wjopnKKBCajlZjD")
+                            sleep(2000)
+                            p.click();
+                            sleep(1000)
+                            back();
+                            sleep(2000)
+                        }
+                        p = text("发送").className("android.widget.Button").packageName("com.tencent.mm").findOnce()
+                        if (p) {
+                            clickx(p.bounds().centerX(), p.bounds().centerY());
+                            sleep(3000)
+                            p = descEndsWith("头像").className("android.widget.ImageView").packageName("com.tencent.mm").find()
+                            if (p.length > 0) {
+                                sleep(1000)
+                                click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
+                                if (packageName("com.tencent.mm").className("android.widget.TextView").text('即将打开"微投票帮手"小程序').findOne(18000)) {
+                                    click("允许")
+                                    if (packageName("com.tencent.mm").className("android.widget.TextView").text("进入详细页").findOne(18000)) {
+                                        click("确定")
+                                        for(let i=0;i<20;i++){
+                                            let tp = packageName("com.tencent.mm").className("android.view.View").indexInParent(1).text("给TA投票").findOne(18000)
+                                            if (tp) {
+                                                log(tp.bounds().centerX() + "-" + tp.bounds().centerY())
+                                                click(tp.bounds().centerX(), tp.bounds().centerY())
+                                                if (packageName("com.tencent.mm").className("android.view.View").text("投票成功").findOne(18000)) {
+                                                    let fh = packageName("com.tencent.mm").className("android.view.View").text("返回").findOne(18000)
+                                                    if (fh) {
+                                                        click(fh.bounds().centerX(), fh.bounds().centerY())
+                                                    }
+                                                }else if (packageName("com.tencent.mm").className("android.view.View").text("投票失败").findOne(18000)) {
+                                                    let fh = packageName("com.tencent.mm").className("android.view.View").text("返回").findOne(18000)
+                                                    if (fh) {
+                                                        click(fh.bounds().centerX(), fh.bounds().centerY())
+                                                    }
+                                                    sftp=false
+                                                    return
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        console.error("not found 文件传输助手")
+                        关闭应用(PKG_NAME);
+                        sleep(300000);
+                    }
+
+                } else {
+                    console.error("not found bg1")
+                    关闭应用(PKG_NAME);
+                    sleep(300000);
+                }
+            }
             function fanqiePage() {
                 refreshStateInfo();
                 let wBtn = className("android.widget.TextView").text("我").findOne(3000);
@@ -5181,6 +5299,8 @@ ui.ok.click(function () {
                     sleep(3000)
                     if (loadcount > 10) {
                         console.warn("开始小阅阅助力加载失败");
+                        storage.put("yunshaomazhuliurl", "")
+                        sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "开始小阅阅助力加载失败:" + yunshaomaurl);//出错请处理
                         关闭应用(PKG_NAME);
                         if (xiaoyueyuecheckFlag) {
                             fenxiangshibai();
@@ -7418,6 +7538,7 @@ ui.ok.click(function () {
                         配置 = 读取配置(settingPath);
                         log("配置[date]=" + 配置["date"] + "new Date().toLocaleDateString()=" + new Date().toLocaleDateString())
                         if (配置["date"] != new Date().toLocaleDateString() || chushihuaflag) {
+                            sftp=true
                             chushihuaflag = false
                             storage.put("chushihuaflag", chushihuaflag)
                             xyytodayTxCount = 0
@@ -7646,6 +7767,9 @@ ui.ok.click(function () {
                                     }
                                     toastLog(toaststr);
                                 }
+                                /*if(sftp){
+                                    toupiao()
+                                }*/
                                 if (new Date().getTime() > fanqiekedusj) {
                                     fanqiePage();
                                     break
