@@ -662,7 +662,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = "";
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/getdaili", {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/getdaili", {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -686,7 +686,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = "0";
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/getJieShouNum", {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/getJieShouNum", {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -719,7 +719,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = "0";
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/getyunshaomaurl", {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/getyunshaomaurl", {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -759,7 +759,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = "0";
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/getyunshaomazhuliurl?txt=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/getyunshaomazhuliurl?txt=" + txt, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -799,7 +799,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = "0";
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/getMeitianzhuanurl", {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/getMeitianzhuanurl", {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -838,7 +838,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = 0;
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/getjieshouCount?type=" + type + "&phoneNum=" + phoneNum, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/getjieshouCount?type=" + type + "&phoneNum=" + phoneNum, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -873,7 +873,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = 0;
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/getjieshouCountFu?type=" + type + "&phoneNum=" + phoneNum, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/getjieshouCountFu?type=" + type + "&phoneNum=" + phoneNum, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -908,7 +908,7 @@ ui.ok.click(function () {
                 if (qiehuanjiaoben) {
                     let temp = null;
                     try {
-                        temp = http.post("http://175.178.60.114:8081/fanqie/addYuedu?phoneNum=" + phoneNum, {});
+                        temp = http.post("http://116.205.139.36:8081/fanqie/addYuedu?phoneNum=" + phoneNum, {});
                         if (temp && temp.statusCode == 200) {
                             temp = temp.body.string();
                             let rep = JSON.parse(temp);
@@ -937,7 +937,7 @@ ui.ok.click(function () {
             function removePhone(phoneNum) {
                 let temp = null;
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/removePhoneNum?phoneNum=" + phoneNum, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/removePhoneNum?phoneNum=" + phoneNum, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -966,7 +966,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = 0;;
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/isInJieshou?phoneNum=" + phoneNum, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/isInJieshou?phoneNum=" + phoneNum, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1009,7 +1009,7 @@ ui.ok.click(function () {
                 let repData = "0";
                 try {
                     log("请求")
-                    temp = http.post("http://175.178.60.114:8081/fanqie/addXianZhi?phoneNum=" + num, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/addXianZhi?phoneNum=" + num, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1040,7 +1040,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = "0";
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/reduceXianZhi", {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/reduceXianZhi", {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1072,7 +1072,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = true;
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/sfcfyd?txt=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/sfcfyd?txt=" + txt, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1104,7 +1104,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = true;
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/sfcfydFu?txt=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/sfcfydFu?txt=" + txt, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1135,7 +1135,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = true;
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/sfjcwz?txt=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/sfjcwz?txt=" + txt, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1164,7 +1164,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = true;
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/isInJiancegongzhonghao?txt=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/isInJiancegongzhonghao?txt=" + txt, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1195,7 +1195,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = true;
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/addJiancegongzhonghao?txt=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/addJiancegongzhonghao?txt=" + txt, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1226,7 +1226,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = true;
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/deleteJiancegongzhonghao?txt=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/deleteJiancegongzhonghao?txt=" + txt, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1256,7 +1256,7 @@ ui.ok.click(function () {
             /*function addjieshouCount(txt) {
                 let temp = null;
                 try {
-                    temp = http.get("http://175.178.60.114:8081/fanqie/addjieshouCount?txt="+device.serial+txt);
+                    temp = http.get("http://116.205.139.36:8081/fanqie/addjieshouCount?txt="+device.serial+txt);
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1287,7 +1287,7 @@ ui.ok.click(function () {
             /*function reducejieshouCount(txt) {
                 let temp = null;
                 try {
-                    temp = http.get("http://175.178.60.114:8081/fanqie/reducejieshouCount?txt="+device.serial+txt);
+                    temp = http.get("http://116.205.139.36:8081/fanqie/reducejieshouCount?txt="+device.serial+txt);
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1317,7 +1317,7 @@ ui.ok.click(function () {
             /*function getConfig() {
                 let temp = null;
                 try {
-                    temp = http.get("http://175.178.60.114:8081/fanqie/getConfig");
+                    temp = http.get("http://116.205.139.36:8081/fanqie/getConfig");
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1359,7 +1359,7 @@ ui.ok.click(function () {
             function getConfig() {
                 let temp = null;
                 try {
-                    temp = http.post("http://175.178.60.114:8081/fanqie/getConfig", {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/getConfig", {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1381,7 +1381,7 @@ ui.ok.click(function () {
             function setConfig(lastTalkName, lastLinkTitle) {
                 let temp = null;
                 try {
-                    temp = http.postJson("http://175.178.60.114:8081/fanqie/setConfig", {
+                    temp = http.postJson("http://116.205.139.36:8081/fanqie/setConfig", {
                         "lastTalkName": lastTalkName,
                         "lastLinkTitle": lastLinkTitle
                     });
@@ -1410,7 +1410,7 @@ ui.ok.click(function () {
                 }
                 let temp = null;
                 try {
-                    temp = http.postJson("http://175.178.60.114:8081/fanqie/fenxiangshibai", {});
+                    temp = http.postJson("http://116.205.139.36:8081/fanqie/fenxiangshibai", {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1435,7 +1435,7 @@ ui.ok.click(function () {
                 }
                 let temp = null;
                 try {
-                    temp = http.postJson("http://175.178.60.114:8081/fanqie/fenxiangshibaiFu", {});
+                    temp = http.postJson("http://116.205.139.36:8081/fanqie/fenxiangshibaiFu", {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1461,7 +1461,7 @@ ui.ok.click(function () {
                 }
                 let temp = null;
                 try {
-                    temp = http.postJson("http://175.178.60.114:8081/fanqie/fenxiangurl", {
+                    temp = http.postJson("http://116.205.139.36:8081/fanqie/fenxiangurl", {
                         "url": fxurl
                     });
                     if (temp && temp.statusCode == 200) {
@@ -1487,7 +1487,7 @@ ui.ok.click(function () {
                 }
                 let temp = null;
                 try {
-                    temp = http.postJson("http://175.178.60.114:8081/fanqie/fenxiangurlFu", {
+                    temp = http.postJson("http://116.205.139.36:8081/fanqie/fenxiangurlFu", {
                         "url": fxurl
                     });
                     if (temp && temp.statusCode == 200) {
@@ -7468,7 +7468,7 @@ ui.ok.click(function () {
             log("getClip=" + getClip());
 
             function initws() {
-                ws = web.newWebSocket("ws://175.178.60.114:8081/fanqie/ws", {
+                ws = web.newWebSocket("ws://116.205.139.36:8081/fanqie/ws", {
                     eventThread: 'io'
                     /*eventThread {any} WebSocket事件派发的线程，默认为io
                     io 事件将在WebSocket的IO线程触发

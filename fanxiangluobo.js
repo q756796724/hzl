@@ -328,7 +328,7 @@ ui.ok.click(function () {
         function getjieshouCount() {
             let temp = null;
             try {
-                temp = http.get("175.178.60.114:8081/fanqie/getjieshouCount");
+                temp = http.get("116.205.139.36:8081/fanqie/getjieshouCount");
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -349,7 +349,7 @@ ui.ok.click(function () {
         function addjieshouCount() {
             let temp = null;
             try {
-                temp = http.get("175.178.60.114:8081/fanqie/addjieshouCount");
+                temp = http.get("116.205.139.36:8081/fanqie/addjieshouCount");
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -370,7 +370,7 @@ ui.ok.click(function () {
         function reducejieshouCount() {
             let temp = null;
             try {
-                temp = http.get("175.178.60.114:8081/fanqie/reducejieshouCount");
+                temp = http.get("116.205.139.36:8081/fanqie/reducejieshouCount");
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -391,7 +391,7 @@ ui.ok.click(function () {
         /*function getConfig() {
             let temp = null;
             try {
-                temp = http.get("175.178.60.114:8081/fanqie/getConfig");
+                temp = http.get("116.205.139.36:8081/fanqie/getConfig");
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -411,7 +411,7 @@ ui.ok.click(function () {
         function getConfig() {
             let temp = null;
             try {
-                temp = http.post("175.178.60.114:8081/fanqie/getConfig", {});
+                temp = http.post("116.205.139.36:8081/fanqie/getConfig", {});
                 if (temp && temp.statusCode == 200) {
                     temp = temp.body.string();
                     let rep = JSON.parse(temp);
@@ -431,7 +431,7 @@ ui.ok.click(function () {
         function setConfig(lastTalkName, lastLinkTitle) {
             let temp = null;
             try {
-                temp = http.postJson("175.178.60.114:8081/fanqie/setConfig", {
+                temp = http.postJson("116.205.139.36:8081/fanqie/setConfig", {
                     "lastTalkName": lastTalkName,
                     "lastLinkTitle": lastLinkTitle
                 });
