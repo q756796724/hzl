@@ -282,7 +282,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.7.0";
+            var versionNum = "聚合分享v10.7.1";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2586,66 +2586,106 @@ ui.ok.click(function () {
                         }
                     }
 
-                    let close_btn = packageName("com.tencent.mm").className("android.widget.Image").text("close_btn").findOnce();
-                    if (close_btn) {
-                        close_btn.click();
-                        sleep(10000)
-                    }
-                    close_btn = packageName("com.tencent.mm").className("android.widget.Image").text("close_btn").findOnce();
-                    let longPress = packageName("com.tencent.mm").id("longPress").findOnce()
-                    if (close_btn) {
-                        if (longPress) {
-                            longclickx(longPress.bounds().centerX(), longPress.bounds().centerY() - 280)
-                        } else {
-                            longclickx(device.width * 0.5, device.height * 0.4)
-                        }
-                    } else {
-                        for (let i = 0; i < 5; i++) {
-                            let startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(8000);
-                            if (startbtn && startbtn.text() == "点击开始阅读") {
-                                startbtn.click();
-                                close_btn = packageName("com.tencent.mm").className("android.widget.Image").text("close_btn").findOne(10000);
-                                if (close_btn) {
-                                    longPress = packageName("com.tencent.mm").id("longPress").findOnce()
-                                    if (longPress) {
-                                        longclickx(longPress.bounds().centerX(), longPress.bounds().centerY() - 280)
-                                    } else {
-                                        longclickx(device.width * 0.5, device.height * 0.4)
-                                    }
-                                    break
-                                } else if (i == 4) {
-                                    console.warn("弹不出小阅阅二维码")
-                                    if (xiaoyueyuecheckFlag) {
-                                        fenxiangshibai();
-                                    }
-                                    返回v首页();
-                                    return;
+                    let startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(8000);
+                    if (startbtn) {
+                        if(startbtn.text() == "点击复制阅读链接"){
+                            startbtn.click();
+                            let fuzhibtn=packageName("com.tencent.mm").id("link").findOne(10000);
+                            if(fuzhibtn&&fuzhibtn.text().indexOf("点击链接")>-1){
+                                setClip(fuzhibtn.text().split("点击链接")[0]);
+                                返回v首页();
+                                openWenZhang();
+                                if (xiaoyueyueyuedu()) {
+                                    xiaoyueyuecount = 1
+                                    storage.put("xiaoyueyuecount", xiaoyueyuecount);
+                                    xiaoyueyueluncount++
+                                    storage.put("xiaoyueyueluncount", xiaoyueyueluncount);
                                 }
-                            } else if (startbtn && i > 0 && i < 4) {
-                                close_btn = packageName("com.tencent.mm").className("android.widget.Image").text("close_btn").findOne(3000);
-                                if (close_btn) {
-                                    longPress = packageName("com.tencent.mm").id("longPress").findOnce()
-                                    if (longPress) {
-                                        longclickx(longPress.bounds().centerX(), longPress.bounds().centerY() - 280)
-                                    } else {
-                                        longclickx(device.width * 0.5, device.height * 0.4)
-                                    }
-                                    break
+                            }else{
+                                fenxiangshibai();
+                            }
+                        }else{
+                            let close_btn = packageName("com.tencent.mm").className("android.widget.Image").text("close_btn").findOnce();
+                            if (close_btn) {
+                                close_btn.click();
+                                sleep(10000)
+                            }
+                            close_btn = packageName("com.tencent.mm").className("android.widget.Image").text("close_btn").findOnce();
+                            let longPress = packageName("com.tencent.mm").id("longPress").findOnce()
+                            if (close_btn) {
+                                if (longPress) {
+                                    longclickx(longPress.bounds().centerX(), longPress.bounds().centerY() - 280)
                                 } else {
-                                    startbtn.click();
-                                    close_btn = packageName("com.tencent.mm").className("android.widget.Image").text("close_btn").findOne(10000);
-                                    if (close_btn) {
-                                        longPress = packageName("com.tencent.mm").id("longPress").findOnce()
-                                        if (longPress) {
-                                            longclickx(longPress.bounds().centerX(), longPress.bounds().centerY() - 280)
-                                        } else {
-                                            longclickx(device.width * 0.5, device.height * 0.4)
+                                    longclickx(device.width * 0.5, device.height * 0.4)
+                                }
+                            } else {
+                                for (let i = 0; i < 5; i++) {
+                                    let startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(8000);
+                                    if (startbtn && startbtn.text() == "点击开始阅读") {
+                                        startbtn.click();
+                                        close_btn = packageName("com.tencent.mm").className("android.widget.Image").text("close_btn").findOne(10000);
+                                        if (close_btn) {
+                                            longPress = packageName("com.tencent.mm").id("longPress").findOnce()
+                                            if (longPress) {
+                                                longclickx(longPress.bounds().centerX(), longPress.bounds().centerY() - 280)
+                                            } else {
+                                                longclickx(device.width * 0.5, device.height * 0.4)
+                                            }
+                                            break
+                                        } else if (i == 4) {
+                                            console.warn("弹不出小阅阅二维码")
+                                            if (xiaoyueyuecheckFlag) {
+                                                fenxiangshibai();
+                                            }
+                                            返回v首页();
+                                            return;
                                         }
-                                        break
+                                    } else if (startbtn && i > 0 && i < 4) {
+                                        close_btn = packageName("com.tencent.mm").className("android.widget.Image").text("close_btn").findOne(3000);
+                                        if (close_btn) {
+                                            longPress = packageName("com.tencent.mm").id("longPress").findOnce()
+                                            if (longPress) {
+                                                longclickx(longPress.bounds().centerX(), longPress.bounds().centerY() - 280)
+                                            } else {
+                                                longclickx(device.width * 0.5, device.height * 0.4)
+                                            }
+                                            break
+                                        } else {
+                                            startbtn.click();
+                                            close_btn = packageName("com.tencent.mm").className("android.widget.Image").text("close_btn").findOne(10000);
+                                            if (close_btn) {
+                                                longPress = packageName("com.tencent.mm").id("longPress").findOnce()
+                                                if (longPress) {
+                                                    longclickx(longPress.bounds().centerX(), longPress.bounds().centerY() - 280)
+                                                } else {
+                                                    longclickx(device.width * 0.5, device.height * 0.4)
+                                                }
+                                                break
+                                            }
+                                        }
+                                    } else if (i == 4) {
+                                        console.warn("没有找到小阅阅二维码")
+                                        if (xiaoyueyuecheckFlag) {
+                                            fenxiangshibai();
+                                        }
+                                        返回v首页();
+                                        return;
                                     }
                                 }
-                            } else if (i == 4) {
-                                console.warn("没有找到小阅阅二维码")
+                            }
+        
+                            let sbqrBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("识别图中的二维码").findOne(7000);
+                            if (sbqrBtn != null && sbqrBtn.parent() != null && sbqrBtn.parent().clickable()) {
+                                sleep(random(500, 2000));
+                                sbqrBtn.parent().click();
+                                if (xiaoyueyueyuedu()) {
+                                    xiaoyueyuecount = 1
+                                    storage.put("xiaoyueyuecount", xiaoyueyuecount);
+                                    xiaoyueyueluncount++
+                                    storage.put("xiaoyueyueluncount", xiaoyueyueluncount);
+                                }
+                            } else {
+                                console.warn("没有找到识别图中的二维码")
                                 if (xiaoyueyuecheckFlag) {
                                     fenxiangshibai();
                                 }
@@ -2653,26 +2693,12 @@ ui.ok.click(function () {
                                 return;
                             }
                         }
-                    }
 
-                    let sbqrBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("识别图中的二维码").findOne(7000);
-                    if (sbqrBtn != null && sbqrBtn.parent() != null && sbqrBtn.parent().clickable()) {
-                        sleep(random(500, 2000));
-                        sbqrBtn.parent().click();
-                        if (xiaoyueyueyuedu()) {
-                            xiaoyueyuecount = 1
-                            storage.put("xiaoyueyuecount", xiaoyueyuecount);
-                            xiaoyueyueluncount++
-                            storage.put("xiaoyueyueluncount", xiaoyueyueluncount);
-                        }
-                    } else {
-                        console.warn("没有找到识别图中的二维码")
-                        if (xiaoyueyuecheckFlag) {
-                            fenxiangshibai();
-                        }
-                        返回v首页();
-                        return;
+                    }else{
+                        fenxiangshibai();
                     }
+                    
+                   
                 } else {
                     return
                 }
