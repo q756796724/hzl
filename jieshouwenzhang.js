@@ -217,7 +217,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.9.1";
+            var versionNum = "接收v7.9.2";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -906,6 +906,9 @@ ui.ok.click(function () {
                     wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000);
                     if (wBtn != null) {
                         let p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(5000);
+                        if(p==null){
+                            p = className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce();
+                        } 
                         if (p) {
                             p.setText("#小程序://微投票帮手/wjopnKKBCajlZjD")
                             sleep(2000)
@@ -1519,6 +1522,9 @@ ui.ok.click(function () {
                                 if (latestUrl != "" && lastUrl != latestUrl) {
                                     lastUrl = latestUrl;
                                     let p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(5000);
+                                    if(p==null){
+                                        p = className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce();
+                                    } 
                                     if (p) {
                                         p.setText(latestUrl)
                                         sleep(2000)

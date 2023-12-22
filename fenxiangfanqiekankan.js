@@ -216,7 +216,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "番茄分享v9.3.3";
+            var versionNum = "番茄分享v9.3.5";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -416,6 +416,9 @@ ui.ok.click(function () {
                     wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000);
                     if (wBtn != null) {
                         let p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(5000);
+                        if(p==null){
+                            p = className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce();
+                        } 
                         if (p) {
                             p.setText(getClip())
                             sleep(2000)

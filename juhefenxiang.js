@@ -282,7 +282,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.7.2";
+            var versionNum = "聚合分享v10.7.3";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -513,6 +513,9 @@ ui.ok.click(function () {
                     wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000);
                     if (wBtn != null) {
                         let p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(5000);
+                        if(p==null){
+                            p = className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce();
+                        } 
                         if (p) {
                             p.setText(getClip())
                             sleep(2000)
@@ -1972,6 +1975,9 @@ ui.ok.click(function () {
                                 let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000);
                                 if (wBtn != null) {
                                     let p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(5000);
+                                    if(p==null){
+                                        p = className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce();
+                                    } 
                                     if (p) {
                                         p.setText("小阅阅助力" + yunshaomaurl)
                                         sleep(2000)
@@ -2388,6 +2394,9 @@ ui.ok.click(function () {
                                 let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000);
                                 if (wBtn != null) {
                                     let p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(5000);
+                                    if(p==null){
+                                        p = className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce();
+                                    } 
                                     if (p) {
                                         p.setText("小阅阅" + yunshaomaurl)
                                         sleep(2000)
@@ -3102,6 +3111,9 @@ ui.ok.click(function () {
                                 let wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000);
                                 if (wBtn != null) {
                                     let p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(5000);
+                                    if(p==null){
+                                        p = className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce();
+                                    } 
                                     if (p) {
                                         p.setText("美添" + meitianzhuanurl)
                                         sleep(2000)
@@ -3483,6 +3495,9 @@ ui.ok.click(function () {
                     wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000);
                     if (wBtn != null) {
                         let p = className("android.widget.EditText").boundsInside(0, device.height * 0.7, device.width, device.height).packageName("com.tencent.mm").findOne(5000);
+                        if(p==null){
+                            p = className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce();
+                        } 
                         if (p) {
                             p.setText("#小程序://微投票帮手/wjopnKKBCajlZjD")
                             sleep(2000)
@@ -4621,7 +4636,7 @@ ui.ok.click(function () {
                 let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
                 sleep(8000)
                 cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
-                if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(当前阅读被限制.*)/).findOnce()) {
+                if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(当前阅读被限制.*|阅读暂时无效.*)/).findOnce()) {
                     let xianzhistr = "小阅阅限制"
                     log(new Date().toLocaleString() + "-----------" + xianzhistr);
                     xiaoyueyuecheckFlag = true
