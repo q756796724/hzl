@@ -3,7 +3,7 @@
  * 个人配置
  */
 var 仓库名 = "hzl"     //需要更换仓库名
-var versionNum = "v1.2.3";
+var versionNum = "v1.2.4";
 
 toolsStorage = storages.create("tools配置");
 
@@ -79,6 +79,8 @@ function getSelect(runSelect) {
         } else if (app.autojs.versionName == '4.1.1 Alpha2') {
             var r = 解压zip文件(path, "") //解压zip文件
         }
+
+        //快照加密后覆盖dex和shot就行
         files.copy(r + "shouhujiami.js", "/sdcard/fanqie/shouhu.js")
         files.copy(r + "shouhujiami.dex", "/sdcard/fanqie/shouhujiami.dex")
         files.copy(r + "shouhujiami.shot", "/sdcard/fanqie/shouhujiami.shot")
