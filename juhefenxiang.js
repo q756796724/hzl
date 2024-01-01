@@ -282,7 +282,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.7.4";
+            var versionNum = "聚合分享v10.7.5";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4658,7 +4658,7 @@ ui.ok.click(function () {
 
                     return false;
                 }
-                let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后)/).findOnce()
+                let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
                 if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "") {
                     log("开始小阅阅");
                 } else if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(今日阅读已达上限.*)/).findOnce()) {
@@ -4704,8 +4704,8 @@ ui.ok.click(function () {
                     back()
                     if (packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)) {
                         log("重试开始小阅阅成功");
-                    } else if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后)/).findOnce()) {
-                        let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后)/).findOnce()
+                    } else if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()) {
+                        let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
                         xiaoyueyuecount = 1
                         storage.put("xiaoyueyuecount", xiaoyueyuecount);
                         xiaoyueyuekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
@@ -5087,7 +5087,7 @@ ui.ok.click(function () {
 
                             }
                         } else {
-                            let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后)/).findOnce()
+                            let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
                             if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(当前阅读被限制.*)/).findOnce()) {//不会是第一篇因为顶头已经拦截
                                 let xianzhistr = "小阅阅限制"
                                 if (xiaoyueyuecheckFlag) {
@@ -5287,7 +5287,7 @@ ui.ok.click(function () {
                                 }
                                 break;
                             }
-                            let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后)/).findOnce()
+                            let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
                             if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(当前阅读被限制.*)/).findOnce()) {
                                 let xianzhistr = "小阅阅限制"
                                 if (xiaoyueyuecheckFlag && sffs == false) {
