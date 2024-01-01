@@ -4,7 +4,7 @@ var w = floaty.rawWindow(
     </frame>
 );
 //进程守护
-var versionNum = "v1.2.9";
+var versionNum = "v1.3.0";
 toolsStorage = storages.create("tools配置");
 
 // 获取所有正在运行的脚本引擎
@@ -150,11 +150,31 @@ for (; ;) {
         home();
         sleep(5000);
         app.launch("com.fanqie.cloud");
+        sleep(2000)
+        back();
+        sleep(1000)
+        back();
+        sleep(1000)
+        back();
+        sleep(1000)
+        back();
+        sleep(1000)
+        back();
         sleep(300000);
         if (getAppAlive(device.serial) == false) {
             back();
             sleep(5000);
             app.launch("com.fanqie.cloud");
+            sleep(2000)
+            back();
+            sleep(1000)
+            back();
+            sleep(1000)
+            back();
+            sleep(1000)
+            back();
+            sleep(1000)
+            back();
             sleep(300000);
         }
     }
