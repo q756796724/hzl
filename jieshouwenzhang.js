@@ -217,7 +217,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.9.3";
+            var versionNum = "接收v7.9.4";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -278,12 +278,12 @@ ui.ok.click(function () {
                 //log("==> topActivity: " + topActivity);
             }
             function clickx(x, y) {
-                x = x + random(-5, -1)
-                y = y + random(-5, -1)
+                x = x + random(-2, 2)
+                y = y + random(-2, 2)
                 click(x < 0 ? 1 : x, y < 0 ? 1 : y)
             }
             function longclickx(x, y) {
-                x = x + random(-5, 5)
+                x = x + random(-2, 2)
                 y = y
                 press(x < 0 ? 1 : x, y < 0 ? 1 : y, random(2400, 2500));
             }
@@ -1540,19 +1540,7 @@ ui.ok.click(function () {
                                         p = descEndsWith("头像").className("android.widget.ImageView").packageName("com.tencent.mm").find()
                                         if (p.length > 0) {
                                             sleep(1000)
-                                            try {
-                                                click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
-                                            } catch (e) {
-                                                back();
-                                                sleep(1000)
-                                                click(p.bounds().centerX(), p.bounds().centerY());
-                                                sleep(3000)
-                                                p = descEndsWith("头像").className("android.widget.ImageView").packageName("com.tencent.mm").find()
-                                                if (p.length > 0) {
-                                                    sleep(1000)
-                                                    click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
-                                                }
-                                            }
+                                            click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
                                         }
                                     }
 

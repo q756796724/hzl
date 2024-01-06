@@ -277,12 +277,12 @@ ui.ok.click(function () {
                 //log("==> topActivity: " + topActivity);
             }
             function clickx(x, y) {
-                x = x + random(-5, -1)
-                y = y + random(-5, -1)
+                x = x + random(-2, 2)
+                y = y + random(-2, 2)
                 click(x < 0 ? 1 : x, y < 0 ? 1 : y)
             }
             function longclickx(x, y) {
-                x = x + random(-5, 5)
+                x = x + random(-2, 2)
                 y = y
                 press(x < 0 ? 1 : x, y < 0 ? 1 : y, random(2400, 2500));
             }
