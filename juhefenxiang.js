@@ -68,6 +68,10 @@ meitiantrycount = storage.get("meitiantrycount", 0);//美添连续识别失败�
 sffs = false;//是否副手
 等待未响应次数 = 0
 sftp = true
+lastclipurl="";//上次复制的url
+lastgongzhonghao;
+latestgongzhonghao;
+
 
 // 获取所有正在运行的脚本引擎
 var allEngines = engines.all();
@@ -1143,6 +1147,10 @@ ui.ok.click(function () {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
                         let repState = rep["state"];
+                        let repdata=rep["data"];
+                        if(repdata!=null&&repdata!=""){
+                            latestgongzhonghao=repdata;
+                        }
                         if (repState == 1) {
                             return true;
                         } else {
@@ -5277,7 +5285,7 @@ ui.ok.click(function () {
                                     break;
                                 }
 
-                                if (sfjcwz(encodeURIComponent(clipurl)) == true) {
+                                if (sfjcwz(encodeURIComponent(clipurl)) == true||lastclipurl==clipurl||latestgongzhonghao==lastgongzhonghao) {
                                     if (联网验证(zwifi) != true) {
                                         连接wifi(zwifi, 5000);
                                         app.launch(PKG_NAME);
@@ -5332,6 +5340,8 @@ ui.ok.click(function () {
                                         // }
                                     }
                                 } else {
+                                    lastclipurl=clipurl;
+                                    lastgongzhonghao=latestgongzhonghao
                                     back()
                                 }
                             } else {
@@ -5862,7 +5872,7 @@ ui.ok.click(function () {
                                     break;
                                 }
 
-                                if (sfjcwz(encodeURIComponent(clipurl)) == true) {
+                                if (sfjcwz(encodeURIComponent(clipurl)) == true||lastclipurl==clipurl||latestgongzhonghao==lastgongzhonghao) {
                                     if (联网验证(zwifi) != true) {
                                         连接wifi(zwifi, 5000);
                                         app.launch(PKG_NAME);
@@ -5917,6 +5927,8 @@ ui.ok.click(function () {
                                         // }
                                     }
                                 } else {
+                                    lastclipurl=clipurl;
+                                    lastgongzhonghao=latestgongzhonghao
                                     back()
                                 }
                             } else {
