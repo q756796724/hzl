@@ -69,8 +69,8 @@ sffs = false;//是否副手
 等待未响应次数 = 0
 sftp = true
 lastclipurl="";//上次复制的url
-lastgongzhonghao;
-latestgongzhonghao;
+lastgongzhonghao="";
+latestgongzhonghao="";
 
 
 // 获取所有正在运行的脚本引擎
