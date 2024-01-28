@@ -288,7 +288,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.8.7";
+            var versionNum = "聚合分享v10.8.8";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -5224,7 +5224,7 @@ ui.ok.click(function () {
 
                             }else{
                                 lastclipurl="";
-                                lastgongzhonghao=="";
+                                lastgongzhonghao="";
                             }
                         } else {
                             let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
@@ -5361,13 +5361,23 @@ ui.ok.click(function () {
                                     break;
                                 }
                                 if (sfjcwz(encodeURIComponent(clipurl)) == true||lastclipurl==clipurl||(latestgongzhonghao==lastgongzhonghao&&lastgongzhonghao!="")) {
+                                    let xianzhistr = "小阅阅中途检测"
+                                    if(sfjcwz(encodeURIComponent(clipurl)) == true){
+                                        xianzhistr=xianzhistr+"1"+clipurl
+                                    }
+                                    if(lastclipurl==clipurl){
+                                        xianzhistr=xianzhistr+"2"+clipurl
+                                    }
+                                    if(latestgongzhonghao==lastgongzhonghao&&lastgongzhonghao!=""){
+                                        xianzhistr=xianzhistr+"3"+lastgongzhonghao
+                                    }
                                     if (联网验证(zwifi) != true) {
                                         连接wifi(zwifi, 5000);
                                         app.launch(PKG_NAME);
                                         sleep(8000)
                                     }
                                     //xiaoyueyuecheckFlag = true;
-                                    let xianzhistr = "小阅阅中途检测"
+                                    
                                     wifiCount = xiaoyueyuecount
                                     console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
                                     if (packageName("com.tencent.mm").className("android.view.View").text("无法打开网页").findOnce() || packageName("com.tencent.mm").className("android.view.View").text("点击空白处刷新").findOnce() || packageName("com.tencent.mm").className("android.widget.TextView").text("诊断网络").findOnce()) {
