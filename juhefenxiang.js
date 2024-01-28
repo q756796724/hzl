@@ -288,7 +288,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.9.0";
+            var versionNum = "聚合分享v10.9.1";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -1187,7 +1187,7 @@ ui.ok.click(function () {
             }
             //是否检测文章
             function sfjcwz(txt) {
-                http.__okhttp__.setTimeout(20000);
+                http.__okhttp__.setTimeout(60000);
                 let temp = null;
                 let repData = true;
                 try {
@@ -1216,9 +1216,9 @@ ui.ok.click(function () {
                         连接wifi(zwifi, 5000);
                         app.launch(PKG_NAME);
                     }
-                    repData = sfjcwz(txt);
+                    //repData = sfjcwz(txt);
                 }
-                http.__okhttp__.setTimeout(3000);
+                http.__okhttp__.setTimeout(5000);
                 return repData
             }
             //是否检测方
@@ -5227,6 +5227,9 @@ ui.ok.click(function () {
                             }else{
                                 lastclipurl="";
                                 lastgongzhonghao="";
+                                back();
+                                continue
+
                             }
                         } else {
                             let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
@@ -5364,9 +5367,6 @@ ui.ok.click(function () {
                                 }
                                 if (sfjcwz(encodeURIComponent(clipurl)) == true||lastclipurl==clipurl||(latestgongzhonghao==lastgongzhonghao&&lastgongzhonghao!="")) {
                                     let xianzhistr = "小阅阅中途检测"
-                                    if(sfjcwz(encodeURIComponent(clipurl)) == true){
-                                        xianzhistr=xianzhistr+"1"+clipurl
-                                    }
                                     if(lastclipurl==clipurl){
                                         xianzhistr=xianzhistr+"2"+clipurl
                                     }
@@ -7313,7 +7313,7 @@ ui.ok.click(function () {
                 }
             }
             function 联网验证(wifiName) {
-                http.__okhttp__.setTimeout(3000);
+                http.__okhttp__.setTimeout(5000);
                 if (wifiName == zwifi) {
                     //log("zwifi验证")
                     try {
