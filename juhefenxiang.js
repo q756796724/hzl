@@ -288,7 +288,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.8.3";
+            var versionNum = "聚合分享v10.8.4";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -5368,6 +5368,7 @@ ui.ok.click(function () {
                                     }
                                     //xiaoyueyuecheckFlag = true;
                                     let xianzhistr = "小阅阅中途检测"
+                                    wifiCount = xiaoyueyuecount
                                     console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
                                     if (packageName("com.tencent.mm").className("android.view.View").text("无法打开网页").findOnce() || packageName("com.tencent.mm").className("android.view.View").text("点击空白处刷新").findOnce() || packageName("com.tencent.mm").className("android.widget.TextView").text("诊断网络").findOnce()) {
                                         clickx(device.width * 0.5, device.height * 0.4)
