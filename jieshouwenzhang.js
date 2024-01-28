@@ -5,6 +5,7 @@ toolsStorage = storages.create("tools配置");
 wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro|WifiPro_5G|myg";
 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi3G_2.4G");
+storage.put("qiehuanjiaoben", false);
 qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
 removePhoneNum = storage.get("removePhoneNum", false);
 addJieshou = storage.get("addJieshou", false);
@@ -217,7 +218,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.9.5";
+            var versionNum = "接收v7.9.6";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);

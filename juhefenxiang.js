@@ -30,6 +30,7 @@ if (storage.get("xyyzlurl") == undefined) {
 xyyzlurl = storage.get("xyyzlurl", "无");
 auto_tx = storage.get("auto_tx", false);
 qun_into = storage.get("qun_into", false);
+storage.put("qiehuanjiaoben", false)
 qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
 removePhoneNum = storage.get("removePhoneNum", false);
 zhengtian = storage.get("zhengtian", false);
@@ -286,7 +287,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.8.1";
+            var versionNum = "聚合分享v10.8.2";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
