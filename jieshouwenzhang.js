@@ -218,7 +218,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.9.6";
+            var versionNum = "接收v7.9.7";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -2383,13 +2383,19 @@ ui.ok.click(function () {
             }
 
             function 等待未响应() {
-                if (textMatches(/(.*未响应.*|.*没有响应.*|.*无响应.*)/).findOne(3000) != null) {
+                if (textMatches(/(.*未响应.*|.*没有响应.*|.*无响应.*)/).findOnce() != null) {
                     log(new Date().toLocaleString() + "-" + "检测到应用未响应");
-                    let cBtn = textMatches(/(等待)/).findOne(3000);
+                    等待未响应次数++
+                    if (等待未响应次数 > 8) {
+                        if (结束未响应()) {
+                            return 2;
+                        }
+                    }
+                    let cBtn = textMatches(/(等待)/).findOnce();
                     if (cBtn != null) {
                         cBtn.click();
                         sleep(1000);
-                        cBtn = textMatches(/(等待)/).findOne(3000);
+                        cBtn = textMatches(/(等待)/).findOnce();
                         if (cBtn != null) {
                             log("等待控件关闭失败，参数坐标点击关闭");
                             let cBounds = cBtn.bounds();
@@ -2398,7 +2404,8 @@ ui.ok.click(function () {
                             log(new Date().toLocaleString() + "-" + "----------------------------------------------等待未响应成功");
                             return 1;
                         }
-                        cBtn = textMatches(/(等待)/).findOne(3000);
+                        sleep(1000);
+                        cBtn = textMatches(/(等待)/).findOnce();
                         if (cBtn != null) {
                             log(new Date().toLocaleString() + "-" + "----------------------------------------------等待未响应失败");
                             return 0;
@@ -3055,6 +3062,7 @@ ui.ok.click(function () {
             });
 
             function startWebSocket() {
+                等待未响应()
                 try {
                     if (ws == null) {
                         initws();
