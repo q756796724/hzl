@@ -288,7 +288,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.8.5";
+            var versionNum = "聚合分享v10.8.6";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -5361,17 +5361,7 @@ ui.ok.click(function () {
                                     back()
                                     break;
                                 }
-                                if (sfjcwz(encodeURIComponent(clipurl)) == true||lastclipurl==clipurl||(latestgongzhonghao==lastgongzhonghao&&latestgongzhonghao!="")) {
-                                    if(sfjcwz(encodeURIComponent(clipurl)) == true){
-                                        log("小阅阅中途检测1")
-                                    }
-                                    if(lastclipurl==clipurl){
-                                        log("小阅阅中途检测2"+lastclipurl)
-                                    }
-                                    if(latestgongzhonghao==lastgongzhonghao&&latestgongzhonghao!=""){
-                                        log("小阅阅中途检测3"+latestgongzhonghao)
-                                    }
-                                    
+                                if (sfjcwz(encodeURIComponent(clipurl)) == true||lastclipurl==clipurl||(latestgongzhonghao==lastgongzhonghao&&lastgongzhonghao!="")) {
                                     if (联网验证(zwifi) != true) {
                                         连接wifi(zwifi, 5000);
                                         app.launch(PKG_NAME);
