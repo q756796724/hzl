@@ -288,7 +288,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.9.1";
+            var versionNum = "聚合分享v10.9.2";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4838,6 +4838,7 @@ ui.ok.click(function () {
 
 
                 let wifiCount = xiaoyueyuecount;
+                let sfjcwzflag=false;
                 for (; ;) {
                     let lastXiaoyueyuecheckFlag = xiaoyueyuecheckFlag
                     let lastsffs = sffs
@@ -5227,9 +5228,13 @@ ui.ok.click(function () {
                             }else{
                                 lastclipurl="";
                                 lastgongzhonghao="";
-                                back();
-                                continue
-
+                                if(sfjcwzflag){
+                                    sfjcwzflag=false
+                                    xiaoyueyuecount++;
+                                    storage.put("xiaoyueyuecount", xiaoyueyuecount);
+                                    back();
+                                    continue
+                                }
                             }
                         } else {
                             let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
@@ -5365,7 +5370,10 @@ ui.ok.click(function () {
                                     back()
                                     break;
                                 }
-                                if (sfjcwz(encodeURIComponent(clipurl)) == true||lastclipurl==clipurl||(latestgongzhonghao==lastgongzhonghao&&lastgongzhonghao!="")) {
+                                if(sfjcwz(encodeURIComponent(clipurl))){
+                                    sfjcwzflag=true
+                                }
+                                if (sfjcwzflag||lastclipurl==clipurl||(latestgongzhonghao==lastgongzhonghao&&lastgongzhonghao!="")) {
                                     let xianzhistr = "小阅阅中途检测"
                                     if(lastclipurl==clipurl){
                                         xianzhistr=xianzhistr+"2"+clipurl
