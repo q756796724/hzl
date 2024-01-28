@@ -217,7 +217,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.9.4";
+            var versionNum = "接收v7.9.5";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -1574,13 +1574,13 @@ ui.ok.click(function () {
                                         latestLinkTitle = latestUrl
                                         let xiaoyueyuecheckFlag = true
                                         //if (sffs) {
-                                        if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == false) {
+                                        if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == false&&(new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000)) {
                                             xiaoyueyuecheckFlag = false;
                                         }
                                         if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce()) {
                                             xiaoyueyuecheckFlag = false;
                                         }
-                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 24 * 3600 * 1000) {
+                                        /*if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 24 * 3600 * 1000) {
                                             if (read_area && read_area.text().match(/\d+/g)[0] > 500) {
                                                 xiaoyueyuecheckFlag = false;
                                             }
@@ -1589,9 +1589,12 @@ ui.ok.click(function () {
                                             if (read_area && read_area.text().match(/\d+/g)[0] > 1000) {
                                                 xiaoyueyuecheckFlag = false;
                                             }
+                                        }*/
+                                        if(new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000){
+                                            xiaoyueyuecheckFlag = false;
                                         }
-                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
-                                            if (read_area && read_area.text().match(/\d+/g)[0] > 2000) {
+                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 3 * 24 * 3600 * 1000&&new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                            if (read_area && read_area.text().match(/\d+/g)[0] > 800) {
                                                 xiaoyueyuecheckFlag = false;
                                             }
                                         }
@@ -1600,7 +1603,7 @@ ui.ok.click(function () {
                                                 xiaoyueyuecheckFlag = false;
                                             }
                                         }
-                                        if (read_area) {
+                                        /*if (read_area) {
                                             if (read_area && read_area.text().match(/\d+/g)[0] > 1000 && read_area.bounds().top > device.height * 5) {
                                                 xiaoyueyuecheckFlag = false;
                                             } else if (read_area && read_area.text().match(/\d+/g)[0] > 1500 && read_area.bounds().top > device.height * 3) {
@@ -1610,7 +1613,7 @@ ui.ok.click(function () {
                                             if (js_focus.bounds().top > device.height * 8) {
                                                 xiaoyueyuecheckFlag = false;
                                             }
-                                        }
+                                        }*/
                                         if (xiaoyueyuecheckFlag == false) {
                                             //去掉检测方
                                             deleteJiancegongzhonghao(encodeURIComponent(js_name.desc()))

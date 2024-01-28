@@ -5072,7 +5072,7 @@ ui.ok.click(function () {
                                     console.warn(new Date().toLocaleString() + "-----------" + xianzhistr + "重检");
                                 }
                             } else {
-                                if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == false) {
+                                if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == false&&(new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000)) {
                                     xiaoyueyuecheckFlag = false;
                                 }
                                 if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce()) {
