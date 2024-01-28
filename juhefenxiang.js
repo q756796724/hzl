@@ -288,7 +288,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.8.2";
+            var versionNum = "聚合分享v10.8.3";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -5118,8 +5118,6 @@ ui.ok.click(function () {
                                 storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
 
                                 if (xiaoyueyuecheckFlag == false) {
-                                    lastclipurl="";
-                                    latestgongzhonghao=="";
                                     //去掉检测方
                                     deleteJiancegongzhonghao(encodeURIComponent(js_name.desc()))
                                     if (wifiCount == xiaoyueyuecount) {
@@ -5224,6 +5222,9 @@ ui.ok.click(function () {
                                     }
                                 }
 
+                            }else{
+                                lastclipurl="";
+                                latestgongzhonghao=="";
                             }
                         } else {
                             let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
