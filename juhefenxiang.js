@@ -288,7 +288,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.8.6";
+            var versionNum = "聚合分享v10.8.7";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -5223,9 +5223,8 @@ ui.ok.click(function () {
                                 }
 
                             }else{
-                                log("清除lastclipurl和latestgongzhonghao")
                                 lastclipurl="";
-                                latestgongzhonghao=="";
+                                lastgongzhonghao=="";
                             }
                         } else {
                             let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
