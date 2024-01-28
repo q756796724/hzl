@@ -36,6 +36,7 @@ removePhoneNum = storage.get("removePhoneNum", false);
 zhengtian = storage.get("zhengtian", false);
 chushihuaflag = storage.get("chushihuaflag", false);
 fanqieflag = storage.get("fanqieflag", false);
+storage.put("meitianflag", false)
 meitianflag = storage.get("meitianflag", true);
 meitianover = storage.get("meitianover", false);//当天是否完成
 xiaoyueyueflag = storage.get("xiaoyueyueflag", false);
