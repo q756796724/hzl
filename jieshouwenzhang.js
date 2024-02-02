@@ -30,6 +30,8 @@ if (storage.get("readdays") == undefined) {
 readdays = storage.get("readdays");//阅读天数
 sxreaddays = 1;//上限阅读天数
 ws = null
+等待未响应次数 = 0
+
 
 // 获取所有正在运行的脚本引擎
 var allEngines = engines.all();
@@ -218,7 +220,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v7.9.8";
+            var versionNum = "接收v7.9.9";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -2130,6 +2132,7 @@ ui.ok.click(function () {
                 toastLog("版本号:" + versionNum);
             }
             function 关闭应用(packageName) {
+                等待未响应次数 = 0
                 log("尝试关闭" + packageName);
                 var name = getPackageName(packageName);
                 if (!name) {
@@ -2367,6 +2370,7 @@ ui.ok.click(function () {
                             clickx(cBounds.right, cBounds.bottom);
                         } else {
                             log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
+                            等待未响应次数 = 0
                             return true;
                         }
                         cBtn = textMatches(/(确定|关闭|关闭应用)/).findOne(3000);
@@ -2375,6 +2379,7 @@ ui.ok.click(function () {
                             return false;
                         } else {
                             log(new Date().toLocaleString() + "-" + "----------------------------------------------结束未响应成功");
+                            等待未响应次数 = 0
                             return true;
                         }
                     }
