@@ -917,8 +917,16 @@ ui.ok.click(function () {
                             sleep(2000)
                             p.click();
                             sleep(1000)
+                            if(className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce()!=null){
+                                log("clickEditTextSleep");
+                                sleep(2000)
+                            }
                             back();
-                            sleep(2000)
+                            sleep(2500)
+                            if(className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce()==null){
+                                log("backEditTextSleep");
+                                sleep(2000)
+                            }
                         }
                         p = text("发送").className("android.widget.Button").packageName("com.tencent.mm").findOnce()
                         if (p) {
@@ -1533,8 +1541,16 @@ ui.ok.click(function () {
                                         sleep(2000)
                                         p.click();
                                         sleep(1000)
+                                        if(className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce()!=null){
+                                            log("clickEditTextSleep");
+                                            sleep(2000)
+                                        }
                                         back();
-                                        sleep(2000)
+                                        sleep(2500)
+                                        if(className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce()==null){
+                                            log("backEditTextSleep");
+                                            sleep(2000)
+                                        }
                                     }
                                     p = text("发送").className("android.widget.Button").packageName("com.tencent.mm").findOnce()
                                     if (p) {
