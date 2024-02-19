@@ -55,6 +55,7 @@ xiaoyueyuecount = storage.get("xiaoyueyuecount", 1);//小阅阅本轮次数
 xiaoyueyueluncount = storage.get("xiaoyueyueluncount", 1);//小阅阅轮数
 xiaoyueyuecheckFlag = storage.get("xiaoyueyuecheckFlag", true); //小阅阅检测
 
+keleover = storage.get("keleover", false);//当天是否完成
 keleReadNum = storage.get("keleReadNum", 0);//可乐当天阅读次数
 kelecount = storage.get("kelecount", 1);//可乐本轮次数
 keleluncount = storage.get("keleluncount", 1);//可乐轮数
@@ -3217,7 +3218,7 @@ ui.ok.click(function () {
                         sleep(3000);
                     }
                     let loadcount = 0
-                    while (packageName("com.tencent.mm").className("android.widget.TextView").text("小阅阅").findOnce() == null || packageName("com.tencent.mm").id("task_btn_read").findOnce() == null) {
+                    while (packageName("com.tencent.mm").className("android.widget.TextView").text("可乐读书").findOnce() == null || packageName("com.tencent.mm").id("task_btn_read").findOnce() == null) {
                         sleep(3000)
                         if (loadcount > 20) {
                             console.warn("小阅阅加载失败");
