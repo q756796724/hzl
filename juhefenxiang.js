@@ -3368,24 +3368,34 @@ ui.ok.click(function () {
                         } else {
                             if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按二维码开始.*)/).findOnce()) {
                                 clickx(device.width - 20, device.height - 20)
-                                sleep(1000)
-                                let readCtl_btn = packageName("com.tencent.mm").id("readCtl").findOne(8000)
-                                if (readCtl_btn) {
-                                    readCtl_btn.click();
-                                    sleep(1000)
-                                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按二维码开始.*)/).findOne(2000)) {
-                                        let longPress = packageName("com.tencent.mm").id("qrCodeBlock").findOnce()
-                                        if (longPress) {
-                                            longclickx(longPress.bounds().centerX(), longPress.bounds().centerY())
-                                        } else {
-                                            longclickx(device.width * 0.5, device.height * 0.4)
-                                        }
+                                sleep(2000)
+                                let loadcount = 0
+                                while(packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按二维码开始.*)/).findOne(2000)==null){
+                                    let readCtl_btn = packageName("com.tencent.mm").id("readCtl").findOne(4000)
+                                    if (readCtl_btn) {
+                                        readCtl_btn.click();
+                                        sleep(1000)
                                     } else {
-                                        console.error("可乐弹不出二维码")
+                                        console.error("可乐找不到开始阅读")
                                         fenxiangshibai();
                                     }
+                                    loadcount++
+                                    if(loadcount>10){
+                                        console.error("可乐弹不出二维码!")
+                                        fenxiangshibai();
+                                        返回v首页();
+                                        return;
+                                    }
+                                }
+                                if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按二维码开始.*)/).findOne(2000)) {
+                                    let longPress = packageName("com.tencent.mm").id("qrCodeBlock").findOnce()
+                                    if (longPress) {
+                                        longclickx(longPress.bounds().centerX(), longPress.bounds().centerY())
+                                    } else {
+                                        longclickx(device.width * 0.5, device.height * 0.4)
+                                    }
                                 } else {
-                                    console.error("可乐找不到开始阅读")
+                                    console.error("可乐弹不出二维码")
                                     fenxiangshibai();
                                 }
                             } else {
