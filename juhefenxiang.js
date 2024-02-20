@@ -3286,7 +3286,7 @@ ui.ok.click(function () {
 
                     keletx()
                     let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
-                    if (tstxt&&tstxt.indexOf("分钟后失效") == -1) {
+                    if (tstxt&&tstxt.text().indexOf("分钟后失效") == -1) {
                         kelecount = 1
                         storage.put("kelecount", kelecount);
                         kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
