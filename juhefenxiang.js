@@ -3496,11 +3496,7 @@ ui.ok.click(function () {
                         if (numbtn && numbtn.text().indexOf("阅读成功") > -1) {
                             keleReadNum++
                             storage.put("keleReadNum", keleReadNum);
-                            if (kelecheckFlag) {
-                                kelecheckFlag = false
-                                storage.put("kelecheckFlag", kelecheckFlag);
-                            }
-                        } else if (numbtn && (numbtn.text().indexOf("限制") > -1 || numbtn.text().indexOf("检测未通过") > -1)) {
+                        } else if (numbtn && (numbtn.text().indexOf("检测未通过") > -1)) {
                             let xianzhistr = "可乐限制"
                             if (kelecheckFlag) {
                                 if (sffs == false) {
@@ -3580,27 +3576,8 @@ ui.ok.click(function () {
                             let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + publish_time.text().replace(/-/g, "/") + "&&" + fabudi + "&&" + read_area_num;
                             log(yuducontent);
                             if (kelecheckFlag == false) {
-                                if (isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == true && read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null && read_area.text().match(/\d+/g)[0] < 2000 && (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 3 * 24 * 3600 * 1000)) {
+                                if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() >= 7 * 24 * 3600 * 1000) {
                                     kelecheckFlag = true;
-                                }
-                                if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == true && (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 3 * 24 * 3600 * 1000)) {
-                                    kelecheckFlag = true;
-                                }
-                               
-                                if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 3 * 24 * 3600 * 1000 && new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
-                                    if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null && read_area.text().match(/\d+/g)[0] < 800) {
-                                        kelecheckFlag = true;
-                                    }
-                                }
-                                if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 7 * 24 * 3600 * 1000 && new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 15 * 24 * 3600 * 1000) {
-                                    if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null && read_area.text().match(/\d+/g)[0] < 2000) {
-                                        kelecheckFlag = true;
-                                    }
-                                }
-                                if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() >= 15 * 24 * 3600 * 1000) {
-                                    if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null && read_area.text().match(/\d+/g)[0] < 3000) {
-                                        kelecheckFlag = true;
-                                    }
                                 }
                                 storage.put("kelecheckFlag", kelecheckFlag);
                                 if (kelecheckFlag) {
@@ -3633,30 +3610,12 @@ ui.ok.click(function () {
                                     console.warn(new Date().toLocaleString() + "-----------" + xianzhistr + "重检");
                                 }
                             } else {
-                                if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == false && (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000)) {
+                                if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
                                     kelecheckFlag = false;
-                                }
-                                if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce()) {
-                                    kelecheckFlag = false;
-                                }
-                                if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000) {
-                                    kelecheckFlag = false;
-                                }
-                                if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 3 * 24 * 3600 * 1000 && new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
-                                    if (read_area && read_area.text().match(/\d+/g)[0] > 800) {
-                                        kelecheckFlag = false;
-                                    }
-                                }
-                                if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 7 * 24 * 3600 * 1000) {
-                                    if (read_area && read_area.text().match(/\d+/g)[0] > 3000) {
-                                        kelecheckFlag = false;
-                                    }
                                 }
                                 storage.put("kelecheckFlag", kelecheckFlag);
             
                                 if (kelecheckFlag == false) {
-                                    //去掉检测方
-                                    deleteJiancegongzhonghao(encodeURIComponent(js_name.desc()))
                                     if (wifiCount == kelecount) {
                                         if (sffs) {
                                             fenxiangshibaiFu();
@@ -3707,7 +3666,6 @@ ui.ok.click(function () {
             
                                     return false;
                                 }
-                                addJiancegongzhonghao(encodeURIComponent(js_name.desc()))
                                 yuducontent = clipurl
                                 log("重复判断:" + yuducontent)
                                 if (sffs) {
