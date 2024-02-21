@@ -3541,9 +3541,10 @@ ui.ok.click(function () {
                             if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按二维码开始.*)/).findOnce() == null) {
                                 let readCtl_btn = packageName("com.tencent.mm").id("readCtl").findOne(4000)
                                 if (readCtl_btn) {
+                                    log("点击了开始")
                                     readCtl_btn.click();
                                 }
-                                sleep(4000)
+                                sleep(5000)
                             }
 
                             if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按二维码开始.*)/).findOnce()) {
@@ -3748,6 +3749,9 @@ ui.ok.click(function () {
                     //判断是否需要互助
                     if (kelecount <= 2 || kelecount - wifiCount <= 1 || kelecheckFlag) {
                         let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                        if (kelecount == 1 || kelecount == wifiCount) {
+                            cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                        }
                         sleep(5000)
                         cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
                         let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
@@ -4368,6 +4372,9 @@ ui.ok.click(function () {
                     //判断是否需要互助
                     if (xiaoyueyuecount <= 2 || xiaoyueyuecount - wifiCount <= 1 || xiaoyueyuecheckFlag) { //|| (xiaoyueyueReadNum > 97 && xiaoyueyueReadNum < 101)) {
                         let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                        if (xiaoyueyuecount == 1 || xiaoyueyuecount == wifiCount) {
+                            cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                        }
                         sleep(5000)
                         cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
                         let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
@@ -5051,6 +5058,9 @@ ui.ok.click(function () {
                     //判断是否需要互助
                     if (xiaoyueyuecount <= 2 || xiaoyueyuecount - wifiCount <= 1 || xiaoyueyuecheckFlag) { //|| (xiaoyueyueReadNum > 97 && xiaoyueyueReadNum < 101)) {
                         let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                        if (xiaoyueyuecount == 1 || xiaoyueyuecount == wifiCount) {
+                            cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                        }
                         sleep(5000)
                         cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
                         let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
