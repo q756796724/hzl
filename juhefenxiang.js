@@ -3051,7 +3051,7 @@ ui.ok.click(function () {
                 if (jb && keletodayTxCount == 1 && (parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 > 5)) {
                     sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "可乐:" + (parseInt(jb.text().replace(/[^\d]/g, "")) / 10000));
                 }
-                sleep(10000)
+                sleep(3000)
             }
             function kelePage() {
                 let keleurl
@@ -3591,6 +3591,14 @@ ui.ok.click(function () {
                                 let readCtl_btn = packageName("com.tencent.mm").id("readCtl").findOne(4000)
                                 if (readCtl_btn) {
                                     log("点击了开始")
+                                    readCtl_btn.click();
+                                }
+                                sleep(5000)
+                            }
+                            if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按二维码开始.*)/).findOnce() == null) {
+                                let readCtl_btn = packageName("com.tencent.mm").id("readCtl").findOne(4000)
+                                if (readCtl_btn) {
+                                    log("点击了开始2")
                                     readCtl_btn.click();
                                 }
                                 sleep(5000)
