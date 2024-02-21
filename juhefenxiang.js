@@ -3157,7 +3157,7 @@ ui.ok.click(function () {
                                                                                 kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                                                                 storage.put("kelekedusj", kelekedusj);
                                                                             }
-                                                                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                                                                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {
                                                                             kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                                             storage.put("kelekedusj", kelekedusj);
                                                                         }
@@ -3188,7 +3188,7 @@ ui.ok.click(function () {
                                                                                 kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                                                                 storage.put("kelekedusj", kelekedusj);
                                                                             }
-                                                                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                                                                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {
                                                                             kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                                             storage.put("kelekedusj", kelekedusj);
                                                                         }
@@ -3218,7 +3218,7 @@ ui.ok.click(function () {
                                                                                 kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                                                                 storage.put("kelekedusj", kelekedusj);
                                                                             }
-                                                                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                                                                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {
                                                                             kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                                             storage.put("kelekedusj", kelekedusj);
                                                                         }
@@ -3306,7 +3306,7 @@ ui.ok.click(function () {
                                                             kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                                             storage.put("kelekedusj", kelekedusj);
                                                         }
-                                                    }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                                                    }else if (tstxt.text().indexOf("分钟后到来") > -1) {
                                                         kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                         storage.put("kelekedusj", kelekedusj);
                                                     }
@@ -3337,7 +3337,7 @@ ui.ok.click(function () {
                                                             kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                                             storage.put("kelekedusj", kelekedusj);
                                                         }
-                                                    }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                                                    }else if (tstxt.text().indexOf("分钟后到来") > -1) {
                                                         kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                         storage.put("kelekedusj", kelekedusj);
                                                     }
@@ -3367,7 +3367,7 @@ ui.ok.click(function () {
                                                             kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                                             storage.put("kelekedusj", kelekedusj);
                                                         }
-                                                    }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                                                    }else if (tstxt.text().indexOf("分钟后到来") > -1) {
                                                         kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                         storage.put("kelekedusj", kelekedusj);
                                                     }
@@ -3431,7 +3431,7 @@ ui.ok.click(function () {
                         removekeleurl(encodeURIComponent(keleurl))
                         click("继续访问")
                     }
-                    let tstxt=packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*|.*分钟后到来)/).findOne(5000)
+                    tstxt=packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*|.*分钟后到来)/).findOne(5000)
                     if (tstxt) {
                         if (tstxt.text().indexOf("阅读暂时失效") > -1) {
                             let xianzhistr = "可乐限制中"
@@ -3449,7 +3449,7 @@ ui.ok.click(function () {
                                 kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                 storage.put("kelekedusj", kelekedusj);
                             }
-                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {
                             kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                             storage.put("kelekedusj", kelekedusj);
                         }
@@ -3480,7 +3480,7 @@ ui.ok.click(function () {
                                 kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                 storage.put("kelekedusj", kelekedusj);
                             }
-                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {
                             kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                             storage.put("kelekedusj", kelekedusj);
                         }
@@ -3921,19 +3921,56 @@ ui.ok.click(function () {
                                 if (sffs) {
                                     if (sfcfydFu(encodeURIComponent(yuducontent)) == false) {
                                         console.error("cfydFu：" + yuducontent);
-                                        sleep(random(250000, 350000));
-                                        kelekedusj = new Date().getTime() + random(1000, 1200) * 1000
-                                        storage.put("kelekedusj", kelekedusj);
-                                        return false;
+
+                                        //下一篇正常的话继续
+                                        back()
+                                        let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                                        sleep(5000)
+                                        cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
+                                        let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
+                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                            log("可乐下一篇正常继续")
+                                            if (联网验证(dlwifi) != true) {
+                                                连接wifi(dlwifi, 5000);
+                                                app.launch(PKG_NAME);
+                                                sleep(2000)
+                                            }
+                                            back()
+                                            continue
+                                        }else{
+                                            log("可乐下一篇不正常")
+                                            sleep(random(250000, 350000));
+                                            kelekedusj = new Date().getTime() + random(1000, 1200) * 1000
+                                            storage.put("kelekedusj", kelekedusj);
+                                            return false;
+                                        }
                                     }
                                 } else {
                                     if (sfcfyd(encodeURIComponent(yuducontent)) == false) {
                                         console.error("cfyd：" + yuducontent);
-                                        sleep(random(250000, 350000));
-                                        kelekedusj = new Date().getTime() + random(1000, 1200) * 1000
-                                        storage.put("kelekedusj", kelekedusj);
 
-                                        return false;
+                                         //下一篇正常的话继续
+                                         back()
+                                         let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                                         sleep(5000)
+                                         cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
+                                         let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
+                                         if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                             log("可乐下一篇正常继续")
+                                             if (联网验证(dlwifi) != true) {
+                                                 连接wifi(dlwifi, 5000);
+                                                 app.launch(PKG_NAME);
+                                                 sleep(2000)
+                                             }
+                                             back()
+                                             continue
+                                         }else{
+                                             log("可乐下一篇不正常")
+                                             sleep(random(250000, 350000));
+                                             kelekedusj = new Date().getTime() + random(1000, 1200) * 1000
+                                             storage.put("kelekedusj", kelekedusj);
+                                             return false;
+                                         }
                                     }
                                 }
 
@@ -4635,20 +4672,54 @@ ui.ok.click(function () {
                                 if (sffs) {
                                     if (sfcfydFu(encodeURIComponent(yuducontent)) == false) {
                                         console.error("cfydFu：" + yuducontent);
-                                        sleep(random(250000, 350000));
-                                        xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
-                                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
-
-                                        return false;
+                                        //下一篇正常的话继续
+                                        back()
+                                        let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                                        sleep(5000)
+                                        cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
+                                        let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
+                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                            log("小阅阅下一篇正常继续")
+                                            if (联网验证(dlwifi) != true) {
+                                                连接wifi(dlwifi, 5000);
+                                                app.launch(PKG_NAME);
+                                                sleep(2000)
+                                            }
+                                            back()
+                                            continue
+                                        }else{
+                                            log("小阅阅下一篇不正常")
+                                            sleep(random(250000, 350000));
+                                            xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
+                                            storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                                            return false;
+                                        }
                                     }
                                 } else {
                                     if (sfcfyd(encodeURIComponent(yuducontent)) == false) {
                                         console.error("cfyd：" + yuducontent);
-                                        sleep(random(250000, 350000));
-                                        xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
-                                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
-
-                                        return false;
+                                         //下一篇正常的话继续
+                                         back()
+                                         let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                                         sleep(5000)
+                                         cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
+                                         let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
+                                         if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                             log("小阅阅下一篇正常继续")
+                                             if (联网验证(dlwifi) != true) {
+                                                 连接wifi(dlwifi, 5000);
+                                                 app.launch(PKG_NAME);
+                                                 sleep(2000)
+                                             }
+                                             back()
+                                             continue
+                                         }else{
+                                             log("小阅阅下一篇不正常")
+                                             sleep(random(250000, 350000));
+                                             xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
+                                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                                             return false;
+                                         }
                                     }
                                 }
 
@@ -5308,20 +5379,54 @@ ui.ok.click(function () {
                                 if (sffs) {
                                     if (sfcfydFu(encodeURIComponent(yuducontent)) == false) {
                                         console.error("cfydFu：" + yuducontent);
-                                        sleep(random(250000, 350000));
-                                        xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
-                                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
-
-                                        return false;
+                                         //下一篇正常的话继续
+                                         back()
+                                         let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                                         sleep(5000)
+                                         cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
+                                         let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
+                                         if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                             log("小阅阅下一篇正常继续")
+                                             if (联网验证(dlwifi) != true) {
+                                                 连接wifi(dlwifi, 5000);
+                                                 app.launch(PKG_NAME);
+                                                 sleep(2000)
+                                             }
+                                             back()
+                                             continue
+                                         }else{
+                                             log("小阅阅下一篇不正常")
+                                             sleep(random(250000, 350000));
+                                             xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
+                                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                                             return false;
+                                         }
                                     }
                                 } else {
                                     if (sfcfyd(encodeURIComponent(yuducontent)) == false) {
                                         console.error("cfyd：" + yuducontent);
-                                        sleep(random(250000, 350000));
-                                        xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
-                                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
-
-                                        return false;
+                                         //下一篇正常的话继续
+                                         back()
+                                         let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                                         sleep(5000)
+                                         cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
+                                         let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
+                                         if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                             log("小阅阅助力下一篇正常继续")
+                                             if (联网验证(dlwifi) != true) {
+                                                 连接wifi(dlwifi, 5000);
+                                                 app.launch(PKG_NAME);
+                                                 sleep(2000)
+                                             }
+                                             back()
+                                             continue
+                                         }else{
+                                             log("小阅阅助力下一篇不正常")
+                                             sleep(random(250000, 350000));
+                                             xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
+                                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                                             return false;
+                                         }
                                     }
                                 }
 
