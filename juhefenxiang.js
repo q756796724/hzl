@@ -292,7 +292,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v10.9.3";
+            var versionNum = "聚合分享v11.0.0";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -1235,6 +1235,42 @@ ui.ok.click(function () {
                 }
                 return repData
 
+            }
+            //可乐是否检测文章
+            function kelesfjcwz(txt) {
+                http.__okhttp__.setTimeout(60000);
+                let temp = null;
+                let repData = true;
+                try {
+                    temp = http.post("http://116.205.139.36:8081/fanqie/kelesfjcwz?txt=" + txt, {});
+                    if (temp && temp.statusCode == 200) {
+                        temp = temp.body.string();
+                        let rep = JSON.parse(temp);
+                        let repState = rep["state"];
+                        let repdata = rep["data"];
+                        if (repdata != null) {
+                            latestgongzhonghao = repdata;
+                        } else {
+                            latestgongzhonghao = ""
+                        }
+                        if (repState == 1) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        throw Error("kelesfjcwz获取数据失败" + temp)
+                    }
+                } catch (err) {
+                    console.error("kelesfjcwz报错,原因:" + err);
+                    if (联网验证(zwifi) != true && 联网验证(dlwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        app.launch(PKG_NAME);
+                    }
+                    //repData = kelesfjcwz(txt);
+                }
+                http.__okhttp__.setTimeout(5000);
+                return repData
             }
             //是否检测文章
             function sfjcwz(txt) {
@@ -3412,9 +3448,9 @@ ui.ok.click(function () {
                                 if (keleyuedu()) {
                                     keleluncount++
                                     storage.put("keleluncount", keleluncount);
+                                    kelecount = 1
+                                    storage.put("kelecount", kelecount);
                                 }
-                                kelecount = 1
-                                storage.put("kelecount", kelecount);
                             } else {
                                 console.warn("没有找到识别图中的二维码")
                                 if (kelecheckFlag) {
@@ -3492,8 +3528,8 @@ ui.ok.click(function () {
                     let lastkelecheckFlag = kelecheckFlag
                     let lastsffs = sffs
                     if(kelecount != wifiCount){
-                        let numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(阅读成功|检测未通过)/).findOne(10000)
-                        if (numbtn && numbtn.text().indexOf("阅读成功") > -1) {
+                        let numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(阅读成功.*|检测未通过)/).findOne(10000)
+                        if (numbtn && numbtn.text().indexOf("获得") > -1) {
                             keleReadNum++
                             storage.put("keleReadNum", keleReadNum);
                         } else if (numbtn && (numbtn.text().indexOf("检测未通过") > -1)) {
@@ -3576,7 +3612,10 @@ ui.ok.click(function () {
                             let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + publish_time.text().replace(/-/g, "/") + "&&" + fabudi + "&&" + read_area_num;
                             log(yuducontent);
                             if (kelecheckFlag == false) {
-                                if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() >= 7 * 24 * 3600 * 1000) {
+                                if (kelecount <= 2&&(new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() >= 7 * 24 * 3600 * 1000)) {
+                                    kelecheckFlag = true;
+                                }
+                                if (kelecount - wifiCount <= 1&&(new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() >= 60 * 24 * 3600 * 1000)) {
                                     kelecheckFlag = true;
                                 }
                                 storage.put("kelecheckFlag", kelecheckFlag);
@@ -3610,7 +3649,10 @@ ui.ok.click(function () {
                                     console.warn(new Date().toLocaleString() + "-----------" + xianzhistr + "重检");
                                 }
                             } else {
-                                if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                if (kelecount <= 2&&(new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000)) {
+                                    kelecheckFlag = false;
+                                }
+                                if (kelecount - wifiCount <= 1&&(new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 60 * 24 * 3600 * 1000)) {
                                     kelecheckFlag = false;
                                 }
                                 storage.put("kelecheckFlag", kelecheckFlag);
@@ -3858,17 +3900,17 @@ ui.ok.click(function () {
                                     back()
                                     break;
                                 }
-                                if (sfjcwz(encodeURIComponent(clipurl))) {
+                                if (kelesfjcwz(encodeURIComponent(clipurl))) {
                                     sfjcwzflag = true
                                 }
-                                if (sfjcwzflag || lastclipurl == clipurl || (latestgongzhonghao == lastgongzhonghao && lastgongzhonghao != "")) {
+                                if (sfjcwzflag) {
                                     let xianzhistr = "可乐中途检测"
-                                    if (lastclipurl == clipurl) {
+                                    /*if (lastclipurl == clipurl) {
                                         xianzhistr = xianzhistr + "2" + clipurl
                                     }
                                     if (latestgongzhonghao == lastgongzhonghao && lastgongzhonghao != "") {
                                         xianzhistr = xianzhistr + "3" + latestgongzhonghao
-                                    }
+                                    }*/
                                     if (联网验证(zwifi) != true) {
                                         连接wifi(zwifi, 5000);
                                         app.launch(PKG_NAME);
