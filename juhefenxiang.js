@@ -3021,11 +3021,8 @@ ui.ok.click(function () {
                     sleep(2000)
                     jb = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*币)/).findOnce()
                 }
-                if (jb && keletodayTxCount == 1 && (parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 > 5)) {
-                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "可乐:" + (parseInt(jb.text().replace(/[^\d]/g, "")) / 10000));
-                }
-
-                if (jb && ((zfbtx == true && xyytodayTxCount < 1 && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 > zfbtxyz) || (zfbtx == false &&parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >=1 && ((nowHour > 8 && xyytodayTxCount < 1) || (nowHour > 12 && xyytodayTxCount < 2) || (nowHour > 16 && xyytodayTxCount < 3))))) {
+                
+                if (jb && ((zfbtx == true && keletodayTxCount < 1 && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 > zfbtxyz) || (zfbtx == false &&parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >=1 && ((nowHour > 8 && keletodayTxCount < 1) || (nowHour > 12 && keletodayTxCount < 2) || (nowHour > 16 && keletodayTxCount < 3))))) {
                     click("提现")
                     sleep(10000)
                     if (zfbtx) {
@@ -3038,11 +3035,11 @@ ui.ok.click(function () {
                     let txbtn = packageName("com.tencent.mm").id("doWithdraw").findOne(5000)
                     if (txbtn) {
                         txbtn.click()
+                        keletodayTxCount++
+                        storage.put("keletodayTxCount", keletodayTxCount)
                         sleep(5000)
                         if (packageName("com.tencent.mm").className("android.widget.TextView").text("提现成功").findOne(5000)) {
                             sleep(1000)
-                            xyytodayTxCount++
-                            storage.put("xyytodayTxCount", xyytodayTxCount)
                             click("确定")
                         }
                         sleep(3000)
@@ -3050,6 +3047,9 @@ ui.ok.click(function () {
                         sleep(3000)
                         click("确定")
                     }
+                }
+                if (jb && keletodayTxCount == 1 && (parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 > 5)) {
+                    sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "可乐:" + (parseInt(jb.text().replace(/[^\d]/g, "")) / 10000));
                 }
             }
             function kelePage() {
@@ -3138,20 +3138,47 @@ ui.ok.click(function () {
                                                                 for (let i = 0; i < 10; i++) {
                                                                     log("尝试可乐" + (i + 1))
                                                                     click(child.bounds().centerX() + random(-100, -105), child.bounds().centerY() + random(-10, 10));
-                                                                    sleep(3000)
+                                                                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(3000)) {
+                                                                        let xianzhistr = "可乐限制中"
+                                                                        log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                                                        kelecheckFlag = true
+                                                                        storage.put("kelecheckFlag", kelecheckFlag);
+                                                                        kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
+                                                                        storage.put("kelekedusj", kelekedusj);
+                                                                        keletx()
+                                                                        return
+                                                                    }
                                                                     if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                                                                         storage.put("keleurl", "")
                                                                         //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "可乐继续访问:" + keleurl);//出错请处理
                                                                         removekeleurl(encodeURIComponent(keleurl))
                                                                         click("继续访问")
                                                                     }
-                                                                    sleep(3000)
+                                                                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(3000)) {
+                                                                        let xianzhistr = "可乐限制中"
+                                                                        log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                                                        kelecheckFlag = true
+                                                                        storage.put("kelecheckFlag", kelecheckFlag);
+                                                                        kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
+                                                                        storage.put("kelekedusj", kelekedusj);
+                                                                        keletx()
+                                                                        return
+                                                                    }
                                                                     let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
                                                                     if (ntext != null) {
                                                                         click("允许");
                                                                         sleep(3000);
                                                                     }
-                                                                    sleep(random(1000, 2000))
+                                                                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(3000)) {
+                                                                        let xianzhistr = "可乐限制中"
+                                                                        log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                                                        kelecheckFlag = true
+                                                                        storage.put("kelecheckFlag", kelecheckFlag);
+                                                                        kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
+                                                                        storage.put("kelekedusj", kelekedusj);
+                                                                        keletx()
+                                                                        return
+                                                                    }
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                                         log("点击可乐成功！")
                                                                         let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*)/).findOne(10000)
@@ -3215,20 +3242,47 @@ ui.ok.click(function () {
                                             if (p.length > 0) {
                                                 sleep(1000)
                                                 click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
-                                                sleep(3000)
+                                                if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(3000)) {
+                                                    let xianzhistr = "可乐限制中"
+                                                    log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                                    kelecheckFlag = true
+                                                    storage.put("kelecheckFlag", kelecheckFlag);
+                                                    kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
+                                                    storage.put("kelekedusj", kelekedusj);
+                                                    keletx()
+                                                    return
+                                                }
                                                 if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                                                     storage.put("yunshaomaurl", "")
                                                     //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "可乐继续访问:" + keleurl);//出错请处理
                                                     removekeleurl(encodeURIComponent(keleurl))
                                                     click("继续访问")
                                                 }
-                                                sleep(3000)
+                                                if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(3000)) {
+                                                    let xianzhistr = "可乐限制中"
+                                                    log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                                    kelecheckFlag = true
+                                                    storage.put("kelecheckFlag", kelecheckFlag);
+                                                    kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
+                                                    storage.put("kelekedusj", kelekedusj);
+                                                    keletx()
+                                                    return
+                                                }
                                                 let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
                                                 if (ntext != null) {
                                                     click("允许");
                                                     sleep(3000);
                                                 }
-                                                sleep(random(1000, 2000))
+                                                if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(3000)) {
+                                                    let xianzhistr = "可乐限制中"
+                                                    log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                                    kelecheckFlag = true
+                                                    storage.put("kelecheckFlag", kelecheckFlag);
+                                                    kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
+                                                    storage.put("kelekedusj", kelekedusj);
+                                                    keletx()
+                                                    return
+                                                }
                                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                     log("点击可乐成功")
                                                     let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*)/).findOne(10000)
@@ -3286,14 +3340,7 @@ ui.ok.click(function () {
                         removekeleurl(encodeURIComponent(keleurl))
                         click("继续访问")
                     }
-                    sleep(5000)
-                    let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
-                    if (ntext != null) {
-                        click("允许");
-                        sleep(3000);
-                    }
-
-                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(20000)) {
+                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(5000)) {
                         let xianzhistr = "可乐限制中"
                         log(new Date().toLocaleString() + "-----------" + xianzhistr);
                         kelecheckFlag = true
@@ -3302,8 +3349,28 @@ ui.ok.click(function () {
                         storage.put("kelekedusj", kelekedusj);
                         keletx()
                         return
-                    } else {
-                        let loadcount = 0
+                    } 
+                    let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
+                    if (ntext != null) {
+                        click("允许");
+                        sleep(3000);
+                    }
+
+                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(5000)) {
+                        let xianzhistr = "可乐限制中"
+                        log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                        kelecheckFlag = true
+                        storage.put("kelecheckFlag", kelecheckFlag);
+                        kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
+                        storage.put("kelekedusj", kelekedusj);
+                        keletx()
+                        return
+                    } 
+                    if (packageName("com.tencent.mm").className("android.widget.Button").textMatches(/(复制推广文案发给好友)/).findOnce()) {
+                        返回v首页()
+                        return
+                    } 
+                    let loadcount = 0
                         while (packageName("com.tencent.mm").className("android.widget.TextView").text("可乐读书").findOnce() == null || packageName("com.tencent.mm").id("readCtl").findOnce() == null) {
                             sleep(3000)
                             if (loadcount > 20) {
@@ -3316,7 +3383,6 @@ ui.ok.click(function () {
                             }
                             loadcount++
                         }
-                    }
 
                     keletx()
                     /*let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
