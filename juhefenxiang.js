@@ -3007,6 +3007,13 @@ ui.ok.click(function () {
             }
 
             function keletx() {
+                let ps = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*篇)/).find();
+                for (let i = 0; i < ps.length; i++) {
+                    if (ps[i].text().indexOf("币") == -1 && ps[i].text().indexOf("下一篇") == -1) {
+                        keleReadNum = parseInt(ps[i].text().split("篇")[0].replace(/[^\d]/g, ""))
+                        storage.put("keleReadNum", keleReadNum);
+                    }
+                }
                 nowHour = new Date().getHours();
                 let jb = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*币)/).findOnce()
                 if (parseInt(jb.text().replace(/[^\d]/g, "")) == 0 && packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按二维码开始.*)/).findOnce()) {
@@ -3043,7 +3050,7 @@ ui.ok.click(function () {
                         sleep(3000)
                         click("确定")
                     }
-                } 
+                }
             }
             function kelePage() {
                 let keleurl
@@ -3393,14 +3400,14 @@ ui.ok.click(function () {
                             }*/
                             fenxiangshibai();
                         } else {
-                            if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按二维码开始.*)/).findOnce()==null) {
+                            if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按二维码开始.*)/).findOnce() == null) {
                                 let readCtl_btn = packageName("com.tencent.mm").id("readCtl").findOne(4000)
                                 if (readCtl_btn) {
                                     readCtl_btn.click();
                                 }
                                 sleep(4000)
                             }
-                              
+
                             if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按二维码开始.*)/).findOnce()) {
                                 clickx(device.width - 20, device.height - 20)
                                 sleep(2000)
@@ -3823,7 +3830,7 @@ ui.ok.click(function () {
                                 storage.put("kelecount", kelecount);
                                 keleluncount++
                                 storage.put("keleluncount", keleluncount);
-            
+
                                 kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                 storage.put("kelekedusj", kelekedusj);
                                 return true
@@ -3838,7 +3845,7 @@ ui.ok.click(function () {
                                 console.error("标题识别失败");
                                 kelekedusj = new Date().getTime() + random(1200, 1800) * 1000
                                 storage.put("kelekedusj", kelekedusj);
-            
+
                                 return false;
                             }
                         }
