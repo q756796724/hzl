@@ -3965,8 +3965,53 @@ ui.ok.click(function () {
                             sleep(3000)
                         }
                         loadcount++
-                        if (loadcount == 5&&packageName("com.tencent.mm").className("android.view.View").textMatches(/(阅读成功.*|.*本轮阅读已完成.*)/).findOnce()) {
-                            back()
+                        if (loadcount > 3&&packageName("com.tencent.mm").className("android.view.View").textMatches(/(阅读成功.*|.*本轮阅读已完成.*)/).findOnce()) {
+                            if (kelecheckFlag == false) {
+                                let fxflag = fenxiangurl();
+                                let clipurl = getClip();
+                                if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
+                                    sleep(5000)
+                                    if (fenxiangurl() == false) {
+                                        back()
+                                        break;
+                                    } else {
+                                        clipurl = getClip();
+                                    }
+                                }
+                                setClip("");
+                                if (clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
+                                    back()
+                                    break;
+                                }
+                                if (kelesfjcwz(encodeURIComponent(clipurl))) {
+                                    sfjcwzflag = true
+                                }
+                                if (sfjcwzflag) {
+                                    let xianzhistr = "可乐中途检测"
+                                    /*if (lastclipurl == clipurl) {
+                                        xianzhistr = xianzhistr + "2" + clipurl
+                                    }
+                                    if (latestgongzhonghao == lastgongzhonghao && lastgongzhonghao != "") {
+                                        xianzhistr = xianzhistr + "3" + latestgongzhonghao
+                                    }*/
+                                    if (联网验证(zwifi) != true) {
+                                        连接wifi(zwifi, 5000);
+                                        app.launch(PKG_NAME);
+                                        sleep(8000)
+                                    }
+                                    wifiCount = kelecount
+                                    console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                    if (packageName("com.tencent.mm").className("android.view.View").text("无法打开网页").findOnce() || packageName("com.tencent.mm").className("android.view.View").text("点击空白处刷新").findOnce() || packageName("com.tencent.mm").className("android.widget.TextView").text("诊断网络").findOnce()) {
+                                        clickx(device.width * 0.5, device.height * 0.4)
+                                    }
+                                } else {
+                                    lastclipurl = clipurl;
+                                    lastgongzhonghao = latestgongzhonghao
+                                    back()
+                                }
+                            } else {
+                                back()
+                            }
                             break;
                         }
                         if (loadcount == 10) {
