@@ -6374,7 +6374,7 @@ ui.ok.click(function () {
 
                                     }
                                     if (keleflag == true) {
-                                        toaststr = toaststr + "\可乐:" + formatDate(kelekedusj, 'yyyy-MM-dd HH:mm:ss')
+                                        toaststr = toaststr + "\n可乐:" + formatDate(kelekedusj, 'yyyy-MM-dd HH:mm:ss')
                                         toaststr = toaststr + "\n可乐完成篇数" + keleReadNum
                                     }
 
