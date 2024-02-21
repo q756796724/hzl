@@ -7992,7 +7992,7 @@ ui.ok.click(function () {
                         sleep(3000);
                         if (className("android.widget.TextView").textContains("debugmm.qq.com/?forcex5=true").findOne(5000) != null) {
                             x5 = className("android.widget.TextView").textContains("debugmm.qq.com/?forcex5=true").findOne(5000).bounds();
-                            clickx(x5.right, x5.bottom);
+                            clickx(x5.centerX(), x5.centerY());
                             sleep(random(5000, 8000));
                             p = packageName("com.tencent.mm").className("android.widget.TextView").textContains("force use x5 switch is on").findOne(3000)
                             if (p) {
