@@ -292,7 +292,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.0.0";
+            var versionNum = "聚合分享v11.0.1";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -3051,7 +3051,7 @@ ui.ok.click(function () {
                 if (jb && keletodayTxCount == 1 && (parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 > 5)) {
                     sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "可乐:" + (parseInt(jb.text().replace(/[^\d]/g, "")) / 10000));
                 }
-                sleep(3000)
+                sleep(10000)
             }
             function kelePage() {
                 let keleurl
@@ -3139,20 +3139,26 @@ ui.ok.click(function () {
                                                                 for (let i = 0; i < 10; i++) {
                                                                     log("尝试可乐" + (i + 1))
                                                                     click(child.bounds().centerX() + random(-100, -105), child.bounds().centerY() + random(-10, 10));
-                                                                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(3000)) {
-                                                                        let xianzhistr = "可乐限制中"
-                                                                        log(new Date().toLocaleString() + "-----------" + xianzhistr);
-                                                                        kelecheckFlag = true
-                                                                        storage.put("kelecheckFlag", kelecheckFlag);
-                                                                        配置 = 读取配置(settingPath);
-                                                                        if (配置["date"] == new Date().toLocaleDateString()) {
-                                                                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                                                                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                                                                            tomorrow.setHours(1, 0, 0, 0);
-                                                                            kelekedusj = tomorrow.getTime()
-                                                                            storage.put("kelekedusj", kelekedusj);
-                                                                        } else {
-                                                                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                                    let tstxt=packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*|.*分钟后到来)/).findOne(3000)
+                                                                    if (tstxt) {
+                                                                        if (tstxt.text().indexOf("阅读暂时失效") > -1) {
+                                                                            let xianzhistr = "可乐限制中"
+                                                                            log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                                                            kelecheckFlag = true
+                                                                            storage.put("kelecheckFlag", kelecheckFlag);
+                                                                            配置 = 读取配置(settingPath);
+                                                                            if (配置["date"] == new Date().toLocaleDateString()) {
+                                                                                let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                                                                tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                                                                tomorrow.setHours(1, 0, 0, 0);
+                                                                                kelekedusj = tomorrow.getTime()
+                                                                                storage.put("kelekedusj", kelekedusj);
+                                                                            } else {
+                                                                                kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                                                storage.put("kelekedusj", kelekedusj);
+                                                                            }
+                                                                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                                                                            kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                                             storage.put("kelekedusj", kelekedusj);
                                                                         }
                                                                         keletx()
@@ -3164,20 +3170,26 @@ ui.ok.click(function () {
                                                                         removekeleurl(encodeURIComponent(keleurl))
                                                                         click("继续访问")
                                                                     }
-                                                                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(3000)) {
-                                                                        let xianzhistr = "可乐限制中"
-                                                                        log(new Date().toLocaleString() + "-----------" + xianzhistr);
-                                                                        kelecheckFlag = true
-                                                                        storage.put("kelecheckFlag", kelecheckFlag);
-                                                                        配置 = 读取配置(settingPath);
-                                                                        if (配置["date"] == new Date().toLocaleDateString()) {
-                                                                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                                                                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                                                                            tomorrow.setHours(1, 0, 0, 0);
-                                                                            kelekedusj = tomorrow.getTime()
-                                                                            storage.put("kelekedusj", kelekedusj);
-                                                                        } else {
-                                                                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                                    tstxt=packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*|.*分钟后到来)/).findOne(3000)
+                                                                    if (tstxt) {
+                                                                        if (tstxt.text().indexOf("阅读暂时失效") > -1) {
+                                                                            let xianzhistr = "可乐限制中"
+                                                                            log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                                                            kelecheckFlag = true
+                                                                            storage.put("kelecheckFlag", kelecheckFlag);
+                                                                            配置 = 读取配置(settingPath);
+                                                                            if (配置["date"] == new Date().toLocaleDateString()) {
+                                                                                let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                                                                tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                                                                tomorrow.setHours(1, 0, 0, 0);
+                                                                                kelekedusj = tomorrow.getTime()
+                                                                                storage.put("kelekedusj", kelekedusj);
+                                                                            } else {
+                                                                                kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                                                storage.put("kelekedusj", kelekedusj);
+                                                                            }
+                                                                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                                                                            kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                                             storage.put("kelekedusj", kelekedusj);
                                                                         }
                                                                         keletx()
@@ -3188,20 +3200,26 @@ ui.ok.click(function () {
                                                                         click("允许");
                                                                         sleep(3000);
                                                                     }
-                                                                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(3000)) {
-                                                                        let xianzhistr = "可乐限制中"
-                                                                        log(new Date().toLocaleString() + "-----------" + xianzhistr);
-                                                                        kelecheckFlag = true
-                                                                        storage.put("kelecheckFlag", kelecheckFlag);
-                                                                        配置 = 读取配置(settingPath);
-                                                                        if (配置["date"] == new Date().toLocaleDateString()) {
-                                                                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                                                                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                                                                            tomorrow.setHours(1, 0, 0, 0);
-                                                                            kelekedusj = tomorrow.getTime()
-                                                                            storage.put("kelekedusj", kelekedusj);
-                                                                        } else {
-                                                                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                                    tstxt=packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*|.*分钟后到来)/).findOne(3000)
+                                                                    if (tstxt) {
+                                                                        if (tstxt.text().indexOf("阅读暂时失效") > -1) {
+                                                                            let xianzhistr = "可乐限制中"
+                                                                            log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                                                            kelecheckFlag = true
+                                                                            storage.put("kelecheckFlag", kelecheckFlag);
+                                                                            配置 = 读取配置(settingPath);
+                                                                            if (配置["date"] == new Date().toLocaleDateString()) {
+                                                                                let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                                                                tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                                                                tomorrow.setHours(1, 0, 0, 0);
+                                                                                kelekedusj = tomorrow.getTime()
+                                                                                storage.put("kelekedusj", kelekedusj);
+                                                                            } else {
+                                                                                kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                                                storage.put("kelekedusj", kelekedusj);
+                                                                            }
+                                                                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                                                                            kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                                             storage.put("kelekedusj", kelekedusj);
                                                                         }
                                                                         keletx()
@@ -3270,20 +3288,26 @@ ui.ok.click(function () {
                                             if (p.length > 0) {
                                                 sleep(1000)
                                                 click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
-                                                if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(3000)) {
-                                                    let xianzhistr = "可乐限制中"
-                                                    log(new Date().toLocaleString() + "-----------" + xianzhistr);
-                                                    kelecheckFlag = true
-                                                    storage.put("kelecheckFlag", kelecheckFlag);
-                                                    配置 = 读取配置(settingPath);
-                                                    if (配置["date"] == new Date().toLocaleDateString()) {
-                                                        let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                                                        tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                                                        tomorrow.setHours(1, 0, 0, 0);
-                                                        kelekedusj = tomorrow.getTime()
-                                                        storage.put("kelekedusj", kelekedusj);
-                                                    } else {
-                                                        kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                let tstxt=packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*|.*分钟后到来)/).findOne(3000)
+                                                if (tstxt) {
+                                                    if (tstxt.text().indexOf("阅读暂时失效") > -1) {
+                                                        let xianzhistr = "可乐限制中"
+                                                        log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                                        kelecheckFlag = true
+                                                        storage.put("kelecheckFlag", kelecheckFlag);
+                                                        配置 = 读取配置(settingPath);
+                                                        if (配置["date"] == new Date().toLocaleDateString()) {
+                                                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                                            tomorrow.setHours(1, 0, 0, 0);
+                                                            kelekedusj = tomorrow.getTime()
+                                                            storage.put("kelekedusj", kelekedusj);
+                                                        } else {
+                                                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                            storage.put("kelekedusj", kelekedusj);
+                                                        }
+                                                    }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                                                        kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                         storage.put("kelekedusj", kelekedusj);
                                                     }
                                                     keletx()
@@ -3295,20 +3319,26 @@ ui.ok.click(function () {
                                                     removekeleurl(encodeURIComponent(keleurl))
                                                     click("继续访问")
                                                 }
-                                                if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(3000)) {
-                                                    let xianzhistr = "可乐限制中"
-                                                    log(new Date().toLocaleString() + "-----------" + xianzhistr);
-                                                    kelecheckFlag = true
-                                                    storage.put("kelecheckFlag", kelecheckFlag);
-                                                    配置 = 读取配置(settingPath);
-                                                    if (配置["date"] == new Date().toLocaleDateString()) {
-                                                        let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                                                        tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                                                        tomorrow.setHours(1, 0, 0, 0);
-                                                        kelekedusj = tomorrow.getTime()
-                                                        storage.put("kelekedusj", kelekedusj);
-                                                    } else {
-                                                        kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                tstxt=packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*|.*分钟后到来)/).findOne(3000)
+                                                if (tstxt) {
+                                                    if (tstxt.text().indexOf("阅读暂时失效") > -1) {
+                                                        let xianzhistr = "可乐限制中"
+                                                        log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                                        kelecheckFlag = true
+                                                        storage.put("kelecheckFlag", kelecheckFlag);
+                                                        配置 = 读取配置(settingPath);
+                                                        if (配置["date"] == new Date().toLocaleDateString()) {
+                                                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                                            tomorrow.setHours(1, 0, 0, 0);
+                                                            kelekedusj = tomorrow.getTime()
+                                                            storage.put("kelekedusj", kelekedusj);
+                                                        } else {
+                                                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                            storage.put("kelekedusj", kelekedusj);
+                                                        }
+                                                    }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                                                        kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                         storage.put("kelekedusj", kelekedusj);
                                                     }
                                                     keletx()
@@ -3319,20 +3349,26 @@ ui.ok.click(function () {
                                                     click("允许");
                                                     sleep(3000);
                                                 }
-                                                if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(3000)) {
-                                                    let xianzhistr = "可乐限制中"
-                                                    log(new Date().toLocaleString() + "-----------" + xianzhistr);
-                                                    kelecheckFlag = true
-                                                    storage.put("kelecheckFlag", kelecheckFlag);
-                                                    配置 = 读取配置(settingPath);
-                                                    if (配置["date"] == new Date().toLocaleDateString()) {
-                                                        let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                                                        tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                                                        tomorrow.setHours(1, 0, 0, 0);
-                                                        kelekedusj = tomorrow.getTime()
-                                                        storage.put("kelekedusj", kelekedusj);
-                                                    } else {
-                                                        kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                tstxt=packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*|.*分钟后到来)/).findOne(3000)
+                                                if (tstxt) {
+                                                    if (tstxt.text().indexOf("阅读暂时失效") > -1) {
+                                                        let xianzhistr = "可乐限制中"
+                                                        log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                                        kelecheckFlag = true
+                                                        storage.put("kelecheckFlag", kelecheckFlag);
+                                                        配置 = 读取配置(settingPath);
+                                                        if (配置["date"] == new Date().toLocaleDateString()) {
+                                                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                                            tomorrow.setHours(1, 0, 0, 0);
+                                                            kelekedusj = tomorrow.getTime()
+                                                            storage.put("kelekedusj", kelekedusj);
+                                                        } else {
+                                                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                            storage.put("kelekedusj", kelekedusj);
+                                                        }
+                                                    }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                                                        kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                         storage.put("kelekedusj", kelekedusj);
                                                     }
                                                     keletx()
@@ -3395,20 +3431,26 @@ ui.ok.click(function () {
                         removekeleurl(encodeURIComponent(keleurl))
                         click("继续访问")
                     }
-                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(5000)) {
-                        let xianzhistr = "可乐限制中"
-                        log(new Date().toLocaleString() + "-----------" + xianzhistr);
-                        kelecheckFlag = true
-                        storage.put("kelecheckFlag", kelecheckFlag);
-                        配置 = 读取配置(settingPath);
-                        if (配置["date"] == new Date().toLocaleDateString()) {
-                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                            tomorrow.setHours(1, 0, 0, 0);
-                            kelekedusj = tomorrow.getTime()
-                            storage.put("kelekedusj", kelekedusj);
-                        } else {
-                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                    let tstxt=packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*|.*分钟后到来)/).findOne(5000)
+                    if (tstxt) {
+                        if (tstxt.text().indexOf("阅读暂时失效") > -1) {
+                            let xianzhistr = "可乐限制中"
+                            log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                            kelecheckFlag = true
+                            storage.put("kelecheckFlag", kelecheckFlag);
+                            配置 = 读取配置(settingPath);
+                            if (配置["date"] == new Date().toLocaleDateString()) {
+                                let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                tomorrow.setHours(1, 0, 0, 0);
+                                kelekedusj = tomorrow.getTime()
+                                storage.put("kelekedusj", kelekedusj);
+                            } else {
+                                kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                storage.put("kelekedusj", kelekedusj);
+                            }
+                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                            kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                             storage.put("kelekedusj", kelekedusj);
                         }
                         keletx()
@@ -3420,20 +3462,26 @@ ui.ok.click(function () {
                         sleep(3000);
                     }
 
-                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*)/).findOne(5000)) {
-                        let xianzhistr = "可乐限制中"
-                        log(new Date().toLocaleString() + "-----------" + xianzhistr);
-                        kelecheckFlag = true
-                        storage.put("kelecheckFlag", kelecheckFlag);
-                        配置 = 读取配置(settingPath);
-                        if (配置["date"] == new Date().toLocaleDateString()) {
-                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                            tomorrow.setHours(1, 0, 0, 0);
-                            kelekedusj = tomorrow.getTime()
-                            storage.put("kelekedusj", kelekedusj);
-                        } else {
-                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                    tstxt=packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*|.*分钟后到来)/).findOne(5000)
+                    if (tstxt) {
+                        if (tstxt.text().indexOf("阅读暂时失效") > -1) {
+                            let xianzhistr = "可乐限制中"
+                            log(new Date().toLocaleString() + "-----------" + xianzhistr);
+                            kelecheckFlag = true
+                            storage.put("kelecheckFlag", kelecheckFlag);
+                            配置 = 读取配置(settingPath);
+                            if (配置["date"] == new Date().toLocaleDateString()) {
+                                let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                tomorrow.setHours(1, 0, 0, 0);
+                                kelekedusj = tomorrow.getTime()
+                                storage.put("kelekedusj", kelekedusj);
+                            } else {
+                                kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                storage.put("kelekedusj", kelekedusj);
+                            }
+                        }else if (tstxt.text().indexOf("分钟后到来") > -1) {{
+                            kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                             storage.put("kelekedusj", kelekedusj);
                         }
                         keletx()
