@@ -3965,8 +3965,13 @@ ui.ok.click(function () {
                             sleep(3000)
                         }
                         loadcount++
+                        if (loadcount == 5&&packageName("com.tencent.mm").className("android.view.View").textMatches(/(阅读成功.*|.*本轮阅读已完成.*)/).findOnce()) {
+                            back()
+                            break;
+                        }
                         if (loadcount == 10) {
                             back()
+                            break;
                         }
                     }
                 }
