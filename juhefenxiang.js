@@ -3683,7 +3683,7 @@ ui.ok.click(function () {
                             storage.put("kelecount", kelecount);
                             keleluncount++
                             storage.put("keleluncount", keleluncount);
-                            kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
+                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
                             storage.put("kelekedusj", kelekedusj);
                             return true
                         } else if (numbtn && numbtn.text().indexOf("获得") > -1) {
@@ -3973,8 +3973,7 @@ ui.ok.click(function () {
                                 storage.put("kelecount", kelecount);
                                 keleluncount++
                                 storage.put("keleluncount", keleluncount);
-
-                                kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
+                                kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
                                 storage.put("kelekedusj", kelekedusj);
                                 return true
                             } else if (kelecount == 1 || kelecount == wifiCount) {
