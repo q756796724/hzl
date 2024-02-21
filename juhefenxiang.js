@@ -3051,6 +3051,7 @@ ui.ok.click(function () {
                 if (jb && keletodayTxCount == 1 && (parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 > 5)) {
                     sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "可乐:" + (parseInt(jb.text().replace(/[^\d]/g, "")) / 10000));
                 }
+                sleep(3000)
             }
             function kelePage() {
                 let keleurl
