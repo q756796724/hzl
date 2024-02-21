@@ -2810,7 +2810,7 @@ ui.ok.click(function () {
                     if (jb && jq && xyytodayTxCount == 1 && (parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 > 5)) {
                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅:" + (parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000));
                     }
-                    if (jb && ((zfbtx == true && xyytodayTxCount < 1 && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 > zfbtxyz) || (zfbtx == false && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= 1&& ((nowHour > 8 && xyytodayTxCount < 1) || (nowHour > 12 && xyytodayTxCount < 2) || (nowHour > 16 && xyytodayTxCount < 3))))) {
+                    if (jb && ((zfbtx == true && xyytodayTxCount < 1 && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 > zfbtxyz) || (zfbtx == false && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= 1 && ((nowHour > 8 && xyytodayTxCount < 1) || (nowHour > 12 && xyytodayTxCount < 2) || (nowHour > 16 && xyytodayTxCount < 3))))) {
                         click("提现")
                         sleep(10000)
                         if (zfbtx) {
@@ -3021,8 +3021,8 @@ ui.ok.click(function () {
                     sleep(2000)
                     jb = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*币)/).findOnce()
                 }
-                
-                if (jb && ((zfbtx == true && keletodayTxCount < 1 && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 > zfbtxyz) || (zfbtx == false &&parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >=1 && ((nowHour > 8 && keletodayTxCount < 1) || (nowHour > 12 && keletodayTxCount < 2) || (nowHour > 16 && keletodayTxCount < 3))))) {
+
+                if (jb && ((zfbtx == true && keletodayTxCount < 1 && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 > zfbtxyz) || (zfbtx == false && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >= 1 && ((nowHour > 8 && keletodayTxCount < 1) || (nowHour > 12 && keletodayTxCount < 2) || (nowHour > 16 && keletodayTxCount < 3))))) {
                     click("提现")
                     sleep(10000)
                     if (zfbtx) {
@@ -3143,8 +3143,17 @@ ui.ok.click(function () {
                                                                         log(new Date().toLocaleString() + "-----------" + xianzhistr);
                                                                         kelecheckFlag = true
                                                                         storage.put("kelecheckFlag", kelecheckFlag);
-                                                                        kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
-                                                                        storage.put("kelekedusj", kelekedusj);
+                                                                        配置 = 读取配置(settingPath);
+                                                                        if (配置["date"] == new Date().toLocaleDateString()) {
+                                                                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                                                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                                                            tomorrow.setHours(1, 0, 0, 0);
+                                                                            kelekedusj = tomorrow.getTime()
+                                                                            storage.put("kelekedusj", kelekedusj);
+                                                                        } else {
+                                                                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                                            storage.put("kelekedusj", kelekedusj);
+                                                                        }
                                                                         keletx()
                                                                         return
                                                                     }
@@ -3159,8 +3168,17 @@ ui.ok.click(function () {
                                                                         log(new Date().toLocaleString() + "-----------" + xianzhistr);
                                                                         kelecheckFlag = true
                                                                         storage.put("kelecheckFlag", kelecheckFlag);
-                                                                        kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
-                                                                        storage.put("kelekedusj", kelekedusj);
+                                                                        配置 = 读取配置(settingPath);
+                                                                        if (配置["date"] == new Date().toLocaleDateString()) {
+                                                                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                                                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                                                            tomorrow.setHours(1, 0, 0, 0);
+                                                                            kelekedusj = tomorrow.getTime()
+                                                                            storage.put("kelekedusj", kelekedusj);
+                                                                        } else {
+                                                                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                                            storage.put("kelekedusj", kelekedusj);
+                                                                        }
                                                                         keletx()
                                                                         return
                                                                     }
@@ -3174,8 +3192,17 @@ ui.ok.click(function () {
                                                                         log(new Date().toLocaleString() + "-----------" + xianzhistr);
                                                                         kelecheckFlag = true
                                                                         storage.put("kelecheckFlag", kelecheckFlag);
-                                                                        kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
-                                                                        storage.put("kelekedusj", kelekedusj);
+                                                                        配置 = 读取配置(settingPath);
+                                                                        if (配置["date"] == new Date().toLocaleDateString()) {
+                                                                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                                                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                                                            tomorrow.setHours(1, 0, 0, 0);
+                                                                            kelekedusj = tomorrow.getTime()
+                                                                            storage.put("kelekedusj", kelekedusj);
+                                                                        } else {
+                                                                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                                            storage.put("kelekedusj", kelekedusj);
+                                                                        }
                                                                         keletx()
                                                                         return
                                                                     }
@@ -3247,8 +3274,17 @@ ui.ok.click(function () {
                                                     log(new Date().toLocaleString() + "-----------" + xianzhistr);
                                                     kelecheckFlag = true
                                                     storage.put("kelecheckFlag", kelecheckFlag);
-                                                    kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
-                                                    storage.put("kelekedusj", kelekedusj);
+                                                    配置 = 读取配置(settingPath);
+                                                    if (配置["date"] == new Date().toLocaleDateString()) {
+                                                        let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                                        tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                                        tomorrow.setHours(1, 0, 0, 0);
+                                                        kelekedusj = tomorrow.getTime()
+                                                        storage.put("kelekedusj", kelekedusj);
+                                                    } else {
+                                                        kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                        storage.put("kelekedusj", kelekedusj);
+                                                    }
                                                     keletx()
                                                     return
                                                 }
@@ -3263,8 +3299,17 @@ ui.ok.click(function () {
                                                     log(new Date().toLocaleString() + "-----------" + xianzhistr);
                                                     kelecheckFlag = true
                                                     storage.put("kelecheckFlag", kelecheckFlag);
-                                                    kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
-                                                    storage.put("kelekedusj", kelekedusj);
+                                                    配置 = 读取配置(settingPath);
+                                                    if (配置["date"] == new Date().toLocaleDateString()) {
+                                                        let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                                        tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                                        tomorrow.setHours(1, 0, 0, 0);
+                                                        kelekedusj = tomorrow.getTime()
+                                                        storage.put("kelekedusj", kelekedusj);
+                                                    } else {
+                                                        kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                        storage.put("kelekedusj", kelekedusj);
+                                                    }
                                                     keletx()
                                                     return
                                                 }
@@ -3278,8 +3323,17 @@ ui.ok.click(function () {
                                                     log(new Date().toLocaleString() + "-----------" + xianzhistr);
                                                     kelecheckFlag = true
                                                     storage.put("kelecheckFlag", kelecheckFlag);
-                                                    kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
-                                                    storage.put("kelekedusj", kelekedusj);
+                                                    配置 = 读取配置(settingPath);
+                                                    if (配置["date"] == new Date().toLocaleDateString()) {
+                                                        let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                                                        tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                                                        tomorrow.setHours(1, 0, 0, 0);
+                                                        kelekedusj = tomorrow.getTime()
+                                                        storage.put("kelekedusj", kelekedusj);
+                                                    } else {
+                                                        kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                                                        storage.put("kelekedusj", kelekedusj);
+                                                    }
                                                     keletx()
                                                     return
                                                 }
@@ -3345,11 +3399,20 @@ ui.ok.click(function () {
                         log(new Date().toLocaleString() + "-----------" + xianzhistr);
                         kelecheckFlag = true
                         storage.put("kelecheckFlag", kelecheckFlag);
-                        kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
-                        storage.put("kelekedusj", kelekedusj);
+                        配置 = 读取配置(settingPath);
+                        if (配置["date"] == new Date().toLocaleDateString()) {
+                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                            tomorrow.setHours(1, 0, 0, 0);
+                            kelekedusj = tomorrow.getTime()
+                            storage.put("kelekedusj", kelekedusj);
+                        } else {
+                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                            storage.put("kelekedusj", kelekedusj);
+                        }
                         keletx()
                         return
-                    } 
+                    }
                     let ntext = packageName("com.tencent.mm").textContains("获取你的昵称").findOnce();
                     if (ntext != null) {
                         click("允许");
@@ -3361,28 +3424,37 @@ ui.ok.click(function () {
                         log(new Date().toLocaleString() + "-----------" + xianzhistr);
                         kelecheckFlag = true
                         storage.put("kelecheckFlag", kelecheckFlag);
-                        kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
-                        storage.put("kelekedusj", kelekedusj);
+                        配置 = 读取配置(settingPath);
+                        if (配置["date"] == new Date().toLocaleDateString()) {
+                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
+                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
+                            tomorrow.setHours(1, 0, 0, 0);
+                            kelekedusj = tomorrow.getTime()
+                            storage.put("kelekedusj", kelekedusj);
+                        } else {
+                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
+                            storage.put("kelekedusj", kelekedusj);
+                        }
                         keletx()
                         return
-                    } 
+                    }
                     if (packageName("com.tencent.mm").className("android.widget.Button").textMatches(/(复制推广文案发给好友)/).findOnce()) {
                         返回v首页()
                         return
-                    } 
+                    }
                     let loadcount = 0
-                        while (packageName("com.tencent.mm").className("android.widget.TextView").text("可乐读书").findOnce() == null || packageName("com.tencent.mm").id("readCtl").findOnce() == null) {
-                            sleep(3000)
-                            if (loadcount > 20) {
-                                console.warn("可乐加载失败");
-                                storage.put("keleurl", "")
-                                //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "可乐加载失败:" + keleurl);//出错请处理
-                                addkelejiazaishibai()
-                                关闭应用(PKG_NAME);
-                                return
-                            }
-                            loadcount++
+                    while (packageName("com.tencent.mm").className("android.widget.TextView").text("可乐读书").findOnce() == null || packageName("com.tencent.mm").id("readCtl").findOnce() == null) {
+                        sleep(3000)
+                        if (loadcount > 20) {
+                            console.warn("可乐加载失败");
+                            storage.put("keleurl", "")
+                            //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "可乐加载失败:" + keleurl);//出错请处理
+                            addkelejiazaishibai()
+                            关闭应用(PKG_NAME);
+                            return
                         }
+                        loadcount++
+                    }
 
                     keletx()
                     /*let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
@@ -4031,7 +4103,7 @@ ui.ok.click(function () {
                             sleep(3000)
                         }
                         loadcount++
-                        if (loadcount > 3&&packageName("com.tencent.mm").className("android.view.View").textMatches(/(阅读成功.*|.*本轮阅读已完成.*)/).findOnce()) {
+                        if (loadcount > 3 && packageName("com.tencent.mm").className("android.view.View").textMatches(/(阅读成功.*|.*本轮阅读已完成.*)/).findOnce()) {
                             if (kelecheckFlag == false) {
                                 let fxflag = fenxiangurl();
                                 let clipurl = getClip();
