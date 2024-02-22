@@ -1,3 +1,30 @@
+// 导入所需的Java类
+importClass(android.net.ConnectivityManager);
+importClass(android.net.wifi.WifiManager);
+
+var currentWifiName = null;
+
+// 获取上下文
+var context = com.stardust.autojs.core.ui.UiBridge.getContext();
+
+// 获取ConnectivityManager对象
+var ConnectivityManager = context.getSystemService(context.CONNECTIVITY_SERVICE);
+
+// 获取网络信息
+var networkInfo = ConnectivityManager.getActiveNetworkInfo();
+
+if (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+    // 获取WifiManager对象
+    var WifiManager = context.getSystemService(context.WIFI_SERVICE);
+    
+    // 获取WifiInfo对象
+    var wifiInfo = WifiManager.getConnectionInfo();
+    
+    // 获取WiFi名称并去除引号
+    currentWifiName = wifiInfo.getSSID().replace("\"", "");
+}
+
+toastLog("当前连接的WiFi名称为：" + currentWifiName);
 "ui";
 
 storage = storages.create("fanqiekankan配置");
@@ -23,6 +50,12 @@ jieshouwifi = storage.get("jieshouwifi", "WifiPro_5G");
 sffs = false;//是否副手
 
 sftp = true
+
+if (storage.get("readdaysfu") == undefined) {
+    storage.put("readdaysfu", 0);
+}
+readdaysfu = storage.get("readdaysfu");//副手阅读天数
+sxreaddaysfu = 1;//副手上限阅读天数
 
 if (storage.get("readdays") == undefined) {
     storage.put("readdays", 0);
@@ -3023,12 +3056,14 @@ ui.ok.click(function () {
                 addJieshouList(phoneNum.toString());
                 storage.put("addJieshou", false);
                 storage.put("readdays", 0);
+                storage.put("readdaysfu", 0);
             }
 
             if (removePhoneNum) {
                 removePhone(phoneNum.toString());
                 storage.put("removePhoneNum", false);
                 storage.put("readdays", 0);
+                storage.put("readdaysfu", 0);
                 sleep(3000);
                 exit();
             }
@@ -3258,7 +3293,10 @@ ui.ok.click(function () {
                             }
                         }
 
-
+                        if (jieshouwifi != null && jieshouwifi != "") {
+                            zwifi = jieshouwifi
+                        }
+                        log("主Wifi:" + zwifi);
                         sleep(3000);
                         if (联网验证(zwifi) != true) {
                             连接wifi(zwifi, 5000);
@@ -3281,6 +3319,11 @@ ui.ok.click(function () {
                             }
 
                             if (getjieshouNumFu() != phoneNum.toString()) {
+                                if (readdaysfu > 0) {
+                                    sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "副手提前休息，已任天数" + (readdaysfu));//切换
+                                    readdaysfu = 0
+                                    storage.put("readdaysfu", readdaysfu);
+                                }
                                 sffs = false;
                                 sftp = true
                                 if (random(0, 100) == 48) {
@@ -3304,6 +3347,11 @@ ui.ok.click(function () {
                                 continue;
                             } else {
                                 sffs = true;
+                                if (readdaysfu == 0) {
+                                    readdaysfu = 1
+                                    storage.put("readdaysfu", readdaysfu);
+                                    sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "副手上任");//切换
+                                }
                                 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
                                 sftp = false
                             }
@@ -3316,6 +3364,13 @@ ui.ok.click(function () {
                             }
                             zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
                             sftp = false
+                        }
+
+                        
+                        log("主Wifi:" + zwifi);
+                        sleep(3000);
+                        if (联网验证(zwifi) != true) {
+                            连接wifi(zwifi, 5000);
                         }
 
                         打开v();

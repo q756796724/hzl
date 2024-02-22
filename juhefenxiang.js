@@ -3009,7 +3009,7 @@ ui.ok.click(function () {
             function keletx() {
                 let ps = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*篇)/).find();
                 for (let i = 0; i < ps.length; i++) {
-                    if (ps[i].text().indexOf("币") == -1 && ps[i].text().indexOf("下一篇") == -1) {
+                    if (ps[i].text().indexOf("币") == -1 && ps[i].text().indexOf("下一篇") == -1&&parseInt(ps[i].text().split("篇")[0].replace(/[^\d]/g, ""))>1) {
                         keleReadNum = parseInt(ps[i].text().split("篇")[0].replace(/[^\d]/g, ""))
                         storage.put("keleReadNum", keleReadNum);
                     }
@@ -3487,12 +3487,9 @@ ui.ok.click(function () {
                         keletx()
                         return
                     }
-                    if (packageName("com.tencent.mm").className("android.widget.Button").textMatches(/(复制推广文案发给好友)/).findOnce()) {
-                        返回v首页()
-                        return
-                    }
+                   
                     let loadcount = 0
-                    while (packageName("com.tencent.mm").className("android.widget.TextView").text("可乐读书").findOnce() == null || packageName("com.tencent.mm").id("readCtl").findOnce() == null) {
+                    while (packageName("com.tencent.mm").className("android.widget.TextView").text("可乐读书").findOnce() == null ) {
                         sleep(3000)
                         if (loadcount > 20) {
                             console.warn("可乐加载失败");
@@ -3503,6 +3500,10 @@ ui.ok.click(function () {
                             return
                         }
                         loadcount++
+                    }
+                    if (packageName("com.tencent.mm").className("android.widget.Button").textMatches(/(复制推广文案发给好友)/).findOnce()) {
+                        返回v首页()
+                        return
                     }
 
                     keletx()
