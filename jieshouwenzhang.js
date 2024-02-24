@@ -1,5 +1,5 @@
 // 导入所需的Java类
-importClass(android.net.ConnectivityManager);
+//importClass(android.net.ConnectivityManager);
 importClass(android.net.wifi.WifiManager);
 
 var currentWifiName = null;
