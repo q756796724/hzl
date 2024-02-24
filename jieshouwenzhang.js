@@ -1,6 +1,3 @@
-// 导入所需的Java类
-//importClass(android.net.ConnectivityManager);
-//importClass(android.net.wifi.WifiManager);
 "ui";
 
 storage = storages.create("fanqiekankan配置");
@@ -926,13 +923,13 @@ ui.ok.click(function () {
                             sleep(2000)
                             p.click();
                             sleep(1000)
-                            if (className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce() != null) {
+                            if(className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce()!=null){
                                 log("clickEditTextSleep");
                                 sleep(2000)
                             }
                             back();
                             sleep(2500)
-                            if (className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce() == null) {
+                            if(className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce()==null){
                                 log("backEditTextSleep");
                                 sleep(2000)
                             }
@@ -1550,13 +1547,13 @@ ui.ok.click(function () {
                                         sleep(2000)
                                         p.click();
                                         sleep(1000)
-                                        if (className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce() != null) {
+                                        if(className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce()!=null){
                                             log("clickEditTextSleep");
                                             sleep(2000)
                                         }
                                         back();
                                         sleep(2500)
-                                        if (className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce() == null) {
+                                        if(className("android.widget.EditText").boundsInside(0, device.height * 0.2, device.width, device.height).packageName("com.tencent.mm").findOnce()==null){
                                             log("backEditTextSleep");
                                             sleep(2000)
                                         }
@@ -1602,7 +1599,7 @@ ui.ok.click(function () {
                                         latestLinkTitle = latestUrl
                                         let xiaoyueyuecheckFlag = true
                                         //if (sffs) {
-                                        if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == false && (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000)) {
+                                        if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == false&&(new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000)) {
                                             xiaoyueyuecheckFlag = false;
                                         }
                                         if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce()) {
@@ -1618,10 +1615,10 @@ ui.ok.click(function () {
                                                 xiaoyueyuecheckFlag = false;
                                             }
                                         }*/
-                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000) {
+                                        if(new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000){
                                             xiaoyueyuecheckFlag = false;
                                         }
-                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 3 * 24 * 3600 * 1000 && new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 3 * 24 * 3600 * 1000&&new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
                                             if (read_area && read_area.text().match(/\d+/g)[0] > 800) {
                                                 xiaoyueyuecheckFlag = false;
                                             }
@@ -3124,30 +3121,6 @@ ui.ok.click(function () {
                 lock1.lock(); // 获取锁
                 try {
                     for (; ;) {
-                        var currentWifiName = null;
-
-                        // 获取上下文
-                        var context = com.stardust.autojs.core.ui.UiBridge.getContext();
-
-                        // 获取ConnectivityManager对象
-                        var ConnectivityManager = context.getSystemService(context.CONNECTIVITY_SERVICE);
-
-                        // 获取网络信息
-                        var networkInfo = ConnectivityManager.getActiveNetworkInfo();
-
-                        if (networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                            // 获取WifiManager对象
-                            var WifiManager = context.getSystemService(context.WIFI_SERVICE);
-
-                            // 获取WifiInfo对象
-                            var wifiInfo = WifiManager.getConnectionInfo();
-
-                            // 获取WiFi名称并去除引号
-                            currentWifiName = wifiInfo.getSSID().replace("\"", "");
-                        }
-
-                        toastLog("当前连接的WiFi名称为：" + currentWifiName);
-
                         kz();
                         nowHour = new Date().getHours();
                         log("当前时间:" + nowHour + "时");
@@ -3366,7 +3339,7 @@ ui.ok.click(function () {
                             sftp = false
                         }
 
-
+                        
                         log("主Wifi:" + zwifi);
                         sleep(3000);
                         if (联网验证(zwifi) != true) {
