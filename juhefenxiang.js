@@ -288,7 +288,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.0.2";
+            var versionNum = "聚合分享v11.0.3";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -3018,13 +3018,10 @@ ui.ok.click(function () {
                     sleep(2000)
                     jb = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*币)/).findOnce()
                 }
-                log("keletodayTxCount"+keletodayTxCount)
-                log("zfbtxyz"+zfbtxyz)
-                log("jb"+jb.text())
-                log("jb2"+parseInt(jb.text().replace(/[^\d]/g, "")) / 10000)
+              
                 if (jb && ((zfbtx == true && keletodayTxCount < 1 && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >= zfbtxyz) || (zfbtx == false && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >= 1 && ((nowHour > 8 && keletodayTxCount < 1) || (nowHour > 12 && keletodayTxCount < 2) || (nowHour > 16 && keletodayTxCount < 3))))) {
                     click("提现")
-                    log("可乐点击tx"+keleReadNum)
+                    console.info("可乐点击tx:"+ parseInt(jb.text().replace(/[^\d]/g, "")) / 10000)
                     sleep(10000)
                     if (zfbtx) {
                         let female = packageName("com.tencent.mm").className("android.widget.TextView").text(" 支付宝").findOnce()
@@ -6547,6 +6544,8 @@ ui.ok.click(function () {
                             storage.put("chushihuaflag", chushihuaflag)
                             xyytodayTxCount = 0
                             storage.put("xyytodayTxCount", xyytodayTxCount)
+                            keletodayTxCount =0
+                            storage.put("keletodayTxCount", keletodayTxCount)
                             storage.put("yunshaomazhuliurl", "")
                             storage.put("yunshaomaurl", "")
                             storage.put("meitianzhuanurl", "")
