@@ -3007,6 +3007,7 @@ ui.ok.click(function () {
                 for (let i = 0; i < ps.length; i++) {
                     if (ps[i].text().indexOf("币") == -1 && ps[i].text().indexOf("下一篇") == -1&&parseInt(ps[i].text().split("篇")[0].replace(/[^\d]/g, ""))>1) {
                         keleReadNum = parseInt(ps[i].text().split("篇")[0].replace(/[^\d]/g, ""))
+                        log("可乐完成"+keleReadNum)
                         storage.put("keleReadNum", keleReadNum);
                     }
                 }
@@ -3017,9 +3018,13 @@ ui.ok.click(function () {
                     sleep(2000)
                     jb = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*币)/).findOnce()
                 }
-
+                log("keletodayTxCount"+keletodayTxCount)
+                log("zfbtxyz"+zfbtxyz)
+                log("jb"+jb.text())
+                log("jb2"+parseInt(jb.text().replace(/[^\d]/g, "")) / 10000)
                 if (jb && ((zfbtx == true && keletodayTxCount < 1 && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >= zfbtxyz) || (zfbtx == false && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >= 1 && ((nowHour > 8 && keletodayTxCount < 1) || (nowHour > 12 && keletodayTxCount < 2) || (nowHour > 16 && keletodayTxCount < 3))))) {
                     click("提现")
+                    log("可乐点击tx"+keleReadNum)
                     sleep(10000)
                     if (zfbtx) {
                         let female = packageName("com.tencent.mm").className("android.widget.TextView").text(" 支付宝").findOnce()
