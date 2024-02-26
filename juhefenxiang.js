@@ -310,6 +310,10 @@ ui.ok.click(function () {
             log("jieshouwifi:" + jieshouwifi);
             phoneNum = ui.phoneNum.getText();
             log("phoneNum:" + phoneNum);
+            if(ui.zfbtxyz.text().toString()=="1.28"){
+                keletodayTxCount=0
+                storage.put("keletodayTxCount", keletodayTxCount)
+            }
             zfbtxyz = parseFloat(ui.zfbtxyz.text().toString());
             log("zfbtxyz:" + zfbtxyz);
             auto_tx = ui.auto_tx.isChecked();
