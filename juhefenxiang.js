@@ -40,10 +40,6 @@ xiaoyueyueflag = storage.get("xiaoyueyueflag", false);
 keleflag = storage.get("keleflag", false);
 zfbtx = storage.get("zfbtx", true);
 zfbtxyz = storage.get("zfbtxyz", 3);//阈值
-if (zfbtxyz == 5) {
-    zfbtxyz = 3
-    storage.put("zfbtxyz", zfbtxyz);
-}
 
 xyyzl = storage.get("xyyzl", false);
 xiaoyueyueover = storage.get("xiaoyueyueover", false);//当天是否完成
@@ -292,7 +288,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.0.1";
+            var versionNum = "聚合分享v11.0.2";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2810,7 +2806,7 @@ ui.ok.click(function () {
                     if (jb && jq && xyytodayTxCount == 1 && (parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 > 5)) {
                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅:" + (parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000));
                     }
-                    if (jb && ((zfbtx == true && xyytodayTxCount < 1 && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 > zfbtxyz) || (zfbtx == false && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= 1 && ((nowHour > 8 && xyytodayTxCount < 1) || (nowHour > 12 && xyytodayTxCount < 2) || (nowHour > 16 && xyytodayTxCount < 3))))) {
+                    if (jb && ((zfbtx == true && xyytodayTxCount < 1 && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= zfbtxyz) || (zfbtx == false && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= 1 && ((nowHour > 8 && xyytodayTxCount < 1) || (nowHour > 12 && xyytodayTxCount < 2) || (nowHour > 16 && xyytodayTxCount < 3))))) {
                         click("提现")
                         sleep(10000)
                         if (zfbtx) {
@@ -3022,7 +3018,7 @@ ui.ok.click(function () {
                     jb = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*币)/).findOnce()
                 }
 
-                if (jb && ((zfbtx == true && keletodayTxCount < 1 && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 > zfbtxyz) || (zfbtx == false && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >= 1 && ((nowHour > 8 && keletodayTxCount < 1) || (nowHour > 12 && keletodayTxCount < 2) || (nowHour > 16 && keletodayTxCount < 3))))) {
+                if (jb && ((zfbtx == true && keletodayTxCount < 1 && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >= zfbtxyz) || (zfbtx == false && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >= 1 && ((nowHour > 8 && keletodayTxCount < 1) || (nowHour > 12 && keletodayTxCount < 2) || (nowHour > 16 && keletodayTxCount < 3))))) {
                     click("提现")
                     sleep(10000)
                     if (zfbtx) {
@@ -3937,7 +3933,7 @@ ui.ok.click(function () {
                                         sleep(5000)
                                         cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
                                         let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
-                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                        if (publish_time&&new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
                                             log("可乐下一篇正常继续")
                                             if (联网验证(dlwifi) != true) {
                                                 连接wifi(dlwifi, 5000);
@@ -3964,7 +3960,7 @@ ui.ok.click(function () {
                                          sleep(5000)
                                          cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
                                          let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
-                                         if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                         if (publish_time&&new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
                                              log("可乐下一篇正常继续")
                                              if (联网验证(dlwifi) != true) {
                                                  连接wifi(dlwifi, 5000);
@@ -4687,7 +4683,7 @@ ui.ok.click(function () {
                                         sleep(5000)
                                         cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
                                         let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
-                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                        if (publish_time&&new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
                                             log("小阅阅下一篇正常继续")
                                             if (联网验证(dlwifi) != true) {
                                                 连接wifi(dlwifi, 5000);
@@ -4713,7 +4709,7 @@ ui.ok.click(function () {
                                          sleep(5000)
                                          cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
                                          let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
-                                         if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                         if (publish_time&&new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
                                              log("小阅阅下一篇正常继续")
                                              if (联网验证(dlwifi) != true) {
                                                  连接wifi(dlwifi, 5000);
@@ -4906,7 +4902,7 @@ ui.ok.click(function () {
                                 if (sfjcwz(encodeURIComponent(clipurl))) {
                                     sfjcwzflag = true
                                 }
-                                if (sfjcwzflag || lastclipurl == clipurl || (latestgongzhonghao == lastgongzhonghao && lastgongzhonghao != "")) {
+                                if (sfjcwzflag || lastclipurl == clipurl ) {//|| (latestgongzhonghao == lastgongzhonghao && lastgongzhonghao != "")
                                     let xianzhistr = "小阅阅中途检测"
                                     if (lastclipurl == clipurl) {
                                         xianzhistr = xianzhistr + "2" + clipurl
@@ -5394,7 +5390,7 @@ ui.ok.click(function () {
                                          sleep(5000)
                                          cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
                                          let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
-                                         if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                         if (publish_time&&new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
                                              log("小阅阅下一篇正常继续")
                                              if (联网验证(dlwifi) != true) {
                                                  连接wifi(dlwifi, 5000);
@@ -5420,7 +5416,7 @@ ui.ok.click(function () {
                                          sleep(5000)
                                          cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
                                          let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
-                                         if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                         if (publish_time&&new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
                                              log("小阅阅助力下一篇正常继续")
                                              if (联网验证(dlwifi) != true) {
                                                  连接wifi(dlwifi, 5000);
