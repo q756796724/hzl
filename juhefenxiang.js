@@ -288,7 +288,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.0.3";
+            var versionNum = "聚合分享v11.0.5";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -3017,7 +3017,7 @@ ui.ok.click(function () {
                 }
                 nowHour = new Date().getHours();
                 let jb = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*币)/).findOnce()
-                if (parseInt(jb.text().replace(/[^\d]/g, "")) == 0 && packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按二维码开始.*)/).findOnce()) {
+                if (jb &&parseInt(jb.text().replace(/[^\d]/g, "")) == 0 && packageName("com.tencent.mm").className("android.view.View").textMatches(/(长按二维码开始.*)/).findOnce()) {
                     clickx(device.width - 20, device.height - 20)
                     sleep(2000)
                     jb = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*币)/).findOnce()
@@ -3061,7 +3061,7 @@ ui.ok.click(function () {
                 let wBtn = className("android.widget.TextView").text("我").findOne(3000);
                 if (topActivity == MAIN_PAGE && wBtn != null) {
                     log("kele进入v成功");
-                    if (keleReadNum >= 175) {
+                    if (keleReadNum >= 195) {
                         keleover = true
                         storage.put("keleover", keleover);
                     }
@@ -3517,7 +3517,7 @@ ui.ok.click(function () {
                         storage.put("kelekedusj", kelekedusj);
                         return
                     }*/
-                    let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*已达上限.*)/).findOnce()
+                    let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*已达到阅读限制.*)/).findOnce()
                     if (tstxt) {
                         keleover = true
                         storage.put("keleover", keleover);
@@ -4047,7 +4047,8 @@ ui.ok.click(function () {
                                 kelecheckFlag = false
                                 storage.put("kelecheckFlag", kelecheckFlag);
                             }
-                            if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(今日阅读已达上限.*)/).findOnce()) {
+                            if (packageName("com.tencent.mm").textMatches(/(.*已达到阅读限制.*)/).findOnce()) {
+                                click("确定");
                                 log(new Date().toLocaleString() + "-----------" + "可乐上限");
                                 keleover = true
                                 storage.put("keleover", keleover);
