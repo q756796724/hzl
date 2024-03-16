@@ -40,6 +40,8 @@ xiaoyueyueflag = storage.get("xiaoyueyueflag", false);
 keleflag = storage.get("keleflag", false);
 zfbtx = storage.get("zfbtx", true);
 zfbtxyz = storage.get("zfbtxyz", 3);//阈值
+zfbtxyz2 = storage.get("zfbtxyz2", 2);//阈值
+
 
 xyyzl = storage.get("xyyzl", false);
 xiaoyueyueover = storage.get("xiaoyueyueover", false);//当天是否完成
@@ -184,8 +186,9 @@ ui.layout(
         <horizontal>
             <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
             <checkbox text="xyyzfbtx" id="zfbtx" checked="{{zfbtx}}" textSize="18sp" />\
-            <text textSize="16sp" textColor="black" text="xyyzfbtx阈值" />
+            <text textSize="16sp" textColor="black" text="xyy/kelezfbtx阈值" />
             <input id="zfbtxyz" text="{{zfbtxyz}}" />
+            <input id="zfbtxyz2" text="{{zfbtxyz2}}" />
         </horizontal>
         <horizontal>
             <checkbox text="小阅阅助力" id="xyyzl" checked="{{xyyzl}}" textSize="18sp" />\
@@ -288,7 +291,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.0.6";
+            var versionNum = "聚合分享v11.0.7";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -310,12 +313,10 @@ ui.ok.click(function () {
             log("jieshouwifi:" + jieshouwifi);
             phoneNum = ui.phoneNum.getText();
             log("phoneNum:" + phoneNum);
-            if (ui.zfbtxyz.text().toString() == "1.28") {
-                keletodayTxCount = 0
-                storage.put("keletodayTxCount", keletodayTxCount)
-            }
             zfbtxyz = parseFloat(ui.zfbtxyz.text().toString());
             log("zfbtxyz:" + zfbtxyz);
+            zfbtxyz2 = parseFloat(ui.zfbtxyz2.text().toString());
+            log("zfbtxyz2:" + zfbtxyz2);
             auto_tx = ui.auto_tx.isChecked();
             log("tx:" + auto_tx);
             zfbtx = ui.zfbtx.isChecked();
@@ -342,6 +343,7 @@ ui.ok.click(function () {
             storage.put("auto_tx", ui.auto_tx.isChecked());
             storage.put("zfbtx", ui.zfbtx.isChecked());
             storage.put("zfbtxyz", parseFloat(ui.zfbtxyz.text().toString()));
+            storage.put("zfbtxyz2", parseFloat(ui.zfbtxyz2.text().toString()));
             storage.put("xyyzl", ui.xyyzl.isChecked());
             storage.put("qun_into", ui.qun_into.isChecked());
             storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
@@ -3023,7 +3025,7 @@ ui.ok.click(function () {
                     jb = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*币)/).findOnce()
                 }
 
-                if (jb && ((zfbtx == true && keletodayTxCount < 1 && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >= zfbtxyz) || (zfbtx == false && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >= 1 && ((nowHour > 8 && keletodayTxCount < 1) || (nowHour > 12 && keletodayTxCount < 2) || (nowHour > 16 && keletodayTxCount < 3))))) {
+                if (jb && ((zfbtx == true && keletodayTxCount < 1 && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >= zfbtxyz2) || (zfbtx == false && parseInt(jb.text().replace(/[^\d]/g, "")) / 10000 >= 1 && ((nowHour > 8 && keletodayTxCount < 1) || (nowHour > 12 && keletodayTxCount < 2) || (nowHour > 16 && keletodayTxCount < 3))))) {
                     click("提现")
                     console.info("可乐点击tx:" + parseInt(jb.text().replace(/[^\d]/g, "")) / 10000)
                     sleep(10000)
