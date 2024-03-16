@@ -19,6 +19,8 @@ latestUrl = "";//当前url
 
 phoneNum = storage.get("phoneNum", "");
 jieshouwifi = storage.get("jieshouwifi", "WifiPro_5G");
+jieshouwifi2 = storage.get("jieshouwifi2", "WifiPro_2.4G");
+
 
 sffs = false;//是否副手
 
@@ -140,6 +142,8 @@ ui.layout(
         <spinner id="dlwifi_spinner" entries={wifiOptions} />
         <text textSize="16sp" textColor="black" text="jieshouwifi" />
         <input id="jieshouwifi" text="{{jieshouwifi}}" />
+        <text textSize="16sp" textColor="black" text="jieshouwifi2" />
+        <input id="jieshouwifi2" text="{{jieshouwifi2}}" />
         <text textSize="16sp" textColor="black" text="编号" />
         <input id="phoneNum" text="{{phoneNum}}" />
         <horizontal>
@@ -226,7 +230,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v8.0.0";
+            var versionNum = "接收v8.0.1";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -241,6 +245,8 @@ ui.ok.click(function () {
             log("phoneNum:" + phoneNum);
             jieshouwifi = ui.jieshouwifi.getText();
             log("jieshouwifi:" + jieshouwifi);
+            jieshouwifi2 = ui.jieshouwifi2.getText();
+            log("jieshouwifi2:" + jieshouwifi2);
             qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
             removePhoneNum = ui.removePhoneNum.isChecked();
             zhengtian = ui.zhengtian.isChecked();
@@ -252,6 +258,7 @@ ui.ok.click(function () {
             storage.put("dlwifi", dlwifi);
             storage.put("phoneNum", ui.phoneNum.text());
             storage.put("jieshouwifi", ui.jieshouwifi.text());
+            storage.put("jieshouwifi2", ui.jieshouwifi2.text());
             storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
             storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
             storage.put("zhengtian", ui.zhengtian.isChecked());
@@ -2492,8 +2499,18 @@ ui.ok.click(function () {
                                 wificount++
                             }
                             if (wificount > 3) {
-                                zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
-                                wificount = 0
+                                if(wificount>6){
+                                    zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                                    wificount = 0
+                                }else{
+                                    if (jieshouwifi2 != null && jieshouwifi2 != "") {
+                                        zwifi = jieshouwifi2
+                                    }else{
+                                        zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                                        wificount = 0
+                                    }
+                                }
+                               
                             }
                         } else {
                             log("连接正常")
