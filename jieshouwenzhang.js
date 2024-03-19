@@ -6,7 +6,7 @@ wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|X
 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi3G_2.4G");
 storage.put("qiehuanjiaoben", false);
-qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
+qiehuanjiaoben = storage.get("qiehuanjiaoben", false);
 removePhoneNum = storage.get("removePhoneNum", false);
 addJieshou = storage.get("addJieshou", false);
 zhengtian = storage.get("zhengtian", false);
@@ -230,7 +230,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v8.0.1";
+            var versionNum = "接收v8.0.2";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -3155,7 +3155,7 @@ ui.ok.click(function () {
                             }
                             if (getjieshouNum() == phoneNum.toString()) {
                                 if (readdays >= sxreaddays) {
-                                    sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期" + readdays + "天");//切换
+                                    /*sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期" + readdays + "天");//切换
                                     while (1) {
                                         addXianZhi()
                                         sleep(5000)
@@ -3164,7 +3164,7 @@ ui.ok.click(function () {
                                             //跳出死循环
                                             break
                                         }
-                                    }
+                                    }*/
 
                                     if (qiehuanjiaoben) {
                                         if (isInJieshou(phoneNum.toString()) == 0) {
