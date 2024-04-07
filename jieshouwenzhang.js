@@ -6,7 +6,7 @@ wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|X
 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi3G_2.4G");
 storage.put("qiehuanjiaoben", false);
-qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
+qiehuanjiaoben = storage.get("qiehuanjiaoben", false);
 removePhoneNum = storage.get("removePhoneNum", false);
 addJieshou = storage.get("addJieshou", false);
 zhengtian = storage.get("zhengtian", false);
@@ -230,7 +230,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v8.0.2";
+            var versionNum = "接收v8.0.3";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -2145,6 +2145,10 @@ ui.ok.click(function () {
                 for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                     配置 = 读取配置(settingPath);
                     if (i % 10 == 0) {
+                        if(zwifi == storage.get("zwifi", "XiaoMiWifi3G_5G")&&jieshouwifi != null && jieshouwifi != ""){
+                            zwifi = jieshouwifi
+                            连接wifi(zwifi, 5000);
+                        }
                         if (联网验证(zwifi) != true) {
                             连接wifi(zwifi, 5000);
                         }
@@ -2454,6 +2458,10 @@ ui.ok.click(function () {
 
 
             function 连接wifi(wifiName, connectTime) {
+                nowHour = new Date().getHours();
+                if (nowHour < 5) {
+                    return
+                }
                 if (wifiName == zwifi) {
                     log("连接zwifi")
                 } else if (wifiName == dlwifi) {
@@ -2495,22 +2503,32 @@ ui.ok.click(function () {
                             }
                             wifi弹窗处理();
                             sleep(connectTime);
-                            if (i == 4 && wifiName == storage.get("jieshouwifi", "WifiPro_5G")) {
+                            if (i == 4) {
                                 wificount++
                             }
-                            if (wificount > 3) {
-                                if(wificount>6){
-                                    zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
-                                    wificount = 0
-                                }else{
+                            if (wificount > 2) {
+                                if(wifiName == jieshouwifi &&jieshouwifi != null && jieshouwifi != ""){
                                     if (jieshouwifi2 != null && jieshouwifi2 != "") {
                                         zwifi = jieshouwifi2
+                                        wificount = 0
                                     }else{
                                         zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
                                         wificount = 0
                                     }
+                                }else if(wifiName == jieshouwifi2&&jieshouwifi2 != null && jieshouwifi2 != ""){
+                                    zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                                    wificount = 0
+                                }else if(wifiName == storage.get("zwifi", "XiaoMiWifi3G_5G")){
+                                    if (jieshouwifi != null && jieshouwifi != "") {
+                                        zwifi = jieshouwifi
+                                        wificount = 0
+                                    }else if (jieshouwifi2 != null && jieshouwifi2 != "") {
+                                        zwifi = jieshouwifi2
+                                        wificount = 0
+                                    }else{
+                                        wificount = 0
+                                    }
                                 }
-                               
                             }
                         } else {
                             log("连接正常")
@@ -3155,7 +3173,7 @@ ui.ok.click(function () {
                             }
                             if (getjieshouNum() == phoneNum.toString()) {
                                 if (readdays >= sxreaddays) {
-                                    sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期" + readdays + "天");//切换
+                                    /*sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "期满,任期" + readdays + "天");//切换
                                     while (1) {
                                         addXianZhi()
                                         sleep(5000)
@@ -3164,7 +3182,7 @@ ui.ok.click(function () {
                                             //跳出死循环
                                             break
                                         }
-                                    }
+                                    }*/
 
                                     if (qiehuanjiaoben) {
                                         if (isInJieshou(phoneNum.toString()) == 0) {
@@ -3219,6 +3237,7 @@ ui.ok.click(function () {
                             if (jieshouwifi != null && jieshouwifi != "") {
                                 zwifi = jieshouwifi
                             }
+                            
                             log("主Wifi:" + zwifi);
                             if (random(0, 7) == 5) {
                                 home()

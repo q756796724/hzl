@@ -2,7 +2,7 @@
 
 storage = storages.create("fanqiekankan配置");
 toolsStorage = storages.create("tools配置");
-wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro|WifiPro_5G|myg";
+wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro|WifiPro_5G|myg|Mate50";
 xyyzlOptions = "无|zhaolin-82a7b65d839ece2b1f1ff3183faac8a3|miu-d46bf9c4bc91c2e502ec27e0a25db92d|噜啦啦-59362ad1735868df3ad8068290e8a2eb|芬芳-5a6452e0962e5544f90b79e0d12d8bf5|小青-daee14bd94e54669407fc72801bb4fe3|长江-87860cb0f8fe082daec78243b0f83187|小飞鱼-162230d30b91501f1d96120b3ec2ea4d|温迪-90a01c7c6c33d85e268978d656b0d1e5|云雨-636db647337f0b640d7984d18825e53e";
 xyyzlurlmap = {
     "16929560174632825": "zhaolin-82a7b65d839ece2b1f1ff3183faac8a3",
@@ -31,7 +31,7 @@ xyyzlurl = storage.get("xyyzlurl", "无");
 auto_tx = storage.get("auto_tx", false);
 qun_into = storage.get("qun_into", false);
 storage.put("qiehuanjiaoben", false)
-qiehuanjiaoben = storage.get("qiehuanjiaoben", true);
+qiehuanjiaoben = storage.get("qiehuanjiaoben", false);
 removePhoneNum = storage.get("removePhoneNum", false);
 zhengtian = storage.get("zhengtian", false);
 chushihuaflag = storage.get("chushihuaflag", false);
@@ -291,7 +291,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.0.8";
+            var versionNum = "聚合分享v11.0.9";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2782,7 +2782,7 @@ ui.ok.click(function () {
                         sleep(3000);
                     }
                     let loadcount = 0
-                    while (packageName("com.tencent.mm").className("android.widget.TextView").text("小阅阅").findOnce() == null || packageName("com.tencent.mm").id("task_btn_read").findOnce() == null) {
+                    while (packageName("com.tencent.mm").id("task_btn_read").findOnce() == null) {
                         sleep(3000)
                         if (loadcount > 20) {
                             console.warn("小阅阅加载失败");
