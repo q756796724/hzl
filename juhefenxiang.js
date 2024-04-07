@@ -291,7 +291,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.0.7";
+            var versionNum = "聚合分享v11.0.8";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -777,11 +777,11 @@ ui.ok.click(function () {
 
             }
 
-            function getkeleurl() {
+            function getkeleurl(phoneNum) {
                 let temp = null;
                 let repData = "0";
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/getkeleurl", {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/getkeleurl?phoneNum=" + phoneNum, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -808,7 +808,7 @@ ui.ok.click(function () {
                         app.launch(PKG_NAME);
                     }
                     sleep(8000)
-                    repData = getkeleurl();
+                    repData = getkeleurl(phoneNum);
 
                 }
 
@@ -1405,11 +1405,11 @@ ui.ok.click(function () {
 
             }
 
-            function removekeleurl(txt) {
+            function removekeleurl(txt,phoneNum) {
                 let temp = null;
                 let repData = true;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/removekeleurl?txt=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/removekeleurl?txt=" + txt+ "&phoneNum=" + phoneNum, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1429,7 +1429,7 @@ ui.ok.click(function () {
                         app.launch(PKG_NAME);
                     }
                     sleep(8000)
-                    repData = removekeleurl(txt);
+                    repData = removekeleurl(txt,phoneNum);
 
                 }
                 return repData
@@ -2812,7 +2812,7 @@ ui.ok.click(function () {
                     if (jb && jq && xyytodayTxCount == 1 && (parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 > 5)) {
                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅:" + (parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000));
                     }
-                    if (jb && ((zfbtx == true && xyytodayTxCount < 1 && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= zfbtxyz) || (zfbtx == false && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= 1 && ((nowHour > 8 && xyytodayTxCount < 1) || (nowHour > 12 && xyytodayTxCount < 2) || (nowHour > 16 && xyytodayTxCount < 3))))) {
+                    if (jb && ((zfbtx == true && xyytodayTxCount < 1 && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= zfbtxyz)&&(nowHour > 15&&parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000<5||parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000>=5) || (zfbtx == false && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= 1 && ((nowHour > 8 && xyytodayTxCount < 1) || (nowHour > 12 && xyytodayTxCount < 2) || (nowHour > 16 && xyytodayTxCount < 3))))) {
                         click("提现")
                         sleep(10000)
                         if (zfbtx) {
@@ -3115,7 +3115,7 @@ ui.ok.click(function () {
                                 log("进入了文件传输助手");
                             }
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000) != null) {
-                                keleurl = getkeleurl();
+                                keleurl = getkeleurl(phoneNum.toString());
                                 if (keleurl == "休息") {
                                     log(new Date().toLocaleString() + "-" + "-----keleurl=休息------" + keleReadNum + "次");
                                     返回v首页();
@@ -6457,9 +6457,9 @@ ui.ok.click(function () {
                 return 进程守护
             }
 
-            threads.start(function () {
+            /*threads.start(function () {
                 setInterval(进程守护(), 60000);
-            });
+            });*/
             配置 = 读取配置(settingPath);
             if (配置 == undefined) {
                 初始化配置(settingPath);

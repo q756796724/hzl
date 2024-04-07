@@ -230,7 +230,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v8.0.1";
+            var versionNum = "接收v8.0.2";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -3030,9 +3030,9 @@ ui.ok.click(function () {
                 return 进程守护
             }
 
-            threads.start(function () {
+            /*threads.start(function () {
                 setInterval(进程守护(), 60000);
-            });
+            });*/
             配置 = 读取配置(settingPath);
             if (配置 == undefined) {
                 初始化配置(settingPath);
