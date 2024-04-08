@@ -291,7 +291,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.1.1";
+            var versionNum = "聚合分享v11.1.2";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4227,7 +4227,7 @@ ui.ok.click(function () {
                             sleep(3000)
                         }
                         loadcount++
-                        if (loadcount > 3 && packageName("com.tencent.mm").className("android.view.View").textMatches(/(阅读成功.*|.*本轮阅读已完成.*)/).findOnce()) {
+                        if (loadcount > 3 && packageName("com.tencent.mm").className("android.view.View").textMatches(/(成功.*|.*本轮阅读已完成.*)/).findOnce()) {
                             if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*本轮阅读已完成.*)/).findOnce()) {
                                 log(new Date().toLocaleString() + "-----------" + "小阅阅本轮完成");
                                 kelecount = 1
@@ -4374,7 +4374,7 @@ ui.ok.click(function () {
                 for (; ;) {
                     let lastXiaoyueyuecheckFlag = xiaoyueyuecheckFlag
                     let lastsffs = sffs
-                    let numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(阅读成功.*|阅读无效.*|当前阅读被限制.*|阅读暂时无效.*)/).findOne(10000)
+                    let numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(成功.*|阅读无效.*|当前阅读被限制.*|阅读暂时无效.*)/).findOne(10000)
                     if (numbtn && numbtn.text().indexOf("篇") > -1) {
                         xiaoyueyueReadNum = parseInt(numbtn.text().split("篇")[0].replace(/[^\d]/g, ""))
                         storage.put("xiaoyueyueReadNum", xiaoyueyueReadNum);
