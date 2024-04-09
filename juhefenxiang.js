@@ -291,7 +291,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.1.2";
+            var versionNum = "聚合分享v11.1.3";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -738,11 +738,11 @@ ui.ok.click(function () {
             }
 
             //获取
-            function getyunshaomaurl() {
+            function getyunshaomaurl(phoneNum) {
                 let temp = null;
                 let repData = "0";
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/getyunshaomaurl", {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/getyunshaomaurl?phoneNum=" + phoneNum, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -769,7 +769,7 @@ ui.ok.click(function () {
                         app.launch(PKG_NAME);
                     }
                     sleep(8000)
-                    repData = getyunshaomaurl();
+                    repData = getyunshaomaurl(phoneNum);
 
                 }
 
@@ -1374,11 +1374,11 @@ ui.ok.click(function () {
             }
 
             //移除yunshaomaurl
-            function removeyunshaomaurl(txt) {
+            function removeyunshaomaurl(txt,phoneNum) {
                 let temp = null;
                 let repData = true;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/removeyunshaomaurl?txt=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/removeyunshaomaurl?txt=" + txt+ "&phoneNum=" + phoneNum, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -1398,7 +1398,7 @@ ui.ok.click(function () {
                         app.launch(PKG_NAME);
                     }
                     sleep(8000)
-                    repData = removeyunshaomaurl(txt);
+                    repData = removeyunshaomaurl(txt,phoneNum);
 
                 }
                 return repData
@@ -2598,7 +2598,7 @@ ui.ok.click(function () {
 
 
                             if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOne(5000) != null) {
-                                yunshaomaurl = getyunshaomaurl();
+                                yunshaomaurl = getyunshaomaurl(phoneNum.toString());
                                 if (yunshaomaurl == "休息") {
                                     log(new Date().toLocaleString() + "-" + "-----yunshaomaurl=休息------" + xiaoyueyueReadNum + "次");
                                     返回v首页();
@@ -2630,7 +2630,7 @@ ui.ok.click(function () {
                                                                     if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                                                                         storage.put("yunshaomaurl", "")
                                                                         //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅继续访问:" + yunshaomaurl);//出错请处理
-                                                                        removeyunshaomaurl(encodeURIComponent(yunshaomaurl))
+                                                                        removeyunshaomaurl(encodeURIComponent(yunshaomaurl),phoneNum.toString())
                                                                         click("继续访问")
                                                                     }
                                                                     sleep(3000)
@@ -2646,7 +2646,7 @@ ui.ok.click(function () {
                                                                         if (stopPage != null) {
                                                                             storage.put("yunshaomaurl", "")
                                                                             //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
-                                                                            removeyunshaomaurl(encodeURIComponent(yunshaomaurl))
+                                                                            removeyunshaomaurl(encodeURIComponent(yunshaomaurl),phoneNum.toString())
                                                                             xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                                                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                                                             return;
@@ -2707,7 +2707,7 @@ ui.ok.click(function () {
                                                 if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                                                     storage.put("yunshaomaurl", "")
                                                     //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅继续访问:" + yunshaomaurl);//出错请处理
-                                                    removeyunshaomaurl(encodeURIComponent(yunshaomaurl))
+                                                    removeyunshaomaurl(encodeURIComponent(yunshaomaurl),phoneNum.toString())
                                                     click("继续访问")
                                                 }
                                                 sleep(3000)
@@ -2723,7 +2723,7 @@ ui.ok.click(function () {
                                                     if (stopPage != null) {
                                                         storage.put("yunshaomaurl", "")
                                                         //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
-                                                        removeyunshaomaurl(encodeURIComponent(yunshaomaurl))
+                                                        removeyunshaomaurl(encodeURIComponent(yunshaomaurl),phoneNum.toString())
                                                         xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                                         storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                                         return;
@@ -2772,7 +2772,7 @@ ui.ok.click(function () {
                     if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                         storage.put("yunshaomaurl", "")
                         //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅继续访问:" + yunshaomaurl);//出错请处理
-                        removeyunshaomaurl(encodeURIComponent(yunshaomaurl))
+                        removeyunshaomaurl(encodeURIComponent(yunshaomaurl),phoneNum.toString())
                         click("继续访问")
                     }
                     sleep(5000)
@@ -3171,7 +3171,7 @@ ui.ok.click(function () {
                                                                     if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                                                                         storage.put("keleurl", "")
                                                                         //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "可乐继续访问:" + keleurl);//出错请处理
-                                                                        removekeleurl(encodeURIComponent(keleurl))
+                                                                        removekeleurl(encodeURIComponent(keleurl),phoneNum.toString())
                                                                         click("继续访问")
                                                                     }
                                                                     tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*|.*分钟后到来)/).findOne(3000)
@@ -3235,7 +3235,7 @@ ui.ok.click(function () {
                                                                         if (stopPage != null) {
                                                                             storage.put("keleurl", "")
                                                                             //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + keleurl);//出错请处理
-                                                                            removekeleurl(encodeURIComponent(keleurl))
+                                                                            removekeleurl(encodeURIComponent(keleurl),phoneNum.toString())
                                                                             kelekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                                                             storage.put("kelekedusj", kelekedusj);
                                                                             return;
@@ -3320,7 +3320,7 @@ ui.ok.click(function () {
                                                 if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                                                     storage.put("yunshaomaurl", "")
                                                     //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "可乐继续访问:" + keleurl);//出错请处理
-                                                    removekeleurl(encodeURIComponent(keleurl))
+                                                    removekeleurl(encodeURIComponent(keleurl),phoneNum.toString())
                                                     click("继续访问")
                                                 }
                                                 tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*|.*分钟后到来)/).findOne(3000)
@@ -3384,7 +3384,7 @@ ui.ok.click(function () {
                                                     if (stopPage != null) {
                                                         storage.put("yunshaomaurl", "")
                                                         //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + keleurl);//出错请处理
-                                                        removekeleurl(encodeURIComponent(keleurl))
+                                                        removekeleurl(encodeURIComponent(keleurl),phoneNum.toString())
                                                         kelekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                                         storage.put("kelekedusj", kelekedusj);
                                                         return;
@@ -3432,7 +3432,7 @@ ui.ok.click(function () {
                     if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOnce()) {
                         storage.put("keleurl", "")
                         //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "可乐继续访问:" + keleurl);//出错请处理
-                        removekeleurl(encodeURIComponent(keleurl))
+                        removekeleurl(encodeURIComponent(keleurl),phoneNum.toString())
                         click("继续访问")
                     }
                     tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读暂时失效.*|.*分钟后到来)/).findOne(5000)
