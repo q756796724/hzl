@@ -291,7 +291,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.1.5";
+            var versionNum = "聚合分享v11.1.6";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2838,6 +2838,12 @@ ui.ok.click(function () {
                     let loadcount = 0
                     while (packageName("com.tencent.mm").id("task_btn_read").findOnce() == null) {
                         sleep(3000)
+                        if(packageName("com.tencent.mm").className("android.view.View").textMatches(/(存在违规操作.*)/).findOnce()){
+                            sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅存在违规操作");//出错请处理
+                            xiaoyueyuekedusj = new Date().getTime() + 72*3600 * 1000
+                            storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                            return
+                        }
                         if (loadcount > 20) {
                             console.warn("小阅阅加载失败");
                             storage.put("yunshaomaurl", "")
