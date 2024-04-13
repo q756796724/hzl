@@ -230,7 +230,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v8.0.4";
+            var versionNum = "接收v8.0.5";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -3313,7 +3313,9 @@ ui.ok.click(function () {
 
                         if (getjieshouNum() != phoneNum.toString()) {
                             if (readdays > 0) {
-                                sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "提前休息，已任天数" + (readdays));//切换
+                                if (nowHour > 6) {
+                                    sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "提前休息，已任天数" + (readdays));//切换
+                                }
                                 readdays = 0
                                 storage.put("readdays", readdays);
                                 if (qiehuanjiaoben) {
@@ -3329,7 +3331,9 @@ ui.ok.click(function () {
 
                             if (getjieshouNumFu() != phoneNum.toString()) {
                                 if (readdaysfu > 0) {
-                                    sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "副手提前休息，已任天数" + (readdaysfu));//切换
+                                    if (nowHour > 6) {
+                                        sendTx("http://miaotixing.com/trigger?id=tmHi58G&text=num:" + phoneNum + "副手提前休息，已任天数" + (readdaysfu));//切换
+                                    }
                                     readdaysfu = 0
                                     storage.put("readdaysfu", readdaysfu);
                                 }
