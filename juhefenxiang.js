@@ -291,7 +291,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.1.4";
+            var versionNum = "聚合分享v11.1.5";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -3204,17 +3204,8 @@ ui.ok.click(function () {
                                                                             log(new Date().toLocaleString() + "-----------" + xianzhistr);
                                                                             kelecheckFlag = true
                                                                             storage.put("kelecheckFlag", kelecheckFlag);
-                                                                            配置 = 读取配置(settingPath);
-                                                                            if (配置["date"] == new Date().toLocaleDateString()) {
-                                                                                let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                                                                                tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                                                                                tomorrow.setHours(1, 0, 0, 0);
-                                                                                kelekedusj = tomorrow.getTime()
-                                                                                storage.put("kelekedusj", kelekedusj);
-                                                                            } else {
-                                                                                kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
-                                                                                storage.put("kelekedusj", kelekedusj);
-                                                                            }
+                                                                            kelekedusj = new Date().getTime() + random(7200, 8000) * 1000
+                                                                            storage.put("kelekedusj", kelekedusj);
                                                                         } else if (tstxt.text().indexOf("分钟后到来") > -1) {
                                                                             kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                                             storage.put("kelekedusj", kelekedusj);
@@ -3235,17 +3226,8 @@ ui.ok.click(function () {
                                                                             log(new Date().toLocaleString() + "-----------" + xianzhistr);
                                                                             kelecheckFlag = true
                                                                             storage.put("kelecheckFlag", kelecheckFlag);
-                                                                            配置 = 读取配置(settingPath);
-                                                                            if (配置["date"] == new Date().toLocaleDateString()) {
-                                                                                let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                                                                                tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                                                                                tomorrow.setHours(1, 0, 0, 0);
-                                                                                kelekedusj = tomorrow.getTime()
-                                                                                storage.put("kelekedusj", kelekedusj);
-                                                                            } else {
-                                                                                kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
-                                                                                storage.put("kelekedusj", kelekedusj);
-                                                                            }
+                                                                            kelekedusj = new Date().getTime() + random(7200, 8000) * 1000
+                                                                            storage.put("kelekedusj", kelekedusj);
                                                                         } else if (tstxt.text().indexOf("分钟后到来") > -1) {
                                                                             kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                                             storage.put("kelekedusj", kelekedusj);
@@ -3265,17 +3247,8 @@ ui.ok.click(function () {
                                                                             log(new Date().toLocaleString() + "-----------" + xianzhistr);
                                                                             kelecheckFlag = true
                                                                             storage.put("kelecheckFlag", kelecheckFlag);
-                                                                            配置 = 读取配置(settingPath);
-                                                                            if (配置["date"] == new Date().toLocaleDateString()) {
-                                                                                let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                                                                                tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                                                                                tomorrow.setHours(1, 0, 0, 0);
-                                                                                kelekedusj = tomorrow.getTime()
-                                                                                storage.put("kelekedusj", kelekedusj);
-                                                                            } else {
-                                                                                kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
-                                                                                storage.put("kelekedusj", kelekedusj);
-                                                                            }
+                                                                            kelekedusj = new Date().getTime() + random(7200, 8000) * 1000
+                                                                            storage.put("kelekedusj", kelekedusj);
                                                                         } else if (tstxt.text().indexOf("分钟后到来") > -1) {
                                                                             kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                                             storage.put("kelekedusj", kelekedusj);
@@ -3353,17 +3326,8 @@ ui.ok.click(function () {
                                                         log(new Date().toLocaleString() + "-----------" + xianzhistr);
                                                         kelecheckFlag = true
                                                         storage.put("kelecheckFlag", kelecheckFlag);
-                                                        配置 = 读取配置(settingPath);
-                                                        if (配置["date"] == new Date().toLocaleDateString()) {
-                                                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                                                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                                                            tomorrow.setHours(1, 0, 0, 0);
-                                                            kelekedusj = tomorrow.getTime()
-                                                            storage.put("kelekedusj", kelekedusj);
-                                                        } else {
-                                                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
-                                                            storage.put("kelekedusj", kelekedusj);
-                                                        }
+                                                        kelekedusj = new Date().getTime() + random(7200, 8000) * 1000
+                                                        storage.put("kelekedusj", kelekedusj);
                                                     } else if (tstxt.text().indexOf("分钟后到来") > -1) {
                                                         kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                         storage.put("kelekedusj", kelekedusj);
@@ -3384,17 +3348,8 @@ ui.ok.click(function () {
                                                         log(new Date().toLocaleString() + "-----------" + xianzhistr);
                                                         kelecheckFlag = true
                                                         storage.put("kelecheckFlag", kelecheckFlag);
-                                                        配置 = 读取配置(settingPath);
-                                                        if (配置["date"] == new Date().toLocaleDateString()) {
-                                                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                                                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                                                            tomorrow.setHours(1, 0, 0, 0);
-                                                            kelekedusj = tomorrow.getTime()
-                                                            storage.put("kelekedusj", kelekedusj);
-                                                        } else {
-                                                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
-                                                            storage.put("kelekedusj", kelekedusj);
-                                                        }
+                                                        kelekedusj = new Date().getTime() + random(7200, 8000) * 1000
+                                                        storage.put("kelekedusj", kelekedusj);
                                                     } else if (tstxt.text().indexOf("分钟后到来") > -1) {
                                                         kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                         storage.put("kelekedusj", kelekedusj);
@@ -3414,17 +3369,8 @@ ui.ok.click(function () {
                                                         log(new Date().toLocaleString() + "-----------" + xianzhistr);
                                                         kelecheckFlag = true
                                                         storage.put("kelecheckFlag", kelecheckFlag);
-                                                        配置 = 读取配置(settingPath);
-                                                        if (配置["date"] == new Date().toLocaleDateString()) {
-                                                            let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                                                            tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                                                            tomorrow.setHours(1, 0, 0, 0);
-                                                            kelekedusj = tomorrow.getTime()
-                                                            storage.put("kelekedusj", kelekedusj);
-                                                        } else {
-                                                            kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
-                                                            storage.put("kelekedusj", kelekedusj);
-                                                        }
+                                                        kelekedusj = new Date().getTime() + random(7200, 8000) * 1000
+                                                        storage.put("kelekedusj", kelekedusj);
                                                     } else if (tstxt.text().indexOf("分钟后到来") > -1) {
                                                         kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                                                         storage.put("kelekedusj", kelekedusj);
@@ -3496,17 +3442,8 @@ ui.ok.click(function () {
                             log(new Date().toLocaleString() + "-----------" + xianzhistr);
                             kelecheckFlag = true
                             storage.put("kelecheckFlag", kelecheckFlag);
-                            配置 = 读取配置(settingPath);
-                            if (配置["date"] == new Date().toLocaleDateString()) {
-                                let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                                tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                                tomorrow.setHours(1, 0, 0, 0);
-                                kelekedusj = tomorrow.getTime()
-                                storage.put("kelekedusj", kelekedusj);
-                            } else {
-                                kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
-                                storage.put("kelekedusj", kelekedusj);
-                            }
+                            kelekedusj = new Date().getTime() + random(7200, 8000) * 1000
+                            storage.put("kelekedusj", kelekedusj);
                         } else if (tstxt.text().indexOf("分钟后到来") > -1) {
                             kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                             storage.put("kelekedusj", kelekedusj);
@@ -3527,17 +3464,8 @@ ui.ok.click(function () {
                             log(new Date().toLocaleString() + "-----------" + xianzhistr);
                             kelecheckFlag = true
                             storage.put("kelecheckFlag", kelecheckFlag);
-                            配置 = 读取配置(settingPath);
-                            if (配置["date"] == new Date().toLocaleDateString()) {
-                                let tomorrow = new Date(); // 创建一个新的Date对象，初始化为当前时间
-                                tomorrow.setDate(new Date().getDate() + 1); // 将日期设置为明天
-                                tomorrow.setHours(1, 0, 0, 0);
-                                kelekedusj = tomorrow.getTime()
-                                storage.put("kelekedusj", kelekedusj);
-                            } else {
-                                kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
-                                storage.put("kelekedusj", kelekedusj);
-                            }
+                            kelekedusj = new Date().getTime() + random(7200, 8000) * 1000
+                            storage.put("kelekedusj", kelekedusj);
                         } else if (tstxt.text().indexOf("分钟后到来") > -1) {
                             kelekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
                             storage.put("kelekedusj", kelekedusj);
@@ -3855,7 +3783,7 @@ ui.ok.click(function () {
                             console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
                             kelecheckFlag = true
                             storage.put("kelecheckFlag", kelecheckFlag);
-                            kelekedusj = new Date().getTime() + random(5000, 8000) * 1000
+                            kelekedusj = new Date().getTime() + random(7200, 8000) * 1000
                             storage.put("kelekedusj", kelekedusj);
                             kelecount = 1
                             storage.put("kelecount", kelecount);
