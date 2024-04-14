@@ -291,7 +291,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.1.6";
+            var versionNum = "聚合分享v11.1.7";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -3767,10 +3767,13 @@ ui.ok.click(function () {
                             storage.put("keleluncount", keleluncount);
                             kelekedusj = new Date().getTime() + random(3600, 4000) * 1000
                             storage.put("kelekedusj", kelekedusj);
+                            kelecheckFlag = false
+                            storage.put("kelecheckFlag", kelecheckFlag);
+                            log("kelecheckFlag:" + kelecheckFlag)
                             return true
                         } else if (numbtn && numbtn.text().indexOf("阅读成功") > -1) {
-                            if(wifiCount-kelecount>3){
-                                kelecheckFlag=false
+                            if(kelecount-wifiCount>3){
+                                kelecheckFlag = false
                                 storage.put("kelecheckFlag", kelecheckFlag);
                             }
                             keleReadNum++
