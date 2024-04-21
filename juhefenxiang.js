@@ -777,6 +777,46 @@ ui.ok.click(function () {
 
             }
 
+            //获取
+            function kelejiancenum(jianceNum,phoneNum) {
+                let temp = null;
+                let repData = "0";
+                try {
+                    temp = http.post("http://116.205.139.36:8081/fanqie/kelejiancenum?phoneNum=" + phoneNum+"&jianceNum="+jianceNum, {});
+                    if (temp && temp.statusCode == 200) {
+                        temp = temp.body.string();
+                        let rep = JSON.parse(temp);
+                        let repState = rep["state"];
+                        if (repState == 1) {
+                            let repData = rep["data"];
+                            if (repData >0) {
+                                if (storage.get("yunshaomaurl", "") != "") {
+                                    return storage.get("yunshaomaurl")
+                                }
+                                storage.put("kelejiancenum", repData)
+                            }
+                            return repData
+                        } else {
+                            throw Error("getyunshaomaurl获取数据失败" + temp)
+                        }
+                    } else {
+                        throw Error("getyunshaomaurl获取数据失败" + temp)
+                    }
+                } catch (err) {
+                    console.error("getyunshaomaurl报错,原因:" + err);
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        app.launch(PKG_NAME);
+                    }
+                    sleep(8000)
+                    repData = getyunshaomaurl(phoneNum);
+
+                }
+
+                return repData
+
+            }
+
             function getkeleurl(phoneNum) {
                 let temp = null;
                 let repData = "0";
@@ -809,6 +849,46 @@ ui.ok.click(function () {
                     }
                     sleep(8000)
                     repData = getkeleurl(phoneNum);
+
+                }
+
+                return repData
+
+            }
+
+            //获取
+            function getyunshaomaurl(phoneNum) {
+                let temp = null;
+                let repData = "0";
+                try {
+                    temp = http.post("http://116.205.139.36:8081/fanqie/getyunshaomaurl?phoneNum=" + phoneNum, {});
+                    if (temp && temp.statusCode == 200) {
+                        temp = temp.body.string();
+                        let rep = JSON.parse(temp);
+                        let repState = rep["state"];
+                        if (repState == 1) {
+                            let repData = rep["data"];
+                            if (repData != "休息") {
+                                if (storage.get("yunshaomaurl", "") != "") {
+                                    return storage.get("yunshaomaurl")
+                                }
+                                storage.put("yunshaomaurl", repData)
+                            }
+                            return repData
+                        } else {
+                            throw Error("getyunshaomaurl获取数据失败" + temp)
+                        }
+                    } else {
+                        throw Error("getyunshaomaurl获取数据失败" + temp)
+                    }
+                } catch (err) {
+                    console.error("getyunshaomaurl报错,原因:" + err);
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        app.launch(PKG_NAME);
+                    }
+                    sleep(8000)
+                    repData = getyunshaomaurl(phoneNum);
 
                 }
 
@@ -852,45 +932,6 @@ ui.ok.click(function () {
 
                 }
 
-                return repData
-
-            }
-
-            //获取
-            function getMeitianzhuanurl() {
-                let temp = null;
-                let repData = "0";
-                try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/getMeitianzhuanurl", {});
-                    if (temp && temp.statusCode == 200) {
-                        temp = temp.body.string();
-                        let rep = JSON.parse(temp);
-                        let repState = rep["state"];
-                        if (repState == 1) {
-                            let repData = rep["data"];
-                            if (repData != "休息") {
-                                if (storage.get("meitianzhuanurl", "") != "") {
-                                    return storage.get("meitianzhuanurl")
-                                }
-                                storage.put("meitianzhuanurl", repData)
-                            }
-                            return repData
-                        } else {
-                            throw Error("getMeitianzhuanurl获取数据失败" + temp)
-                        }
-                    } else {
-                        throw Error("getMeitianzhuanurl获取数据失败" + temp)
-                    }
-                } catch (err) {
-                    console.error("getMeitianzhuanurl报错,原因:" + err);
-                    if (联网验证(zwifi) != true) {
-                        连接wifi(zwifi, 5000);
-                        app.launch(PKG_NAME);
-                    }
-                    sleep(8000)
-                    repData = getMeitianzhuanurl();
-
-                }
                 return repData
 
             }
