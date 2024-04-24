@@ -2418,7 +2418,7 @@ ui.ok.click(function () {
 
                                 }
                             } else {
-                                console.error("not found 家庭/大家庭")
+                                console.error("not found 文件传输助手")
 
                                 if (retryCount > 3) {
                                     retryCount = 0;
@@ -2834,7 +2834,7 @@ ui.ok.click(function () {
 
                                 }
                             } else {
-                                console.error("not found 家庭/大家庭")
+                                console.error("not found 文件传输助手")
 
                                 if (retryCount > 3) {
                                     retryCount = 0;
@@ -3447,7 +3447,7 @@ ui.ok.click(function () {
 
                                 }
                             } else {
-                                console.error("not found 家庭/大家庭")
+                                console.error("not found 文件传输助手")
 
                                 if (retryCount > 3) {
                                     retryCount = 0;
