@@ -39,7 +39,8 @@ meitianover = storage.get("meitianover", false);//当天是否完成
 xiaoyueyueflag = storage.get("xiaoyueyueflag", false);
 keleflag = storage.get("keleflag", false);
 zfbtx = storage.get("zfbtx", true);
-zfbtxyz = storage.get("zfbtxyz", 3);//阈值
+storage.put("zfbtxyz", 2)
+zfbtxyz = storage.get("zfbtxyz", 2);//阈值
 zfbtxyz2 = storage.get("zfbtxyz2", 2);//阈值
 
 
@@ -291,7 +292,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.1.8";
+            var versionNum = "聚合分享v11.1.9";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -737,45 +738,6 @@ ui.ok.click(function () {
 
             }
 
-            //获取
-            function getyunshaomaurl(phoneNum) {
-                let temp = null;
-                let repData = "0";
-                try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/getyunshaomaurl?phoneNum=" + phoneNum, {});
-                    if (temp && temp.statusCode == 200) {
-                        temp = temp.body.string();
-                        let rep = JSON.parse(temp);
-                        let repState = rep["state"];
-                        if (repState == 1) {
-                            let repData = rep["data"];
-                            if (repData != "休息") {
-                                if (storage.get("yunshaomaurl", "") != "") {
-                                    return storage.get("yunshaomaurl")
-                                }
-                                storage.put("yunshaomaurl", repData)
-                            }
-                            return repData
-                        } else {
-                            throw Error("getyunshaomaurl获取数据失败" + temp)
-                        }
-                    } else {
-                        throw Error("getyunshaomaurl获取数据失败" + temp)
-                    }
-                } catch (err) {
-                    console.error("getyunshaomaurl报错,原因:" + err);
-                    if (联网验证(zwifi) != true) {
-                        连接wifi(zwifi, 5000);
-                        app.launch(PKG_NAME);
-                    }
-                    sleep(8000)
-                    repData = getyunshaomaurl(phoneNum);
-
-                }
-
-                return repData
-
-            }
 
             //获取
             function kelejiancenum(jianceNum,phoneNum) {
@@ -790,26 +752,25 @@ ui.ok.click(function () {
                         if (repState == 1) {
                             let repData = rep["data"];
                             if (repData >0) {
-                                if (storage.get("yunshaomaurl", "") != "") {
-                                    return storage.get("yunshaomaurl")
-                                }
                                 storage.put("kelejiancenum", repData)
+                            }else{
+                                repData=storage.get("kelejiancenum", 0)
                             }
                             return repData
                         } else {
-                            throw Error("getyunshaomaurl获取数据失败" + temp)
+                            throw Error("kelejiancenum获取数据失败" + temp)
                         }
                     } else {
-                        throw Error("getyunshaomaurl获取数据失败" + temp)
+                        throw Error("kelejiancenum获取数据失败" + temp)
                     }
                 } catch (err) {
-                    console.error("getyunshaomaurl报错,原因:" + err);
+                    console.error("kelejiancenum报错,原因:" + err);
                     if (联网验证(zwifi) != true) {
                         连接wifi(zwifi, 5000);
                         app.launch(PKG_NAME);
                     }
                     sleep(8000)
-                    repData = getyunshaomaurl(phoneNum);
+                    repData = kelejiancenum(jianceNum,phoneNum);
 
                 }
 
@@ -2913,7 +2874,7 @@ ui.ok.click(function () {
                     if (jb && jq && xyytodayTxCount == 1 && (parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 > 5)) {
                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅:" + (parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000));
                     }
-                    if (jb && ((zfbtx == true && xyytodayTxCount < 1 && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= zfbtxyz && (nowHour > 15 && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 < 5 || parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= 5)) || (zfbtx == false && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= 1 && ((nowHour > 8 && xyytodayTxCount < 1) || (nowHour > 12 && xyytodayTxCount < 2) || (nowHour > 16 && xyytodayTxCount < 3))))) {
+                    if (jb && ((zfbtx == true && xyytodayTxCount < 1 && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= zfbtxyz && (nowHour > 15 && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 < 4 || parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= 4)) || (zfbtx == false && parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 >= 1 && ((nowHour > 8 && xyytodayTxCount < 1) || (nowHour > 12 && xyytodayTxCount < 2) || (nowHour > 16 && xyytodayTxCount < 3))))) {
                         click("提现")
                         sleep(10000)
                         if (zfbtx) {
@@ -3831,6 +3792,11 @@ ui.ok.click(function () {
                                 }
                             }
                             console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
+                           
+                            if(keleReadNum>5){
+                                kelejiancenum(keleReadNum,phoneNum.toString())
+                                log("检测限制，可乐第" + kelecount + "次," + "已完成篇数" + keleReadNum);
+                            }
                             kelecheckFlag = true
                             storage.put("kelecheckFlag", kelecheckFlag);
                             kelekedusj = new Date().getTime() + random(7200, 8000) * 1000
@@ -3990,6 +3956,17 @@ ui.ok.click(function () {
                             return false;
                         }
                         sleep(10000);
+                    }else{
+                        if(keleReadNum>5&&keleReadNum==kelejiancenum(0,phoneNum.toString())){
+                            kelecheckFlag = true
+                            storage.put("kelecheckFlag", kelecheckFlag);
+                            log("前方检测，可乐第" + kelecount + "次," + "已完成篇数" + keleReadNum);
+                            kelecount = 1
+                            storage.put("kelecount", kelecount);
+                            kelekedusj = new Date().getTime() + random(1200, 1800) * 1000
+                            storage.put("kelekedusj", kelekedusj);
+                            return false;
+                        }
                     }
 
                     log("可乐第" + kelecount + "次," + "已完成篇数" + keleReadNum);
