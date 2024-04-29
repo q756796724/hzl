@@ -2469,6 +2469,9 @@ ui.ok.click(function () {
                 }
                 if (zwifi.toString() != dlwifi.toString()) {
                     ui.run(function () { 悬浮窗.jbkz.visibility = 8 });
+                    if (kanyikanflag) {
+                        ui.run(function () { 悬浮窗2.jbkz.visibility = 8 });
+                    }
                     sleep(1000);
                     totificationlistenersetting()
                     sleep(3000);
@@ -2539,9 +2542,7 @@ ui.ok.click(function () {
 
                     back();
                     sleep(1000);
-                    if (!kanyikanflag) {
-                        ui.run(function () { 悬浮窗.jbkz.visibility = 0 });
-                    }
+                    ui.run(function () { 悬浮窗.jbkz.visibility = 0 });
                     sleep(1000);
                 }
             }
