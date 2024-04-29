@@ -361,14 +361,13 @@ ui.ok.click(function () {
             console_arr.put(android.util.Log.WARN, java.lang.Integer(colors.parseColor("#00ddff")));
             console_arr.put(android.util.Log.ERROR, java.lang.Integer(colors.parseColor("#ff0000")));
             console_arr.put(android.util.Log.ASSERT, java.lang.Integer(colors.parseColor("#ffff534e")));
-            var 悬浮窗2 = floaty.rawWindow(logDemo);
-            ui.run(function () { 悬浮窗2.consoleLog.findViewById(context.getResources().getIdentifier("input_container", "id", context.getPackageName())).setVisibility(8); });
-            悬浮窗2.consoleLog.setColors(console_arr);
-            悬浮窗2.consoleLog.setConsole(runtime.console);
-            悬浮窗2.setTouchable(false);
-            悬浮窗2.setPosition(0, device.height * 0.1);
             if (!kanyikanflag) {
-                ui.run(function () { 悬浮窗2.win.visibility = 8 });
+                var 悬浮窗2 = floaty.rawWindow(logDemo);
+                ui.run(function () { 悬浮窗2.consoleLog.findViewById(context.getResources().getIdentifier("input_container", "id", context.getPackageName())).setVisibility(8); });
+                悬浮窗2.consoleLog.setColors(console_arr);
+                悬浮窗2.consoleLog.setConsole(runtime.console);
+                悬浮窗2.setTouchable(false);
+                悬浮窗2.setPosition(0, device.height * 0.1);
             }
 
 
