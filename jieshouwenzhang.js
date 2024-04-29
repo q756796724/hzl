@@ -230,7 +230,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v8.0.7";
+            var versionNum = "接收v8.0.8";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -2539,7 +2539,9 @@ ui.ok.click(function () {
 
                     back();
                     sleep(1000);
-                    ui.run(function () { 悬浮窗.jbkz.visibility = 0 });
+                    if (!kanyikanflag) {
+                        ui.run(function () { 悬浮窗.jbkz.visibility = 0 });
+                    }
                     sleep(1000);
                 }
             }
