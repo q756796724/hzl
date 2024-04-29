@@ -367,7 +367,9 @@ ui.ok.click(function () {
             悬浮窗2.consoleLog.setConsole(runtime.console);
             悬浮窗2.setTouchable(false);
             悬浮窗2.setPosition(0, device.height * 0.1);
-
+            if (!kanyikanflag) {
+                ui.run(function () { 悬浮窗2.win.visibility = 8 });
+            }
 
 
             //指定确定按钮点击时要执行的动作
@@ -2469,9 +2471,6 @@ ui.ok.click(function () {
                 }
                 if (zwifi.toString() != dlwifi.toString()) {
                     ui.run(function () { 悬浮窗.jbkz.visibility = 8 });
-                    if (kanyikanflag) {
-                        ui.run(function () { 悬浮窗2.jbkz.visibility = 8 });
-                    }
                     sleep(1000);
                     totificationlistenersetting()
                     sleep(3000);
