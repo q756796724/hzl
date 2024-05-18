@@ -294,7 +294,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.2.0";
+            var versionNum = "聚合分享v11.2.1";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2709,6 +2709,19 @@ ui.ok.click(function () {
                                                                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                                                             return;
                                                                         }
+                                                                        let xiaoyueyueurltitle = packageName("com.tencent.mm").id("text1").findOne(600000);
+                                                                        if (xiaoyueyueurltitle && xiaoyueyueurltitle.text() == "·") {
+                                                                            log("小阅阅转载成功")
+                                                                            if (zwifi == storage.get("zhuanzaiwifi")) {
+                                                                                zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                                                                            }
+                                                                        } else {
+                                                                            if (zwifi == storage.get("zwifi", "XiaoMiWifi3G_5G") && storage.get("zhuanzaiwifi", "WifiPro_5G") != "WifiPro_5G") {
+                                                                                zwifi = storage.get("zhuanzaiwifi")
+                                                                                连接wifi(zwifi, 5000);
+                                                                            }
+                                                                            return;
+                                                                        }
                                                                         break
                                                                     }
                                                                 }
@@ -2789,11 +2802,11 @@ ui.ok.click(function () {
                                                     let xiaoyueyueurltitle = packageName("com.tencent.mm").id("text1").findOne(600000);
                                                     if (xiaoyueyueurltitle && xiaoyueyueurltitle.text() == "·") {
                                                         log("小阅阅转载成功")
-                                                        if(zwifi == storage.get("zhuanzaiwifi")){
+                                                        if (zwifi == storage.get("zhuanzaiwifi")) {
                                                             zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
                                                         }
-                                                    }else{
-                                                        if(zwifi == storage.get("zwifi", "XiaoMiWifi3G_5G")&&storage.get("zhuanzaiwifi", "WifiPro_5G") != "WifiPro_5G" ){
+                                                    } else {
+                                                        if (zwifi == storage.get("zwifi", "XiaoMiWifi3G_5G") && storage.get("zhuanzaiwifi", "WifiPro_5G") != "WifiPro_5G") {
                                                             zwifi = storage.get("zhuanzaiwifi")
                                                             连接wifi(zwifi, 5000);
                                                         }
