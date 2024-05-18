@@ -63,7 +63,7 @@ xiaoyueyuekedusj = storage.get("xiaoyueyuekedusj", new Date().getTime());//小�
 kelekedusj = storage.get("kelekedusj", new Date().getTime());//可乐可读时间
 meitiankedusj = storage.get("meitiankedusj", new Date().getTime());//美添可读时间
 autoX = storage.get("autoX", false);
-jieshouwifi = storage.get("jieshouwifi", "WifiPro_5G");
+zhuanzaiwifi = storage.get("zhuanzaiwifi", "WifiPro_5G");
 phoneNum = storage.get("phoneNum", "");
 checkFlag = true
 fanxiangFlag = false;
@@ -179,8 +179,8 @@ ui.layout(
         {/* <input id="dlwifi" text="{{dlwifi}}" /> */}
         <spinner id="dlwifi_spinner" entries={wifiOptions} />
         <horizontal>
-            <text textSize="16sp" textColor="black" text="jieshouwifi" />
-            <input id="jieshouwifi" text="{{jieshouwifi}}" />
+            <text textSize="16sp" textColor="black" text="zhuanzaiwifi" />
+            <spinner id="zhuanzaiwifi_spinner" entries={wifiOptions} />
         </horizontal>
         <text textSize="16sp" textColor="black" text="编号" />
         <input id="phoneNum" text="{{phoneNum}}" />
@@ -254,6 +254,8 @@ var zwifispinner = ui.zwifi_spinner;
 zwifispinner.setSelection(wifiOptions.split("|").indexOf(zwifi));
 var dlwifispinner = ui.dlwifi_spinner;
 dlwifispinner.setSelection(wifiOptions.split("|").indexOf(dlwifi));
+var zhuanzaiwifispinner = ui.zhuanzaiwifi_spinner;
+zhuanzaiwifispinner.setSelection(wifiOptions.split("|").indexOf(zhuanzaiwifi));
 var xyyzlspinner = ui.xyyzl_spinner;
 xyyzlspinner.setSelection(xyyzlOptions.split("|").indexOf(xyyzlurl));
 
@@ -292,7 +294,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.1.9";
+            var versionNum = "聚合分享v11.2.0";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -310,8 +312,8 @@ ui.ok.click(function () {
             log("代理Wifi:" + dlwifi);
             //xyyzlurl = ui.xyyzl_spinner.getSelectedItem();
             log("xyyzlurl:" + xyyzlurl);
-            jieshouwifi = ui.jieshouwifi.getText();
-            log("jieshouwifi:" + jieshouwifi);
+            zhuanzaiwifi = ui.zhuanzaiwifi_spinner.getSelectedItem();
+            log("转载wifi:" + zhuanzaiwifi);
             phoneNum = ui.phoneNum.getText();
             log("phoneNum:" + phoneNum);
             zfbtxyz = parseFloat(ui.zfbtxyz.text().toString());
@@ -354,7 +356,7 @@ ui.ok.click(function () {
             storage.put("xiaoyueyueflag", ui.xiaoyueyueflag.isChecked());
             storage.put("keleflag", ui.keleflag.isChecked());
             storage.put("autoX", ui.autoX.isChecked());
-            storage.put("jieshouwifi", ui.jieshouwifi.text());
+            storage.put("zhuanzaiwifi", zhuanzaiwifi);
             storage.put("phoneNum", ui.phoneNum.text());
             if (xyyzlurl != "无") {
                 storage.put("xyyzlurl", xyyzlurl)
@@ -740,21 +742,21 @@ ui.ok.click(function () {
 
 
             //获取
-            function kelejiancenum(jianceNum,phoneNum) {
+            function kelejiancenum(jianceNum, phoneNum) {
                 let temp = null;
                 let repData = "0";
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/kelejiancenum?phoneNum=" + phoneNum+"&jianceNum="+jianceNum, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/kelejiancenum?phoneNum=" + phoneNum + "&jianceNum=" + jianceNum, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
                         let repState = rep["state"];
                         if (repState == 1) {
                             let repData = rep["data"];
-                            if (repData >0) {
+                            if (repData > 0) {
                                 storage.put("kelejiancenum", repData)
-                            }else{
-                                repData=storage.get("kelejiancenum", 0)
+                            } else {
+                                repData = storage.get("kelejiancenum", 0)
                             }
                             return repData
                         } else {
@@ -770,7 +772,7 @@ ui.ok.click(function () {
                         app.launch(PKG_NAME);
                     }
                     sleep(8000)
-                    repData = kelejiancenum(jianceNum,phoneNum);
+                    repData = kelejiancenum(jianceNum, phoneNum);
 
                 }
 
@@ -1282,10 +1284,10 @@ ui.ok.click(function () {
             }
 
             //url异常提醒
-            function urlyc(url,phoneNum) {
+            function urlyc(url, phoneNum) {
                 let temp = null;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/urlyc?url=" + url+"&phoneNum=" + phoneNum, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/urlyc?url=" + url + "&phoneNum=" + phoneNum, {});
                     if (temp && temp.statusCode == 200) {
                     } else {
                         throw Error("urlyc获取数据失败" + temp)
@@ -1903,7 +1905,7 @@ ui.ok.click(function () {
                     cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("复制链接").findOne(8000);
                     let urltxt = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(网页由.*)/).findOnce();
                     if (urltxt && urltxt.text().indexOf("mp.weixin.qq.com") == -1) {
-                        urlyc(encodeURIComponent(urltxt.text(),phoneNum.toString()))
+                        urlyc(encodeURIComponent(urltxt.text(), phoneNum.toString()))
                     }
                     if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
                         if (packageName("com.tencent.mm").textMatches(/(.*禁止分享.*)/).findOnce()) {
@@ -2264,7 +2266,7 @@ ui.ok.click(function () {
                                                                     sleep(random(1000, 2000))
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                                         log("点击小阅阅助力成功")
-                                                                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*)/).findOne(10000)
+                                                                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|无法打开网页)/).findOne(10000)
                                                                         if (stopPage != null) {
                                                                             storage.put("yunshaomazhuliurl", "")
                                                                             sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
@@ -2346,7 +2348,7 @@ ui.ok.click(function () {
                                                 sleep(random(1000, 2000))
                                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                     log("点击小阅阅助力成功")
-                                                    let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*)/).findOne(10000)
+                                                    let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|无法打开网页)/).findOne(10000)
                                                     if (stopPage != null) {
                                                         storage.put("yunshaomazhuliurl", "")
                                                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
@@ -2698,7 +2700,7 @@ ui.ok.click(function () {
                                                                     sleep(random(1000, 2000))
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                                         log("点击小阅阅成功")
-                                                                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*)/).findOne(10000)
+                                                                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|无法打开网页)/).findOne(10000)
                                                                         if (stopPage != null) {
                                                                             storage.put("yunshaomaurl", "")
                                                                             //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
@@ -2775,13 +2777,26 @@ ui.ok.click(function () {
                                                 sleep(random(1000, 2000))
                                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                     log("点击小阅阅成功")
-                                                    let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*)/).findOne(10000)
+                                                    let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|无法打开网页)/).findOne(10000)
                                                     if (stopPage != null) {
                                                         storage.put("yunshaomaurl", "")
                                                         //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
                                                         removeyunshaomaurl(encodeURIComponent(yunshaomaurl), phoneNum.toString())
                                                         xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                                         storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                                                        return;
+                                                    }
+                                                    let xiaoyueyueurltitle = packageName("com.tencent.mm").id("text1").findOne(600000);
+                                                    if (xiaoyueyueurltitle && xiaoyueyueurltitle.text() == "·") {
+                                                        log("小阅阅转载成功")
+                                                        if(zwifi == storage.get("zhuanzaiwifi")){
+                                                            zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                                                        }
+                                                    }else{
+                                                        if(zwifi == storage.get("zwifi", "XiaoMiWifi3G_5G")&&storage.get("zhuanzaiwifi", "WifiPro_5G") != "WifiPro_5G" ){
+                                                            zwifi = storage.get("zhuanzaiwifi")
+                                                            连接wifi(zwifi, 5000);
+                                                        }
                                                         return;
                                                     }
                                                 }
@@ -2840,9 +2855,14 @@ ui.ok.click(function () {
                     let loadcount = 0
                     while (packageName("com.tencent.mm").id("task_btn_read").findOnce() == null) {
                         sleep(3000)
-                        if(packageName("com.tencent.mm").className("android.view.View").textMatches(/(存在违规操作.*)/).findOnce()){
+                        if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(存在违规操作.*)/).findOnce()) {
                             sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅存在违规操作");//出错请处理
-                            xiaoyueyuekedusj = new Date().getTime() + 72*3600 * 1000
+                            xiaoyueyuekedusj = new Date().getTime() + 72 * 3600 * 1000
+                            storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                            return
+                        }
+                        if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*维护.*)/).findOnce()) {
+                            xiaoyueyuekedusj = new Date().getTime() + 2 * 3600 * 1000
                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                             return
                         }
@@ -3266,7 +3286,7 @@ ui.ok.click(function () {
                                                                     }
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                                         log("点击可乐成功！")
-                                                                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*)/).findOne(10000)
+                                                                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|无法打开网页)/).findOne(10000)
                                                                         if (stopPage != null) {
                                                                             storage.put("keleurl", "")
                                                                             //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + keleurl);//出错请处理
@@ -3388,9 +3408,9 @@ ui.ok.click(function () {
                                                 }
                                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                     log("点击可乐成功")
-                                                    let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*)/).findOne(10000)
+                                                    let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|无法打开网页)/).findOne(10000)
                                                     if (stopPage != null) {
-                                                        storage.put("yunshaomaurl", "")
+                                                        storage.put("keleurl", "")
                                                         //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + keleurl);//出错请处理
                                                         removekeleurl(encodeURIComponent(keleurl), phoneNum.toString())
                                                         kelekedusj = new Date().getTime() + random(1000, 1200) * 1000
@@ -3774,7 +3794,7 @@ ui.ok.click(function () {
                             log("kelecheckFlag:" + kelecheckFlag)
                             return true
                         } else if (numbtn && numbtn.text().indexOf("阅读成功") > -1) {
-                            if(kelecount-wifiCount>3){
+                            if (kelecount - wifiCount > 3) {
                                 kelecheckFlag = false
                                 storage.put("kelecheckFlag", kelecheckFlag);
                             }
@@ -3792,9 +3812,9 @@ ui.ok.click(function () {
                                 }
                             }
                             console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
-                           
-                            if(keleReadNum>5){
-                                kelejiancenum(keleReadNum,phoneNum.toString())
+
+                            if (keleReadNum > 5) {
+                                kelejiancenum(keleReadNum, phoneNum.toString())
                                 log("检测限制，可乐第" + kelecount + "次," + "已完成篇数" + keleReadNum);
                             }
                             kelecheckFlag = true
@@ -3844,7 +3864,7 @@ ui.ok.click(function () {
                     }
                     kz();
                     //判断是否需要互助
-                    if (kelecheckFlag&&wifiCount == kelecount) {
+                    if (kelecheckFlag && wifiCount == kelecount) {
                         let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
                         cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
                         sleep(5000)
@@ -3956,8 +3976,8 @@ ui.ok.click(function () {
                             return false;
                         }
                         sleep(10000);
-                    }else{
-                        if(keleReadNum>5&&keleReadNum==kelejiancenum(0,phoneNum.toString())){
+                    } else {
+                        if (keleReadNum > 5 && keleReadNum == kelejiancenum(0, phoneNum.toString())) {
                             kelecheckFlag = true
                             storage.put("kelecheckFlag", kelecheckFlag);
                             log("前方检测，可乐第" + kelecount + "次," + "已完成篇数" + keleReadNum);
@@ -3973,7 +3993,7 @@ ui.ok.click(function () {
 
                     sleep(10000);
 
-                    if (kelecheckFlag&&wifiCount == kelecount) {
+                    if (kelecheckFlag && wifiCount == kelecount) {
                         log("可乐滑动")
                         swapeToRead();
                         sleep(random(3000, 7000));
@@ -6383,7 +6403,7 @@ ui.ok.click(function () {
                                 kelekedusj = new Date().getTime()
                                 storage.put("kelekedusj", kelekedusj);
                             }*/
-                            
+
                             zhengtian = false
                             storage.put("zhengtian", zhengtian);
 
