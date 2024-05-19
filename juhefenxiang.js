@@ -294,7 +294,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.2.2";
+            var versionNum = "聚合分享v11.2.4";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2705,7 +2705,7 @@ ui.ok.click(function () {
                                                                             storage.put("yunshaomaurl", "")
                                                                             //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
                                                                             removeyunshaomaurl(encodeURIComponent(yunshaomaurl), phoneNum.toString())
-                                                                            xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
+                                                                            xiaoyueyuekedusj = new Date().getTime() + random(30, 120) * 1000
                                                                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                                                             return;
                                                                         }
@@ -2782,7 +2782,7 @@ ui.ok.click(function () {
                                                         storage.put("yunshaomaurl", "")
                                                         //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
                                                         removeyunshaomaurl(encodeURIComponent(yunshaomaurl), phoneNum.toString())
-                                                        xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
+                                                        xiaoyueyuekedusj = new Date().getTime() + random(30, 120) * 1000
                                                         storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                                         return;
                                                     }
@@ -4600,7 +4600,6 @@ ui.ok.click(function () {
                                 }
 
                             } else {
-                                lastclipurl = "";
                                 lastgongzhonghao = "";
                                 if (sfjcwzflag) {
                                     sfjcwzflag = false
@@ -4747,14 +4746,13 @@ ui.ok.click(function () {
                                 if (sfjcwz(encodeURIComponent(clipurl))) {
                                     sfjcwzflag = true
                                 }
-                                if (sfjcwzflag || lastclipurl == clipurl) {//|| (latestgongzhonghao == lastgongzhonghao && lastgongzhonghao != "")
+                                if(lastclipurl == clipurl&& lastclipurl != ""){
+                                    console.warn(new Date().toLocaleString() + "-----------小阅阅卡文章退出");
+                                    lastclipurl="";
+                                    return false;
+                                }
+                                if (sfjcwzflag ) {//|| (latestgongzhonghao == lastgongzhonghao && lastgongzhonghao != "")
                                     let xianzhistr = "小阅阅中途检测"
-                                    if (lastclipurl == clipurl) {
-                                        xianzhistr = xianzhistr + "2" + clipurl
-                                    }
-                                    if (latestgongzhonghao == lastgongzhonghao && lastgongzhonghao != "") {
-                                        xianzhistr = xianzhistr + "3" + latestgongzhonghao
-                                    }
                                     if (联网验证(zwifi) != true) {
                                         连接wifi(zwifi, 5000);
                                         app.launch(PKG_NAME);
