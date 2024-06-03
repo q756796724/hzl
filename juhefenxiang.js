@@ -295,7 +295,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.2.6";
+            var versionNum = "聚合分享v11.2.7";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -1906,7 +1906,7 @@ ui.ok.click(function () {
                     cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("复制链接").findOne(8000);
                     let urltxt = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(网页由.*)/).findOnce();
                     if (urltxt && urltxt.text().indexOf("mp.weixin.qq.com") == -1) {
-                        urlyc(encodeURIComponent(urltxt.text(), phoneNum.toString()))
+                        urlyc(encodeURIComponent(urltxt.text()), phoneNum.toString())
                     }
                     if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
                         if (packageName("com.tencent.mm").textMatches(/(.*禁止分享.*)/).findOnce()) {
@@ -4700,25 +4700,26 @@ ui.ok.click(function () {
                                         fenxiangshibai();
                                     }
                                 }
-                                if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
 
-                                console.error("标题识别失败");
+                                let errstr="标题识别失败";
                                 if(cBtn==null){
-                                    console.error("cBtn=null");
+                                    errstr=errstr+"cBtn=null";
                                 }else{
-                                    console.error("cBtn="+cBtn.text());
+                                    errstr=errstr+"cBtn="+cBtn.text()
                                 }
                                 if(js_name==null){
-                                    console.error("js_name=null");
+                                    errstr=errstr+"js_name=null";
                                 }else{
-                                    console.error("js_name="+js_name.desc());
+                                    errstr=errstr+"js_name="+js_name.desc();
                                 }
                                 if(publish_time==null){
-                                    console.error("publish_time=null");
+                                    errstr=errstr+"publish_time=null";
                                 }else{
-                                    console.error("publish_time="+publish_time.text());
+                                    errstr=errstr+"publish_time="+publish_time.text();
                                 }
-                            
+                                console.error(errstr);
+                                sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "--" + errstr);//出错请处理
+
                                 xiaoyueyuekedusj = new Date().getTime() + random(1200, 1800) * 1000
                                 storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
 
