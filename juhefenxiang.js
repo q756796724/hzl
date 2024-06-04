@@ -295,7 +295,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.3.0";
+            var versionNum = "聚合分享v11.3.1";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4198,6 +4198,12 @@ ui.ok.click(function () {
                     let lastXiaoyueyuecheckFlag = xiaoyueyuecheckFlag
                     let lastsffs = sffs
                     let numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(成功.*|阅读无效.*|当前阅读被限制.*|阅读暂时无效.*)/).findOne(10000)
+                    if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOne(1000)) {
+                        click("继续访问")
+                        if(numbtn==null){
+                            numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(成功.*|阅读无效.*|当前阅读被限制.*|阅读暂时无效.*)/).findOne(10000)
+                        }
+                    }
                     if (numbtn && numbtn.text().indexOf("篇") > -1) {
                         xiaoyueyueReadNum = parseInt(numbtn.text().split("篇")[0].replace(/[^\d]/g, ""))
                         storage.put("xiaoyueyueReadNum", xiaoyueyueReadNum);
