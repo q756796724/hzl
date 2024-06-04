@@ -295,7 +295,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.2.7";
+            var versionNum = "聚合分享v11.2.8";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4325,22 +4325,26 @@ ui.ok.click(function () {
                     //判断是否需要互助
                     if (xiaoyueyuecount <= 2 || xiaoyueyuecount - wifiCount <= 1 || xiaoyueyuecheckFlag) { //|| (xiaoyueyueReadNum > 97 && xiaoyueyueReadNum < 101)) {
                         let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                        
                         if (cBtn == null || cBtn.text() == undefined || cBtn.text() != "") {
-                            let sBtn = packageName("com.tencent.mm").className("android.widget.ImageView").desc("返回").findOnce();
-                            if (sBtn != null && sBtn.parent() != null && sBtn.parent().clickable()) {
-                                sleep(random(2000, 3000));
-                                click(device.width - random(1, 10), sBtn.bounds().bottom - random(1, 5));
-                                sleep(random(2000, 3000));
-                                sBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("刷新").findOne(8000);
+                            let fxflag = fenxiangurl();
+                            let clipurl = getClip();
+                            if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
+                                back()
+                            }else{
+                                let sBtn = packageName("com.tencent.mm").className("android.widget.ImageView").desc("返回").findOnce();
                                 if (sBtn != null && sBtn.parent() != null && sBtn.parent().clickable()) {
                                     sleep(random(2000, 3000));
-                                    sBtn.parent().click();
-                                } else {
-                                    back()
-                                    sleep(1000)
-                                }
-                            } 
-                            cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
+                                    click(device.width - random(1, 10), sBtn.bounds().bottom - random(1, 5));
+                                    sleep(random(2000, 3000));
+                                    sBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("刷新").findOne(8000);
+                                    if (sBtn != null && sBtn.parent() != null && sBtn.parent().clickable()) {
+                                        sleep(random(2000, 3000));
+                                        sBtn.parent().click();
+                                    } 
+                                } 
+                            }
+                            cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(25000)
                         }
                         sleep(5000)
                         cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
