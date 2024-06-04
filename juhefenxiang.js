@@ -77,7 +77,7 @@ sffs = false;//是否副手
 lastclipurl = "";//上次复制的url
 lastgongzhonghao = "";
 latestgongzhonghao = "";
-xiaoyueyueurltrycount=0;
+xiaoyueyueurltrycount = 0;
 
 
 // 获取所有正在运行的脚本引擎
@@ -295,7 +295,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.2.9";
+            var versionNum = "聚合分享v11.3.0";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2842,7 +2842,7 @@ ui.ok.click(function () {
                     }
                     let xiaoyueyueurltitle = packageName("com.tencent.mm").id("text1").findOne(600000);
                     if (xiaoyueyueurltitle && xiaoyueyueurltitle.text() == "·") {
-                        xiaoyueyueurltrycount=0
+                        xiaoyueyueurltrycount = 0
                         log("小阅阅转载成功")
                         if (zwifi == storage.get("zhuanzaiwifi")) {
                             zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
@@ -2854,8 +2854,8 @@ ui.ok.click(function () {
                         return
                     } else {
                         xiaoyueyueurltrycount++
-                        if(xiaoyueyueurltrycount>3){
-                            xiaoyueyueurltrycount=0
+                        if (xiaoyueyueurltrycount > 3) {
+                            xiaoyueyueurltrycount = 0
                             storage.put("yunshaomaurl", "")
                             removeyunshaomaurl(encodeURIComponent(yunshaomaurl), phoneNum.toString())
                         }
@@ -4325,18 +4325,18 @@ ui.ok.click(function () {
                     //判断是否需要互助
                     if (xiaoyueyuecount <= 2 || xiaoyueyuecount - wifiCount <= 1 || xiaoyueyuecheckFlag) { //|| (xiaoyueyueReadNum > 97 && xiaoyueyueReadNum < 101)) {
                         let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
-                        
+
                         if (cBtn == null || cBtn.text() == undefined || cBtn.text() != "") {
                             let fxflag = fenxiangurl();
                             let clipurl = getClip();
                             if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
-                                toastLog("非阅读页，回退，fxflag="+fxflag+"clipurl="+clipurl)
+                                toastLog("非阅读页，回退，fxflag=" + fxflag + "clipurl=" + clipurl)
                                 sleep(500)
                                 let img = captureScreen();
-                                images.save(img, "/sdcard/fanqie/"+new Date().getTime()+".png");
+                                images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
                                 img.recycle();
                                 back()
-                            }else{
+                            } else {
                                 let sBtn = packageName("com.tencent.mm").className("android.widget.ImageView").desc("返回").findOnce();
                                 if (sBtn != null && sBtn.parent() != null && sBtn.parent().clickable()) {
                                     sleep(random(2000, 3000));
@@ -4346,15 +4346,15 @@ ui.ok.click(function () {
                                     if (sBtn != null && sBtn.parent() != null && sBtn.parent().clickable()) {
                                         sleep(random(2000, 3000));
                                         sBtn.parent().click();
-                                    }else{
+                                    } else {
                                         toastLog("刷新失败回退")
                                         sleep(500)
                                         let img = captureScreen();
-                                        images.save(img, "/sdcard/fanqie/"+new Date().getTime()+".png");
+                                        images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
                                         img.recycle();
-                                        back() 
-                                    } 
-                                } 
+                                        back()
+                                    }
+                                }
                             }
                             cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(25000)
                         }
@@ -4717,27 +4717,27 @@ ui.ok.click(function () {
                                     }
                                 }
 
-                                let errstr="标题识别失败";
-                                if(cBtn==null){
-                                    errstr=errstr+"cBtn=null";
-                                }else{
-                                    errstr=errstr+"cBtn="+cBtn.text()
+                                let errstr = "标题识别失败";
+                                if (cBtn == null) {
+                                    errstr = errstr + "cBtn=null";
+                                } else {
+                                    errstr = errstr + "cBtn=" + cBtn.text()
                                 }
-                                if(js_name==null){
-                                    errstr=errstr+"js_name=null";
-                                }else{
-                                    errstr=errstr+"js_name="+js_name.desc();
+                                if (js_name == null) {
+                                    errstr = errstr + "js_name=null";
+                                } else {
+                                    errstr = errstr + "js_name=" + js_name.desc();
                                 }
-                                if(publish_time==null){
-                                    errstr=errstr+"publish_time=null";
-                                }else{
-                                    errstr=errstr+"publish_time="+publish_time.text();
+                                if (publish_time == null) {
+                                    errstr = errstr + "publish_time=null";
+                                } else {
+                                    errstr = errstr + "publish_time=" + publish_time.text();
                                 }
                                 console.error(errstr);
                                 toast(errstr)
                                 sleep(500)
                                 let img = captureScreen();
-                                images.save(img, "/sdcard/fanqie/"+new Date().getTime()+".png");
+                                images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
                                 img.recycle();
                                 sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "--" + errstr);//出错请处理
 
@@ -4847,11 +4847,21 @@ ui.ok.click(function () {
                                                 sleep(random(2000, 3000));
                                                 cBtn.parent().click();
                                             } else {
+                                                toastLog("点击刷新失败")
+                                                sleep(500)
+                                                let img = captureScreen();
+                                                images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
+                                                img.recycle();
                                                 back()
                                                 sleep(1000)
                                                 clickx(device.width * 0.5, device.height * 0.4)
                                             }
                                         } else {
+                                            toastLog("点击右上角失败")
+                                            sleep(500)
+                                            let img = captureScreen();
+                                            images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
+                                            img.recycle();
                                             clickx(device.width * 0.5, device.height * 0.4)
                                         }
                                     }
