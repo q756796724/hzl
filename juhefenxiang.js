@@ -295,7 +295,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.3.2";
+            var versionNum = "聚合分享v11.3.3";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -1903,12 +1903,16 @@ ui.ok.click(function () {
                         console.error("寻找fenxiang失败")
                         return false
                     }
-                    cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("复制链接").findOne(8000);
+                    let fBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("复制链接").findOne(8000);
+                    if(fBtn==null){
+                        click(device.width - random(1, 10), cBtn.bounds().bottom - random(1, 5));
+                        fBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("复制链接").findOne(8000);
+                    }
                     let urltxt = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(网页由.*)/).findOnce();
                     if (urltxt && urltxt.text().indexOf("mp.weixin.qq.com") == -1) {
                         urlyc(encodeURIComponent(urltxt.text()), phoneNum.toString())
                     }
-                    if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
+                    if (fBtn != null && fBtn.parent() != null && fBtn.parent().clickable()) {
                         if (packageName("com.tencent.mm").textMatches(/(.*禁止分享.*)/).findOnce()) {
                             console.error("禁止分享");
                             back()
@@ -1916,7 +1920,7 @@ ui.ok.click(function () {
                             return false
                         }
                         sleep(random(2000, 3000));
-                        cBtn.parent().click();
+                        fBtn.parent().click();
                         sleep(random(2000, 3000));
                     } else {
                         console.error("notfound复制链接");
