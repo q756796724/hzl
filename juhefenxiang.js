@@ -295,7 +295,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.2.8";
+            var versionNum = "聚合分享v11.2.9";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4330,6 +4330,11 @@ ui.ok.click(function () {
                             let fxflag = fenxiangurl();
                             let clipurl = getClip();
                             if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
+                                toastLog("非阅读页，回退，fxflag="+fxflag+"clipurl="+clipurl)
+                                sleep(500)
+                                let img = captureScreen();
+                                images.save(img, "/sdcard/fanqie/"+new Date().getTime()+".png");
+                                img.recycle();
                                 back()
                             }else{
                                 let sBtn = packageName("com.tencent.mm").className("android.widget.ImageView").desc("返回").findOnce();
@@ -4341,6 +4346,13 @@ ui.ok.click(function () {
                                     if (sBtn != null && sBtn.parent() != null && sBtn.parent().clickable()) {
                                         sleep(random(2000, 3000));
                                         sBtn.parent().click();
+                                    }else{
+                                        toastLog("刷新失败回退")
+                                        sleep(500)
+                                        let img = captureScreen();
+                                        images.save(img, "/sdcard/fanqie/"+new Date().getTime()+".png");
+                                        img.recycle();
+                                        back() 
                                     } 
                                 } 
                             }
@@ -4722,6 +4734,11 @@ ui.ok.click(function () {
                                     errstr=errstr+"publish_time="+publish_time.text();
                                 }
                                 console.error(errstr);
+                                toast(errstr)
+                                sleep(500)
+                                let img = captureScreen();
+                                images.save(img, "/sdcard/fanqie/"+new Date().getTime()+".png");
+                                img.recycle();
                                 sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "--" + errstr);//出错请处理
 
                                 xiaoyueyuekedusj = new Date().getTime() + random(1200, 1800) * 1000
