@@ -295,7 +295,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.3.5";
+            var versionNum = "聚合分享v11.3.7";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -384,7 +384,7 @@ ui.ok.click(function () {
                 var hours = date.getHours();
                 var minutes = date.getMinutes();
                 var seconds = date.getSeconds();
-            
+
                 if (month < 10) {
                     month = "0" + month;
                 }
@@ -400,8 +400,8 @@ ui.ok.click(function () {
                 if (seconds < 10) {
                     seconds = "0" + seconds;
                 }
-            
-                return ''  + hours + minutes + seconds+ day+ month+ year;
+
+                return '' + hours + minutes + seconds + day + month + year;
             }
 
             function refreshStateInfo() {
@@ -1952,7 +1952,9 @@ ui.ok.click(function () {
                             return false
                         }
                         sleep(random(2000, 3000));
-                        fBtn.parent().click();
+                        if (fBtn.parent() != null && fBtn.parent().clickable()) {
+                            fBtn.parent().click();
+                        }
                         sleep(random(2000, 3000));
                     } else {
                         console.error("notfound复制链接");
@@ -1964,7 +1966,24 @@ ui.ok.click(function () {
                         return false
                     }
                 } catch (e) {
-                    console.warn(e)
+                    console.warn("fenxiangurl:" + e)
+                    try {
+                        let fzBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("复制链接").findOnce();
+                        if (fzBtn != null) {
+                            if (fzBtn.parent() != null && fzBtn.parent().clickable()) {
+                                fzBtn.parent().click();
+                                sleep(1000)
+                                return true
+                            }
+                        }
+                    } catch (e2) {
+                        console.warn("fenxiangurl:e2:" + e)
+                    }
+                    let quxiaobtn = packageName("com.tencent.mm").textContains("取消").findOne(3000);
+                    if (quxiaobtn) {
+                        click("取消")
+                        sleep(3000)
+                    }
                     return false
                 }
                 return true
@@ -4376,11 +4395,11 @@ ui.ok.click(function () {
                             setClip("");
                             let fxflag = fenxiangurl();
                             let clipurl = getClip();
-                            if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
+                            if (clipurl.indexOf("mp.weixin.qq.com/s") == -1 && clipurl != "") {
                                 toastLog("非阅读页，回退，fxflag=" + fxflag + "clipurl=" + clipurl)
-                                sleep(50)
+                                sleep(500)
                                 let img = captureScreen();
-                                images.save(img, "/sdcard/fanqie/" + formatDateTime(new Date()) + ".png");
+                                images.save(img, "/sdcard/fanqie/jietu/" + formatDateTime(new Date()) + ".png");
                                 img.recycle();
                                 sleep(1000)
                                 back()
@@ -4405,9 +4424,9 @@ ui.ok.click(function () {
                                         sBtn2.parent().click();
                                     } else {
                                         toastLog("刷新失败回退")
-                                        sleep(50)
+                                        sleep(500)
                                         let img = captureScreen();
-                                        images.save(img, "/sdcard/fanqie/" + formatDateTime(new Date()) + ".png");
+                                        images.save(img, "/sdcard/fanqie/jietu/" + formatDateTime(new Date()) + ".png");
                                         img.recycle();
                                         sleep(1000)
                                         let quxiaobtn = packageName("com.tencent.mm").textContains("取消").findOne(3000);
@@ -4798,9 +4817,9 @@ ui.ok.click(function () {
                                 }
                                 console.error(errstr);
                                 toast(errstr)
-                                sleep(50)
+                                sleep(500)
                                 let img = captureScreen();
-                                images.save(img, "/sdcard/fanqie/" + formatDateTime(new Date()) + ".png");
+                                images.save(img, "/sdcard/fanqie/jietu/" + formatDateTime(new Date()) + ".png");
                                 img.recycle();
                                 sleep(1000)
                                 sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "--" + errstr);//出错请处理
@@ -4922,9 +4941,9 @@ ui.ok.click(function () {
                                                 sBtn2.parent().click();
                                             } else {
                                                 toastLog("点击刷新失败")
-                                                sleep(50)
+                                                sleep(500)
                                                 let img = captureScreen();
-                                                images.save(img, "/sdcard/fanqie/" + formatDateTime(new Date()) + ".png");
+                                                images.save(img, "/sdcard/fanqie/jietu/" + formatDateTime(new Date()) + ".png");
                                                 img.recycle();
                                                 sleep(1000)
                                                 let quxiaobtn = packageName("com.tencent.mm").textContains("取消").findOne(3000);
@@ -4936,9 +4955,9 @@ ui.ok.click(function () {
                                             }
                                         } else {
                                             toastLog("点击右上角失败")
-                                            sleep(50)
+                                            sleep(500)
                                             let img = captureScreen();
-                                            images.save(img, "/sdcard/fanqie/" + formatDateTime(new Date()) + ".png");
+                                            images.save(img, "/sdcard/fanqie/jietu/" + formatDateTime(new Date()) + ".png");
                                             img.recycle();
                                             sleep(1000)
                                             clickx(device.width * 0.5, device.height * 0.4)
@@ -6340,6 +6359,13 @@ ui.ok.click(function () {
                 初始化配置2(shouhu_setting);
                 toastLog("初始化文件shouhu_setting");
             }
+            var jietupath = "/sdcard/fanqie/jietu"; // 文件夹路径
+            var jietufolder = files.ensureDir(jietupath); // 检查文件夹是否存在，如果不存在则创建
+            if (jietufolder) {
+                toast("jietu文件夹已存在或成功创建");
+            } else {
+                toast("jietu文件夹失败");
+            }
 
             //app保活双进程守护
             function setAppAlive(name) {
@@ -6662,6 +6688,10 @@ ui.ok.click(function () {
                                         if (files.listDir(path + "video/").length > 30) {
                                             清空文件夹(path + "video/");
                                         }
+                                        if (files.listDir("/sdcard/fanqie/jietu/").length > 100) {
+                                            清空文件夹("/sdcard/fanqie/jietu/");
+                                        }
+                                        
                                     }
                                 }
                             }
