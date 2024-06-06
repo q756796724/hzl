@@ -327,6 +327,7 @@ ui.ok.click(function () {
             log("zfbtx:" + zfbtx);
             xyyzl = ui.xyyzl.isChecked();
             log("xyyzl:" + xyyzl);
+            toastLog(formatDateTime(new Date()))
 
             qun_into = ui.qun_into.isChecked();
             qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
@@ -375,6 +376,33 @@ ui.ok.click(function () {
                 } catch (err) {
                     console.error("错误原因:" + err);
                 }
+            }
+
+            function formatDateTime(date) {
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                var hours = date.getHours();
+                var minutes = date.getMinutes();
+                var seconds = date.getSeconds();
+            
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                if (day < 10) {
+                    day = "0" + day;
+                }
+                if (hours < 10) {
+                    hours = "0" + hours;
+                }
+                if (minutes < 10) {
+                    minutes = "0" + minutes;
+                }
+                if (seconds < 10) {
+                    seconds = "0" + seconds;
+                }
+            
+                return ''  + hours + minutes + seconds+ day+ month+ year;
             }
 
             function refreshStateInfo() {
@@ -4353,7 +4381,7 @@ ui.ok.click(function () {
                                 toastLog("非阅读页，回退，fxflag=" + fxflag + "clipurl=" + clipurl)
                                 sleep(50)
                                 let img = captureScreen();
-                                images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
+                                images.save(img, "/sdcard/fanqie/" + formatDateTime(new Date()) + ".png");
                                 img.recycle();
                                 sleep(1000)
                                 back()
@@ -4380,7 +4408,7 @@ ui.ok.click(function () {
                                         toastLog("刷新失败回退")
                                         sleep(50)
                                         let img = captureScreen();
-                                        images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
+                                        images.save(img, "/sdcard/fanqie/" + formatDateTime(new Date()) + ".png");
                                         img.recycle();
                                         sleep(1000)
                                         let quxiaobtn = packageName("com.tencent.mm").textContains("取消").findOne(3000);
@@ -4773,7 +4801,7 @@ ui.ok.click(function () {
                                 toast(errstr)
                                 sleep(50)
                                 let img = captureScreen();
-                                images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
+                                images.save(img, "/sdcard/fanqie/" + formatDateTime(new Date()) + ".png");
                                 img.recycle();
                                 sleep(1000)
                                 sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "--" + errstr);//出错请处理
@@ -4897,7 +4925,7 @@ ui.ok.click(function () {
                                                 toastLog("点击刷新失败")
                                                 sleep(50)
                                                 let img = captureScreen();
-                                                images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
+                                                images.save(img, "/sdcard/fanqie/" + formatDateTime(new Date()) + ".png");
                                                 img.recycle();
                                                 sleep(1000)
                                                 let quxiaobtn = packageName("com.tencent.mm").textContains("取消").findOne(3000);
@@ -4911,7 +4939,7 @@ ui.ok.click(function () {
                                             toastLog("点击右上角失败")
                                             sleep(50)
                                             let img = captureScreen();
-                                            images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
+                                            images.save(img, "/sdcard/fanqie/" + formatDateTime(new Date()) + ".png");
                                             img.recycle();
                                             sleep(1000)
                                             clickx(device.width * 0.5, device.height * 0.4)
