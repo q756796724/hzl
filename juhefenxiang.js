@@ -327,7 +327,6 @@ ui.ok.click(function () {
             log("zfbtx:" + zfbtx);
             xyyzl = ui.xyyzl.isChecked();
             log("xyyzl:" + xyyzl);
-            toastLog(formatDateTime(new Date()))
 
             qun_into = ui.qun_into.isChecked();
             qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
@@ -6556,6 +6555,7 @@ ui.ok.click(function () {
                         kz();
                         nowHour = new Date().getHours();
                         log("当前时间:" + nowHour + "时");
+                        toastLog(formatDateTime(new Date()))
                         toastLog("版本号:" + versionNum);
                         xyyzl = storage.get("xyyzl", false);
                         配置 = 读取配置(settingPath);
