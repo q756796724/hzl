@@ -4423,8 +4423,8 @@ ui.ok.click(function () {
                         }
                         sleep(5000)
                         cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
-                        let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
-                        let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
+                        let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(10000)
+                        let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(10000)
                         let fabudibtn = packageName("com.tencent.mm").id("js_ip_wording_wrp").className("android.view.View").findOnce();
                         let read_area = packageName("com.tencent.mm").id("js_read_area3").textMatches(/(阅读.*)/).findOne(10000)
                         let js_focus = packageName("com.tencent.mm").id("js_focus").findOnce();
