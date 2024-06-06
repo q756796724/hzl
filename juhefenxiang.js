@@ -6359,7 +6359,7 @@ ui.ok.click(function () {
                 初始化配置2(shouhu_setting);
                 toastLog("初始化文件shouhu_setting");
             }
-            var jietupath = "/sdcard/fanqie/jietu"; // 文件夹路径
+            var jietupath = "/sdcard/fanqie/jietu/"; // 文件夹路径
             var jietufolder = files.ensureDir(jietupath); // 检查文件夹是否存在，如果不存在则创建
             if (jietufolder) {
                 toast("jietu文件夹已存在或成功创建");
