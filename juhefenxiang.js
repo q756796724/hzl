@@ -295,7 +295,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.3.3";
+            var versionNum = "聚合分享v11.3.5";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -1904,8 +1904,13 @@ ui.ok.click(function () {
                         return false
                     }
                     let fBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("复制链接").findOne(8000);
-                    if(fBtn==null){
-                        click(device.width - random(1, 10), cBtn.bounds().bottom - random(1, 5));
+                    if (fBtn == null) {
+                        let quxiaobtn = packageName("com.tencent.mm").textContains("取消").findOne(3000);
+                        if (!quxiaobtn) {
+                            log("重点右上角")
+                            click(device.width - random(1, 10), cBtn.bounds().bottom - random(1, 5));
+                            sleep(3000)
+                        }
                         fBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("复制链接").findOne(8000);
                     }
                     let urltxt = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(网页由.*)/).findOnce();
@@ -1924,14 +1929,18 @@ ui.ok.click(function () {
                         sleep(random(2000, 3000));
                     } else {
                         console.error("notfound复制链接");
-                        back()
-                        sleep(3000)
+                        let quxiaobtn = packageName("com.tencent.mm").textContains("取消").findOne(3000);
+                        if (quxiaobtn) {
+                            click("取消")
+                            sleep(3000)
+                        }
                         return false
                     }
                 } catch (e) {
                     console.warn(e)
                     return false
                 }
+                return true
             }
 
             function 进入收藏() {
@@ -4204,7 +4213,7 @@ ui.ok.click(function () {
                     let numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(成功.*|阅读无效.*|当前阅读被限制.*|阅读暂时无效.*)/).findOne(10000)
                     if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOne(1000)) {
                         click("继续访问")
-                        if(numbtn==null){
+                        if (numbtn == null) {
                             numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(成功.*|阅读无效.*|当前阅读被限制.*|阅读暂时无效.*)/).findOne(10000)
                         }
                     }
@@ -4337,14 +4346,16 @@ ui.ok.click(function () {
                         let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
 
                         if (cBtn == null || cBtn.text() == undefined || cBtn.text() != "") {
+                            setClip("");
                             let fxflag = fenxiangurl();
                             let clipurl = getClip();
                             if (fxflag == false || clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
                                 toastLog("非阅读页，回退，fxflag=" + fxflag + "clipurl=" + clipurl)
-                                sleep(500)
+                                sleep(50)
                                 let img = captureScreen();
                                 images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
                                 img.recycle();
+                                sleep(1000)
                                 back()
                             } else {
                                 let sBtn = packageName("com.tencent.mm").className("android.widget.ImageView").desc("返回").findOnce();
@@ -4352,16 +4363,31 @@ ui.ok.click(function () {
                                     sleep(random(2000, 3000));
                                     click(device.width - random(1, 10), sBtn.bounds().bottom - random(1, 5));
                                     sleep(random(2000, 3000));
-                                    sBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("刷新").findOne(8000);
-                                    if (sBtn != null && sBtn.parent() != null && sBtn.parent().clickable()) {
+                                    let sBtn2 = packageName("com.tencent.mm").className("android.widget.TextView").text("刷新").findOne(8000);
+                                    if (sBtn2 == null) {
+                                        let quxiaobtn = packageName("com.tencent.mm").textContains("取消").findOne(3000);
+                                        if (!quxiaobtn) {
+                                            log("重点右上角!")
+                                            click(device.width - random(1, 10), sBtn.bounds().bottom - random(1, 5));
+                                            sleep(3000)
+                                        }
+                                        sBtn2 = packageName("com.tencent.mm").className("android.widget.TextView").text("刷新").findOne(8000);
+                                    }
+                                    if (sBtn2 != null && sBtn2.parent() != null && sBtn2.parent().clickable()) {
                                         sleep(random(2000, 3000));
-                                        sBtn.parent().click();
+                                        sBtn2.parent().click();
                                     } else {
                                         toastLog("刷新失败回退")
-                                        sleep(500)
+                                        sleep(50)
                                         let img = captureScreen();
                                         images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
                                         img.recycle();
+                                        sleep(1000)
+                                        let quxiaobtn = packageName("com.tencent.mm").textContains("取消").findOne(3000);
+                                        if (quxiaobtn) {
+                                            click("取消")
+                                            sleep(3000)
+                                        }
                                         back()
                                     }
                                 }
@@ -4745,10 +4771,11 @@ ui.ok.click(function () {
                                 }
                                 console.error(errstr);
                                 toast(errstr)
-                                sleep(500)
+                                sleep(50)
                                 let img = captureScreen();
                                 images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
                                 img.recycle();
+                                sleep(1000)
                                 sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "--" + errstr);//出错请处理
 
                                 xiaoyueyuekedusj = new Date().getTime() + random(1200, 1800) * 1000
@@ -4821,6 +4848,13 @@ ui.ok.click(function () {
                                     }
                                 }
                                 setClip("");
+                                if (lastclipurl == clipurl && lastclipurl != "") {
+                                    console.warn(new Date().toLocaleString() + "-----------小阅阅卡文章退出,clipurl=" + clipurl);
+                                    lastclipurl = "";
+                                    return false;
+                                } else {
+                                    lastclipurl = clipurl;
+                                }
                                 if (clipurl.indexOf("mp.weixin.qq.com/s") == -1) {
                                     back()
                                     break;
@@ -4828,13 +4862,7 @@ ui.ok.click(function () {
                                 if (sfjcwz(encodeURIComponent(clipurl))) {
                                     sfjcwzflag = true
                                 }
-                                if (lastclipurl == clipurl && lastclipurl != "") {
-                                    console.warn(new Date().toLocaleString() + "-----------小阅阅卡文章退出");
-                                    lastclipurl = "";
-                                    return false;
-                                } else {
-                                    lastclipurl = clipurl;
-                                }
+
                                 if (sfjcwzflag) {//|| (latestgongzhonghao == lastgongzhonghao && lastgongzhonghao != "")
                                     let xianzhistr = "小阅阅中途检测"
                                     if (联网验证(zwifi) != true) {
@@ -4847,31 +4875,45 @@ ui.ok.click(function () {
                                     wifiCount = xiaoyueyuecount
                                     console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
                                     if (packageName("com.tencent.mm").className("android.view.View").text("无法打开网页").findOnce() || packageName("com.tencent.mm").className("android.view.View").text("点击空白处刷新").findOnce() || packageName("com.tencent.mm").className("android.widget.TextView").text("诊断网络").findOnce()) {
-                                        let cBtn = packageName("com.tencent.mm").className("android.widget.ImageView").desc("返回").findOnce();
-                                        if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
+                                        let sBtn = packageName("com.tencent.mm").className("android.widget.ImageView").desc("返回").findOnce();
+                                        if (sBtn != null && sBtn.parent() != null && sBtn.parent().clickable()) {
                                             sleep(random(2000, 3000));
-                                            click(device.width - random(1, 10), cBtn.bounds().bottom - random(1, 5));
+                                            click(device.width - random(1, 10), sBtn.bounds().bottom - random(1, 5));
                                             sleep(random(2000, 3000));
-                                            cBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("刷新").findOne(8000);
-                                            if (cBtn != null && cBtn.parent() != null && cBtn.parent().clickable()) {
+                                            let sBtn2 = packageName("com.tencent.mm").className("android.widget.TextView").text("刷新").findOne(8000);
+                                            if (sBtn2 == null) {
+                                                let quxiaobtn = packageName("com.tencent.mm").textContains("取消").findOne(3000);
+                                                if (!quxiaobtn) {
+                                                    log("重点右上角!")
+                                                    click(device.width - random(1, 10), sBtn.bounds().bottom - random(1, 5));
+                                                    sleep(3000)
+                                                }
+                                                sBtn2 = packageName("com.tencent.mm").className("android.widget.TextView").text("刷新").findOne(8000);
+                                            }
+                                            if (sBtn2 != null && sBtn2.parent() != null && sBtn2.parent().clickable()) {
                                                 sleep(random(2000, 3000));
-                                                cBtn.parent().click();
+                                                sBtn2.parent().click();
                                             } else {
                                                 toastLog("点击刷新失败")
-                                                sleep(500)
+                                                sleep(50)
                                                 let img = captureScreen();
                                                 images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
                                                 img.recycle();
-                                                back()
                                                 sleep(1000)
+                                                let quxiaobtn = packageName("com.tencent.mm").textContains("取消").findOne(3000);
+                                                if (quxiaobtn) {
+                                                    click("取消")
+                                                    sleep(3000)
+                                                }
                                                 clickx(device.width * 0.5, device.height * 0.4)
                                             }
                                         } else {
                                             toastLog("点击右上角失败")
-                                            sleep(500)
+                                            sleep(50)
                                             let img = captureScreen();
                                             images.save(img, "/sdcard/fanqie/" + new Date().getTime() + ".png");
                                             img.recycle();
+                                            sleep(1000)
                                             clickx(device.width * 0.5, device.height * 0.4)
                                         }
                                     }
@@ -4922,7 +4964,7 @@ ui.ok.click(function () {
                                         // }
                                     }*/
                                 } else {
-                                    lastclipurl = clipurl;
+                                    //lastclipurl = clipurl;
                                     lastgongzhonghao = latestgongzhonghao
                                     back()
                                 }
