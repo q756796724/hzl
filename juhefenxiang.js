@@ -295,7 +295,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.3.9";
+            var versionNum = "聚合分享v11.4.0";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4210,7 +4210,7 @@ ui.ok.click(function () {
                 }
 
                 cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
-                if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(当前阅读被限制.*|阅读暂时无效.*)/).findOnce()) {
+                if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*被限制.*|阅读暂时无效.*)/).findOnce()) {
                     let xianzhistr = "小阅阅限制"
                     log(new Date().toLocaleString() + "-----------" + xianzhistr);
                     xiaoyueyuecheckFlag = true
@@ -4286,11 +4286,11 @@ ui.ok.click(function () {
                 for (; ;) {
                     let lastXiaoyueyuecheckFlag = xiaoyueyuecheckFlag
                     let lastsffs = sffs
-                    let numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(成功.*|阅读无效.*|当前阅读被限制.*|阅读暂时无效.*)/).findOne(10000)
+                    let numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(成功.*|阅读无效.*|.*被限制.*|阅读暂时无效.*)/).findOne(10000)
                     if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOne(1000)) {
                         click("继续访问")
                         if (numbtn == null) {
-                            numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(成功.*|阅读无效.*|当前阅读被限制.*|阅读暂时无效.*)/).findOne(10000)
+                            numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(成功.*|阅读无效.*|.*被限制.*|阅读暂时无效.*)/).findOne(10000)
                         }
                     }
                     if (numbtn && numbtn.text().indexOf("篇") > -1) {
@@ -4318,7 +4318,7 @@ ui.ok.click(function () {
                             storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                             return false;
                         } else {
-                            if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(当前阅读被限制.*|阅读暂时无效.*)/).findOne(5000)) {//不会是第一篇因为顶头已经拦截
+                            if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*被限制.*|阅读暂时无效.*)/).findOne(5000)) {//不会是第一篇因为顶头已经拦截
                                 let xianzhistr = "小阅阅限制"
                                 console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
                                 xiaoyueyuecheckFlag = true
@@ -4771,7 +4771,7 @@ ui.ok.click(function () {
                             }
                         } else {
                             let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
-                            if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(当前阅读被限制.*)/).findOnce()) {//不会是第一篇因为顶头已经拦截
+                            if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*被限制.*)/).findOnce()) {//不会是第一篇因为顶头已经拦截
                                 let xianzhistr = "小阅阅限制"
                                 if (xiaoyueyuecheckFlag) {
                                     if (sffs == false) {
@@ -5060,7 +5060,7 @@ ui.ok.click(function () {
                                 break;
                             }
                             let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
-                            if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(当前阅读被限制.*)/).findOnce()) {
+                            if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*被限制.*)/).findOnce()) {
                                 let xianzhistr = "小阅阅限制"
                                 if (xiaoyueyuecheckFlag) {
                                     if (sffs == false) {
