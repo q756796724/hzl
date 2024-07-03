@@ -295,7 +295,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.4.2";
+            var versionNum = "聚合分享v11.4.3";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4445,7 +4445,7 @@ ui.ok.click(function () {
                                 img.recycle();
                                 sleep(1000)
                                 back()
-                            } else {
+                            } /*else {
                                 let sBtn = packageName("com.tencent.mm").className("android.widget.ImageView").desc("返回").findOnce();
                                 if (sBtn != null && sBtn.parent() != null && sBtn.parent().clickable()) {
                                     sleep(random(2000, 3000));
@@ -4479,7 +4479,7 @@ ui.ok.click(function () {
                                         back()
                                     }
                                 }
-                            }
+                            }*/
                             cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(25000)
                         }
                         sleep(5000)
@@ -4971,7 +4971,7 @@ ui.ok.click(function () {
                                     wifiCount = xiaoyueyuecount
                                     console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
                                     if (packageName("com.tencent.mm").className("android.view.View").text("无法打开网页").findOnce() || packageName("com.tencent.mm").className("android.view.View").text("点击空白处刷新").findOnce() || packageName("com.tencent.mm").className("android.widget.TextView").text("诊断网络").findOnce()) {
-                                        let sBtn = packageName("com.tencent.mm").className("android.widget.ImageView").desc("返回").findOnce();
+                                        /*let sBtn = packageName("com.tencent.mm").className("android.widget.ImageView").desc("返回").findOnce();
                                         if (sBtn != null && sBtn.parent() != null && sBtn.parent().clickable()) {
                                             sleep(random(2000, 3000));
                                             click(device.width - random(1, 10), sBtn.bounds().bottom - random(1, 5));
@@ -5011,7 +5011,8 @@ ui.ok.click(function () {
                                             img.recycle();
                                             sleep(1000)
                                             clickx(device.width * 0.5, device.height * 0.4)
-                                        }
+                                        }*/
+                                        clickx(device.width * 0.5, device.height * 0.4)
                                     }
                                     /*if (havejieshourenFu(1) == false) {
                                         if (havejieshouren(1) == false) {
