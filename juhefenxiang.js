@@ -2905,18 +2905,21 @@ ui.ok.click(function () {
                         log("小阅阅转载成功")
                         if (zwifi == storage.get("zhuanzaiwifi")) {
                             zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                            连接wifi(zwifi, 5000);
                         }
                     } else if (xiaoyueyueurltitle && xiaoyueyueurltitle.text() == "·") {
                         xiaoyueyueurltrycount = 0
                         log("小阅阅转载成功")
                         if (zwifi == storage.get("zhuanzaiwifi")) {
                             zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                            连接wifi(zwifi, 5000);
                         }
                     } else if (xiaoyueyueurltitle && xiaoyueyueurltitle.text() != null && xiaoyueyueurltitle.text() != "") {
                         xiaoyueyueurltrycount = 0
                         log("小阅阅转载成功")
                         if (zwifi == storage.get("zhuanzaiwifi")) {
                             zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                            连接wifi(zwifi, 5000);
                         }
                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅ui变了" + xiaoyueyueurltitle.text());//出错请处理
                     } else if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(存在违规操作.*)/).findOnce()) {
@@ -2930,6 +2933,10 @@ ui.ok.click(function () {
                             xiaoyueyueurltrycount = 0
                             storage.put("yunshaomaurl", "")
                             removeyunshaomaurl(encodeURIComponent(yunshaomaurl), phoneNum.toString())
+                            if (zwifi == storage.get("zhuanzaiwifi")) {
+                                zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                                连接wifi(zwifi, 5000);
+                            }
                         }
                         if (zwifi == storage.get("zwifi", "XiaoMiWifi3G_5G") && storage.get("zhuanzaiwifi", "WifiPro_5G") != "WifiPro_5G") {
                             zwifi = storage.get("zhuanzaiwifi")
@@ -3815,6 +3822,10 @@ ui.ok.click(function () {
             function lunSleep(sleepTime) {
                 返回v首页();
                 log(new Date().toLocaleString() + "-" + "-----------" + "番茄当天已轮回" + (lunCount - 1).toString() + "次完成篇数" + readNum + ",小阅阅完成篇数" + xiaoyueyueReadNum + ",meitianover=" + meitianover + ",休息" + sleepTime / 1000 / 60 + "分钟");
+                if (zwifi == storage.get("zhuanzaiwifi")) {
+                    zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                    连接wifi(zwifi, 5000);
+                }
                 if (联网验证(zwifi) != true) {
                     连接wifi(zwifi, 5000);
                 }
@@ -5771,6 +5782,10 @@ ui.ok.click(function () {
                 for (let i = 0; i < sleepTime / 1000 / 60; i++) {
                     配置 = 读取配置(settingPath);
                     if (i % 10 == 0) {
+                        if (zwifi == storage.get("zhuanzaiwifi")) {
+                            zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                            连接wifi(zwifi, 5000);
+                        }
                         if (联网验证(zwifi) != true) {
                             连接wifi(zwifi, 5000);
                         }
