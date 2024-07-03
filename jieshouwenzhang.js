@@ -230,7 +230,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v8.0.8";
+            var versionNum = "接收v8.0.9";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -1593,8 +1593,15 @@ ui.ok.click(function () {
                                     let read_area = packageName("com.tencent.mm").id("js_read_area3").textMatches(/(阅读.*)/).findOnce();
                                     let js_focus = packageName("com.tencent.mm").id("js_focus").findOnce();
                                     let read_area_num = "";
-                                    if (read_area) {
-                                        read_area_num = read_area.text();
+                                    for(var q=0;q<=5;q++){
+                                        if (read_area) {
+                                            read_area_num = read_area.text();
+                                            break;
+                                        }else{
+                                            swapeToRead();
+                                            sleep(random(2000, 5000));
+                                            read_area = packageName("com.tencent.mm").id("js_read_area3").textMatches(/(阅读.*)/).findOnce()
+                                        }
                                     }
                                     let fabudi = "";
                                     if (fabudibtn) {
@@ -1627,12 +1634,12 @@ ui.ok.click(function () {
                                             xiaoyueyuecheckFlag = false;
                                         }
                                         if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 3 * 24 * 3600 * 1000&&new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
-                                            if (read_area && read_area.text().match(/\d+/g)[0] > 800) {
+                                            if (read_area && read_area.text().match(/\d+/g)[0] > 500) {
                                                 xiaoyueyuecheckFlag = false;
                                             }
                                         }
                                         if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 7 * 24 * 3600 * 1000) {
-                                            if (read_area && read_area.text().match(/\d+/g)[0] > 3000) {
+                                            if (read_area && read_area.text().match(/\d+/g)[0] > 1000) {
                                                 xiaoyueyuecheckFlag = false;
                                             }
                                         }
@@ -2459,10 +2466,6 @@ ui.ok.click(function () {
 
 
             function 连接wifi(wifiName, connectTime) {
-                nowHour = new Date().getHours();
-                if (nowHour < 5) {
-                    return
-                }
                 if (wifiName == zwifi) {
                     log("连接zwifi")
                 } else if (wifiName == dlwifi) {
@@ -2588,6 +2591,7 @@ ui.ok.click(function () {
                         return false
                     }
                 }
+                return false
             }
             function wifi弹窗处理() {
                 let qBtn = textMatches(/(完成|连接)/).findOne(1000);
