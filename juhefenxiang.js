@@ -65,6 +65,7 @@ meitiankedusj = storage.get("meitiankedusj", new Date().getTime());//美添可�
 autoX = storage.get("autoX", false);
 zhuanzaiwifi = storage.get("zhuanzaiwifi", "WifiPro_5G");
 phoneNum = storage.get("phoneNum", "");
+jieshouPhoneNum = storage.get("jieshouPhoneNum", "");
 checkFlag = true
 fanxiangFlag = false;
 xianzhiFlag = false;
@@ -185,6 +186,8 @@ ui.layout(
         </horizontal>
         <text textSize="16sp" textColor="black" text="编号" />
         <input id="phoneNum" text="{{phoneNum}}" />
+        <text textSize="16sp" textColor="black" text="接收编号" />
+        <input id="jieshouPhoneNum" text="{{jieshouPhoneNum}}" />
         <horizontal>
             <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
             <checkbox text="xyyzfbtx" id="zfbtx" checked="{{zfbtx}}" textSize="18sp" />\
@@ -295,7 +298,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.4.3";
+            var versionNum = "聚合分享v11.4.4";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -317,6 +320,8 @@ ui.ok.click(function () {
             log("转载wifi:" + zhuanzaiwifi);
             phoneNum = ui.phoneNum.getText();
             log("phoneNum:" + phoneNum);
+            jieshouPhoneNum= ui.jieshouPhoneNum.getText();
+            log("jieshouPhoneNum:" + jieshouPhoneNum);
             zfbtxyz = parseFloat(ui.zfbtxyz.text().toString());
             log("zfbtxyz:" + zfbtxyz);
             zfbtxyz2 = parseFloat(ui.zfbtxyz2.text().toString());
@@ -359,6 +364,8 @@ ui.ok.click(function () {
             storage.put("autoX", ui.autoX.isChecked());
             storage.put("zhuanzaiwifi", zhuanzaiwifi);
             storage.put("phoneNum", ui.phoneNum.text());
+            storage.put("jieshouPhoneNum", ui.jieshouPhoneNum.text());
+            
             if (xyyzlurl != "无") {
                 storage.put("xyyzlurl", xyyzlurl)
             }
