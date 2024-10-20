@@ -297,7 +297,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.4.5";
+            var versionNum = "聚合分享v11.4.6";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2558,7 +2558,7 @@ ui.ok.click(function () {
                                                                     }
                                                                     sleep(random(1000, 2000))
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
-                                                                        log("点击小阅阅成功")
+                                                                        log("点击小阅阅成功.")
                                                                         let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|无法打开网页)/).findOne(10000)
                                                                         if (stopPage != null) {
                                                                             storage.put("yunshaomaurl", "")
@@ -2635,7 +2635,7 @@ ui.ok.click(function () {
                                                 }
                                                 sleep(random(1000, 2000))
                                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
-                                                    log("点击小阅阅成功")
+                                                    log("点击小阅阅成功..")
                                                     let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|无法打开网页)/).findOne(10000)
                                                     if (stopPage != null) {
                                                         storage.put("yunshaomaurl", "")
@@ -2706,13 +2706,18 @@ ui.ok.click(function () {
                         click("允许");
                         sleep(3000);
                     }
-                    let xiaoyueyueurltitle = packageName("com.tencent.mm").id("text1").findOne(600000);
+                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*失效.*)/).findOne(10000)) {
+                        storage.put("yunshaomaurl", "")
+                        return
+                    }
+                    let xiaoyueyueurltitle = packageName("com.tencent.mm").id("text1").findOne(100000);
                     if (xiaoyueyueurltitle && xiaoyueyueurltitle.text() == "小阅阅") {
                         xiaoyueyueurltrycount = 0
                         log("小阅阅转载成功")
                         if (zwifi == storage.get("zhuanzaiwifi")) {
                             zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
                             连接wifi(zwifi, 5000);
+                            return
                         }
                     } else if (xiaoyueyueurltitle && xiaoyueyueurltitle.text() == "·") {
                         xiaoyueyueurltrycount = 0
@@ -2720,6 +2725,7 @@ ui.ok.click(function () {
                         if (zwifi == storage.get("zhuanzaiwifi")) {
                             zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
                             连接wifi(zwifi, 5000);
+                            return
                         }
                     } else if (xiaoyueyueurltitle && xiaoyueyueurltitle.text() != null && xiaoyueyueurltitle.text() != "") {
                         xiaoyueyueurltrycount = 0
@@ -2727,12 +2733,15 @@ ui.ok.click(function () {
                         if (zwifi == storage.get("zhuanzaiwifi")) {
                             zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
                             连接wifi(zwifi, 5000);
+                            return
                         }
                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅ui变了" + xiaoyueyueurltitle.text());//出错请处理
                     } else if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(存在违规操作.*)/).findOnce()) {
                         sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅存在违规操作");//出错请处理
                         xiaoyueyuekedusj = new Date().getTime() + 72 * 3600 * 1000
                         storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                        return
+                    }else if(packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce()){
                         return
                     } else {
                         xiaoyueyueurltrycount++
