@@ -2741,7 +2741,7 @@ ui.ok.click(function () {
                         xiaoyueyuekedusj = new Date().getTime() + 72 * 3600 * 1000
                         storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                         return
-                    }else if(packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce()){
+                    } else if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce()) {
                         storage.put("yunshaomaurl", "")
                         return
                     } else {
@@ -2902,7 +2902,7 @@ ui.ok.click(function () {
                             } else {
                                 fenxiangshibai();
                             }
-                        } else if(startbtn.text() == "点击开始阅读"){
+                        } else if (startbtn.text() == "点击开始阅读") {
                             log("点击开始阅读")
                             startbtn.click();
                             if (xiaoyueyueyuedu()) {
@@ -2911,7 +2911,7 @@ ui.ok.click(function () {
                             }
                             xiaoyueyuecount = 1
                             storage.put("xiaoyueyuecount", xiaoyueyuecount);
-                        }else {
+                        } else {
                             let close_btn = packageName("com.tencent.mm").className("android.widget.Image").text("close_btn").findOnce();
                             if (close_btn) {
                                 close_btn.click();
@@ -4181,6 +4181,11 @@ ui.ok.click(function () {
                         let js_focus = packageName("com.tencent.mm").id("js_focus").findOnce();
                         let read_area_num = "";
                         let readCount = 0;
+                        if (read_area == null||isNaN(parseInt(read_area.text().match(/\d+/g)[0]))) {
+                            swapeToRead();
+                            sleep(random(3000, 7000));
+                            read_area = packageName("com.tencent.mm").id("js_read_area3").textMatches(/(阅读.*)/).findOne(10000)
+                        }
                         if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null) {
                             readCount = parseInt(read_area.text().match(/\d+/g)[0]);
                         }
@@ -4462,7 +4467,7 @@ ui.ok.click(function () {
                                     return false;
                                 }
 
-                            } 
+                            }
                         } else {
                             let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
                             if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*被限制.*)/).findOnce()) {//不会是第一篇因为顶头已经拦截
