@@ -4118,7 +4118,24 @@ ui.ok.click(function () {
                     } else if (numbtn && numbtn.text().indexOf("码失效") > -1) {
                         let xianzhistr = "码失效"
                         console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
-                        return false;
+                        back()
+                        startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(10000);
+                        if (startbtn) {
+                            if (startbtn.clickable()) {
+                                log("重新点击开始阅读。")
+                                startbtn.click();
+                                startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(5000);
+                                if (startbtn) {
+                                    log("重试点击开始阅读。")
+                                    startbtn.click();
+                                }
+                                continue
+                            } else {
+                                log("不能点击开始阅读")
+                                return false;
+                            }
+
+                        }
                     }
 
                     refreshStateInfo();
@@ -4187,7 +4204,7 @@ ui.ok.click(function () {
                                 back()
                                 startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(10000);
                                 if (startbtn) {
-                                    if(startbtn.clickable()){
+                                    if (startbtn.clickable()) {
                                         log("重新点击开始阅读。")
                                         startbtn.click();
                                         startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(5000);
@@ -4195,11 +4212,11 @@ ui.ok.click(function () {
                                             log("重试点击开始阅读。")
                                             startbtn.click();
                                         }
-                                    }else{
+                                    } else {
                                         log("不能点击开始阅读")
                                         return false;
                                     }
-                                    
+
                                 }
 
                             }
@@ -4397,7 +4414,7 @@ ui.ok.click(function () {
                                 }
 
                             }
-                            if(packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null&&read_area && read_area.text().match(/\d+/g)[0] < 3000){
+                            if (packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null && read_area && read_area.text().match(/\d+/g)[0] < 3000) {
                                 if (sfjcwz(encodeURIComponent(js_name.desc()))) {
                                     let xianzhistr = "小阅阅检测-gongzonghao"
                                     if (xiaoyueyuecount > wifiCount) {
