@@ -2706,7 +2706,7 @@ ui.ok.click(function () {
                         click("允许");
                         sleep(3000);
                     }
-                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*失效.*)/).findOne(10000)) {
+                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*失效.*|.*失败.*)/).findOne(10000)) {
                         storage.put("yunshaomaurl", "")
                         return
                     }
