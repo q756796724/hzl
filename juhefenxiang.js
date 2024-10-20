@@ -4160,6 +4160,18 @@ ui.ok.click(function () {
                         let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
 
                         if (cBtn == null || cBtn.text() == undefined || cBtn.text() == "") {
+                            let tstxt = packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*分钟后.*)/).findOnce()
+                            if (tstxt) {
+                                log(new Date().toLocaleString() + "-----------" + "小阅阅本轮完成");
+                                xiaoyueyuecount = 1
+                                storage.put("xiaoyueyuecount", xiaoyueyuecount);
+                                xiaoyueyueluncount++
+                                storage.put("xiaoyueyueluncount", xiaoyueyueluncount);
+
+                                xiaoyueyuekedusj = new Date().getTime() + parseInt(tstxt.text().replace(/[^\d]/g, " ")) * 60000 + random(60000, 480000)
+                                storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                                return true
+                            }
                             setClip("");
                             let fxflag = fenxiangurl();
                             let clipurl = getClip();
@@ -4173,13 +4185,19 @@ ui.ok.click(function () {
                                 back()
                                 startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(10000);
                                 if (startbtn) {
-                                    log("重新点击开始阅读")
-                                    startbtn.click();
-                                    startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(5000);
-                                    if (startbtn) {
-                                        log("重试点击开始阅读")
+                                    if(startbtn.clickable()){
+                                        log("重新点击开始阅读")
                                         startbtn.click();
+                                        startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(5000);
+                                        if (startbtn) {
+                                            log("重试点击开始阅读")
+                                            startbtn.click();
+                                        }
+                                    }else{
+                                        log("不能点击开始阅读")
+                                        return false;
                                     }
+                                    
                                 }
 
                             }
