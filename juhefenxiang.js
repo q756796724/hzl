@@ -2901,7 +2901,16 @@ ui.ok.click(function () {
                             } else {
                                 fenxiangshibai();
                             }
-                        } else {
+                        } else if(startbtn.text() == "点击开始阅读"){
+                            log("点击开始阅读")
+                            startbtn.click();
+                            if (xiaoyueyueyuedu()) {
+                                xiaoyueyueluncount++
+                                storage.put("xiaoyueyueluncount", xiaoyueyueluncount);
+                            }
+                            xiaoyueyuecount = 1
+                            storage.put("xiaoyueyuecount", xiaoyueyuecount);
+                        }else {
                             let close_btn = packageName("com.tencent.mm").className("android.widget.Image").text("close_btn").findOnce();
                             if (close_btn) {
                                 close_btn.click();
@@ -2916,14 +2925,7 @@ ui.ok.click(function () {
                                     longclickx(device.width * 0.5, device.height * 0.4)
                                 }
                             } else {
-                                if (xiaoyueyueyuedu()) {
-                                    xiaoyueyueluncount++
-                                    storage.put("xiaoyueyueluncount", xiaoyueyueluncount);
-                                }
-                                xiaoyueyuecount = 1
-                                storage.put("xiaoyueyuecount", xiaoyueyuecount);
-                                
-                                /*for (let i = 0; i < 5; i++) {
+                                for (let i = 0; i < 5; i++) {
                                     let startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(8000);
                                     if (startbtn && startbtn.text() == "点击开始阅读") {
                                         startbtn.click();
@@ -2975,10 +2977,10 @@ ui.ok.click(function () {
                                         返回v首页();
                                         return;
                                     }
-                                }*/
+                                }
                             }
 
-                            /*let sbqrBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("识别图中的二维码").findOne(7000);
+                            let sbqrBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("识别图中的二维码").findOne(7000);
                             if (sbqrBtn != null && sbqrBtn.parent() != null && sbqrBtn.parent().clickable()) {
                                 sleep(random(500, 2000));
                                 sbqrBtn.parent().click();
@@ -2995,7 +2997,7 @@ ui.ok.click(function () {
                                 }
                                 返回v首页();
                                 return;
-                            }*/
+                            }
                         }
 
                     } else {
