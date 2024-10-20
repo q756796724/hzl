@@ -4157,7 +4157,7 @@ ui.ok.click(function () {
                     if (xiaoyueyuecount <= 2 || xiaoyueyuecount - wifiCount <= 1 || xiaoyueyuecheckFlag || true) { //|| (xiaoyueyueReadNum > 97 && xiaoyueyueReadNum < 101)) {
                         let cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(15000)
 
-                        if (cBtn == null || cBtn.text() == undefined || cBtn.text() != "") {
+                        if (cBtn == null || cBtn.text() == undefined || cBtn.text() == "") {
                             setClip("");
                             let fxflag = fenxiangurl();
                             let clipurl = getClip();
@@ -4575,17 +4575,7 @@ ui.ok.click(function () {
                     } else {
                         log("小阅阅滑动")
                         swapeToRead();
-                        sleep(random(3000, 7000));
-                        swapeToRead();
-                        sleep(random(3000, 7000));
-                        if (random(0, 1) == 0) {
-                            swapeToRead();
-                            sleep(random(3000, 7000));
-                        }
-                        if (random(0, 1) == 0) {
-                            swapeToRead();
-                            sleep(random(3000, 7000));
-                        }
+                        sleep(random(4000, 7000));
                         if (random(0, 1) == 0) {
                             swapeToRead();
                             sleep(random(3000, 7000));

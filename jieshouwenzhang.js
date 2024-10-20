@@ -232,7 +232,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v8.1.0";
+            var versionNum = "接收v8.1.1";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -1630,12 +1630,13 @@ ui.ok.click(function () {
                                                 xiaoyueyuecheckFlag = false;
                                             }
                                         }*/
-                                        if (xiaoyueyuecheckFlag == false) {
+                                        setConfig("latestTalkName", latestLinkTitle, phoneNum.toString())
+                                        /*if (xiaoyueyuecheckFlag == false) {
                                             //去掉检测方
                                             deleteJiancegongzhonghao(encodeURIComponent(js_name.desc()))
                                         } else {
                                             setConfig("latestTalkName", latestLinkTitle, phoneNum.toString())
-                                        }
+                                        }*/
 
 
                                     }
@@ -1646,7 +1647,7 @@ ui.ok.click(function () {
                                     console.log(new Date().toLocaleString() + "-" + "----------第" + i)
                                     wBtn = packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce();//id=ipv
                                     if (wBtn != null) {
-                                        fenxiangshibai();
+                                        //fenxiangshibai();
                                         //addjieshouCount("阅读完成正常返回+1")
                                     } else {
                                         返回v首页();
@@ -2631,55 +2632,9 @@ ui.ok.click(function () {
 
                 }
             }
-            function fenxiangshibai() {
-                if (联网验证(zwifi) != true) {
-                    连接wifi(zwifi, 5000);
-                    app.launch(PKG_NAME);
-                }
-                let temp = null;
-                try {
-                    temp = http.postJson("http://116.205.139.36:8081/fanqie/cl/fenxiangshibai", {});
-                    if (temp && temp.statusCode == 200) {
-                        temp = temp.body.string();
-                        let rep = JSON.parse(temp);
-                        let repState = rep["state"];
-                        if (repState == 1) {
-                            return true
-                        }
-                    } else {
-                        throw Error("fenxiangshibai获取数据失败" + temp)
-                    }
-                    return false
-                } catch (err) {
-                    console.error("fenxiangshibai报错,原因:" + err);
-                    return false
-                }
-            }
+            
 
-            function fenxiangshibaiFu() {
-                if (联网验证(zwifi) != true) {
-                    连接wifi(zwifi, 5000);
-                    app.launch(PKG_NAME);
-                }
-                let temp = null;
-                try {
-                    temp = http.postJson("http://116.205.139.36:8081/fanqie/cl/fenxiangshibaiFu", {});
-                    if (temp && temp.statusCode == 200) {
-                        temp = temp.body.string();
-                        let rep = JSON.parse(temp);
-                        let repState = rep["state"];
-                        if (repState == 1) {
-                            return true
-                        }
-                    } else {
-                        throw Error("fenxiangshibaiFu获取数据失败" + temp)
-                    }
-                    return false
-                } catch (err) {
-                    console.error("fenxiangshibaiFu报错,原因:" + err);
-                    return false
-                }
-            }
+            
 
             //是否在接收列表
             function isInJieshou(phoneNum) {
