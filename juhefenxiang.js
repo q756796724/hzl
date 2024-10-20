@@ -4170,6 +4170,11 @@ ui.ok.click(function () {
                                 sleep(1000)
                                 back()
                             }
+                            let startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(10000);
+                            if (startbtn.text() == "点击开始阅读") {
+                                log("点击开始阅读")
+                                startbtn.click();
+                            }
                             cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(25000)
                         }
                         sleep(5000)
