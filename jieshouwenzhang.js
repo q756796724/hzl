@@ -243,11 +243,11 @@ ui.ok.click(function () {
             //dlwifi = ui.dlwifi.getText();
             dlwifi = ui.dlwifi_spinner.getSelectedItem();
             log("代理Wifi:" + dlwifi);
-            phoneNum = ui.phoneNum.getText();
+            phoneNum = ui.phoneNum.getText().toString();
             log("phoneNum:" + phoneNum);
-            jieshouwifi = ui.jieshouwifi.getText();
+            jieshouwifi = ui.jieshouwifi.getText().toString();
             log("jieshouwifi:" + jieshouwifi);
-            jieshouwifi2 = ui.jieshouwifi2.getText();
+            jieshouwifi2 = ui.jieshouwifi2.getText().toString();
             log("jieshouwifi2:" + jieshouwifi2);
             qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
             removePhoneNum = ui.removePhoneNum.isChecked();
@@ -259,9 +259,9 @@ ui.ok.click(function () {
 
             storage.put("zwifi", zwifi);
             storage.put("dlwifi", dlwifi);
-            storage.put("phoneNum", ui.phoneNum.text());
-            storage.put("jieshouwifi", ui.jieshouwifi.text());
-            storage.put("jieshouwifi2", ui.jieshouwifi2.text());
+            storage.put("phoneNum", ui.phoneNum.text().toString());
+            storage.put("jieshouwifi", ui.jieshouwifi.text().toString());
+            storage.put("jieshouwifi2", ui.jieshouwifi2.text().toString());
             storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
             storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
             storage.put("zhengtian", ui.zhengtian.isChecked());
@@ -1560,6 +1560,11 @@ ui.ok.click(function () {
                                     let fabudibtn = packageName("com.tencent.mm").id("js_ip_wording_wrp").className("android.view.View").findOnce();
                                     let read_area = packageName("com.tencent.mm").id("js_read_area3").textMatches(/(阅读.*)/).findOnce();
                                     let js_focus = packageName("com.tencent.mm").id("js_focus").findOnce();
+                                    if (read_area == null||isNaN(parseInt(read_area.text().match(/\d+/g)[0]))) {
+                                        swapeToRead();
+                                        sleep(random(3000, 7000));
+                                        read_area = packageName("com.tencent.mm").id("js_read_area3").textMatches(/(阅读.*)/).findOne(10000)
+                                    }
                                     if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null&&parseInt(read_area.text().match(/\d+/g)[0])>0&&latestUrlReadCount>0) {
                                         if(parseInt(read_area.text().match(/\d+/g)[0])==latestUrlReadCount){
                                             addXianZhi(phoneNum.toString());
