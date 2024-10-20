@@ -297,7 +297,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.4.9";
+            var versionNum = "聚合分享v11.5.0";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4377,14 +4377,16 @@ ui.ok.click(function () {
                                 }
 
                             }
-                            if (sfjcwz(encodeURIComponent(js_name.desc()))) {
-                                let xianzhistr = "小阅阅检测-gongzonghao"
-                                if (xiaoyueyuecount > wifiCount) {
-                                    xianzhistr = "小阅阅中途检测-gongzonghao"
+                            if(packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null&&read_area && read_area.text().match(/\d+/g)[0] < 3000){
+                                if (sfjcwz(encodeURIComponent(js_name.desc()))) {
+                                    let xianzhistr = "小阅阅检测-gongzonghao"
+                                    if (xiaoyueyuecount > wifiCount) {
+                                        xianzhistr = "小阅阅中途检测-gongzonghao"
+                                    }
+                                    xiaoyueyuecheckFlag = true
+                                    storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
+                                    console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
                                 }
-                                xiaoyueyuecheckFlag = true
-                                storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
-                                console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
                             }
                             if (xiaoyueyuecheckFlag) {
                                 let fxflag = fenxiangurl();
