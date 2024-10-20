@@ -9,6 +9,7 @@ storage.put("qiehuanjiaoben", false);
 qiehuanjiaoben = storage.get("qiehuanjiaoben", false);
 removePhoneNum = storage.get("removePhoneNum", false);
 addJieshou = storage.get("addJieshou", false);
+mashangJieshou = storage.get("mashangJieshou", false);
 zhengtian = storage.get("zhengtian", false);
 autoX = storage.get("autoX", false);
 kanyikanflag = storage.get("kanyikanflag", random(0, 1) == 0 ? false : true);
@@ -16,7 +17,7 @@ wificount = 0
 
 lastUrl = "";//上一url
 latestUrl = "";//当前url
-latestUrlReadCount=0;//当前url阅读量
+latestUrlReadCount = 0;//当前url阅读量
 
 phoneNum = storage.get("phoneNum", "");
 jieshouwifi = storage.get("jieshouwifi", "WifiPro_5G");
@@ -149,6 +150,7 @@ ui.layout(
         <horizontal>
             <checkbox text="是否切换" id="qiehuanjiaoben" checked="{{qiehuanjiaoben}}" textSize="18sp" />\
             <checkbox text="添加到接收" id="addJieshou" checked="{{addJieshou}}" textSize="18sp" />\
+            <checkbox text="马上接收" id="mashangJieshou" checked="{{mashangJieshou}}" textSize="18sp" />\
         </horizontal>
         <horizontal>
             <checkbox text="清除号码" id="removePhoneNum" checked="{{removePhoneNum}}" textSize="18sp" />\
@@ -230,7 +232,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v8.0.9";
+            var versionNum = "接收v8.1.0";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -251,6 +253,7 @@ ui.ok.click(function () {
             removePhoneNum = ui.removePhoneNum.isChecked();
             zhengtian = ui.zhengtian.isChecked();
             addJieshou = ui.addJieshou.isChecked();
+            mashangJieshou= ui.mashangJieshou.isChecked();
             autoX = ui.autoX.isChecked();
             kanyikanflag = ui.kanyikanflag.isChecked();
 
@@ -263,6 +266,7 @@ ui.ok.click(function () {
             storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
             storage.put("zhengtian", ui.zhengtian.isChecked());
             storage.put("addJieshou", ui.addJieshou.isChecked());
+            storage.put("mashangJieshou", ui.mashangJieshou.isChecked());
             storage.put("autoX", ui.autoX.isChecked());
             storage.put("kanyikanflag", ui.kanyikanflag.isChecked());
 
@@ -416,7 +420,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = "";
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/getdaili", {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/getdaili", {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -436,7 +440,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = 0;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/getjieshouCount?type=" + type, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/getjieshouCount?type=" + type, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -468,7 +472,7 @@ ui.ok.click(function () {
             function addjieshouCount(txt) {
                 let temp = null;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/addjieshouCount?phoneNum=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/addjieshouCount?phoneNum=" + txt, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -506,7 +510,7 @@ ui.ok.click(function () {
             function addjieshouCountFu(txt) {
                 let temp = null;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/addjieshouCountFu?phoneNum=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/addjieshouCountFu?phoneNum=" + txt, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -544,7 +548,7 @@ ui.ok.click(function () {
             function reducejieshouCount(txt) {
                 let temp = null;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/reducejieshouCount?phoneNum=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/reducejieshouCount?phoneNum=" + txt, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -575,7 +579,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = true;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/isInJiancegongzhonghao?txt=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/isInJiancegongzhonghao?txt=" + txt, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -606,7 +610,7 @@ ui.ok.click(function () {
             function reducejieshouCountFu(txt) {
                 let temp = null;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/reducejieshouCountFu?phoneNum=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/reducejieshouCountFu?phoneNum=" + txt, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -638,7 +642,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = true;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/deleteJiancegongzhonghao?txt=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/deleteJiancegongzhonghao?txt=" + txt, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -668,7 +672,7 @@ ui.ok.click(function () {
             /*function getConfig() {
                 let temp = null;
                 try {
-                    temp = http.get("http://116.205.139.36:8081/fanqie/getConfig");
+                    temp = http.get("http://116.205.139.36:8081/fanqie/cl/getConfig");
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -690,7 +694,7 @@ ui.ok.click(function () {
             function getConfig() {
                 let temp = null;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/getConfig", {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/getConfig", {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -716,7 +720,7 @@ ui.ok.click(function () {
             function setConfig(lastTalkName, lastLinkTitle, phone) {
                 let temp = null;
                 try {
-                    temp = http.postJson("http://116.205.139.36:8081/fanqie/setConfig", {
+                    temp = http.postJson("http://116.205.139.36:8081/fanqie/cl/setConfig", {
                         "lastTalkName": lastTalkName,
                         "lastLinkTitle": lastLinkTitle,
                         "phone": phone
@@ -740,12 +744,11 @@ ui.ok.click(function () {
 
             }
 
-        
 
-            
 
-            //限制次数+1
-            function addXianZhi() {
+
+
+            function addXianZhi(num) {
                 while (1) {
                     if (联网验证(zwifi) != true) {
                         连接wifi(zwifi, 5000);
@@ -764,7 +767,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = "0";
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/addXianZhi", {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/addXianZhi?phoneNum=" + num, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -776,7 +779,7 @@ ui.ok.click(function () {
                             throw Error("addXianZhi获取数据失败" + temp)
                         }
                     } else {
-                        throw Error("获取数据失败" + temp)
+                        throw Error("addXianZhi获取数据失败" + temp)
                     }
                 } catch (err) {
                     console.error("addXianZhi报错,原因:" + err);
@@ -785,11 +788,53 @@ ui.ok.click(function () {
                         app.launch(PKG_NAME);
                     }
                     sleep(8000)
-                    //repData = addXianZhi();
-
+                    //repData = addXianZhi(num);
                 }
                 return repData
+            }
+            function reduceXianZhi(num) {
+                while (1) {
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        sleep(8000)
+                    } else {
+                        refreshStateInfo();
+                        if (topPackage != PKG_NAME) {
+                            app.launch(PKG_NAME);
+                            sleep(5000)
+                        }
+                        //跳出死循环
+                        break
+                    }
+                }
 
+                let temp = null;
+                let repData = "0";
+                try {
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/reduceXianZhi?phoneNum=" + num, {});
+                    if (temp && temp.statusCode == 200) {
+                        temp = temp.body.string();
+                        let rep = JSON.parse(temp);
+                        let repState = rep["state"];
+                        if (repState == 1) {
+                            let repData = rep["data"];
+                            return repData
+                        } else {
+                            throw Error("reduceXianZhi获取数据失败" + temp)
+                        }
+                    } else {
+                        throw Error("reduceXianZhi获取数据失败" + temp)
+                    }
+                } catch (err) {
+                    console.error("reduceXianZhi报错,原因:" + err);
+                    if (联网验证(zwifi) != true) {
+                        连接wifi(zwifi, 5000);
+                        app.launch(PKG_NAME);
+                    }
+                    sleep(8000)
+                    //repData = addXianZhi(num);
+                }
+                return repData
             }
             //发送提醒
             function sendTx(url) {
@@ -1515,6 +1560,14 @@ ui.ok.click(function () {
                                     let fabudibtn = packageName("com.tencent.mm").id("js_ip_wording_wrp").className("android.view.View").findOnce();
                                     let read_area = packageName("com.tencent.mm").id("js_read_area3").textMatches(/(阅读.*)/).findOnce();
                                     let js_focus = packageName("com.tencent.mm").id("js_focus").findOnce();
+                                    if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null&&parseInt(read_area.text().match(/\d+/g)[0])>0&&latestUrlReadCount>0) {
+                                        if(parseInt(read_area.text().match(/\d+/g)[0])==latestUrlReadCount){
+                                            addXianZhi(phoneNum.toString());
+                                        }else if(parseInt(read_area.text().match(/\d+/g)[0])>latestUrlReadCount){
+                                            reduceXianZhi(phoneNum.toString());
+                                        }
+                                        
+                                    }
                                     let read_area_num = "";
                                     for (var q = 0; q <= 5; q++) {
                                         if (read_area) {
@@ -1536,7 +1589,7 @@ ui.ok.click(function () {
                                         //latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
                                         latestLinkTitle = latestUrl
                                         let xiaoyueyuecheckFlag = true
-                                        
+
                                         if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == false && (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000)) {
                                             xiaoyueyuecheckFlag = false;
                                         }
@@ -1583,7 +1636,7 @@ ui.ok.click(function () {
                                         } else {
                                             setConfig("latestTalkName", latestLinkTitle, phoneNum.toString())
                                         }
-                                        
+
 
                                     }
 
@@ -1811,7 +1864,7 @@ ui.ok.click(function () {
                 files.write(path, JSON.stringify(jsonContent));
                 sleep(1000);
                 if (random(0, 10) == 5) {
-                    启动x5()
+                    //启动x5()
                 }
             }
 
@@ -2523,7 +2576,7 @@ ui.ok.click(function () {
                 }
                 let temp = null;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/rollbackJieshou?phoneNum=" + phoneNum, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/rollbackJieshou?phoneNum=" + phoneNum, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -2555,7 +2608,7 @@ ui.ok.click(function () {
                 }
                 let temp = null;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/removePhoneNum?phoneNum=" + phoneNum, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/removePhoneNum?phoneNum=" + phoneNum, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -2585,7 +2638,7 @@ ui.ok.click(function () {
                 }
                 let temp = null;
                 try {
-                    temp = http.postJson("http://116.205.139.36:8081/fanqie/fenxiangshibai", {});
+                    temp = http.postJson("http://116.205.139.36:8081/fanqie/cl/fenxiangshibai", {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -2610,7 +2663,7 @@ ui.ok.click(function () {
                 }
                 let temp = null;
                 try {
-                    temp = http.postJson("http://116.205.139.36:8081/fanqie/fenxiangshibaiFu", {});
+                    temp = http.postJson("http://116.205.139.36:8081/fanqie/cl/fenxiangshibaiFu", {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -2633,7 +2686,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = 0;;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/isInJieshou?phoneNum=" + phoneNum, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/isInJieshou?phoneNum=" + phoneNum, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -2662,8 +2715,13 @@ ui.ok.click(function () {
                     app.launch(PKG_NAME);
                 }
                 let temp = null;
+                let days=0;
+                if(mashangJieshou){
+                    days=-1;
+                    storage.put("mashangJieshou", false);
+                }
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/addJieshou?phoneNum=" + phoneNum, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/cl/addJieshou?phoneNum=" + phoneNum+"&days="+days, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);
@@ -3010,7 +3068,7 @@ ui.ok.click(function () {
                         if (JSON.parse(text)["url"] != undefined) {
                             console.info("latestUrl: ", JSON.parse(text)["url"]);
                             latestUrl = JSON.parse(text)["url"];
-                            latestUrlReadCount=JSON.parse(text)["readCount"];
+                            latestUrlReadCount = JSON.parse(text)["readCount"];
                         }
                     } catch (e) { }
                 }).on("binary", (bytes, ws) => {
