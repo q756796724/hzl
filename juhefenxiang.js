@@ -297,7 +297,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.4.6";
+            var versionNum = "聚合分享v11.4.7";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2916,7 +2916,14 @@ ui.ok.click(function () {
                                     longclickx(device.width * 0.5, device.height * 0.4)
                                 }
                             } else {
-                                for (let i = 0; i < 5; i++) {
+                                if (xiaoyueyueyuedu()) {
+                                    xiaoyueyueluncount++
+                                    storage.put("xiaoyueyueluncount", xiaoyueyueluncount);
+                                }
+                                xiaoyueyuecount = 1
+                                storage.put("xiaoyueyuecount", xiaoyueyuecount);
+                                
+                                /*for (let i = 0; i < 5; i++) {
                                     let startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(8000);
                                     if (startbtn && startbtn.text() == "点击开始阅读") {
                                         startbtn.click();
@@ -2968,10 +2975,10 @@ ui.ok.click(function () {
                                         返回v首页();
                                         return;
                                     }
-                                }
+                                }*/
                             }
 
-                            let sbqrBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("识别图中的二维码").findOne(7000);
+                            /*let sbqrBtn = packageName("com.tencent.mm").className("android.widget.TextView").text("识别图中的二维码").findOne(7000);
                             if (sbqrBtn != null && sbqrBtn.parent() != null && sbqrBtn.parent().clickable()) {
                                 sleep(random(500, 2000));
                                 sbqrBtn.parent().click();
@@ -2988,7 +2995,7 @@ ui.ok.click(function () {
                                 }
                                 返回v首页();
                                 return;
-                            }
+                            }*/
                         }
 
                     } else {
