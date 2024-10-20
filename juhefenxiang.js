@@ -1219,7 +1219,7 @@ ui.ok.click(function () {
                 let temp = null;
                 let repData = true;
                 try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/sfcfyd?txt=" + txt, {});
+                    temp = http.post("http://116.205.139.36:8081/fanqie/sfcfyd?txt=" + txt+ "&jieshouPhoneNum=" + jieshouPhoneNum, {});
                     if (temp && temp.statusCode == 200) {
                         temp = temp.body.string();
                         let rep = JSON.parse(temp);

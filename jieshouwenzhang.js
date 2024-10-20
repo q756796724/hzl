@@ -16,6 +16,7 @@ wificount = 0
 
 lastUrl = "";//上一url
 latestUrl = "";//当前url
+latestUrlReadCount=0;//当前url阅读量
 
 phoneNum = storage.get("phoneNum", "");
 jieshouwifi = storage.get("jieshouwifi", "WifiPro_5G");
@@ -739,71 +740,9 @@ ui.ok.click(function () {
 
             }
 
-            //获取当前接收号码
-            function getjieshouNum() {
-                let temp = null;
-                let repData = "0";
-                try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/getJieShouNum", {});
-                    if (temp && temp.statusCode == 200) {
-                        temp = temp.body.string();
-                        let rep = JSON.parse(temp);
-                        let repState = rep["state"];
-                        if (repState == 1) {
-                            let repData = rep["data"];
-                            return repData
-                        } else {
-                            throw Error("getJieShouNum获取数据失败" + temp)
-                        }
-                    } else {
-                        throw Error("获取数据失败" + temp)
-                    }
-                } catch (err) {
-                    console.error("getJieShouNum报错,原因:" + err);
-                    if (联网验证(zwifi) != true) {
-                        连接wifi(zwifi, 5000);
-                        app.launch(PKG_NAME);
-                    }
-                    sleep(8000)
-                    repData = getjieshouNum();
+        
 
-                }
-                return repData
-
-            }
-
-            //获取当前接收号码副
-            function getjieshouNumFu() {
-                let temp = null;
-                let repData = "0";
-                try {
-                    temp = http.post("http://116.205.139.36:8081/fanqie/getJieShouNumFu", {});
-                    if (temp && temp.statusCode == 200) {
-                        temp = temp.body.string();
-                        let rep = JSON.parse(temp);
-                        let repState = rep["state"];
-                        if (repState == 1) {
-                            let repData = rep["data"];
-                            return repData
-                        } else {
-                            throw Error("getjieshouNumFu获取数据失败" + temp)
-                        }
-                    } else {
-                        throw Error("获取数据失败" + temp)
-                    }
-                } catch (err) {
-                    console.error("getjieshouNumFu报错,原因:" + err);
-                    if (联网验证(zwifi) != true) {
-                        连接wifi(zwifi, 5000);
-                        app.launch(PKG_NAME);
-                    }
-                    sleep(8000)
-                    repData = getjieshouNumFu();
-
-                }
-                return repData
-
-            }
+            
 
             //限制次数+1
             function addXianZhi() {
@@ -3071,6 +3010,7 @@ ui.ok.click(function () {
                         if (JSON.parse(text)["url"] != undefined) {
                             console.info("latestUrl: ", JSON.parse(text)["url"]);
                             latestUrl = JSON.parse(text)["url"];
+                            latestUrlReadCount=JSON.parse(text)["readCount"];
                         }
                     } catch (e) { }
                 }).on("binary", (bytes, ws) => {
