@@ -297,7 +297,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.5.2";
+            var versionNum = "聚合分享v11.5.3";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4204,18 +4204,15 @@ ui.ok.click(function () {
                                 back()
                                 startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(10000);
                                 if (startbtn) {
-                                    if (startbtn.clickable()) {
-                                        log("重新点击开始阅读。")
+                                    log("重新点击开始阅读。")
+                                    startbtn.click();
+                                    sleep(5000)
+                                    startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(3000);
+                                    if (startbtn) {
+                                        log("重试点击开始阅读。")
                                         startbtn.click();
-                                        startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(5000);
-                                        if (startbtn) {
-                                            log("重试点击开始阅读。")
-                                            startbtn.click();
-                                        }
-                                    } else {
-                                        log("不能点击开始阅读")
-                                        return false;
                                     }
+                                    continue
 
                                 }
 
