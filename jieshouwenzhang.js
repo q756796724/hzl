@@ -236,7 +236,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v8.1.2";
+            var versionNum = "接收v8.1.3";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -1294,7 +1294,7 @@ ui.ok.click(function () {
                                         let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
                                         let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                                         if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
-                                            latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
+                                            latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/年/g, "/").replace(/月/g, "/").replace(/日/g, "/"))).getTime()
                                             setConfig(latestTalkName, latestLinkTitle, phoneNum.toString())
                                         }
 
@@ -1328,7 +1328,7 @@ ui.ok.click(function () {
                                             let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(5000)
                                             let publish_time = packageName("com.tencent.mm").id("publish_time").className("android.view.View").findOne(5000)
                                             if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
-                                                latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
+                                                latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/年/g, "/").replace(/月/g, "/").replace(/日/g, "/"))).getTime()
                                                 setConfig(latestTalkName, latestLinkTitle, phoneNum.toString())
                                             }
 
@@ -1595,38 +1595,43 @@ ui.ok.click(function () {
                                     if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                                         let latestLinkTitle = cBtn.text() + js_name.desc();
                                         latestLinkTitle = latestLinkTitle.TextFilter();
-                                        //latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime()
+                                        //latestLinkTitle = latestLinkTitle + "&&" + new Date(Date.parse(publish_time.text().replace(/年/g, "/").replace(/月/g, "/").replace(/日/g, "/"))).getTime()
                                         latestLinkTitle = latestUrl
                                         let xiaoyueyuecheckFlag = true
 
-                                        if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == false && (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000)) {
+                                        /*if (read_area == null && js_focus == null && isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == false && (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/年/g, "/").replace(/月/g, "/").replace(/日/g, "/"))).getTime() < 3 * 24 * 3600 * 1000)) {
                                             xiaoyueyuecheckFlag = false;
-                                        }
+                                        }*/
                                         if (read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce()) {
                                             xiaoyueyuecheckFlag = false;
                                         }
-                                        /*if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 24 * 3600 * 1000) {
+                                        /*if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/年/g, "/").replace(/月/g, "/").replace(/日/g, "/"))).getTime() < 24 * 3600 * 1000) {
                                             if (read_area && read_area.text().match(/\d+/g)[0] > 500) {
                                                 xiaoyueyuecheckFlag = false;
                                             }
                                         }
-                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000) {
+                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/年/g, "/").replace(/月/g, "/").replace(/日/g, "/"))).getTime() < 3 * 24 * 3600 * 1000) {
                                             if (read_area && read_area.text().match(/\d+/g)[0] > 1000) {
                                                 xiaoyueyuecheckFlag = false;
                                             }
                                         }*/
-                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 3 * 24 * 3600 * 1000) {
-                                            xiaoyueyuecheckFlag = false;
+                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/年/g, "/").replace(/月/g, "/").replace(/日/g, "/"))).getTime() < 3 * 24 * 3600 * 1000) {
+                                            if (read_area && read_area.text().match(/\d+/g)[0] > 50) {
+                                                xiaoyueyuecheckFlag = false;
+                                            }
                                         }
-                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 3 * 24 * 3600 * 1000 && new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() < 7 * 24 * 3600 * 1000) {
+                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/年/g, "/").replace(/月/g, "/").replace(/日/g, "/"))).getTime() > 3 * 24 * 3600 * 1000 && new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/年/g, "/").replace(/月/g, "/").replace(/日/g, "/"))).getTime() <= 7 * 24 * 3600 * 1000) {
                                             if (read_area && read_area.text().match(/\d+/g)[0] > 500) {
                                                 xiaoyueyuecheckFlag = false;
                                             }
                                         }
-                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/-/g, "/"))).getTime() > 7 * 24 * 3600 * 1000) {
+                                        if (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/年/g, "/").replace(/月/g, "/").replace(/日/g, "/"))).getTime() > 7 * 24 * 3600 * 1000 && new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/年/g, "/").replace(/月/g, "/").replace(/日/g, "/"))).getTime() < 30 * 24 * 3600 * 1000) {
                                             if (read_area && read_area.text().match(/\d+/g)[0] > 1000) {
                                                 xiaoyueyuecheckFlag = false;
                                             }
+                                        }
+                                        if (read_area && read_area.text().match(/\d+/g)[0] > 3000) {
+                                            xiaoyueyuecheckFlag = false;
                                         }
                                         /*if (read_area) {
                                             if (read_area && read_area.text().match(/\d+/g)[0] > 1000 && read_area.bounds().top > device.height * 5) {
@@ -1640,12 +1645,14 @@ ui.ok.click(function () {
                                             }
                                         }*/
                                         setConfig("latestTalkName", latestLinkTitle, phoneNum.toString())
-                                        /*if (xiaoyueyuecheckFlag == false) {
+                                        if (xiaoyueyuecheckFlag == false) {
                                             //去掉检测方
-                                            deleteJiancegongzhonghao(encodeURIComponent(js_name.desc()))
+                                            if(isInJiancegongzhonghao(encodeURIComponent(js_name.desc()))){
+                                                deleteJiancegongzhonghao(encodeURIComponent(js_name.desc()))
+                                            }
                                         } else {
                                             setConfig("latestTalkName", latestLinkTitle, phoneNum.toString())
-                                        }*/
+                                        }
 
 
                                     }
