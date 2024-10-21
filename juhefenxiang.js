@@ -6404,7 +6404,7 @@ ui.ok.click(function () {
                         }*/
                         let wBtn = className("android.widget.TextView").text("我").findOne(3000);
                         let bindingbtn = packageName("com.tencent.mm").id("find_binding").findOne(3000);
-                        if (topActivity == MAIN_PAGE && bindingbtn != null) {
+                        if (topPackage == PKG_NAME && bindingbtn != null) {
                             let waitcount = 0
                             while (true) {
                                 if (!zhengtian) {
