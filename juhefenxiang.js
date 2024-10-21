@@ -2,7 +2,7 @@
 
 storage = storages.create("fanqiekankan配置");
 toolsStorage = storages.create("tools配置");
-wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro|WifiPro_5G|myg|Mate50";
+wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro_2.4G|WifiPro_5G|myg|Mate50";
 xyyzlOptions = "无|zhaolin-82a7b65d839ece2b1f1ff3183faac8a3|miu-d46bf9c4bc91c2e502ec27e0a25db92d|噜啦啦-59362ad1735868df3ad8068290e8a2eb|芬芳-5a6452e0962e5544f90b79e0d12d8bf5|小青-daee14bd94e54669407fc72801bb4fe3|长江-87860cb0f8fe082daec78243b0f83187|小飞鱼-162230d30b91501f1d96120b3ec2ea4d|温迪-90a01c7c6c33d85e268978d656b0d1e5|云雨-636db647337f0b640d7984d18825e53e";
 xyyzlurlmap = {
     "16929560174632825": "zhaolin-82a7b65d839ece2b1f1ff3183faac8a3",
@@ -183,10 +183,12 @@ ui.layout(
             <text textSize="16sp" textColor="black" text="zhuanzaiwifi" />
             <spinner id="zhuanzaiwifi_spinner" entries={wifiOptions} />
         </horizontal>
-        <text textSize="16sp" textColor="black" text="编号" />
-        <input id="phoneNum" text="{{phoneNum}}" />
-        <text textSize="16sp" textColor="black" text="接收编号" />
-        <input id="jieshouPhoneNum" text="{{jieshouPhoneNum}}" />
+        <horizontal>
+            <text textSize="16sp" textColor="black" text="编号" />
+            <input id="phoneNum" text="{{phoneNum}}" />
+            <text textSize="16sp" textColor="black" text="接收编号" />
+            <input id="jieshouPhoneNum" text="{{jieshouPhoneNum}}" />
+        </horizontal>
         <horizontal>
             <checkbox text="tx" id="auto_tx" checked="{{auto_tx}}" textSize="18sp" />\
             <checkbox text="xyyzfbtx" id="zfbtx" checked="{{zfbtx}}" textSize="18sp" />\
@@ -297,7 +299,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.5.3";
+            var versionNum = "聚合分享v11.5.4";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4040,8 +4042,18 @@ ui.ok.click(function () {
                     if (startbtn) {
                         log("重新点击开始阅读")
                         startbtn.click();
+                        sleep(200)
+                        startbtn.click();
                         if (numbtn == null) {
                             numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(成功.*|阅读无效.*|.*被限制.*|阅读暂时无效.*|.*码失效.*)/).findOne(10000)
+                        }
+                    }
+                    if (numbtn == null) {
+                        if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOne(1000)) {
+                            click("继续访问")
+                            if (numbtn == null) {
+                                numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(成功.*|阅读无效.*|.*被限制.*|阅读暂时无效.*|.*码失效.*)/).findOne(10000)
+                            }
                         }
                     }
                     if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOne(1000)) {
@@ -4121,20 +4133,11 @@ ui.ok.click(function () {
                         back()
                         startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(10000);
                         if (startbtn) {
-                            if (startbtn.clickable()) {
-                                log("重新点击开始阅读。")
-                                startbtn.click();
-                                startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(5000);
-                                if (startbtn) {
-                                    log("重试点击开始阅读。")
-                                    startbtn.click();
-                                }
-                                continue
-                            } else {
-                                log("不能点击开始阅读")
-                                return false;
-                            }
-
+                            log("重新点击开始阅读.")
+                            startbtn.click();
+                            sleep(200)
+                            startbtn.click();
+                            continue
                         }
                     }
 
@@ -4206,12 +4209,8 @@ ui.ok.click(function () {
                                 if (startbtn) {
                                     log("重新点击开始阅读。")
                                     startbtn.click();
-                                    sleep(5000)
-                                    startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(3000);
-                                    if (startbtn) {
-                                        log("重试点击开始阅读。")
-                                        startbtn.click();
-                                    }
+                                    sleep(200)
+                                    startbtn.click();
                                     continue
 
                                 }

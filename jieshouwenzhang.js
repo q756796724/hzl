@@ -2,7 +2,7 @@
 
 storage = storages.create("fanqiekankan配置");
 toolsStorage = storages.create("tools配置");
-wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro|WifiPro_5G|myg";
+wifiOptions = "XiaoMiWifi_5G|XiaoMiWifi_2.4G|XiaoMiWifi3G_5G|XiaoMiWifi3G_2.4G|XiaoMiWifi4A|guest|WifiPro_2.4G|WifiPro_5G|myg";
 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G");
 dlwifi = storage.get("dlwifi", "XiaoMiWifi3G_2.4G");
 storage.put("qiehuanjiaoben", false);
@@ -136,17 +136,17 @@ ui.layout(
     <vertical padding="16">
         <Switch id="autoService" text="无障碍服务" checked="{{auto.service != null}}" padding="8 8 8 8" textSize="15sp" />
         <text textSize="16sp" textColor="black" text="请输入主Wifi" />
-        {/*<input id="zwifi" text="{{zwifi}}" /> */}
         <spinner id="zwifi_spinner" entries={wifiOptions} />
         <text textSize="16sp" textColor="black" text="请输入代理Wifi" />
-        {/* <input id="dlwifi" text="{{dlwifi}}" /> */}
         <spinner id="dlwifi_spinner" entries={wifiOptions} />
         <text textSize="16sp" textColor="black" text="jieshouwifi" />
-        <input id="jieshouwifi" text="{{jieshouwifi}}" />
+        <spinner id="jieshouwifi_spinner" entries={wifiOptions} />
         <text textSize="16sp" textColor="black" text="jieshouwifi2" />
-        <input id="jieshouwifi2" text="{{jieshouwifi2}}" />
-        <text textSize="16sp" textColor="black" text="编号" />
-        <input id="phoneNum" text="{{phoneNum}}" />
+        <spinner id="jieshouwifi2_spinner" entries={wifiOptions} />
+        <horizontal>
+            <text textSize="16sp" textColor="black" text="编号" />
+            <input id="phoneNum" text="{{phoneNum}}" />
+        </horizontal>
         <horizontal>
             <checkbox text="是否切换" id="qiehuanjiaoben" checked="{{qiehuanjiaoben}}" textSize="18sp" />\
             <checkbox text="添加到接收" id="addJieshou" checked="{{addJieshou}}" textSize="18sp" />\
@@ -202,6 +202,10 @@ var zwifispinner = ui.zwifi_spinner;
 zwifispinner.setSelection(wifiOptions.split("|").indexOf(zwifi));
 var dlwifispinner = ui.dlwifi_spinner;
 dlwifispinner.setSelection(wifiOptions.split("|").indexOf(dlwifi));
+var jieshouwifispinner = ui.jieshouwifi_spinner;
+jieshouwifispinner.setSelection(wifiOptions.split("|").indexOf(jieshouwifi));
+var jieshouwifi2spinner = ui.jieshouwifi2_spinner;
+jieshouwifi2spinner.setSelection(wifiOptions.split("|").indexOf(jieshouwifi2));
 
 //指定确定按钮点击时要执行的动作
 ui.ok.click(function () {
@@ -232,7 +236,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "接收v8.1.1";
+            var versionNum = "接收v8.1.2";
 
             log("thread1.isAlive=" + thread1.isAlive())
             toastLog(device.brand);
@@ -245,9 +249,9 @@ ui.ok.click(function () {
             log("代理Wifi:" + dlwifi);
             phoneNum = ui.phoneNum.getText().toString();
             log("phoneNum:" + phoneNum);
-            jieshouwifi = ui.jieshouwifi.getText().toString();
+            jieshouwifi = ui.jieshouwifi_spinner.getSelectedItem();
             log("jieshouwifi:" + jieshouwifi);
-            jieshouwifi2 = ui.jieshouwifi2.getText().toString();
+            jieshouwifi2 = ui.jieshouwifi2_spinner.getSelectedItem();
             log("jieshouwifi2:" + jieshouwifi2);
             qiehuanjiaoben = ui.qiehuanjiaoben.isChecked();
             removePhoneNum = ui.removePhoneNum.isChecked();
@@ -260,8 +264,8 @@ ui.ok.click(function () {
             storage.put("zwifi", zwifi);
             storage.put("dlwifi", dlwifi);
             storage.put("phoneNum", ui.phoneNum.text().toString());
-            storage.put("jieshouwifi", ui.jieshouwifi.text().toString());
-            storage.put("jieshouwifi2", ui.jieshouwifi2.text().toString());
+            storage.put("jieshouwifi", jieshouwifi);
+            storage.put("jieshouwifi2", jieshouwifi2);
             storage.put("qiehuanjiaoben", ui.qiehuanjiaoben.isChecked());
             storage.put("removePhoneNum", ui.removePhoneNum.isChecked());
             storage.put("zhengtian", ui.zhengtian.isChecked());
