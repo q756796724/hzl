@@ -4141,7 +4141,7 @@ ui.ok.click(function () {
                     } else if (numbtn && numbtn.text().indexOf("码失效") > -1) {
                         let xianzhistr = "码失效"
                         console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
-                        back()
+                        返回小阅阅首页()
                         startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(10000);
                         if (startbtn) {
                             log("重新点击开始阅读.")
@@ -4237,7 +4237,7 @@ ui.ok.click(function () {
                                 images.save(img, "/sdcard/fanqie/jietu/" + formatDateTime(new Date()) + ".png");
                                 img.recycle();
                                 sleep(1000)
-                                back()
+                                返回小阅阅首页()
                                 startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(10000);
                                 if (startbtn) {
                                     log("重新点击开始阅读。")
