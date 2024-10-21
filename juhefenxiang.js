@@ -2744,7 +2744,6 @@ ui.ok.click(function () {
                         storage.put("yunshaomaurl", "")
                         return
                     } else {
-                        log(xiaoyueyueurltitle)
                         if (xiaoyueyueurltitle && xiaoyueyueurltitle.text() != null && xiaoyueyueurltitle.text() != "" && xiaoyueyueurltitle.text().indexOf("blank_ground") > -1) {
                             if (zwifi == storage.get("zwifi", "XiaoMiWifi3G_5G") && storage.get("zhuanzaiwifi", "WifiPro_5G") != "WifiPro_5G") {
                                 zwifi = storage.get("zhuanzaiwifi")
@@ -2753,6 +2752,7 @@ ui.ok.click(function () {
                                 log(1)
                             }
                         } else {
+                            xiaoyueyueurltrycount++
                             if (zwifi == storage.get("zhuanzaiwifi")) {
                                 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
                                 连接wifi(zwifi, 5000);
@@ -2760,8 +2760,7 @@ ui.ok.click(function () {
                                 log(2)
                             }
                         }
-                        xiaoyueyueurltrycount++
-                        if (xiaoyueyueurltrycount > 5) {
+                        if (xiaoyueyueurltrycount > 6) {
                             xiaoyueyueurltrycount = 0
                             storage.put("yunshaomaurl", "")
                             removeyunshaomaurl(encodeURIComponent(yunshaomaurl), phoneNum.toString())
