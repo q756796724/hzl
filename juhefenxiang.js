@@ -2744,6 +2744,17 @@ ui.ok.click(function () {
                         storage.put("yunshaomaurl", "")
                         return
                     } else {
+                        if(xiaoyueyueurltitle && xiaoyueyueurltitle.text() != null && xiaoyueyueurltitle.text() != "" && xiaoyueyueurltitle.text().indexOf("blank_ground") > -1){
+                            if (zwifi == storage.get("zwifi", "XiaoMiWifi3G_5G") && storage.get("zhuanzaiwifi", "WifiPro_5G") != "WifiPro_5G") {
+                                zwifi = storage.get("zhuanzaiwifi")
+                                连接wifi(zwifi, 5000);
+                            }
+                        }else{
+                            if (zwifi == storage.get("zhuanzaiwifi")) {
+                                zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                                连接wifi(zwifi, 5000);
+                            }
+                        }
                         xiaoyueyueurltrycount++
                         if (xiaoyueyueurltrycount > 5) {
                             xiaoyueyueurltrycount = 0
@@ -2754,10 +2765,7 @@ ui.ok.click(function () {
                                 连接wifi(zwifi, 5000);
                             }
                         }
-                        if (zwifi == storage.get("zwifi", "XiaoMiWifi3G_5G") && storage.get("zhuanzaiwifi", "WifiPro_5G") != "WifiPro_5G") {
-                            zwifi = storage.get("zhuanzaiwifi")
-                            连接wifi(zwifi, 5000);
-                        }
+                        
                         return;
                     }
                     let loadcount = 0
@@ -2796,7 +2804,14 @@ ui.ok.click(function () {
                         }
                     }
 
-                    nowHour = new Date().getHours();
+                    xiaoyueyuePage2()
+
+                } else {
+                    return
+                }
+            }
+            function xiaoyueyuePage2(){
+                nowHour = new Date().getHours();
                     let jb = packageName("com.tencent.mm").className("android.view.View").descMatches(/(.*金币.*)/).findOnce()
                     let jq = packageName("com.tencent.mm").className("android.view.View").descMatches(/(.*奖励.*)/).findOnce()
                     if (jb && jq && xyytodayTxCount == 1 && (parseFloat(jq.desc().replace(/[^\d.]/g, "")) + parseInt(jb.desc().replace(/[^\d]/g, "")) / 10000 > 5)) {
@@ -2873,7 +2888,8 @@ ui.ok.click(function () {
                                 toastLog(new Date().toLocaleString() + "-" + "-----------" + "小阅阅跳出等待！");
                                 break
                             } else if (i == 100) {
-                                返回v首页();
+                                //返回v首页();
+                                返回小阅阅首页();
                                 toastLog(new Date().toLocaleString() + "-" + "-----------" + "检查接收是否正常！");
                                 lunSleep(random(3600000, 4000000));//睡1个多小时
                                 return;
@@ -3003,11 +3019,6 @@ ui.ok.click(function () {
                     } else {
                         fenxiangshibai();
                     }
-
-
-                } else {
-                    return
-                }
             }
 
             function keletx() {
@@ -5478,6 +5489,53 @@ ui.ok.click(function () {
                 sleep(1000);
             }
 
+            function 返回小阅阅首页() {
+                if (联网验证(zwifi) != true) {
+                    连接wifi(zwifi, 5000);
+                    app.launch(PKG_NAME);
+                    sleep(10000)
+                }
+                for (let i = 0; i < 8; i++) {
+                    if (结束未响应()) {
+                        return;
+                    }
+                    kz();
+                    refreshStateInfo();
+                    if (topPackage != PKG_NAME) {
+                        sleep(2000);
+                        log("topPackage != PKG_NAME打开PKG_NAME" + PKG_NAME);
+                        app.launch(PKG_NAME);
+                        sleep(15000);
+                        refreshStateInfo();
+                        if (topPackage != PKG_NAME) {
+                            log("无法打开PKG_NAME" + PKG_NAME);
+                            关闭应用(PKG_NAME);
+                            sleep(2000);
+                            home();
+                            sleep(1000);
+                            return;
+                        }
+                    }
+                    
+                    if (页面异常处理()) {
+                        log("页面异常处理");
+                        continue;
+                    }
+                    
+                    let startbtn = packageName("com.tencent.mm").id("find_binding").findOne(5000);
+                    if (startbtn== null) {
+                        back();
+                        sleep(5000);
+                    }else{
+                        return;
+                    }
+                }
+                关闭应用(PKG_NAME);
+                sleep(2000);
+                home();
+                sleep(1000);
+            }
+
 
             function moreCommentVisible() {
                 var btn = textStartsWith("查看更多").findOne(500);
@@ -6345,7 +6403,8 @@ ui.ok.click(function () {
                             continue;
                         }*/
                         let wBtn = className("android.widget.TextView").text("我").findOne(3000);
-                        if (topActivity == MAIN_PAGE && wBtn != null) {
+                        let bindingbtn = packageName("com.tencent.mm").id("find_binding").findOne(3000);
+                        if (topActivity == MAIN_PAGE && bindingbtn != null) {
                             let waitcount = 0
                             while (true) {
                                 if (!zhengtian) {
@@ -6385,7 +6444,7 @@ ui.ok.click(function () {
                                     if (xyyzl) {
                                         xiaoyueyuezhuliPage()
                                     } else {
-                                        xiaoyueyuePage()
+                                        xiaoyueyuePage2()
                                     }
                                     break
                                 } else if (new Date().getTime() > kelekedusj) {
@@ -6409,11 +6468,78 @@ ui.ok.click(function () {
                                 }
                                 sleep(10000)
                             }
-                        } else {
-                            log("wBtn=" + wBtn);
-                            返回v首页();
-                            continue;
+                        }else{
+                            if (topActivity == MAIN_PAGE && wBtn != null) {
+                                let waitcount = 0
+                                while (true) {
+                                    if (!zhengtian) {
+                                        if (new Date().getHours() < 7 || new Date().getHours() == 23 && new Date().getMinutes() > 50) {
+                                            log("够钟休息")
+                                            sleep(1800000)
+                                            break
+                                        }
+                                    }
+                                    if (waitcount == 0) {
+                                        let toaststr = "等待可读:";
+                                        if (xiaoyueyueflag == true) {
+                                            toaststr = toaststr + "\n小阅阅上及id:" + xyysjid
+                                            if (xyyzl) {
+                                                toaststr = toaststr + "\n小阅阅助力:" + formatDate(xiaoyueyuekedusj, 'yyyy-MM-dd HH:mm:ss')
+                                                toaststr = toaststr + "\n小阅阅助力完成篇数" + xiaoyueyueReadNum
+                                            } else {
+                                                toaststr = toaststr + "\n小阅阅:" + formatDate(xiaoyueyuekedusj, 'yyyy-MM-dd HH:mm:ss')
+                                                toaststr = toaststr + "\n小阅阅完成篇数" + xiaoyueyueReadNum
+                                            }
+    
+                                        }
+                                        if (keleflag == true) {
+                                            toaststr = toaststr + "\n可乐:" + formatDate(kelekedusj, 'yyyy-MM-dd HH:mm:ss')
+                                            toaststr = toaststr + "\n可乐完成篇数" + keleReadNum
+                                        }
+    
+                                        toastLog(toaststr);
+                                    }
+    
+                                    if (new Date().getTime() > xiaoyueyuekedusj) {
+                                        log("xiaoyueyuecheckFlag:" + xiaoyueyuecheckFlag)
+                                        if (xyyzlurl == "无") {
+                                            xyyzl = false
+                                            storage.put("xyyzl", xyyzl)
+                                        }
+                                        if (xyyzl) {
+                                            xiaoyueyuezhuliPage()
+                                        } else {
+                                            xiaoyueyuePage()
+                                        }
+                                        break
+                                    } else if (new Date().getTime() > kelekedusj) {
+                                        log("kelecheckFlag:" + kelecheckFlag)
+                                        kelePage()
+                                        break
+                                    } else if (waitcount == 0) {
+                                        home();
+                                        if (autoX) {
+                                            log("等待autoX")
+                                            sleep(random(300000, 500000))
+                                            关闭应用(PKG_NAME);
+                                        }
+                                    }
+                                    waitcount++
+                                    if (waitcount % 30) {
+                                        if (联网验证(zwifi) != true) {
+                                            连接wifi(zwifi, 5000);
+                                            home();
+                                        }
+                                    }
+                                    sleep(10000)
+                                }
+                            } else {
+                                log("wBtn=" + wBtn);
+                                返回v首页();
+                                continue;
+                            }
                         }
+                        
                     }
                 } finally {
                     lock1.unlock(); // 释放锁
