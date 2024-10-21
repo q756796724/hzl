@@ -2748,6 +2748,7 @@ ui.ok.click(function () {
                         if (xiaoyueyueurltitle && xiaoyueyueurltitle.text() != null && xiaoyueyueurltitle.text() != "" && xiaoyueyueurltitle.text().indexOf("blank_ground") > -1) {
                             if (zwifi == storage.get("zwifi", "XiaoMiWifi3G_5G") && storage.get("zhuanzaiwifi", "WifiPro_5G") != "WifiPro_5G") {
                                 zwifi = storage.get("zhuanzaiwifi")
+                                log("连接zhuanzaiwifi")
                                 连接wifi(zwifi, 5000);
                             }else{
                                 log(1)
@@ -2755,6 +2756,7 @@ ui.ok.click(function () {
                         } else {
                             if (zwifi == storage.get("zhuanzaiwifi")) {
                                 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                                log("连接zwifi")
                                 连接wifi(zwifi, 5000);
                             }else{
                                 log(2)
