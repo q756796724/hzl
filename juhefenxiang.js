@@ -299,7 +299,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.5.6";
+            var versionNum = "聚合分享v11.5.7";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2708,7 +2708,7 @@ ui.ok.click(function () {
                         click("允许");
                         sleep(3000);
                     }
-
+                    sleep(10000);
                     let xiaoyueyueurltitle = packageName("com.tencent.mm").id("text1").findOne(100000);
                     if (xiaoyueyueurltitle && xiaoyueyueurltitle.text() == "小阅阅") {
                         xiaoyueyueurltrycount = 0
@@ -2744,15 +2744,20 @@ ui.ok.click(function () {
                         storage.put("yunshaomaurl", "")
                         return
                     } else {
+                        log(xiaoyueyueurltitle)
                         if (xiaoyueyueurltitle && xiaoyueyueurltitle.text() != null && xiaoyueyueurltitle.text() != "" && xiaoyueyueurltitle.text().indexOf("blank_ground") > -1) {
                             if (zwifi == storage.get("zwifi", "XiaoMiWifi3G_5G") && storage.get("zhuanzaiwifi", "WifiPro_5G") != "WifiPro_5G") {
                                 zwifi = storage.get("zhuanzaiwifi")
                                 连接wifi(zwifi, 5000);
+                            }else{
+                                log(1)
                             }
                         } else {
                             if (zwifi == storage.get("zhuanzaiwifi")) {
                                 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
                                 连接wifi(zwifi, 5000);
+                            }else{
+                                log(2)
                             }
                         }
                         xiaoyueyueurltrycount++
