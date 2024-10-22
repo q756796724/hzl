@@ -39,7 +39,7 @@ meitianover = storage.get("meitianover", false);//当天是否完成
 xiaoyueyueflag = storage.get("xiaoyueyueflag", false);
 keleflag = storage.get("keleflag", false);
 zfbtx = storage.get("zfbtx", true);
-storage.put("zfbtxyz", 1)
+storage.put("zfbtxyz", 2)
 zfbtxyz = storage.get("zfbtxyz", 2);//阈值
 zfbtxyz2 = storage.get("zfbtxyz2", 2);//阈值
 
