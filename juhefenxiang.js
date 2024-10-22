@@ -4050,8 +4050,11 @@ ui.ok.click(function () {
 
                 let wifiCount = xiaoyueyuecount;
                 let sfjcwzflag = false;
+                let kaishiretryCount=0;
+                let samexiaoyueyueReadNumCount=0
                 for (; ;) {
                     let lastXiaoyueyuecheckFlag = xiaoyueyuecheckFlag
+                    let lastxiaoyueyueReadNum=xiaoyueyueReadNum
                     let numbtn = packageName("com.tencent.mm").className("android.view.View").textMatches(/(成功.*|阅读无效.*|.*被限制.*|阅读暂时无效.*|.*码失效.*)/).findOne(10000)
                     let startbtn = packageName("com.tencent.mm").id("task_btn_read").findOne(10000);
                     if (startbtn) {
@@ -4226,6 +4229,11 @@ ui.ok.click(function () {
                                 }
                                 return true
                             }
+                            kaishiretryCount++
+                            if(kaishiretryCount>5){
+                                返回v首页()
+                                return false;
+                            }
                             if (packageName("com.tencent.mm").textMatches(/(继续访问)/).findOne(1000)) {
                                 log("点击继续访问...")
                                 click("继续访问")
@@ -4256,6 +4264,7 @@ ui.ok.click(function () {
 
                             cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(25000)
                         }
+                        kaishiretryCount=0
                         sleep(5000)
                         cBtn = packageName("com.tencent.mm").id("activity-name").className("android.view.View").findOne(5000)
                         let js_name = packageName("com.tencent.mm").id("js_name").className("android.view.View").findOne(10000)
@@ -4661,7 +4670,15 @@ ui.ok.click(function () {
                     }
 
                     log("第" + xiaoyueyuecount + "次," + "已完成篇数" + xiaoyueyueReadNum);
-
+                    if(lastxiaoyueyueReadNum==xiaoyueyueReadNum){
+                        samexiaoyueyueReadNumCount++
+                    }else{
+                        samexiaoyueyueReadNumCount=0
+                    }
+                    if(samexiaoyueyueReadNumCount>5){
+                        返回v首页()
+                        return false;
+                    }
                     sleep(10000);
 
                     if (xiaoyueyuecheckFlag) {
