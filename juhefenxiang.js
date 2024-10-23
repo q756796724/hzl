@@ -299,7 +299,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.5.9";
+            var versionNum = "聚合分享v11.6.0";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -679,7 +679,7 @@ ui.ok.click(function () {
             悬浮窗2.consoleLog.setColors(console_arr);
             悬浮窗2.consoleLog.setConsole(runtime.console);
             悬浮窗2.setTouchable(false);
-            悬浮窗2.setPosition(0, device.height * 0.1);
+            悬浮窗2.setPosition(0, device.height * 0.15);
 
             //setInterval(() => { }, 1000);
 
