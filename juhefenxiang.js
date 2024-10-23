@@ -4408,6 +4408,7 @@ ui.ok.click(function () {
                                 console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
                                 sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅服务退出");//出错请处理
                                 sleep(random(250000, 350000));
+                                返回v首页()
                                 xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
                                 storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
                                 return false;
