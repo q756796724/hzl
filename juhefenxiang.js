@@ -299,7 +299,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.6.0";
+            var versionNum = "聚合分享v11.6.1";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4117,6 +4117,11 @@ ui.ok.click(function () {
                         console.warn("检测小阅阅打开失败")
                         fenxiangshibai();
                     }
+                    return false
+                }else if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*阅读更新中.*)/).findOnce()) {
+                    xiaoyueyuekedusj = new Date().getTime() + 4000 * 1000
+                    storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                    console.error("阅读更新中");
                     return false
                 } else if (xiaoyueyuecheckFlag) {
                     console.warn("检测小阅阅打开失败")
