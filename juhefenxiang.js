@@ -2865,8 +2865,12 @@ ui.ok.click(function () {
                         console.warn("小阅阅加载失败");
                         storage.put("yunshaomaurl", "")
                         //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅加载失败:" + yunshaomaurl);//出错请处理
-                        addyunshaomajiazaishibai()
-                        关闭应用(PKG_NAME);
+                        if (shuaxinflag) {
+                            返回v首页()
+                        }else{
+                            addyunshaomajiazaishibai()
+                            关闭应用(PKG_NAME);
+                        }
                         return
                     }
                     loadcount++
