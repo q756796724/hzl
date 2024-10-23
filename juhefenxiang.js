@@ -299,7 +299,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.5.8";
+            var versionNum = "聚合分享v11.5.9";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -1838,7 +1838,7 @@ ui.ok.click(function () {
                         if (fBtn.parent() != null && fBtn.parent().clickable()) {
                             fBtn.parent().click();
                         }
-                        sleep(random(2000, 3000));
+                        sleep(random(5000, 8000));
                     } else {
                         console.error("notfound刷新");
                         let quxiaobtn = packageName("com.tencent.mm").textContains("取消").findOne(3000);
@@ -1855,7 +1855,7 @@ ui.ok.click(function () {
                         if (fzBtn != null) {
                             if (fzBtn.parent() != null && fzBtn.parent().clickable()) {
                                 fzBtn.parent().click();
-                                sleep(1000)
+                                sleep(random(5000, 8000));
                                 return true
                             }
                         }
