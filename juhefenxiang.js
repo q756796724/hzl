@@ -2725,7 +2725,7 @@ ui.ok.click(function () {
                                                         click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
                                                         sleep(10000)
                                                     }
-                                                    let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|无法打开网页)/).findOcne()
+                                                    let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|无法打开网页)/).findOnce()
                                                     if (stopPage != null) {
                                                         storage.put("yunshaomaurl", "")
                                                         //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
