@@ -2624,7 +2624,19 @@ ui.ok.click(function () {
                                                                     sleep(random(1000, 2000))
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                                         log("点击小阅阅成功.")
-                                                                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|无法打开网页)/).findOne(10000)
+                                                                        if(packageName("com.tencent.mm").className("android.view.View").textContains("登录失败").findOne(15000)){
+                                                                            i=0
+                                                                            sleep(4000)
+                                                                            if (zwifi == storage.get("zhuanzaiwifi")) {
+                                                                                zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                                                                                连接wifi(zwifi, 5000);
+                                                                                app.launch(PKG_NAME);
+                                                                                sleep(4000)
+                                                                            }
+                                                                            continue
+                                                                        }
+
+                                                                        let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|无法打开网页)/).findOnce()
                                                                         if (stopPage != null) {
                                                                             storage.put("yunshaomaurl", "")
                                                                             //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
@@ -2701,7 +2713,19 @@ ui.ok.click(function () {
                                                 sleep(random(1000, 2000))
                                                 if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                     log("点击小阅阅成功..")
-                                                    let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|无法打开网页)/).findOne(10000)
+                                                    if(packageName("com.tencent.mm").className("android.view.View").textContains("登录失败").findOne(15000)){
+                                                        i=0
+                                                        sleep(4000)
+                                                        if (zwifi == storage.get("zhuanzaiwifi")) {
+                                                            zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                                                            连接wifi(zwifi, 5000);
+                                                            app.launch(PKG_NAME);
+                                                            sleep(4000)
+                                                        }
+                                                        click(p[p.length - 1].bounds().centerX() - 300, p[p.length - 1].bounds().centerY());
+                                                        sleep(10000)
+                                                    }
+                                                    let stopPage = packageName("com.tencent.mm").textMatches(/(.*已停止访问该网页.*|.*被多人投诉.*|无法打开网页)/).findOcne()
                                                     if (stopPage != null) {
                                                         storage.put("yunshaomaurl", "")
                                                         //sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "异常url:" + yunshaomaurl);//出错请处理
