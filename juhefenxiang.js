@@ -299,7 +299,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.6.2";
+            var versionNum = "聚合分享v11.6.3";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -4403,16 +4403,7 @@ ui.ok.click(function () {
                         if (cBtn != null && cBtn.text() != undefined && cBtn.text() != "" && js_name != null && js_name.desc() != undefined && js_name.desc() != "" && publish_time != null && publish_time.text() != undefined && publish_time.text() != "") {
                             let yuducontent = (cBtn.text() + js_name.desc()).TextFilter() + "&&" + publish_time.text().replace(/年/g, "/").replace(/月/g, "/").replace(/日/g, "/") + "&&" + fabudi + "&&" + read_area_num;
                             log(yuducontent);
-                            if (js_name.desc() == "小阅阅服务") {
-                                xianzhistr = "小阅阅服务退出"
-                                console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
-                                sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "小阅阅服务退出");//出错请处理
-                                sleep(random(250000, 350000));
-                                返回v首页()
-                                xiaoyueyuekedusj = new Date().getTime() + random(1000, 1200) * 1000
-                                storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
-                                return false;
-                            }
+                            
                             if (xiaoyueyuecheckFlag == false) {
                                 if (isInJiancegongzhonghao(encodeURIComponent(js_name.desc())) == true && read_area && packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null && read_area.text().match(/\d+/g)[0] < 2000 && (new Date().getTime() - new Date(Date.parse(publish_time.text().replace(/年/g, "/").replace(/月/g, "/").replace(/日/g, "/"))).getTime() > 3 * 24 * 3600 * 1000)) {
                                     xiaoyueyuecheckFlag = true;
@@ -4580,15 +4571,23 @@ ui.ok.click(function () {
                                 }
 
                             }
-                            if (packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null && read_area && read_area.text().match(/\d+/g)[0] < 3000) {
-                                if (sfjcwz(encodeURIComponent(js_name.desc()))) {
-                                    let xianzhistr = "小阅阅检测-gongzonghao"
-                                    if (xiaoyueyuecount > wifiCount) {
-                                        xianzhistr = "小阅阅中途检测-gongzonghao"
+                            
+                            if (js_name.desc() == "小阅阅服务") {
+                                let xianzhistr = "小阅阅服务检测"
+                                console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
+                                xiaoyueyuecheckFlag = true
+                                storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
+                            }else{
+                                if (packageName("com.tencent.mm").id("js_read_area3").textMatches(/(.*万.*)/).findOnce() == null && read_area && read_area.text().match(/\d+/g)[0] < 3000) {
+                                    if (sfjcwz(encodeURIComponent(js_name.desc()))) {
+                                        let xianzhistr = "小阅阅检测-gongzonghao"
+                                        if (xiaoyueyuecount > wifiCount) {
+                                            xianzhistr = "小阅阅中途检测-gongzonghao"
+                                        }
+                                        xiaoyueyuecheckFlag = true
+                                        storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
+                                        console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
                                     }
-                                    xiaoyueyuecheckFlag = true
-                                    storage.put("xiaoyueyuecheckFlag", xiaoyueyuecheckFlag);
-                                    console.warn(new Date().toLocaleString() + "-----------" + xianzhistr);
                                 }
                             }
                             if (xiaoyueyuecheckFlag) {
