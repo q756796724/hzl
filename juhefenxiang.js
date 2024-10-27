@@ -2799,6 +2799,20 @@ ui.ok.click(function () {
                     }
                     sleep(10000);
                     let xiaoyueyueurltitle = packageName("com.tencent.mm").id("text1").findOne(100000);
+                    if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*维护.*)/).findOnce()||packageName("com.tencent.mm").textContains("维护").findOnce()||packageName("com.tencent.mm").descContains("维护").findOnce()) {
+                        xiaoyueyuekedusj = new Date().getTime() + 2 * 3600 * 1000
+                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                        console.warn("维护中");
+                        if (zwifi == storage.get("zhuanzaiwifi")) {
+                            zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                            连接wifi(zwifi, 5000);
+                            app.launch(PKG_NAME);
+                            sleep(10000)
+                        }
+                        addyunshaomajiazaishibai(100)
+                        返回v首页()
+                        return
+                    }
                     if (xiaoyueyueurltitle && xiaoyueyueurltitle.text() == "小阅阅") {
                         xiaoyueyueurltrycount = 0
                         log("小阅阅转载成功")
