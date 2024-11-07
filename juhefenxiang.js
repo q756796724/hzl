@@ -300,7 +300,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.6.7";
+            var versionNum = "聚合分享v11.6.8";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2808,7 +2808,8 @@ ui.ok.click(function () {
                             app.launch(PKG_NAME);
                             sleep(10000)
                         }
-                        sleep(90*24 * 3600 * 1000)
+                        sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "禁用中");//出错请处理
+                        sleep(12 * 3600 * 1000)
                         返回v首页()
                         return
                     }
@@ -6455,6 +6456,10 @@ ui.ok.click(function () {
                             storage.put("meitianzhuanurl", "")
                             meitiantrycount = 0
                             storage.put("meitiantrycount", meitiantrycount)
+
+                            if (xiaoyueyueflag&&storage.get("xiaoyueyuekedusj", new Date().getTime()) - new Date().getTime() > 60 * 24 * 3600 * 1000) {
+                                sendTx("http://miaotixing.com/trigger?id=tvbLCeH&text=num:" + phoneNum + "禁用请处理");//出错请处理
+                            }
 
                             /*if (xiaoyueyueflag == true) {
                                 xiaoyueyuekedusj = new Date().getTime()
