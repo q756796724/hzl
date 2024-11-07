@@ -300,7 +300,7 @@ ui.ok.click(function () {
             var MAIN_PKG = "com.fanqie.cloud";
             var PKG_NAME = "com.tencent.mm";
             var MAIN_PAGE = "com.tencent.mm.ui.LauncherUI";
-            var versionNum = "聚合分享v11.6.6";
+            var versionNum = "聚合分享v11.6.7";
             var readNum = 0;//最近获取到的阅读次数
             var retryCount = 0;//进入页面重试次数
             var todayTxCount = 0;
@@ -2627,7 +2627,6 @@ ui.ok.click(function () {
                                                                     if (packageName("com.tencent.mm").className("android.widget.TextView").textMatches(/(文件传输助手)/).findOnce() == null) {
                                                                         log("点击小阅阅成功.")
                                                                         if(packageName("com.tencent.mm").className("android.view.View").textContains("登录失败").findOne(15000)){
-                                                                            i=0
                                                                             sleep(4000)
                                                                             if (zwifi == storage.get("zhuanzaiwifi")) {
                                                                                 zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
@@ -2799,6 +2798,20 @@ ui.ok.click(function () {
                     }
                     sleep(10000);
                     let xiaoyueyueurltitle = packageName("com.tencent.mm").id("text1").findOne(100000);
+                    if (packageName("com.tencent.mm").className("android.view.View").textContains("error logins").findOnce()) {
+                        xiaoyueyuekedusj = new Date().getTime() + 90*24 * 3600 * 1000
+                        storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
+                        console.warn("禁用中");
+                        if (zwifi == storage.get("zhuanzaiwifi")) {
+                            zwifi = storage.get("zwifi", "XiaoMiWifi3G_5G")
+                            连接wifi(zwifi, 5000);
+                            app.launch(PKG_NAME);
+                            sleep(10000)
+                        }
+                        sleep(90*24 * 3600 * 1000)
+                        返回v首页()
+                        return
+                    }
                     if (packageName("com.tencent.mm").className("android.view.View").textMatches(/(.*维护.*)/).findOnce()||packageName("com.tencent.mm").textContains("维护").findOnce()||packageName("com.tencent.mm").descContains("维护").findOnce()) {
                         xiaoyueyuekedusj = new Date().getTime() + 2 * 3600 * 1000
                         storage.put("xiaoyueyuekedusj", xiaoyueyuekedusj);
