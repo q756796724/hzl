@@ -469,7 +469,7 @@ ui.ok.click(function () {
                     repData = getjieshouCount(type);
 
                 }
-                return repData
+                return repData 
 
             }
             //增加接收人数
